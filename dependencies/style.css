@@ -1,0 +1,37 @@
+* {
+    font-family: 'NotoSansM Nerd Font Mono';
+    font-size: 16px;
+    font-weight: 700;
+}
+
+window#waybar {
+    background-color: rgba(26, 27, 38, 0);
+    color: #c0caf5;
+    margin: 5px;
+    border-radius: 30px;
+}
+
+#workspaces button {
+    color: #565f89;
+    padding: 0 5px;
+    margin: 2px;
+}
+
+#workspaces button.active {
+    color: #7aa2f7;
+}
+
+#hypr-icon {
+    color: #7aa2f7;
+    padding-left: 30px;
+}
+
+#battery, #network, #pulseaudio, #clock, #bluetooth {
+    background: #3b4261;
+    padding: 0 12px;
+    border-radius: 30px;
+}
+
+#battery.critical {
+    color: #f7768e;
+}
