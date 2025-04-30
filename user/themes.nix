@@ -16,8 +16,8 @@
       size = 36;
     };
     font = {
-      name = "Noto Sans";
       size = 14;
+      name = "Noto Sans";
     };
   };
   qt = {
