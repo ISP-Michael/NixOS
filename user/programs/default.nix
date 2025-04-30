@@ -2,7 +2,7 @@
   imports = [
     ./git.nix
     ./bash.nix
-    ./home-manager.nix
     ./yazi.nix
   ];
+  programs.home-manager.enable = true;
 }

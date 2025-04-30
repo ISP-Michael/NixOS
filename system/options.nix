@@ -1,9 +1,9 @@
 {
   nix = {
     settings = {
-      auto-optimise-store = true;
       cores = 2;
       warn-dirty = false;
+      auto-optimise-store = true;
       experimental-features = [
         "nix-command"
         "flakes"
@@ -29,7 +29,6 @@
       options = "--delete-older-than 14d";
     };
   };
-
   time.timeZone = "Europe/Moscow";
   documentation.man.generateCaches = false;
 }

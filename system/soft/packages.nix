@@ -1,199 +1,158 @@
 { pkgs, winapps-pkgs, zen-browser-pkgs, ayugram-desktop-pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    wget
-
-    # TTY
-    kitty
-    alacritty
-    powershell
-    ghostty
-
-    # Hyrpland
-    polkit
-    dconf
-    hyprpaper
-    hyprlock
-    hyprshot
-    hyprutils
-    hyprcursor
-    hyprlang
-
-    # Development
-    neovim
-    zed-editor-fhs
-    tmux
-    vscode-fhs
-
-    # Shells
-    nushell
-    zsh
-    starship
-
-    # Utils (TUI)
-    et
-    htop
-    btop
-    powertop
-    tree
-    bat
-    amdgpu_top
-    ripgrep
     fd
-    dust
+    uv
+    lf
+    cl
+    go
+    nh
+    bc
+    et
+    zsh
+    imv
+    gcc
+    mpv
+    zip
+    fzf
+    bat
+    eww
+    zig
+    jdk
+    lua
+    php
     gdu
     dua
-    entr
-    ansifilter
-    bc
-    imagemagick
-    zip
-    unzip
-    fzf
-    clipse
-    wl-clipboard
-    neofetch
-    fastfetch
-    pavucontrol
+    wget
+    tree
+    dust
+    xplr
     cron
-    memtester
     file
-    disko
-    tesseract
-    ventoy-full
-    pass
-    moreutils
-    wl-clipboard
-    nix-init
-    nh
-    nixdoc
-    nixfmt-rfc-style
-    pre-commit
-    pamixer
-    eww
-    playerctl
-    incron
-
-    # Languages
-    go
-    goimports-reviser
-    php
-    cargo
-    typescript
-    lua
-    dotnetCorePackages.dotnet_9.sdk
-    nodejs_23
-    nodePackages_latest.live-server
-    nodePackages_latest.browser-sync
-    nodePackages_latest.prettier
-    cl
-    zig
+    entr
     sass
-    jdk
-
-    # GUI utils
     wofi
-    rofi-wayland
-    brightnessctl
-    bluez
     acpi
-    nwg-look
-    gtk4
-
-    # Python
-    python313Full
-    (python312.withPackages(ps: [
-      ps.numpy
-      ps.requests
-      ps.pandas
-    ]))
-    uv
-
-    # 3D
-    godot_4
-    blender
-
-    # C/C++
-    gcc
-    clang
-    clang-tools
-    glibc
-    glibcLocales
-    cmake
-    gnumake
-    binutils
-
-    # Libs & Dependencies
-    openssl
-    zlib
-    bzip3
-    libffi
-    pkg-config
-    justbuild
-
-    # LSP, Linters, Formatters
-    pyright
-    basedpyright
-    gopls
-    gosimports
-    hyprls
+    sqls
     nixd
-    yaml-language-server
-    rust-analyzer
+    gtk4
+    tmux
+    zlib
+    htop
+    xray
+    btop
+    pass
+    kitty
+    glibc
+    clang
+    gopls
+    cmake
+    pywal
+    bzip3
+    bluez
+    v2ray
+    redis
+    cargo
+    disko
+    biome
+    unzip
+    dconf
+    polkit
+    libffi
+    oxlint
+    ranger
+    sqlite
+    hyprls
+    nixdoc
+    clipse
+    neovim
+    nushell
+    gnumake
+    pamixer
+    godot_4
+    openssl
+    blender
+    ripgrep
+    ghostty
+    pyright
+    nekoray
+    hyprlock
+    emmet-ls
+    fish-lsp
+    hyprlang
+    waydroid
+    nix-init
+    starship
+    nautilus
+    spoofdpi
+    sing-box
+    nwg-look
+    powertop
+    binutils
+    neofetch
+    obsidian
+    hyprshot
+    justbuild
+    superhtml
+    nodejs_23
+    tesseract
     csharp-ls
+    playerctl
+    moreutils
+    hyprpaper
+    fastfetch
+    memtester
+    hyprutils
+    alacritty
+    hyprcursor
+    obs-studio
+    sing-geoip
+    mongodb-ce
+    powershell
+    pre-commit
+    vscode-fhs
+    amdgpu_top
+    ansifilter
+    gosimports
+    typescript
+    pkg-config
+    xfce.thunar
+    imagemagick
+    pavucontrol
+    clang-tools
+    ventoy-full
+    sing-geosite
+    wl-clipboard
+    basedpyright
+    glibcLocales
+    rofi-wayland
+    wl-clipboard
+    brightnessctl
+    python313Full
+    rust-analyzer
+    sqlitebrowser
+    docker-compose
+    zed-editor-fhs
+    telegram-desktop
+    nixfmt-rfc-style
+    goimports-reviser
+    nordzy-cursor-theme
+    kdePackages.dolphin
     lua-language-server
     vim-language-server
+    yaml-language-server
     bash-language-server
-    dockerfile-language-server-nodejs
-    docker-compose-language-service
-    oxlint
-    biome
-    superhtml
-    emmet-ls
-    sqls
-    fish-lsp
-
-    # Images & Videos
-    imv
-    mpv
-    obs-studio
-
-    # FM (File managers)
-    lf
-    xplr
-    ranger
-    kdePackages.dolphin
-    nautilus
-
-    # Themes
-    nordzy-cursor-theme
-    redis
-    sqlite
-    mongodb-ce
-    sqlitebrowser
-
-    # Containers
-    docker-compose
-
-    # Proxy & VPN
-    nekoray
-    sing-geoip
-    sing-geosite
-    sing-box
-    xray
-    spoofdpi
-    v2ray
-
-    # Winapps
     winapps-pkgs.winapps
-    winapps-pkgs.winapps-launcher
-
-    telegram-desktop
-    ayugram-desktop-pkgs.ayugram-desktop
-    obsidian
     libreoffice-qt6-fresh
-    waydroid
-    pywal
     zen-browser-pkgs.generic
+    nodePackages_latest.prettier
+    winapps-pkgs.winapps-launcher
+    docker-compose-language-service
+    nodePackages_latest.live-server
+    dotnetCorePackages.dotnet_9.sdk
+    nodePackages_latest.browser-sync
+    dockerfile-language-server-nodejs
+    ayugram-desktop-pkgs.ayugram-desktop
+    (python312.withPackages(ps: [ps.numpy ps.requests ps.pandas]))
   ];
 }

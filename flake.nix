@@ -2,8 +2,8 @@
   description = "Michael's flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     stylix.url = "github:danth/stylix";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     zen-browser.url = "github:Marcecoll/zen-browser-flake";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -27,12 +27,12 @@
   outputs =
     {
       self,
-      nixpkgs,
-      home-manager,
       stylix,
+      nixpkgs,
       winapps,
       hyprland,
       zen-browser,
+      home-manager,
       ayugram-desktop,
       ...
     }@inputs:
@@ -51,12 +51,12 @@
         };
         modules = [
           ./system/conf.nix
+          stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.Michael = import ./user/conf.nix;
           }
-          stylix.nixosModules.stylix
         ];
       };
     };

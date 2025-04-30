@@ -1,9 +1,9 @@
 {
   imports = [
-    ./programs.nix
     ./fonts.nix
-    ./packages.nix
     ./nixpkgs.nix
+    ./programs.nix
+    ./packages.nix
     ./virtualization.nix
   ];
 }

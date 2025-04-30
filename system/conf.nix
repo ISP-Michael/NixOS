@@ -1,15 +1,15 @@
 {
   imports = [
-    ./hardware-configuration.nix
-    ./services.nix
-    ./users.nix
-    ./networking.nix
+    ./soft
     ./boot.nix
+    ./users.nix
     ./system.nix
+    ./stylix.nix
     ./options.nix
     ./console.nix
-    ./stylix.nix
-    ./soft
+    ./services.nix
+    ./networking.nix
+    ./hardware-configuration.nix
   ];
 
 }

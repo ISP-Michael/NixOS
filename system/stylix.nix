@@ -2,17 +2,17 @@
 {
   stylix = {
     enable = true;
-    image = ../dependencies/PasterChill.png;
     polarity = "dark";
     autoEnable = true;
+    image = ../dependencies/PasterChill.png;
     fonts = {
       sansSerif = {
-        package = pkgs.noto-fonts;
         name = "Noto Fonts";
+        package = pkgs.noto-fonts;
       };
       monospace = {
-        package = pkgs.ubuntu-sans-mono;
         name = "Ubuntu Sans Mono";
+        package = pkgs.ubuntu-sans-mono;
       };
     };
   };
