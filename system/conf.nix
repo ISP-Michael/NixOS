@@ -11,5 +11,4 @@
     ./networking.nix
     ./hardware-configuration.nix
   ];
-
 }

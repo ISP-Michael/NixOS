@@ -1,4 +1,11 @@
 { pkgs, winapps-pkgs, zen-browser-pkgs, ayugram-desktop-pkgs, ... }:
+let
+  nodePkgs = with pkgs.nodePackages_latest; [
+    prettier
+    live-server
+    browser-sync
+  ];
+in
 {
   environment.systemPackages = with pkgs; [
     fd
@@ -9,9 +16,9 @@
     nh
     bc
     et
-    zsh
     imv
     gcc
+    eza
     mpv
     zip
     fzf
@@ -29,6 +36,7 @@
     xplr
     cron
     file
+    nurl
     entr
     sass
     wofi
@@ -86,7 +94,6 @@
     nautilus
     spoofdpi
     sing-box
-    nwg-look
     powertop
     binutils
     neofetch
@@ -145,14 +152,12 @@
     winapps-pkgs.winapps
     libreoffice-qt6-fresh
     zen-browser-pkgs.generic
-    nodePackages_latest.prettier
+    beamMinimal27Packages.elixir
     winapps-pkgs.winapps-launcher
     docker-compose-language-service
-    nodePackages_latest.live-server
     dotnetCorePackages.dotnet_9.sdk
-    nodePackages_latest.browser-sync
     dockerfile-language-server-nodejs
     ayugram-desktop-pkgs.ayugram-desktop
     (python312.withPackages(ps: [ps.numpy ps.requests ps.pandas]))
-  ];
+  ] ++ nodePkgs;
 }
