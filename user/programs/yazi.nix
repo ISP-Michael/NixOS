@@ -37,9 +37,9 @@ in
       require('rich-preview')
       require('chmod')
       require('glow')
-      require('full-border'):setup {
+      require('full-border'):setup({
         type = ui.Border.ROUNDED
-      }
+      })
     '';
   };
 }

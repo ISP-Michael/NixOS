@@ -15,6 +15,7 @@
       fastfetch = "fastfetch --logo ~/Images/nixos-logo.png";
       rebuild = "sudo nixos-rebuild switch --flake /etc/nixos";
       delete_shots = "find /home/Michael -maxdepth 1 -type f -name '*.png' -delete";
+      rsync_nixos = "cd ~/nixos && rsync -av --exclude-from='.rsync-ignore' /etc/nixos ~ && cd -";
     };
     shellInit = ''
       set -gx Downloads ~/Downloads
@@ -28,6 +29,9 @@
       fish_vi_key_bindings
     '';
     functions = {
+      git = builtins.readFile ./func_git.fish;
+      tree = builtins.readFile ./func_tree.fish;
+      dotnet = builtins.readFile ./func_dotnet.fish;
       fish_prompt = builtins.readFile ./fish_prompt.fish;
     };
   };
