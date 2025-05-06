@@ -4,6 +4,7 @@
     blueman.enable = true;
     libinput.enable = true;
     resolved.enable = true;
+    postgresql.enable = true;
     pipewire = {
       enable = true;
       pulse.enable = true;
@@ -12,6 +13,12 @@
       enable = true;
       package = pkgs.mariadb;
     };
-    postgresql.enable = true;
+    # displayManager = {
+    #   sddm = {
+    #     enable = true;
+    #     wayland.enable = true;
+    #     theme = "sddm-astronaut-theme";
+    #   };
+    # };
   };
 }

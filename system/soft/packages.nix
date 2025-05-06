@@ -1,10 +1,41 @@
-{ pkgs, winapps-pkgs, zen-browser-pkgs, ayugram-desktop-pkgs, ... }:
+{
+  lib,
+  pkgs,
+  winapps-pkgs,
+  zen-browser-pkgs,
+  # ayugram-desktop-pkgs,
+  ...
+}:
 let
+  dprintPkgs = lib.filter (x: lib.isDerivation x) (lib.attrValues pkgs.dprint-plugins);
   nodePkgs = with pkgs.nodePackages_latest; [
+    nodejs
     prettier
     live-server
     browser-sync
   ];
+  python12Env = pkgs.python312.withPackages(
+    ps: with ps; [
+      nox
+      numpy
+      django
+      pandas
+      fastapi
+      requests
+      fastapi-cli
+    ]
+  );
+  python13Env = pkgs.python312.withPackages(
+    ps: with ps; [
+      nox
+      numpy
+      django
+      pandas
+      fastapi
+      requests
+      fastapi-cli
+    ]
+  );
 in
 {
   environment.systemPackages = with pkgs; [
@@ -28,6 +59,7 @@ in
     jdk
     lua
     php
+    nox
     gdu
     dua
     wget
@@ -46,10 +78,12 @@ in
     gtk4
     tmux
     zlib
+    deno
     htop
     xray
     btop
     pass
+    helix
     kitty
     glibc
     clang
@@ -70,8 +104,10 @@ in
     oxlint
     ranger
     sqlite
+    eslint
     hyprls
     nixdoc
+    dprint
     clipse
     neovim
     nushell
@@ -91,17 +127,16 @@ in
     waydroid
     nix-init
     starship
+    htmlhint
     nautilus
     spoofdpi
     sing-box
     powertop
     binutils
-    neofetch
     obsidian
     hyprshot
     justbuild
     superhtml
-    nodejs_23
     tesseract
     csharp-ls
     playerctl
@@ -124,6 +159,8 @@ in
     typescript
     pkg-config
     xfce.thunar
+    python12Env
+    python13Env
     imagemagick
     pavucontrol
     clang-tools
@@ -135,9 +172,9 @@ in
     rofi-wayland
     wl-clipboard
     brightnessctl
-    python313Full
     rust-analyzer
     sqlitebrowser
+    sddm-astronaut
     docker-compose
     zed-editor-fhs
     telegram-desktop
@@ -151,13 +188,13 @@ in
     bash-language-server
     winapps-pkgs.winapps
     libreoffice-qt6-fresh
+    emmet-language-server
     zen-browser-pkgs.generic
+    typescript-language-server
     beamMinimal27Packages.elixir
     winapps-pkgs.winapps-launcher
     docker-compose-language-service
     dotnetCorePackages.dotnet_9.sdk
     dockerfile-language-server-nodejs
-    ayugram-desktop-pkgs.ayugram-desktop
-    (python312.withPackages(ps: [ps.numpy ps.requests ps.pandas]))
-  ] ++ nodePkgs;
+  ] ++ nodePkgs ++ dprintPkgs;
 }

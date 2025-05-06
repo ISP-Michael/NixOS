@@ -1,3 +1,4 @@
 .rsync-ignore
 backup/
+functions.txt
 

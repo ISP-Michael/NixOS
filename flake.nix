@@ -26,7 +26,6 @@
 
   outputs =
     {
-      self,
       stylix,
       nixpkgs,
       winapps,

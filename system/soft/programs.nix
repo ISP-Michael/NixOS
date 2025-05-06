@@ -11,9 +11,7 @@
     };
     hyprland = {
       enable = true;
-      package = hyprland;
       xwayland.enable = true;
-      portalPackage = xdg-desktop-portal-hyprland;
     };
   };
 }

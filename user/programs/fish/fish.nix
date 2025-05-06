@@ -6,7 +6,14 @@
       r = "reset";
       py = "python";
       dn = "dotnet";
+      ga = "git add";
       fucking = "sudo";
+      gpsh = "git push";
+      gpll = "git pull";
+      gs = "git status";
+      gb = "git branch";
+      gci = "git commit";
+      gco = "git checkout";
       bnc = "brightnessctl";
       ndw = "nmcli device wifi";
       bat_h-l = "bat --highlight-line 0:";
