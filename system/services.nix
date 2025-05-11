@@ -1,24 +1,17 @@
 { pkgs, ... }:
 {
   services = {
-    blueman.enable = true;
-    libinput.enable = true;
-    resolved.enable = true;
+    blueman.enable    = true;
+    libinput.enable   = true;
+    resolved.enable   = true;
     postgresql.enable = true;
     pipewire = {
-      enable = true;
+      enable       = true;
       pulse.enable = true;
     };
     mysql = {
-      enable = true;
+      enable  = true;
       package = pkgs.mariadb;
     };
-    # displayManager = {
-    #   sddm = {
-    #     enable = true;
-    #     wayland.enable = true;
-    #     theme = "sddm-astronaut-theme";
-    #   };
-    # };
   };
 }

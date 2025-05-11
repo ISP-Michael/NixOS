@@ -2,27 +2,28 @@
   programs.fish = {
     enable = true;
     shellAliases = {
-      g = "git";
-      r = "reset";
-      py = "python";
-      dn = "dotnet";
-      ga = "git add";
-      fucking = "sudo";
-      gpsh = "git push";
-      gpll = "git pull";
-      gs = "git status";
-      gb = "git branch";
-      gci = "git commit";
-      gco = "git checkout";
-      bnc = "brightnessctl";
-      ndw = "nmcli device wifi";
-      bat_h-l = "bat --highlight-line 0:";
-      dll = "dotnet bin/Debug/net9.0/*.dll";
-      update = "nix flake update --flake /etc/nixos";
-      fastfetch = "fastfetch --logo ~/Images/nixos-logo.png";
-      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos";
+      g            = "git";
+      fucking      = "sudo";
+      r            = "reset";
+      py           = "python";
+      dn           = "dotnet";
+      ga           = "git add";
+      gl           = "git log";
+      gpsh         = "git push";
+      gpll         = "git pull";
+      gs           = "git status";
+      gb           = "git branch";
+      gco          = "git checkout";
+      bnc          = "brightnessctl";
+      gci          = "git commit -m";
+      ndw          = "nmcli device wifi";
+      bat_h-l      = "bat --highlight-line 0:";
+      dll          = "dotnet bin/Debug/net9.0/*.dll";
+      update       = "sudo nix flake update --flake /etc/nixos";
+      fastfetch    = "fastfetch --logo ~/Images/nixos-logo.png";
+      rebuild      = "sudo nixos-rebuild switch --flake /etc/nixos";
       delete_shots = "find /home/Michael -maxdepth 1 -type f -name '*.png' -delete";
-      rsync_nixos = "cd ~/nixos && rsync -av --exclude-from='.rsync-ignore' /etc/nixos ~ && cd -";
+      rsync_nixos  = "cd ~/nixos && rsync -av --exclude-from='.rsync-ignore' /etc/nixos ~ && cd -";
     };
     shellInit = ''
       set -gx Downloads ~/Downloads
@@ -36,9 +37,9 @@
       fish_vi_key_bindings
     '';
     functions = {
-      git = builtins.readFile ./func_git.fish;
-      tree = builtins.readFile ./func_tree.fish;
-      dotnet = builtins.readFile ./func_dotnet.fish;
+      git         = builtins.readFile ./func_git.fish;
+      tree        = builtins.readFile ./func_tree.fish;
+      dotnet      = builtins.readFile ./func_dotnet.fish;
       fish_prompt = builtins.readFile ./fish_prompt.fish;
     };
   };

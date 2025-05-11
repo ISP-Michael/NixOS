@@ -3,7 +3,6 @@
   pkgs,
   winapps-pkgs,
   zen-browser-pkgs,
-  # ayugram-desktop-pkgs,
   ...
 }:
 let
@@ -14,23 +13,27 @@ let
     live-server
     browser-sync
   ];
-  python12Env = pkgs.python312.withPackages(
+  python12Env = pkgs.python312.withPackages (
     ps: with ps; [
       nox
       numpy
       django
       pandas
+      cython
+      nuitka
       fastapi
       requests
       fastapi-cli
     ]
   );
-  python13Env = pkgs.python312.withPackages(
+  python13Env = pkgs.python313.withPackages (
     ps: with ps; [
       nox
       numpy
       django
       pandas
+      cython
+      nuitka
       fastapi
       requests
       fastapi-cli
@@ -38,163 +41,168 @@ let
   );
 in
 {
-  environment.systemPackages = with pkgs; [
-    fd
-    uv
-    lf
-    cl
-    go
-    nh
-    bc
-    et
-    imv
-    gcc
-    eza
-    mpv
-    zip
-    fzf
-    bat
-    eww
-    zig
-    jdk
-    lua
-    php
-    nox
-    gdu
-    dua
-    wget
-    tree
-    dust
-    xplr
-    cron
-    file
-    nurl
-    entr
-    sass
-    wofi
-    acpi
-    sqls
-    nixd
-    gtk4
-    tmux
-    zlib
-    deno
-    htop
-    xray
-    btop
-    pass
-    helix
-    kitty
-    glibc
-    clang
-    gopls
-    cmake
-    pywal
-    bzip3
-    bluez
-    v2ray
-    redis
-    cargo
-    disko
-    biome
-    unzip
-    dconf
-    polkit
-    libffi
-    oxlint
-    ranger
-    sqlite
-    eslint
-    hyprls
-    nixdoc
-    dprint
-    clipse
-    neovim
-    nushell
-    gnumake
-    pamixer
-    godot_4
-    openssl
-    blender
-    ripgrep
-    ghostty
-    pyright
-    nekoray
-    hyprlock
-    emmet-ls
-    fish-lsp
-    hyprlang
-    waydroid
-    nix-init
-    starship
-    htmlhint
-    nautilus
-    spoofdpi
-    sing-box
-    powertop
-    binutils
-    obsidian
-    hyprshot
-    justbuild
-    superhtml
-    tesseract
-    csharp-ls
-    playerctl
-    moreutils
-    hyprpaper
-    fastfetch
-    memtester
-    hyprutils
-    alacritty
-    hyprcursor
-    obs-studio
-    sing-geoip
-    mongodb-ce
-    powershell
-    pre-commit
-    vscode-fhs
-    amdgpu_top
-    ansifilter
-    gosimports
-    typescript
-    pkg-config
-    xfce.thunar
-    python12Env
-    python13Env
-    imagemagick
-    pavucontrol
-    clang-tools
-    ventoy-full
-    sing-geosite
-    wl-clipboard
-    basedpyright
-    glibcLocales
-    rofi-wayland
-    wl-clipboard
-    brightnessctl
-    rust-analyzer
-    sqlitebrowser
-    sddm-astronaut
-    docker-compose
-    zed-editor-fhs
-    telegram-desktop
-    nixfmt-rfc-style
-    goimports-reviser
-    nordzy-cursor-theme
-    kdePackages.dolphin
-    lua-language-server
-    vim-language-server
-    yaml-language-server
-    bash-language-server
-    winapps-pkgs.winapps
-    libreoffice-qt6-fresh
-    emmet-language-server
-    zen-browser-pkgs.generic
-    typescript-language-server
-    beamMinimal27Packages.elixir
-    winapps-pkgs.winapps-launcher
-    docker-compose-language-service
-    dotnetCorePackages.dotnet_9.sdk
-    dockerfile-language-server-nodejs
-  ] ++ nodePkgs ++ dprintPkgs;
+  environment.systemPackages =
+    nodePkgs ++
+    dprintPkgs ++
+    (with pkgs; [
+      fd
+      uv
+      lf
+      cl
+      go
+      nh
+      bc
+      et
+      imv
+      gcc
+      eza
+      mpv
+      zip
+      fzf
+      bat
+      eww
+      zig
+      jdk
+      lua
+      php
+      nox
+      gdu
+      dua
+      wget
+      tree
+      dust
+      xplr
+      cron
+      file
+      nurl
+      entr
+      sass
+      wofi
+      acpi
+      sqls
+      nixd
+      gtk4
+      tmux
+      zlib
+      deno
+      htop
+      xray
+      btop
+      pass
+      helix
+      kitty
+      glibc
+      clang
+      gopls
+      cmake
+      pywal
+      bzip3
+      bluez
+      v2ray
+      redis
+      cargo
+      disko
+      biome
+      unzip
+      dconf
+      polkit
+      libffi
+      oxlint
+      ranger
+      sqlite
+      eslint
+      hyprls
+      nixdoc
+      dprint
+      clipse
+      neovim
+      nushell
+      gnumake
+      pamixer
+      keepass
+      godot_4
+      openssl
+      blender
+      ripgrep
+      ghostty
+      pyright
+      nekoray
+      hyprlock
+      emmet-ls
+      fish-lsp
+      hyprlang
+      waydroid
+      nix-init
+      starship
+      htmlhint
+      nautilus
+      spoofdpi
+      sing-box
+      powertop
+      binutils
+      obsidian
+      hyprshot
+      justbuild
+      superhtml
+      tesseract
+      csharp-ls
+      playerctl
+      moreutils
+      hyprpaper
+      fastfetch
+      memtester
+      hyprutils
+      alacritty
+      hyprcursor
+      obs-studio
+      sing-geoip
+      mongodb-ce
+      powershell
+      pre-commit
+      vscode-fhs
+      amdgpu_top
+      ansifilter
+      gosimports
+      typescript
+      pkg-config
+      xfce.thunar
+      python12Env
+      python13Env
+      imagemagick
+      pavucontrol
+      clang-tools
+      ventoy-full
+      sing-geosite
+      wl-clipboard
+      basedpyright
+      glibcLocales
+      rofi-wayland
+      wl-clipboard
+      brightnessctl
+      rust-analyzer
+      sqlitebrowser
+      smartmontools
+      sddm-astronaut
+      docker-compose
+      zed-editor-fhs
+      telegram-desktop
+      nixfmt-rfc-style
+      goimports-reviser
+      nordzy-cursor-theme
+      kdePackages.dolphin
+      lua-language-server
+      vim-language-server
+      yaml-language-server
+      bash-language-server
+      winapps-pkgs.winapps
+      libreoffice-qt6-fresh
+      emmet-language-server
+      zen-browser-pkgs.generic
+      typescript-language-server
+      beamMinimal27Packages.elixir
+      winapps-pkgs.winapps-launcher
+      docker-compose-language-service
+      dotnetCorePackages.dotnet_9.sdk
+      dockerfile-language-server-nodejs
+    ]);
 }

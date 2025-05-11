@@ -1,10 +1,12 @@
 {
-  description = "Michael's flake";
+  description = "Michael`s flake";
 
   inputs = {
     stylix.url = "github:danth/stylix";
+    anicli.url = "github:vypivshiy/ani-cli-ru";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     zen-browser.url = "github:Marcecoll/zen-browser-flake";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,12 +28,14 @@
 
   outputs =
     {
+      anicli,
       stylix,
       nixpkgs,
       winapps,
       hyprland,
       zen-browser,
       home-manager,
+      nixpkgs-stable,
       ayugram-desktop,
       ...
     }@inputs:
@@ -43,6 +47,7 @@
         inherit system;
         specialArgs = {
           inherit inputs;
+          anicli-pkgs = anicli.packages.${system};
           winapps-pkgs = winapps.packages.${system};
           hyprland-pkgs = hyprland.packages.${system};
           zen-browser-pkgs = zen-browser.packages.${system};
