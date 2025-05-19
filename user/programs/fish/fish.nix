@@ -19,6 +19,7 @@
       ndw          = "nmcli device wifi";
       bat_h-l      = "bat --highlight-line 0:";
       dll          = "dotnet bin/Debug/net9.0/*.dll";
+      hyprshot     = "hyprshot -o ~/Images/screenshots";
       update       = "sudo nix flake update --flake /etc/nixos";
       fastfetch    = "fastfetch --logo ~/Images/nixos-logo.png";
       rebuild      = "sudo nixos-rebuild switch --flake /etc/nixos";
@@ -26,11 +27,14 @@
       rsync_nixos  = "cd ~/nixos && rsync -av --exclude-from='.rsync-ignore' /etc/nixos ~ && cd -";
     };
     shellInit = ''
+      set -gx nixos /etc/nixos
       set -gx Downloads ~/Downloads
       set -gx College ~/Projects/College
       set -gx config /home/Michael/.config
+      set -gx nvim ~/.config/nvim/init.vim
       set -gx Design ~/Projects/College/Design
       set -gx activate .venv/bin/activate.fish
+      set -gx kitty ~/.config/kitty/kitty.conf
       set -gx Project ~/Projects/College/Practice_3
     '';
     interactiveShellInit = ''

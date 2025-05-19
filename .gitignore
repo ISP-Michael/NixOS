@@ -1,4 +1,5 @@
 .rsync-ignore
 backup/
 functions.txt
+locaels.txt
 

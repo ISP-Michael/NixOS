@@ -1,8 +1,6 @@
 {
   lib,
   pkgs,
-  winapps-pkgs,
-  zen-browser-pkgs,
   ...
 }:
 let
@@ -68,6 +66,7 @@ in
       nox
       gdu
       dua
+      perl
       wget
       tree
       dust
@@ -127,6 +126,7 @@ in
       ghostty
       pyright
       nekoray
+      lazygit
       hyprlock
       emmet-ls
       fish-lsp
@@ -155,6 +155,7 @@ in
       alacritty
       hyprcursor
       obs-studio
+      subversion
       sing-geoip
       mongodb-ce
       powershell
@@ -171,7 +172,6 @@ in
       imagemagick
       pavucontrol
       clang-tools
-      ventoy-full
       sing-geosite
       wl-clipboard
       basedpyright
@@ -185,6 +185,8 @@ in
       sddm-astronaut
       docker-compose
       zed-editor-fhs
+      universal-ctags
+      silver-searcher
       telegram-desktop
       nixfmt-rfc-style
       goimports-reviser
@@ -194,13 +196,10 @@ in
       vim-language-server
       yaml-language-server
       bash-language-server
-      winapps-pkgs.winapps
       libreoffice-qt6-fresh
       emmet-language-server
-      zen-browser-pkgs.generic
       typescript-language-server
       beamMinimal27Packages.elixir
-      winapps-pkgs.winapps-launcher
       docker-compose-language-service
       dotnetCorePackages.dotnet_9.sdk
       dockerfile-language-server-nodejs

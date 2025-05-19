@@ -4,23 +4,28 @@
     enable     = true;
     autoEnable = false;
     polarity   = "dark";
-    image      = ../dependencies/PasterChill.png;
-
-    fonts = with pkgs; {
+    image      = ../dependencies/images/PasterChill.png;
+    iconTheme = {
+      enable  = true;
+      package = pkgs.nordzy-icon-theme;
+      dark    = "Nordzy-purple-dark";
+    };
+    fonts = {
       sansSerif = {
         name    = "Noto Fonts";
-        package = noto-fonts;
+        package = pkgs.noto-fonts;
       };
-
       monospace = {
         name    = "Ubuntu Sans Mono";
-        package = ubuntu-sans-mono;
+        package = pkgs.ubuntu-sans-mono;
       };
     };
-
     targets = {
-      qt.enable  = true;
-      gtk.enable = true;
+      qt.enable                 = true;
+      gtk.enable                = true;
+      firefox.enable            = true;
+      hyprland.enable           = true;
+      hyprland.hyprpaper.enable = true;
     };
   };
 }

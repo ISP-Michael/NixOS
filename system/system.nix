@@ -1,4 +1,5 @@
 {
+  zramSwap.enable = true;
   system = {
     stateVersion = "25.05";
   };
@@ -9,5 +10,10 @@
       randomEncryption.enable = true;
     }
   ];
-  zramSwap.enable = true;
+  fileSystems."/".options = [
+    "noatime"
+    "nodiratime"
+    "lazytime"
+    "discard"
+  ];
 }
