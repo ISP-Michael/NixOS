@@ -1,23 +1,21 @@
 {
-  description = "Michael's flake";
-
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     home-manager = {
-      url = "github:nix-community/home-manager?rev=f1113939873a62f185c18a51f4e45ae66686822b";
+      url = "github:nix-community/home-manager?ref=release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
-      url = "github:danth/stylix?rev=75411fe2b90f67bfb4a2ad9cc3b1379758b64dbb";
+      url = "github:danth/stylix?ref=release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   outputs =
     {
-      stylix,
-      nixpkgs,
       home-manager,
+      nixpkgs,
+      stylix,
       ...
     }@inputs:
     let
@@ -30,12 +28,12 @@
           inherit inputs;
         };
         modules = [
-          ./system/conf.nix
+          ./system/conf.nix 
           stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager {
-            home-manager.useGlobalPkgs = true;
+            home-manager.useGlobalPkgs   = true;
             home-manager.useUserPackages = true;
-            home-manager.users.Michael = import ./user/conf.nix;
+            home-manager.users.Michael   = import ./user/conf.nix;
           }
         ];
       };

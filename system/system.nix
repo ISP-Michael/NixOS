@@ -1,7 +1,7 @@
 {
   zramSwap.enable = true;
   system = {
-    stateVersion = "25.11";
+    stateVersion = "25.05";
   };
   swapDevices = [
     {

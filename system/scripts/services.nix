@@ -1,10 +1,10 @@
 {
-  systemd.services.chmod = {
+  systemd.services._chmod = {
     wantedBy = [ "multi-user.target" ];
     after    = [ "network.target" ];
     serviceConfig = {
       Type      = "oneshot";
-      execStart = "/etc/chmod.sh";
+      ExecStart = "/etc/_chmod.sh";
       User      = "root";
     };
   };

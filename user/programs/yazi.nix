@@ -37,9 +37,6 @@ in
       require('rich-preview')
       require('chmod')
       require('glow')
-      require('full-border'):setup({
-        type = ui.Border.ROUNDED
-      })
     '';
     keymap = {
       mgr.prepend_keymap = [
@@ -56,5 +53,17 @@ in
     prepend_previewers = [
       { name = "*.md", run = "glow" },
     ]
+
+    [icons]
+    enable = false
+
+    [icons.rules]
+    "*" = ""
+
+    [ui]
+    statusline = false
+    cursorline = false
+    border = "none"
+    scrollbar = "none"
   '';
 }

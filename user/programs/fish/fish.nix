@@ -24,8 +24,8 @@
       hyprshot     = "hyprshot -o ~/Images/screenshots";
       ff           = "fastfetch --logo ~/Images/patterns_2.png";
       update       = "sudo nix flake update --flake /etc/nixos";
-      rebuild_boot = "sudo nixos-rebuild boot --flake /etc/nixos";
-      rebuild      = "sudo nixos-rebuild switch --flake /etc/nixos";
+      rebuild_boot = "ga /etc/nixos && sudo nixos-rebuild boot --flake /etc/nixos";
+      rebuild      = "ga /etc/nixos && sudo nixos-rebuild switch --flake /etc/nixos";
       delete_shots = "find ~/Images/screenshots -maxdepth 1 -type f -name '*.png' -delete";
     };
     shellInit = ''

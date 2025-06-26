@@ -2,43 +2,44 @@
 let
   pythonEnv13 = pkgs.python313.withPackages(
     ps: with ps; [
-      nox
-      numpy
-      django
-      pandas
       cython
-      nuitka
+      django
       fastapi
-      requests
       fastapi-cli
+      nox
+      nuitka
+      numpy
+      pandas
+      pillow
+      requests
     ]
   );
 in
 {
   home = {
-    username = "Michael";
-    stateVersion = "25.11";
+    username      = "Michael";
+    stateVersion  = "25.05";
     homeDirectory = "/home/Michael";
     sessionVariables = {
-      EDITOR = "nvim";
-      NIXOS_OZONE_WL = "1";
-      KDE_NO_OPENGL_WINDOW_DECORATION = "1";
+      EDITOR                               = "nvim";
+      NIXOS_OZONE_WL                       = "1";
+      KDE_NO_OPENGL_WINDOW_DECORATION      = "1";
       QT_WAYLAND_DISABLE_WINDOW_DECORATION = "1";
     };
     packages = with pkgs; [
       imv
+      libsForQt5.qtstyleplugins
       mpv
-      neovim
       nautilus
+      neovim
       obsidian
-      xfce.thunar
       pythonEnv13
       telegram-desktop
-      libsForQt5.qtstyleplugins
+      xfce.thunar
     ];
     file = {
       ".local/share/fonts/literata" = {
-        source = ../dependencies/fonts/Literata;
+        source    = ../dependencies/fonts/Literata;
         recursive = true;
       };
     };

@@ -7,5 +7,6 @@
     ./bash.nix
     ./yazi.nix
     ./helix.nix
+    ./lutris.nix
   ];
 }

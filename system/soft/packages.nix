@@ -6,37 +6,37 @@
 let
   dprintPkgs = lib.filter (x: lib.isDerivation x) (lib.attrValues pkgs.dprint-plugins);
   nodePkgs = with pkgs.nodePackages_latest; [
+    browser-sync
+    live-server
     nodejs
     prettier
-    live-server
-    browser-sync
   ];
   python12Env = pkgs.python312.withPackages (
     ps: with ps; [
-      nox
-      numpy
-      pillow
-      django
-      pandas
       cython
-      nuitka
+      django
       fastapi
-      requests
       fastapi-cli
+      nox
+      nuitka
+      numpy
+      pandas
+      pillow
+      requests
     ]
   );
   python13Env = pkgs.python313.withPackages (
     ps: with ps; [
-      nox
-      numpy
-      pillow
-      django
-      pandas
       cython
-      nuitka
+      django
       fastapi
-      requests
       fastapi-cli
+      nox
+      nuitka
+      numpy
+      pandas
+      pillow
+      requests
     ]
   );
 in
@@ -45,184 +45,200 @@ in
     nodePkgs ++
     dprintPkgs ++
     (with pkgs; [
-      pv
-      jq
-      fd
-      uv
-      lf
-      cl
-      go
-      nh
-      bc
-      et
-      imv
-      tlp
-      gcc
-      eza
-      mpv
-      zip
-      fzf
-      dig
-      wev
-      eww
-      zig
-      jdk
-      lua
-      php
-      nox
-      gdu
-      dua
-      perl
-      wget
-      tree
-      dust
-      xplr
-      cron
-      file
-      nurl
-      entr
-      sass
-      wofi
       acpi
-      sqls
-      nixd
-      gtk4
-      tmux
-      zlib
-      deno
-      htop
-      xray
-      btop
-      pass
-      bluez
-      helix
-      kitty
-      glibc
-      clang
-      gopls
-      cmake
-      pywal
-      bzip3
-      unciv
-      v2ray
-      redis
-      cargo
-      disko
-      biome
-      unzip
-      dconf
-      gnupg
-      polkit
-      byedpi
-      zoxide
-      libffi
-      oxlint
-      ranger
-      sqlite
-      eslint
-      hyprls
-      nixdoc
-      dprint
-      clipse
-      lutris
-      neovim
-      nushell
-      gnumake
-      pamixer
-      keepass
-      godot_4
-      openssl
+      alacritty
+      amdgpu_top
       ani-cli
+      ansifilter
+      autologin
+      basedpyright
+      bash-language-server
+      bc
+      beamMinimal27Packages.elixir
+      binutils
+      biome
       blender
       bluetui
-      ripgrep
-      ghostty
-      pyright
-      nekoray
-      zathura
-      lazygit
-      xplorer
-      hyprlock
-      nix-tree
+      bluez
+      brightnessctl
+      btop
+      byedpi
+      bzip3
+      cargo
+      cl
+      clang
+      clang-tools
+      clipse
+      cmake
+      copyq
+      cron
+      dart
+      dconf
+      deno
+      dig
+      disko
+      docker-compose
+      docker-compose-language-service
+      dockerfile-language-server-nodejs
+      dotnetCorePackages.sdk_10_0-bin
+      dprint
+      dua
+      dust
+      emmet-language-server
       emmet-ls
-      fish-lsp
-      hyprlang
-      waydroid
-      nix-init
-      starship
-      htmlhint
-      spoofdpi
-      sing-box
-      powertop
-      binutils
-      obsidian
-      hyprshot
-      justbuild
-      autologin
-      git-crypt
-      superhtml
-      tesseract
-      roslyn-ls
-      playerctl
-      moreutils
-      hyprpaper
+      entr
+      eslint
+      et
+      eww
+      eza
       fastfetch
-      memtester
-      hyprutils
-      alacritty
-      hyprpicker
-      hyprcursor
-      obs-studio
-      subversion
-      sing-geoip
-      mongodb-ce
-      powershell
-      pre-commit
-      vscode-fhs
-      amdgpu_top
-      ansifilter
+      fd
+      file
+      fish-lsp
+      flutter
+      fzf
+      gcc
+      gdu
+      ghostty
+      git-crypt
+      glibc
+      glibcLocales
+      glow
+      gnumake
+      gnupg
+      go
+      godot_4
+      goimports-reviser
+      gopls
       gosimports
-      typescript
-      pkg-config
+      grim
+      gtk4
+      helix
+      htmlhint
+      htop
+      hyprcursor
+      hyprlang
+      hyprlock
+      hyprls
+      hyprpaper
+      hyprpicker
+      hyprshot
+      hyprutils
+      imagemagick
+      imv
+      jdk
+      jq
+      justbuild
+      kdePackages.dolphin
+      keepass
+      kitty
+      kotlin
+      kotlin-language-server
       lazydocker
-      xfce.thunar
-      qutebrowser
+      lazygit
+      lf
+      libffi
+      libreoffice-qt6-fresh
+      lua
+      lua-language-server
+      lynx
+      mdcat
+      memtester
+      mongodb-ce
+      moreutils
+      mpv
+      nekoray
+      neovim
+      nh
+      nix-init
+      nix-tree
+      nixd
+      nixdoc
+      nixfmt-rfc-style
+      nnn
+      nordzy-cursor-theme
+      nox
+      nurl
+      nushell
+      obs-studio
+      obsidian
+      openssl
+      oxlint
+      pamixer
+      pandoc
+      pass
+      pavucontrol
+      perl
+      php
+      pkg-config
+      playerctl
+      polkit
+      powershell
+      powertop
+      pre-commit
+      prismlauncher
+      pv
+      pyright
       python12Env
       python13Env
-      imagemagick
-      pavucontrol
-      clang-tools
-      sing-geosite
-      wl-clipboard
-      basedpyright
-      glibcLocales
+      pywal
+      qutebrowser
+      ranger
+      redis
+      ripgrep
       rofi-wayland
-      wl-clipboard
-      prismlauncher
-      brightnessctl
+      roslyn-ls
       rust-analyzer
-      sqlitebrowser
-      smartmontools
+      sass
       sddm-astronaut
-      docker-compose
-      zed-editor-fhs
-      universal-ctags
       silver-searcher
+      sing-box
+      sing-geoip
+      sing-geosite
+      smartmontools
+      spoofdpi
+      sqlite
+      sqlitebrowser
+      sqls
+      starship
+      subversion
+      superhtml
       telegram-desktop
-      nixfmt-rfc-style
-      goimports-reviser
-      nordzy-cursor-theme
-      kdePackages.dolphin
-      lua-language-server
-      vim-language-server
-      yaml-language-server
-      bash-language-server
-      libreoffice-qt6-fresh
-      emmet-language-server
+      tg
+      tesseract
+      tlp
+      tmux
+      tree
+      typescript
       typescript-language-server
-      beamMinimal27Packages.elixir
-      docker-compose-language-service
-      dotnetCorePackages.sdk_10_0-bin
-      dockerfile-language-server-nodejs
+      ueberzug
+      ueberzugpp
+      unciv
+      universal-ctags
+      unzip
+      uv
+      v2ray
+      video-downloader
+      vim-language-server
+      vscode-fhs
+      w3m
+      waydroid
+      wev
+      wget
+      wine
+      wl-clipboard
+      wofi
+      xfce.thunar
+      xplorer
+      xplr
+      xray
+      yaml-language-server
+      ytdownloader
+      zathura
+      zed-editor-fhs
+      zig
+      zip
+      zlib
+      zoxide
     ]);
 }
