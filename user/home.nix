@@ -32,7 +32,6 @@ in
       mpv
       nautilus
       neovim
-      obsidian
       pythonEnv13
       telegram-desktop
       xfce.thunar

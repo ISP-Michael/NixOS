@@ -1,17 +1,9 @@
 {
-  config,
-  ...
-}:
-{
   services.hyprpaper = {
     enable = true;
-    settings =
-      let
-        wallpaper = config.stylix.image;
-      in
-      {
-        preload   = [ "${wallpaper}" ];
-        wallpaper = [ "eDP-1, ${wallpaper}" ];
+    settings = {
+        preload   = [ "../../dependencies/images/pasterChill.png" ];
+        wallpaper = [ "eDP-1, ../../dependencies/images/pasterChill.png" ];
       };
   };
 }

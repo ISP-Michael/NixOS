@@ -1,12 +1,13 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url          = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager?ref=release-25.05";
+      url                    = "github:nix-community/home-manager?ref=release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
-      url = "github:danth/stylix?ref=release-25.05";
+      url                    = "github:danth/stylix?ref=release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -14,12 +15,15 @@
   outputs =
     {
       home-manager,
+      nixpkgs-unstable,
       nixpkgs,
+      self,
       stylix,
       ...
     }@inputs:
     let
-      system = "x86_64-linux";
+      system        = "x86_64-linux";
+      unstable-pkgs = nixpkgs-unstable.legacyPackages.${system};
     in
     {
       nixosConfigurations.MagicBook = nixpkgs.lib.nixosSystem {
@@ -28,13 +32,23 @@
           inherit inputs;
         };
         modules = [
-          ./system/conf.nix 
-          stylix.nixosModules.stylix
-          home-manager.nixosModules.home-manager {
-            home-manager.useGlobalPkgs   = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.Michael   = import ./user/conf.nix;
+          ./system/conf.nix {
+            nixpkgs.overlays = [
+              (final: prev: {
+                networkmanager = unstable-pkgs.networkmanager;
+              })
+            ];
           }
+        ];
+      };
+      homeConfigurations.Michael = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${system};
+        extraSpecialArgs = {
+          inherit inputs;
+        };
+        modules = [
+          "${self}/user/conf.nix"
+          stylix.homeModules.stylix
         ];
       };
     };

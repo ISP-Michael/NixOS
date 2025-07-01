@@ -5,7 +5,7 @@
       enable = true;
     };
     firewall = {
-      enable = true;
+      enable           = true;
       checkReversePath = false;
     };
   };

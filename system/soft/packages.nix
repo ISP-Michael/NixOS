@@ -65,6 +65,7 @@ in
       byedpi
       bzip3
       cargo
+      cachix
       cl
       clang
       clang-tools
@@ -114,6 +115,7 @@ in
       grim
       gtk4
       helix
+      home-manager
       htmlhint
       htop
       hyprcursor
