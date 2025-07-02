@@ -4,11 +4,12 @@
     ./console.nix
     ./hardware-configuration.nix
     ./networking.nix
-    ./options.nix
     ./scripts
-    ./services.nix
+    ./services
+    ./settings
     ./soft
     ./system.nix
-    ./users.nix
+    ./time.nix
+    ./users
   ];
 }

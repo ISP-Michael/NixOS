@@ -20,32 +20,36 @@ let
   };
 in
 {
-  programs.yazi = {
-    enable = true;
-    plugins = with pkgs.yaziPlugins; {
-      chmod        = chmod;
-      piper        = piper;
-      full-border  = full-border;
-      rich-preview = rich-preview;
-      glow         = "${glow-plugin}";
-      office       = "${office-plugin}";
-      eza-preview  = "${eza-preview-plugin}";  # Inside is not main.lua, but init.lua
-    };
-    initLua = ''
-      require('piper')
-      require('office')
-      require('rich-preview')
-      require('chmod')
-      require('glow')
-    '';
-    keymap = {
-      mgr.prepend_keymap = [
-        {
-          on   = [ "c" "m" ];
-          run  = "plugin chmod";
-          desc = "Chmod on selected files";
-        }
-      ];
+  programs = {
+    yazi = {
+      enable = true;
+      plugins = with pkgs.yaziPlugins; {
+        chmod        = chmod;
+        piper        = piper;
+        full-border  = full-border;
+        rich-preview = rich-preview;
+        glow         = "${glow-plugin}";
+        office       = "${office-plugin}";
+        eza-preview  = "${eza-preview-plugin}";    # Inside is not main.lua, but init.lua
+      };
+      initLua = ''
+        require('piper')
+        require('office')
+        require('rich-preview')
+        require('chmod')
+        require('glow')
+      '';
+      keymap = {
+        mgr = {
+          prepend_keymap = [
+            {
+              on   = [ "c" "m" ];
+              run  = "plugin chmod";
+              desc = "Chmod on selected files";
+            }
+          ];
+        };
+      };
     };
   };
   xdg.configFile."yazi/yazi.toml".text = ''

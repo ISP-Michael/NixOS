@@ -1,9 +1,11 @@
 {
-  programs.bat = {
-    enable = true;
-    config = {
-      wrap = "never";
-      theme = "TwoDark";
+  programs = {
+    bat = {
+      enable = true;
+      config = {
+        wrap  = "never";
+        theme = "TwoDark";
+      };
     };
   };
 }

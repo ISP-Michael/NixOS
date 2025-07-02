@@ -1,7 +1,9 @@
 { pkgs, ... }:
 {
-  programs.lutris = {
-    enable = true;
-    winePackages = [ pkgs.wineWow64Packages.full ];
+  programs = {
+    lutris = {
+      enable       = true;
+      winePackages = [ pkgs.wineWow64Packages.full ];
+    };
   };
 }
