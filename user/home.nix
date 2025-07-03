@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  self,
+  ...
+}:
 let
   pythonEnv13 = pkgs.python313.withPackages(
     ps: with ps; [
@@ -38,7 +42,7 @@ in
     ];
     file = {
       ".local/share/fonts/literata" = {
-        source    = ../dependencies/fonts/Literata;
+        source    = "${self}/dependencies/fonts/Literata";
         recursive = true;
       };
     };

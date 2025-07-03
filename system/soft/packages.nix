@@ -5,6 +5,11 @@
 }:
 let
   dprintPkgs = lib.filter (x: lib.isDerivation x) (lib.attrValues pkgs.dprint-plugins);
+  tmuxPkgs = with pkgs.tmuxPlugins; [
+    jump
+    power-theme
+    tmux-fzf
+  ];
   nodePkgs = with pkgs.nodePackages_latest; [
     browser-sync
     live-server
@@ -44,6 +49,7 @@ in
   environment.systemPackages =
     nodePkgs ++
     dprintPkgs ++
+    tmuxPkgs ++
     (with pkgs; [
       acpi
       alacritty

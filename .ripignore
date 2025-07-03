@@ -1,3 +1,2 @@
-flake.nix
 flake.lock
-dependencies/
+dependencies/*

@@ -1,5 +1,6 @@
+{ self, ... }:
 {
   stylix = {
-    image = ../../dependencies/images/CatpuccinLake.png;
+    image = "${self}/dependencies/images/CatpuccinLake.png";
   };
 }

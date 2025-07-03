@@ -2,8 +2,8 @@
   imports = [
     ./fonts.nix
     ./nixpkgs.nix
-    ./programs.nix
     ./packages.nix
+    ./programs
     ./virtualization.nix
   ];
 }

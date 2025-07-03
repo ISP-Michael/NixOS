@@ -1,12 +1,12 @@
 {
   imports = [
-    ./fish
-    ./waybar
-    ./bat.nix
-    ./git.nix
     ./bash.nix
-    ./yazi.nix
+    ./bat.nix
+    ./fish
+    ./git.nix
     ./helix.nix
     ./lutris.nix
+    ./waybar
+    ./yazi.nix
   ];
 }
