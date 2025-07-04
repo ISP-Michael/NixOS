@@ -8,12 +8,12 @@
     yazi = {
       enable = true;
       plugins = {
-        chmod        = pkgs.chmod;
-        full-border  = pkgs.full-border;
+        chmod        = pkgs.yaziPlugins.chmod;
+        full-border  = pkgs.yaziPlugins.full-border;
         glow         = inputs.glow;
         office       = inputs.office;
-        piper        = pkgs.piper;
-        rich-preview = pkgs.rich-preview;
+        piper        = pkgs.yaziPlugins.piper;
+        rich-preview = pkgs.yaziPlugins.rich-preview;
       };
     };
   };

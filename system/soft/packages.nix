@@ -130,6 +130,7 @@ in
       hyprls
       hyprpaper
       hyprpicker
+      hyprpolkitagent
       hyprshot
       hyprutils
       imagemagick

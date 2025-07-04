@@ -3,38 +3,37 @@
     nixpkgs.url          = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     hyprland.url         = "github:hyprwm/Hyprland";
+
     home-manager = {
-      url                    = "github:nix-community/home-manager?ref=release-25.05";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager?ref=release-25.05";
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
     };
+
     stylix = {
-      url                    = "github:danth/stylix?ref=release-25.05";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:danth/stylix?ref=release-25.05";
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
     };
-    fisher = {
-      url   = "github:jorgebucaran/fisher/main";
-      flake = false;
-    };
-    autopair = {
-      url   = "github:jorgebucaran/autopair.fish/main";
-      flake = false;
-    };
-    done = {
-      url   = "github:franciscolourenco/done/master";
-      flake = false;
-    };
-    fzf = {
-      url   = "github:PatrickF1/fzf.fish/main";
-      flake = false;
-    };
-    office = {
-      url   = "github:macydnah/office.yazi/main";
-      flake = false;
-    };
-    glow = {
-      url   = "github:Reledia/glow.yazi/main";
-      flake = false;
-    };
+
+    fisher.url     = "github:jorgebucaran/fisher/main";
+    autopair.url   = "github:jorgebucaran/autopair.fish/main";
+    done.url       = "github:franciscolourenco/done/master";
+    fzf.url        = "github:PatrickF1/fzf.fish/main";
+    office.url     = "github:macydnah/office.yazi/main";
+    glow.url       = "github:Reledia/glow.yazi/main";
+    fisher.flake   = false;
+    autopair.flake = false;
+    done.flake     = false;
+    fzf.flake      = false;
+    office.flake   = false;
+    glow.flake     = false;
   };
 
   outputs =
@@ -54,7 +53,6 @@
     in
     {
       nixosConfigurations.MagicBook = nixpkgs.lib.nixosSystem {
-        inherit system;
         specialArgs = {
           inherit inputs self;
         };
