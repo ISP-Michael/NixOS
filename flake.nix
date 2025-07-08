@@ -12,7 +12,7 @@
         };
       };
     };
-
+    
     stylix = {
       url = "github:danth/stylix?ref=release-25.05";
       inputs = {
@@ -22,12 +22,13 @@
       };
     };
 
-    fisher.url     = "github:jorgebucaran/fisher/main";
-    autopair.url   = "github:jorgebucaran/autopair.fish/main";
-    done.url       = "github:franciscolourenco/done/master";
-    fzf.url        = "github:PatrickF1/fzf.fish/main";
-    office.url     = "github:macydnah/office.yazi/main";
-    glow.url       = "github:Reledia/glow.yazi/main";
+    fisher.url   = "github:jorgebucaran/fisher/main";
+    autopair.url = "github:jorgebucaran/autopair.fish/main";
+    done.url     = "github:franciscolourenco/done/master";
+    fzf.url      = "github:PatrickF1/fzf.fish/main";
+    office.url   = "github:macydnah/office.yazi/main";
+    glow.url     = "github:Reledia/glow.yazi/main";
+
     fisher.flake   = false;
     autopair.flake = false;
     done.flake     = false;
@@ -60,6 +61,7 @@
           ./system/configuration.nix {
             nixpkgs.overlays = [
               (final: prev: {
+                neovim                      = unstable-pkgs.neovim;
                 networkmanager              = unstable-pkgs.networkmanager;
                 hyprland                    = hyprland-pkgs.hyprland;
                 xdg-desktop-portal-hyprland = hyprland-pkgs.xdg-desktop-portal-hyprland;
@@ -74,7 +76,13 @@
           inherit inputs self;
         };
         modules = [
-          ./user/standalone.nix
+          ./user/standalone.nix {
+            nixpkgs.overlays = [
+              (final: prev: {
+                nh = unstable-pkgs.nh;
+              })
+            ];
+          }
           stylix.homeModules.stylix
         ];
       };

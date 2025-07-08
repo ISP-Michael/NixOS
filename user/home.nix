@@ -21,13 +21,13 @@ let
 in
 {
   home = {
-    username      = "Michael";
-    stateVersion  = "25.05";
+    username = "Michael";
+    stateVersion = "25.05";
     homeDirectory = "/home/Michael";
     sessionVariables = {
-      EDITOR                               = "nvim";
-      NIXOS_OZONE_WL                       = "1";
-      KDE_NO_OPENGL_WINDOW_DECORATION      = "1";
+      EDITOR = "nvim";
+      NIXOS_OZONE_WL = "1";
+      KDE_NO_OPENGL_WINDOW_DECORATION = "1";
       QT_WAYLAND_DISABLE_WINDOW_DECORATION = "1";
     };
     packages = with pkgs; [
@@ -42,7 +42,7 @@ in
     ];
     file = {
       ".local/share/fonts/literata" = {
-        source    = "${self}/dependencies/fonts/Literata";
+        source = "${self}/dependencies/fonts/Literata";
         recursive = true;
       };
     };

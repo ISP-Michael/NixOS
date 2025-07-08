@@ -6,6 +6,7 @@
     ./git.nix
     ./helix.nix
     ./lutris.nix
+    ./nh
     ./waybar
     ./yazi.nix
   ];

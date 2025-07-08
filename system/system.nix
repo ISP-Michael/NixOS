@@ -1,12 +1,10 @@
 {
-  zramSwap.enable = true;
-  system = {
-    stateVersion = "25.05";
-  };
+  zramSwap.enable     = true;
+  system.stateVersion = "25.05";
   swapDevices = [
     {
-      size = 2 * 1024;
-      device = "/swapfile";
+      size                    = 2 * 1024;
+      device                  = "/swapfile";
       randomEncryption.enable = true;
     }
   ];

@@ -11,6 +11,7 @@
         set -gx kitty ~/.config/kitty/kitty.conf
         set -gx nixos /etc/nixos
         set -gx nvim ~/.config/nvim/init.vim
+        set -gx fish_greeting ""
         zoxide init fish | source
       '';
     };

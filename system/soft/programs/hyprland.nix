@@ -1,11 +1,10 @@
-{ pkgs, ... }:
 {
   programs = {
-    hyprland = with pkgs; {
-      enable          = true;
-      xwayland.enable = true;
-      package         = hyprland;
-      portalPackage   = xdg-desktop-portal-hyprland;
+    hyprland = {
+      enable = true;
+      xwayland = {
+        enable = true;
+      };
     };
   };
 }

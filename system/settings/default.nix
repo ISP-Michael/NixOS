@@ -2,7 +2,7 @@
   imports = [
     ./cache.nix
     ./experimental-featuers.nix
-    ./gc.nix
+    # ./gc.nix
     ./settings.nix
   ];
 }

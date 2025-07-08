@@ -47,8 +47,8 @@ let
 in
 {
   environment.systemPackages =
-    nodePkgs ++
     dprintPkgs ++
+    nodePkgs ++
     tmuxPkgs ++
     (with pkgs; [
       acpi
@@ -158,11 +158,12 @@ in
       mpv
       nekoray
       neovim
-      nh
+      nixpkgs-fmt
       nix-init
       nix-tree
       nixd
       nixdoc
+      nixos-rebuild-ng
       nixfmt-rfc-style
       nnn
       nordzy-cursor-theme
@@ -190,6 +191,7 @@ in
       pyright
       python12Env
       python13Env
+      python314
       pywal
       qutebrowser
       ranger

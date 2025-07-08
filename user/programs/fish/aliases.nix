@@ -24,8 +24,8 @@
         ndw          = "nmcli device wifi";
         py           = "python";
         r            = "reset";
-        rebuild      = "ga /etc/nixos && sudo nixos-rebuild switch --flake /etc/nixos";
-        rebuild_boot = "ga /etc/nixos && sudo nixos-rebuild boot --flake /etc/nixos";
+        rebuild      = "ga /etc/nixos && nixos-rebuild switch --use-remote-sudo --flake /etc/nixos";
+        rebuild-boot = "ga /etc/nixos && nixos-rebuild boot --use-remote-sudo --flake /etc/nixos";
         rgi          = "rg -i";
         update       = "sudo nix flake update --flake /etc/nixos";
       };
