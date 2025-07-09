@@ -27,7 +27,7 @@
         rebuild      = "ga /etc/nixos && nixos-rebuild switch --use-remote-sudo --flake /etc/nixos";
         rebuild-boot = "ga /etc/nixos && nixos-rebuild boot --use-remote-sudo --flake /etc/nixos";
         rgi          = "rg -i";
-        update       = "sudo nix flake update --flake /etc/nixos";
+        update       = "nix flake update --flake /etc/nixos";
       };
     };
   };
