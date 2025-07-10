@@ -8,7 +8,7 @@
     ./services
     ./settings
     ./soft
-    ./system.nix
+    ./system
     ./time.nix
     ./users
   ];

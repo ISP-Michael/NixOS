@@ -22,14 +22,12 @@
       };
     };
 
-    fisher.url   = "github:jorgebucaran/fisher/main";
     autopair.url = "github:jorgebucaran/autopair.fish/main";
     done.url     = "github:franciscolourenco/done/master";
     fzf.url      = "github:PatrickF1/fzf.fish/main";
     office.url   = "github:macydnah/office.yazi/main";
     glow.url     = "github:Reledia/glow.yazi/main";
 
-    fisher.flake   = false;
     autopair.flake = false;
     done.flake     = false;
     fzf.flake      = false;
@@ -58,7 +56,7 @@
           inherit inputs self;
         };
         modules = [
-          ./system/configuration.nix {
+          ./host/configuration.nix {
             nixpkgs.overlays = [
               (final: prev: {
                 neovim                      = unstable-pkgs.neovim;
@@ -79,7 +77,8 @@
           ./user/standalone.nix {
             nixpkgs.overlays = [
               (final: prev: {
-                nh = unstable-pkgs.nh;
+                nh     = unstable-pkgs.nh;
+                waybar = unstable-pkgs.waybar;
               })
             ];
           }

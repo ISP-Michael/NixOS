@@ -72,6 +72,7 @@ in
       bzip3
       cargo
       cachix
+      chromium
       cl
       clang
       clang-tools
