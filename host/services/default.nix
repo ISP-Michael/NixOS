@@ -2,7 +2,7 @@
   imports = [
     ./mysql.nix
     ./pipewire.nix
-    ./kmscon.nix
+    # ./kmscon.nix
     ./services.nix
   ];
 }
