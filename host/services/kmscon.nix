@@ -3,10 +3,12 @@
   services = {
     kmscon = {
       enable = true;
-      fonts.fira = {
-        name = "FiraCodeRoman-Regular";
-        src  = pkgs.nerd-fonts.fira-code;
-      };
+      fonts = [
+        {
+          name    = "FiraCodeRoman-Regular";
+          package = pkgs.nerd-fonts.fira-code;
+        }
+      ];
     };
   };
 }
