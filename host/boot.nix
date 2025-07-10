@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  config,
+  ...
+}:
 {
   boot = {
     kernelPackages = pkgs.linuxPackages_zen;
@@ -11,6 +15,12 @@
     };
     kernelParams = [
       "nvme_core.default_ps_max_latency_us=0"
+    ];
+    kernelModules = [
+      "zenergy"
+    ];
+    extraModulePackages = [
+      config.boot.kernelPackages.zenergy
     ];
   };
 }

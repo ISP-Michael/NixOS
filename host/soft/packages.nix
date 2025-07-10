@@ -151,6 +151,7 @@ in
       libreoffice-qt6-fresh
       lua
       lua-language-server
+      lm_sensors
       lynx
       mdcat
       memtester
@@ -185,7 +186,6 @@ in
       playerctl
       polkit
       powershell
-      powertop
       pre-commit
       prismlauncher
       pv
@@ -201,6 +201,7 @@ in
       rofi-wayland
       roslyn-ls
       rust-analyzer
+      ryzenadj
       sass
       sddm-astronaut
       silver-searcher
