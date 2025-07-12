@@ -80,6 +80,7 @@ in
       cmake
       copyq
       cron
+      csharp-ls
       dart
       dconf
       deno
@@ -192,7 +193,6 @@ in
       pyright
       python12Env
       python13Env
-      python314
       pywal
       qutebrowser
       ranger

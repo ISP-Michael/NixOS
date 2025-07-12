@@ -12,7 +12,7 @@
         };
       };
     };
-    
+
     stylix = {
       url = "github:danth/stylix?ref=release-25.05";
       inputs = {
@@ -56,13 +56,15 @@
           inherit inputs self;
         };
         modules = [
-          ./host/configuration.nix {
+          ./host/configuration.nix
+          {
             nixpkgs.overlays = [
               (final: prev: {
                 neovim                      = unstable-pkgs.neovim;
                 networkmanager              = unstable-pkgs.networkmanager;
                 hyprland                    = hyprland-pkgs.hyprland;
                 xdg-desktop-portal-hyprland = hyprland-pkgs.xdg-desktop-portal-hyprland;
+                csharp_ls                   = unstable-pkgs.csharp_ls;
               })
             ];
           }
@@ -74,7 +76,8 @@
           inherit inputs self;
         };
         modules = [
-          ./user/standalone.nix {
+          ./user/standalone.nix
+          {
             nixpkgs.overlays = [
               (final: prev: {
                 nh     = unstable-pkgs.nh;
