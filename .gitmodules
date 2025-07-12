@@ -1,0 +1,6 @@
+[submodule "dependencies/n"]
+  path = dependencies/n
+  url  = git@github.com:ISP-Michael/Neovim.git
+[submodule "dependencies/hypr"]
+  path = dependencies/hypr
+  url  = git@github.com:ISP-Michael/Hyprland.git
