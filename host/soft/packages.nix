@@ -20,6 +20,7 @@ let
     ps: with ps; [
       cython
       django
+      grip
       fastapi
       fastapi-cli
       nox
@@ -34,6 +35,7 @@ let
     ps: with ps; [
       cython
       django
+      grip
       fastapi
       fastapi-cli
       nox
