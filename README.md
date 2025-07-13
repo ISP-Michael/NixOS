@@ -27,6 +27,7 @@ home-manager switch --flake 'github:ISP-Michael/NixOS#Michael'
     - [🐚 fish](user/programs/fish) — aliases, functions, plugins
     - [🪛 nh](user/programs/nh) — NixOS management utility
     - [💭 waybar](user/programs/waybar) — bar
+    - [🐱 kitty](user/programs/kitty) — terminal emulator
   - [💬 services](user/services) — settings up services such as hyprpaper, mako (notifications)
   - [🎨 stylix](user/services) — theme managemant utility
 - [🧩 dependencies](dependencies) — dependent files
