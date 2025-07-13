@@ -43,7 +43,7 @@ home-manager switch --flake 'github:ISP-Michael/NixOS#Michael'
 > I prefer fast dynamic configuration, which is impossible by implementing it through regular rebuild of home-manager after each change
 
 ## ✨ Desktop Preview
-<b>Hyprland & Fastfetch</b>
+<b>Hyprland</b>
 ![ff.png](./dependencies/images/fastfetch.png)
 <b>Neovim</b>
 ![n.png](./dependencies/images/n.png)
