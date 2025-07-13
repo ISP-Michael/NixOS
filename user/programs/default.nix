@@ -8,6 +8,7 @@
     ./helix.nix
     ./lutris.nix
     ./nh
+    ./kitty
     ./waybar
     ./yazi.nix
   ];
