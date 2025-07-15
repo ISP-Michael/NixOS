@@ -18,6 +18,8 @@
         gpll         = "git pull";
         gpsh         = "git push";
         gs           = "git status";
+        gsb          = "git submodule";
+        gsh          = "git stash";
         home-rebuild = "ga . && home-manager switch --flake /etc/nixos";
         hyprshot     = "hyprshot -o ~/Images/screenshots";
         n            = "nvim";
