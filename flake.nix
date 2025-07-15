@@ -82,6 +82,7 @@
               (final: prev: {
                 nh     = unstable-pkgs.nh;
                 waybar = unstable-pkgs.waybar;
+                kanata = unstable-pkgs.kanata;
               })
             ];
           }
