@@ -147,6 +147,7 @@ in
       kitty
       kotlin
       kotlin-language-server
+      kmonad
       lazydocker
       lazygit
       lf
