@@ -20,6 +20,7 @@
         gs           = "git status";
         gsb          = "git submodule";
         gsh          = "git stash";
+        gsw          = "git swtich";
         home-rebuild = "ga . && home-manager switch --flake /etc/nixos";
         hyprshot     = "hyprshot -o ~/Images/screenshots";
         n            = "nvim";
