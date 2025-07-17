@@ -1,11 +1,9 @@
-{ pkgs, ... }:
 {
   programs = {
     kitty = {
       font = {
-        package = pkgs.nerd-fonts.ubuntu-mono;
-        name    = "FiraCodeRoman-Regular";
-        size    = 12;
+        name = "UbuntuMono Nerd Font";
+        size = 13.5;
       };
     };
   };

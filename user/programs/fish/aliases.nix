@@ -15,6 +15,9 @@
         gci          = "git commit -m";
         gco          = "git checkout";
         gl           = "git log";
+        grv          = "git revert";
+        grs          = "git reset";
+        grm          = "git remote";
         gpll         = "git pull";
         gpsh         = "git push";
         gs           = "git status";
