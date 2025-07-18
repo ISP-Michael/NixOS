@@ -3,7 +3,7 @@
     kitty = {
       font = {
         name = "UbuntuMono Nerd Font";
-        size = 13.5;
+        size = 13;
       };
     };
   };

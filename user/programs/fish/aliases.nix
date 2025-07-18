@@ -15,6 +15,7 @@
         gci          = "git commit -m";
         gco          = "git checkout";
         gl           = "git log";
+        grl          = "git reflog";
         grv          = "git revert";
         grs          = "git reset";
         grm          = "git remote";
@@ -23,7 +24,7 @@
         gs           = "git status";
         gsb          = "git submodule";
         gsh          = "git stash";
-        gsw          = "git swtich";
+        gsw          = "git switch";
         home-rebuild = "ga . && home-manager switch --flake /etc/nixos";
         hyprshot     = "hyprshot -o ~/Images/screenshots";
         n            = "nvim";

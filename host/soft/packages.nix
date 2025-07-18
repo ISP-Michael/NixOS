@@ -104,6 +104,7 @@ in
       eza
       fastfetch
       fd
+      fontforge
       file
       fish-lsp
       flutter
