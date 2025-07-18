@@ -15,6 +15,7 @@
         gci          = "git commit -m";
         gco          = "git checkout";
         gcl          = "git clone";
+        gd           = "git diff";
         gl           = "git log";
         grb          = "git rebase";
         grl          = "git reflog";
