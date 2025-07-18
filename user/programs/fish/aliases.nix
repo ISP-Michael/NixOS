@@ -14,6 +14,7 @@
         gb           = "git branch";
         gci          = "git commit -m";
         gco          = "git checkout";
+        gcl          = "git clone";
         gl           = "git log";
         grl          = "git reflog";
         grv          = "git revert";
@@ -25,6 +26,7 @@
         gsb          = "git submodule";
         gsh          = "git stash";
         gsw          = "git switch";
+        gf           = "git fetch";
         home-rebuild = "ga . && home-manager switch --flake /etc/nixos";
         hyprshot     = "hyprshot -o ~/Images/screenshots";
         n            = "nvim";
