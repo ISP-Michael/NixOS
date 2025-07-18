@@ -16,6 +16,7 @@
         gco          = "git checkout";
         gcl          = "git clone";
         gl           = "git log";
+        grb          = "git rebase";
         grl          = "git reflog";
         grv          = "git revert";
         grs          = "git reset";
@@ -26,6 +27,7 @@
         gsb          = "git submodule";
         gsh          = "git stash";
         gsw          = "git switch";
+        gm           = "git merge";
         gf           = "git fetch";
         home-rebuild = "ga . && home-manager switch --flake /etc/nixos";
         hyprshot     = "hyprshot -o ~/Images/screenshots";
