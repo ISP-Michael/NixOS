@@ -4,6 +4,15 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     hyprland.url         = "github:hyprwm/Hyprland";
 
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs = {
+        hyprland = {
+          follows = "hyprland";
+        };
+      };
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager?ref=release-25.05";
       inputs = {

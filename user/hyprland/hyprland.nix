@@ -1,11 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
   wayland.windowManager.hyprland = {
     enable = true;
-    plugins = with pkgs.hyprlandPlugins; [
-      hypr-dynamic-cursors
-      hyprtrails
-      hyprbars
+    plugins = [
+      inputs.hyprland-plugins.packages.${pkgs.system}.hyprfocus
     ];
   };
 }
