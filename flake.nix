@@ -74,6 +74,7 @@
                 hyprland                    = hyprland-pkgs.hyprland;
                 xdg-desktop-portal-hyprland = hyprland-pkgs.xdg-desktop-portal-hyprland;
                 csharp_ls                   = unstable-pkgs.csharp_ls;
+                obs-studio                  = unstable-pkgs.obs-studio;
               })
             ];
           }
