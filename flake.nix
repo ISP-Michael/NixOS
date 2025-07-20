@@ -13,6 +13,15 @@
       };
     };
 
+    hypr-dynamic-cursors = {
+      url = "github:VirtCode/hypr-dynamic-cursors";
+      inputs = {
+        hyprland = {
+          follows = "hyprland";
+        };
+      };
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager?ref=release-25.05";
       inputs = {

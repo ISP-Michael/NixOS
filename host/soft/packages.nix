@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  inputs,
   ...
 }:
 let
@@ -140,6 +141,7 @@ in
       hyprutils
       imagemagick
       imv
+      inputs.hypr-dynamic-cursors.packages.${pkgs.system}.hypr-dynamic-cursors
       jdk
       jq
       justbuild
