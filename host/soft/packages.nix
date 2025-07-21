@@ -142,6 +142,7 @@ in
       imagemagick
       imv
       inputs.hypr-dynamic-cursors.packages.${pkgs.system}.hypr-dynamic-cursors
+      inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.quickshell
       jdk
       jq
       justbuild
