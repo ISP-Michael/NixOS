@@ -73,6 +73,7 @@ in
       bluez
       brightnessctl
       btop
+      black
       byedpi
       bzip3
       cargo
@@ -145,6 +146,7 @@ in
       imv
       inputs.hypr-dynamic-cursors.packages.${pkgs.system}.hypr-dynamic-cursors
       inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.quickshell
+      isort
       jdk
       jq
       justbuild
