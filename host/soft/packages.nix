@@ -20,6 +20,7 @@ let
   python12Env = pkgs.python312.withPackages (
     ps: with ps; [
       cython
+      debugpy
       django
       grip
       fastapi
@@ -35,6 +36,7 @@ let
   python13Env = pkgs.python313.withPackages (
     ps: with ps; [
       cython
+      debugpy
       django
       grip
       fastapi

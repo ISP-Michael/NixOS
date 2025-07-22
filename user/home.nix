@@ -7,6 +7,7 @@ let
   pythonEnv13 = pkgs.python313.withPackages(
     ps: with ps; [
       cython
+      debugpy
       django
       fastapi
       fastapi-cli
