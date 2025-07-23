@@ -58,6 +58,7 @@ in
     (with pkgs; [
       acpi
       alacritty
+      alejandra
       amdgpu_top
       ani-cli
       ansifilter
@@ -109,6 +110,7 @@ in
       fastfetch
       fd
       fontforge
+      fontforge-gtk
       file
       fish-lsp
       flutter

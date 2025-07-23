@@ -78,12 +78,14 @@
           {
             nixpkgs.overlays = [
               (final: prev: {
+                acpi                        = unstable-pkgs.acpi;
                 neovim                      = unstable-pkgs.neovim;
                 networkmanager              = unstable-pkgs.networkmanager;
                 hyprland                    = hyprland-pkgs.hyprland;
                 xdg-desktop-portal-hyprland = hyprland-pkgs.xdg-desktop-portal-hyprland;
                 csharp_ls                   = unstable-pkgs.csharp_ls;
                 obs-studio                  = unstable-pkgs.obs-studio;
+                brightnessctl               = unstable-pkgs.brightnessctl;
               })
             ];
           }
