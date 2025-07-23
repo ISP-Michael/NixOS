@@ -96,7 +96,7 @@ in
       docker-compose
       docker-compose-language-service
       dockerfile-language-server-nodejs
-      dotnetCorePackages.sdk_10_0-bin
+      dotnetCorePackages.sdk_9_0-bin
       dprint
       dua
       dust

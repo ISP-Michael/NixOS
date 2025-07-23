@@ -5,7 +5,7 @@
         bat_h-l      = "bat --highlight-line 0:";
         bnc          = "brightnessctl";
         delete-shots = "find ~/Images/screenshots -maxdepth 1 -type f -name '*.png' -delete";
-        dll          = "dotnet bin/Debug/net10.0/*.dll";
+        dll          = "dotnet bin/Debug/net*/*.dll";
         dn           = "dotnet";
         ff           = "fastfetch --logo ~/Images/patterns_2.png";
         fucking      = "sudo";
