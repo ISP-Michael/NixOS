@@ -74,7 +74,6 @@
           inherit inputs self;
         };
         modules = [
-          ./host/configuration.nix
           {
             nixpkgs.overlays = [
               (final: prev: {
@@ -89,6 +88,7 @@
               })
             ];
           }
+          ./host/configuration.nix
         ];
       };
       homeConfigurations.Michael = home-manager.lib.homeManagerConfiguration {
@@ -97,7 +97,6 @@
           inherit inputs self;
         };
         modules = [
-          ./user/standalone.nix
           {
             nixpkgs.overlays = [
               (final: prev: {
@@ -107,6 +106,7 @@
               })
             ];
           }
+          ./user/standalone.nix
           stylix.homeModules.stylix
         ];
       };

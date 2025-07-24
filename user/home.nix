@@ -11,6 +11,7 @@ let
       django
       fastapi
       fastapi-cli
+      fontforge
       nox
       nuitka
       numpy

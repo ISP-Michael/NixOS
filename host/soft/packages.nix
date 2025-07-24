@@ -25,6 +25,7 @@ let
       grip
       fastapi
       fastapi-cli
+      fontforge
       nox
       nuitka
       numpy
@@ -41,6 +42,7 @@ let
       grip
       fastapi
       fastapi-cli
+      fontforge
       nox
       nuitka
       numpy
