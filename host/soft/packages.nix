@@ -165,6 +165,7 @@ in
       lf
       libffi
       libreoffice-qt6-fresh
+      libnotify
       lua
       lua-language-server
       lm_sensors
