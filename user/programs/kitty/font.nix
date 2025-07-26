@@ -2,8 +2,8 @@
   programs = {
     kitty = {
       font = {
-        name = "UbuntuMono Nerd Font";
-        size = 13.5;
+        name = "FiraCodeRoman-Regular";
+        size = 12;
       };
     };
   };

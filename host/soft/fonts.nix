@@ -15,6 +15,7 @@ let
     ubuntu-mono
     ubuntu-sans
     victor-mono
+    hack
   ];
 in
 {
@@ -33,6 +34,7 @@ in
         noto-fonts-emoji
         source-code-pro
         texlivePackages.alegreya
+        hackgen-font
       ]);
   };
 }
