@@ -1,0 +1,95 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": {
+    "source": "/home/Michael/Images/nixos-logo.png",
+    "width": 34,
+    "height": 17,
+    "padding": {
+        "top": 1,
+        "left": 3
+    }
+  },
+  "modules": [
+    "break",
+    "break",
+    "break",
+    "break",
+    {
+      "type": "custom",
+      "format": "╭──────────────────────────────────────────────────"
+    },
+    {
+      "type": "os",
+      "format": "│   {name} {version}",
+      "key": " ",
+      "keyWidth": 0
+    },
+    {
+      "type": "kernel",
+      "format": "│ 󰹻  {release}",
+      "key": " ",
+      "keyWidth": 0
+    },
+    {
+      "type": "packages",
+      "format": "│   {nix-system} (nix-system)",
+      "key": " ",
+      "keyWidth": 0
+    },
+    {
+      "type": "shell",
+      "format": "│   {} {version}",
+      "key": " ",
+      "keyWidth": 0
+    },
+    {
+      "type": "display",
+      "format": "│ 󰍹  ({name}) {scaled-width}x{scaled-height} @ {refresh-rate} Hz in {inch}` [{type}]",
+      "key": " ",
+      "keyWidth": 0
+    },
+    {
+      "type": "wm",
+      "format": "│   {} (Wayland)",
+      "key": " ",
+      "keyWidth": 0
+    },
+    {
+      "type": "terminal",
+      "format": "│   kitty {version}",
+      "key": " ",
+      "keyWidth": 0
+    },
+    {
+      "type": "cpu",
+      "format": "│   {name} ({cores-logical}) @ {freq-max}",
+      "key": " ",
+      "keyWidth": 0
+    },
+    {
+      "type": "gpu",
+      "format": "│   {name} [{type}]",
+      "key": " ",
+      "keyWidth": 0
+    },
+    {
+      "type": "disk",
+      "format": "│   (/) {size-used} / {size-total} - {filesystem}",
+      "key": " ",
+      "keyWidth": 0
+    },
+    {
+      "type": "localip",
+      "format": "│ 󰩟  {}",
+      "key": " ",
+      "keyWidth": 0
+    },
+    {
+      "type": "custom",
+      "format": "╰──────────────────────────────────────────────────"
+    },
+    "break",
+    "break",
+    "break"
+  ]
+}
