@@ -9,7 +9,7 @@
     ./lutris.nix
     ./nh
     ./kitty
-    ./waybar
+    # ./waybar
     ./yazi.nix
   ];
 }

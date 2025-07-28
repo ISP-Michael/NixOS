@@ -25,12 +25,10 @@ in
 {
   programs = {
     kitty = {
-      settings = lib.listToAttrs (
-        lib.imap1 (i: color: {
-          name  = "color${toString (i - 1)}";
-          value = color;
-        }) colors
-      );
+      settings = lib.imap0 (i: color: {
+        name  = let j = toString i; in "color${j}";
+        value = color;
+      }) colors |> lib.listToAttrs;
     };
   };
 }

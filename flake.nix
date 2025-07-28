@@ -71,7 +71,11 @@
     {
       nixosConfigurations.MagicBook = nixpkgs.lib.nixosSystem {
         specialArgs = {
-          inherit inputs self;
+          inherit
+            inputs
+            self
+            unstable-pkgs
+            ;
         };
         modules = [
           {
@@ -94,7 +98,11 @@
       homeConfigurations.Michael = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${system};
         extraSpecialArgs = {
-          inherit inputs self;
+          inherit
+          inputs
+            self
+            unstable-pkgs
+            ;
         };
         modules = [
           {

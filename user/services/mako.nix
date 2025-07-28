@@ -3,6 +3,7 @@
     mako = {
       enable = true;
       settings = {
+        anchor           = "top-left";
         border-size      = 0;
         border-radius    = 12;
         margin           = "10";
