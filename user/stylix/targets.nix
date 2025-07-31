@@ -1,7 +1,10 @@
 {
   stylix = {
     targets = {
-      firefox.enable            = true;
+      firefox = {
+        enable       = true;
+        profileNames = [ "profile" ];
+      };
       gtk.enable                = true;
       hyprland.enable           = true;
       hyprland.hyprpaper.enable = true;

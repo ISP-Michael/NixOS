@@ -1,6 +1,12 @@
 {
   inputs = {
-    nixpkgs.url          = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs = {
+      owner = "NixOS";
+      repo  = "nixpkgs";
+      rev   = "3ff0e34b1383648053bba8ed03f201d3466f90c9";
+      type  = "github";
+    };
+
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     hyprland.url         = "github:hyprwm/Hyprland";
 

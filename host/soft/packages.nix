@@ -155,7 +155,9 @@ in
       jq
       justbuild
       kdePackages.dolphin
+      kdePackages.qtdeclarative
       keepass
+      keyd
       kitty
       kotlin
       kotlin-language-server
@@ -256,6 +258,7 @@ in
       wget
       wine
       wl-clipboard
+      wtype
       wofi
       xfce.thunar
       xplorer

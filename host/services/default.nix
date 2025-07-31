@@ -4,5 +4,6 @@
     ./pipewire.nix
     # ./kmscon.nix
     ./services.nix
+    ./keyd.nix
   ];
 }

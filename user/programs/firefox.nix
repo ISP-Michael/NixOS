@@ -3,7 +3,11 @@
     firefox = {
       enable  = true;
       profiles = {
-        profile = {};
+        profile = {
+          extensions = {
+            force = true;
+          };
+        };
       };
     };
   };

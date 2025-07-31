@@ -1,0 +1,7 @@
+{
+  services = {
+    keyd = {
+      enable = true;
+    };
+  };
+}
