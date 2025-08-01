@@ -1,14 +1,22 @@
 {
   inputs = {
-    nixpkgs = {
-      owner = "NixOS";
-      repo  = "nixpkgs";
-      rev   = "3ff0e34b1383648053bba8ed03f201d3466f90c9";
-      type  = "github";
-    };
+    nixpkgs.owner = "NixOS";
+    nixpkgs.repo  = "nixpkgs";
+    nixpkgs.rev   = "3ff0e34b1383648053bba8ed03f201d3466f90c9";
+    nixpkgs.type  = "github";
 
+    nixpkgs-25_05.url    = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     hyprland.url         = "github:hyprwm/Hyprland";
+
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
+    };
 
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -64,6 +72,7 @@
       home-manager,
       hyprland,
       nixpkgs-unstable,
+      nixpkgs-25_05,
       nixpkgs,
       self,
       stylix,
@@ -72,6 +81,7 @@
     let
       system        = "x86_64-linux";
       unstable-pkgs = nixpkgs-unstable.legacyPackages.${system};
+      _05-pkgs      = nixpkgs-25_05.legacyPackages.${system};
       hyprland-pkgs = hyprland.packages.${system};
     in
     {
@@ -81,6 +91,7 @@
             inputs
             self
             unstable-pkgs
+            _05-pkgs
             ;
         };
         modules = [
@@ -108,6 +119,7 @@
           inputs
             self
             unstable-pkgs
+            _05-pkgs
             ;
         };
         modules = [

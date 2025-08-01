@@ -1,11 +1,12 @@
 {
   pkgs,
+  _05-pkgs,
   config,
   ...
 }:
 {
   boot = {
-    kernelPackages = pkgs.linuxPackages_6_14;
+    kernelPackages = _05-pkgs.linuxPackages_6_1;
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot = {
