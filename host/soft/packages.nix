@@ -116,6 +116,7 @@ in
       file
       fish-lsp
       flutter
+      ffmpeg
       fzf
       gcc
       gdu
@@ -138,6 +139,7 @@ in
       htmlhint
       htop
       hyprcursor
+      hypridle
       hyprlang
       hyprlock
       hyprls
@@ -177,6 +179,7 @@ in
       mongodb-ce
       moreutils
       mpv
+      mpvpaper
       nekoray
       neovim
       nixpkgs-fmt

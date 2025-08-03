@@ -6,7 +6,7 @@
 }:
 {
   boot = {
-    kernelPackages = _05-pkgs.linuxPackages_6_1;
+    kernelPackages = pkgs.linuxPackages_6_14;
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot = {
