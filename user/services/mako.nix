@@ -3,8 +3,7 @@
     mako = {
       enable = true;
       settings = {
-        anchor           = "top-left";
-        layer            = "overlay";
+        anchor           = "top-right";
         border-size      = 0;
         border-radius    = 12;
         margin           = "10";

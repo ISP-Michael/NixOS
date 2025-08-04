@@ -102,6 +102,7 @@ in
       dprint
       dua
       dust
+      evtest
       emmet-language-server
       emmet-ls
       entr
