@@ -118,6 +118,7 @@ in
       fish-lsp
       flutter
       ffmpeg
+      fuzzel
       fzf
       gcc
       gdu

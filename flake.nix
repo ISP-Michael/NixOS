@@ -57,14 +57,10 @@
     autopair.url = "github:jorgebucaran/autopair.fish/main";
     done.url     = "github:franciscolourenco/done/master";
     fzf.url      = "github:PatrickF1/fzf.fish/main";
-    office.url   = "github:macydnah/office.yazi/main";
-    glow.url     = "github:Reledia/glow.yazi/main";
 
     autopair.flake = false;
     done.flake     = false;
     fzf.flake      = false;
-    office.flake   = false;
-    glow.flake     = false;
   };
 
   outputs =

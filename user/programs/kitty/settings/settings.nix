@@ -14,7 +14,7 @@
         window_padding_width    = 5;
         confirm_os_window_close = 0;
         tab_bar_style           = "hidden";
-        background_opacity      = 0.5;
+        background_opacity      = 1;
         background_image        = "none";
         selection_background    = "none";
         selection_foreground    = "none";
