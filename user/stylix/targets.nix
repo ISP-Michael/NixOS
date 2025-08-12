@@ -2,8 +2,11 @@
   stylix = {
     targets = {
       firefox = {
-        enable       = true;
-        profileNames = [ "profile" ];
+        enable = true;
+        colorTheme.enable = true;
+        profileNames = [
+          "profile"
+        ];
       };
       gtk.enable                = true;
       hyprland.enable           = true;

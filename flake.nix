@@ -70,6 +70,7 @@
       nixpkgs-unstable,
       nixpkgs-25_05,
       nixpkgs,
+      nur,
       self,
       stylix,
       ...
@@ -88,6 +89,7 @@
             self
             unstable-pkgs
             _05-pkgs
+            nur
             ;
         };
         modules = [
@@ -106,6 +108,7 @@
             ];
           }
           ./host/configuration.nix
+          nur.modules.nixos.default
         ];
       };
       homeConfigurations.Michael = home-manager.lib.homeManagerConfiguration {
@@ -116,6 +119,7 @@
             self
             unstable-pkgs
             _05-pkgs
+            nur
             ;
         };
         modules = [
