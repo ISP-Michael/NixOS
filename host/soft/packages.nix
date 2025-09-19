@@ -152,8 +152,7 @@ in
       hyprutils
       imagemagick
       imv
-      inputs.hypr-dynamic-cursors.packages.${pkgs.system}.hypr-dynamic-cursors
-      inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.quickshell
+      inkscape
       isort
       jdk
       jq
@@ -182,7 +181,6 @@ in
       moreutils
       mpv
       mpvpaper
-      nekoray
       neovim
       nixpkgs-fmt
       nix-init

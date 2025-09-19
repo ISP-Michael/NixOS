@@ -1,13 +1,21 @@
 {
   inputs = {
-    nixpkgs.owner = "NixOS";
-    nixpkgs.repo  = "nixpkgs";
-    nixpkgs.rev   = "3ff0e34b1383648053bba8ed03f201d3466f90c9";
-    nixpkgs.type  = "github";
-
     nixpkgs-25_05.url    = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    hyprland.url         = "github:hyprwm/Hyprland";
+
+    nixpkgs = {
+      owner = "NixOS";
+      repo  = "nixpkgs";
+      rev   = "3ff0e34b1383648053bba8ed03f201d3466f90c9";
+      type  = "github";
+    };
+
+    hyprland = {
+      type = "github";
+      owner = "hyprwm";
+      rev = "afbd8796859775a50687daacb254cdd1ba22328f";
+      repo = "Hyprland";
+    };
 
     nur = {
       url = "github:nix-community/NUR";
@@ -104,6 +112,7 @@
                 csharp_ls                   = unstable-pkgs.csharp_ls;
                 obs-studio                  = unstable-pkgs.obs-studio;
                 brightnessctl               = unstable-pkgs.brightnessctl;
+                unciv                       = unstable-pkgs.unciv;
               })
             ];
           }
