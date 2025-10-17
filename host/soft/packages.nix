@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  inputs,
   ...
 }:
 let
@@ -95,9 +94,9 @@ in
       deno
       dig
       disko
+      dmidecode
       docker-compose
       docker-compose-language-service
-      dockerfile-language-server-nodejs
       dotnetCorePackages.sdk_9_0-bin
       dprint
       dua
@@ -136,7 +135,6 @@ in
       gosimports
       grim
       gtk4
-      helix
       home-manager
       htmlhint
       htop
@@ -156,9 +154,6 @@ in
       isort
       jdk
       jq
-      justbuild
-      kdePackages.dolphin
-      kdePackages.qtdeclarative
       keepass
       keyd
       kitty
@@ -169,15 +164,16 @@ in
       lazygit
       lf
       libffi
-      libreoffice-qt6-fresh
       libnotify
+      libreoffice
       lua
       lua-language-server
+      lshw
       lm_sensors
       lynx
       mdcat
+      mongodb
       memtester
-      mongodb-ce
       moreutils
       mpv
       mpvpaper
@@ -190,6 +186,7 @@ in
       nixos-rebuild-ng
       nixfmt-rfc-style
       nnn
+      ntfs3g
       nordzy-cursor-theme
       nox
       nurl
@@ -205,21 +202,21 @@ in
       perl
       php
       pkg-config
+      prismlauncher
       playerctl
       polkit
       powershell
       pre-commit
-      prismlauncher
       pv
       pyright
       python12Env
       python13Env
       pywal
-      qutebrowser
+      quickshell
       ranger
       redis
       ripgrep
-      rofi-wayland
+      rofi
       roslyn-ls
       rust-analyzer
       ryzenadj
@@ -250,11 +247,12 @@ in
       unciv
       universal-ctags
       unzip
-      uv
+      usbutils
       v2ray
       video-downloader
       vim-language-server
       vscode-fhs
+      warp
       w3m
       waydroid
       wev
@@ -264,7 +262,6 @@ in
       wtype
       wofi
       xfce.thunar
-      xplorer
       xplr
       xray
       yaml-language-server

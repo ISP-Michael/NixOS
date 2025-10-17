@@ -1,27 +1,21 @@
 {
   pkgs,
-  _05-pkgs,
-  config,
   ...
 }:
 {
   boot = {
-    kernelPackages = pkgs.linuxPackages_6_14;
+    kernelPackages = pkgs.linuxPackages_zen;
+    kernelParams = [
+      "amdgpu.dcdebugmask=0x40000"
+    ];
     loader = {
-      efi.canTouchEfiVariables = true;
+      efi = {
+        canTouchEfiVariables = true;
+      };
       systemd-boot = {
         enable = true;
         configurationLimit = 10;
       };
     };
-    kernelParams = [
-      "nvme_core.default_ps_max_latency_us=0"
-    ];
-    kernelModules = [
-      "zenergy"
-    ];
-    extraModulePackages = [
-      config.boot.kernelPackages.zenergy
-    ];
   };
 }
