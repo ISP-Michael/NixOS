@@ -80,6 +80,7 @@ in
       bzip3
       cargo
       cachix
+      code-cursor-fhs
       chromium
       cl
       clang
@@ -99,6 +100,7 @@ in
       docker-compose-language-service
       dotnetCorePackages.sdk_9_0-bin
       dprint
+      dpkg
       dua
       dust
       evtest
@@ -154,6 +156,7 @@ in
       isort
       jdk
       jq
+      kdePackages.dolphin
       keepass
       keyd
       kitty
@@ -211,10 +214,12 @@ in
       pyright
       python12Env
       python13Env
+      python314
       pywal
       quickshell
       ranger
       redis
+      ripdrag
       ripgrep
       rofi
       roslyn-ls
@@ -232,6 +237,7 @@ in
       sqlitebrowser
       sqls
       starship
+      steam-run
       subversion
       superhtml
       telegram-desktop
