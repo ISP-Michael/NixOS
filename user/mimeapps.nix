@@ -27,9 +27,6 @@
         "x-scheme-handler/tonsite"     = [ "telegram.desktop" ];
         "inode/directory" = [
           "org.kde.dolphin.desktop"
-          "yazi.desktop"
-          "thunar.desktop"
-          "org.gnome.Nautilus.desktop"
         ];
       };
     };

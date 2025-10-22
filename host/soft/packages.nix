@@ -117,6 +117,7 @@ in
       fontforge-gtk
       file
       fish-lsp
+      flatpak
       flutter
       ffmpeg
       fuzzel
@@ -263,7 +264,8 @@ in
       waydroid
       wev
       wget
-      wine
+      winetricks
+      wineWowPackages.stagingFull
       wl-clipboard
       wtype
       wofi

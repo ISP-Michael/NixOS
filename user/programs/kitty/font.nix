@@ -3,7 +3,7 @@
     kitty = {
       font = {
         name = "FiraCodeRoman-Regular";
-        size = 12;
+        size = 11.75;
       };
     };
   };
