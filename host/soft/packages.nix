@@ -205,6 +205,7 @@ in
       pavucontrol
       perl
       php
+      pipewire
       pkg-config
       prismlauncher
       playerctl
@@ -243,6 +244,7 @@ in
       superhtml
       telegram-desktop
       tg
+      tcpdump
       tesseract
       tlp
       tmux
@@ -264,6 +266,7 @@ in
       waydroid
       wev
       wget
+      wireplumber
       winetricks
       wineWowPackages.stagingFull
       wl-clipboard

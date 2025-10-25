@@ -77,7 +77,6 @@
                   hyprland                    = unstable-pkgs.hyprland;
                   xdg-desktop-portal-hyprland = unstable-pkgs.xdg-desktop-portal-hyprland;
                   csharp_ls                   = unstable-pkgs.csharp_ls;
-                  obs-studio                  = unstable-pkgs.obs-studio;
                   brightnessctl               = unstable-pkgs.brightnessctl;
                   unciv                       = unstable-pkgs.unciv;
                   quickshell                  = unstable-pkgs.quickshell;
