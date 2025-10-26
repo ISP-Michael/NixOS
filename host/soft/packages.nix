@@ -93,6 +93,7 @@ in
       dart
       dconf
       deno
+      delve
       dig
       disko
       dmidecode
