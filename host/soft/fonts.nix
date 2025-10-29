@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, unstable-pkgs, ... }:
 let
   nerdPkgs = with pkgs.nerd-fonts; [
     _0xproto
@@ -20,6 +20,7 @@ let
 in
 {
   fonts = {
+    enableDefaultPackages = true;
     fontconfig.enable = true;
     packages =
       nerdPkgs ++
@@ -31,7 +32,6 @@ in
         hasklig
         noto-fonts
         noto-fonts-cjk-sans
-        noto-fonts-emoji
         source-code-pro
         texlivePackages.alegreya
         hackgen-font

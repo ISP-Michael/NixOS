@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  winapps-pkgs,
   ...
 }:
 let
@@ -154,11 +155,9 @@ in
       hyprutils
       imagemagick
       imv
-      inkscape
       isort
       jdk
       jq
-      kdePackages.dolphin
       keepass
       keyd
       kitty
@@ -183,6 +182,7 @@ in
       mpv
       mpvpaper
       neovim
+      niri
       nixpkgs-fmt
       nix-init
       nix-tree
@@ -254,6 +254,9 @@ in
       typescript-language-server
       ueberzug
       ueberzugpp
+      uutils-findutils
+      uutils-diffutils
+      uutils-coreutils
       unciv
       universal-ctags
       unzip
@@ -262,13 +265,14 @@ in
       video-downloader
       vim-language-server
       vscode-fhs
-      warp
       w3m
       waydroid
       wev
       wget
       wireplumber
       winetricks
+      winapps-pkgs.winapps
+      winapps-pkgs.winapps-launcher
       wineWowPackages.stagingFull
       wl-clipboard
       wtype

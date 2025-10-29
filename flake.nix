@@ -1,11 +1,7 @@
 {
   inputs = {
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-
-    nixpkgs.owner = "NixOS";
-    nixpkgs.repo  = "nixpkgs";
-    nixpkgs.rev   = "3ff0e34b1383648053bba8ed03f201d3466f90c9";
-    nixpkgs.type  = "github";
+    nixpkgs.url = "github:NixOS/nixpkgs";
 
     nur = {
       url = "github:nix-community/NUR";
@@ -17,7 +13,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager?ref=release-25.05";
+      url = "github:nix-community/home-manager";
       inputs = {
         nixpkgs = {
           follows = "nixpkgs";
@@ -26,7 +22,16 @@
     };
 
     stylix = {
-      url = "github:danth/stylix?ref=release-25.05";
+      url = "github:danth/stylix";
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
+    };
+
+    winapps = {
+      url = "github:winapps-org/winapps";
       inputs = {
         nixpkgs = {
           follows = "nixpkgs";
@@ -51,11 +56,13 @@
       nur,
       self,
       stylix,
+      winapps,
       ...
     }@inputs:
     let
       system        = "x86_64-linux";
       unstable-pkgs = nixpkgs-unstable.legacyPackages.${system};
+      winapps-pkgs  = winapps.packages.${system};
     in
     {
       nixosConfigurations.MagicBook = nixpkgs.lib.nixosSystem {
@@ -65,6 +72,7 @@
             self
             unstable-pkgs
             nur
+            winapps-pkgs
             ;
         };
         modules = [
@@ -74,7 +82,9 @@
                 (final: prev: {
                   acpi                        = unstable-pkgs.acpi;
                   neovim                      = unstable-pkgs.neovim;
+                  nekoray                     = unstable-pkgs.nekoray;
                   hyprland                    = unstable-pkgs.hyprland;
+                  telegram-desktop            = unstable-pkgs.telegram-desktop;
                   xdg-desktop-portal-hyprland = unstable-pkgs.xdg-desktop-portal-hyprland;
                   csharp_ls                   = unstable-pkgs.csharp_ls;
                   brightnessctl               = unstable-pkgs.brightnessctl;
@@ -96,6 +106,7 @@
             self
             unstable-pkgs
             nur
+            winapps-pkgs
             ;
         };
         modules = [
