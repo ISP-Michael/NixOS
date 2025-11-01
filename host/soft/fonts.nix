@@ -1,4 +1,8 @@
-{ pkgs, unstable-pkgs, ... }:
+{
+  pkgs,
+  unstable-pkgs,
+  ...
+}:
 let
   nerdPkgs = with pkgs.nerd-fonts; [
     _0xproto

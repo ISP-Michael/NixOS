@@ -283,6 +283,7 @@ in
       yaml-language-server
       ytdownloader
       zathura
+      zapret
       zed-editor-fhs
       zig
       zip

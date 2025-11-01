@@ -5,5 +5,6 @@
     # ./kmscon.nix
     ./services.nix
     ./keyd.nix
+    # ./zapret.nix
   ];
 }
