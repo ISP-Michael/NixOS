@@ -254,9 +254,6 @@ in
       typescript-language-server
       ueberzug
       ueberzugpp
-      uutils-findutils
-      uutils-diffutils
-      uutils-coreutils
       unciv
       universal-ctags
       unzip
