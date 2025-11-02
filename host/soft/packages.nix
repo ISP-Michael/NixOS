@@ -51,12 +51,17 @@ let
       requests
     ]
   );
+  winappsPkgs = with winapps-pkgs; [
+    winapps
+    winapps-launcher
+  ];
 in
 {
   environment.systemPackages =
     dprintPkgs ++
     nodePkgs ++
     tmuxPkgs ++
+    winappsPkgs ++
     (with pkgs; [
       acpi
       alacritty
@@ -268,8 +273,6 @@ in
       wget
       wireplumber
       winetricks
-      winapps-pkgs.winapps
-      winapps-pkgs.winapps-launcher
       wineWowPackages.stagingFull
       wl-clipboard
       wtype
