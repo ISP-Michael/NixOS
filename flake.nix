@@ -3,6 +3,15 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:NixOS/nixpkgs";
 
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
+    };
+
     nur = {
       url = "github:nix-community/NUR";
       inputs = {
@@ -55,6 +64,7 @@
       nixpkgs,
       nur,
       self,
+      sops-nix,
       stylix,
       winapps,
       ...
@@ -96,6 +106,7 @@
           }
           ./host/configuration.nix
           nur.modules.nixos.default
+          sops-nix.nixosModules.sops
         ];
       };
       homeConfigurations.Michael = home-manager.lib.homeManagerConfiguration {

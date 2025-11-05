@@ -161,6 +161,7 @@ in
       imagemagick
       imv
       isort
+      iotop
       jdk
       jq
       keepass
@@ -174,7 +175,6 @@ in
       lf
       libffi
       libnotify
-      libreoffice
       lua
       lua-language-server
       lshw
