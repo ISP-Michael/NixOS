@@ -48,13 +48,20 @@
       };
     };
 
-    autopair.url = "github:jorgebucaran/autopair.fish/main";
-    done.url     = "github:franciscolourenco/done/master";
-    fzf.url      = "github:PatrickF1/fzf.fish/main";
+    autopair = {
+      url = "github:jorgebucaran/autopair.fish/main";
+      flake = false;
+    };
 
-    autopair.flake = false;
-    done.flake     = false;
-    fzf.flake      = false;
+    done = {
+      url = "github:franciscolourenco/done/master";
+      flake = false;
+    };
+
+    fzf = {
+      url = "github:PatrickF1/fzf.fish/main";
+      flake = false;
+    };
   };
 
   outputs =
@@ -70,9 +77,9 @@
       ...
     }@inputs:
     let
-      system        = "x86_64-linux";
+      system = "x86_64-linux";
       unstable-pkgs = nixpkgs-unstable.legacyPackages.${system};
-      winapps-pkgs  = winapps.packages.${system};
+      winapps-pkgs = winapps.packages.${system};
     in
     {
       nixosConfigurations.MagicBook = nixpkgs.lib.nixosSystem {
@@ -90,16 +97,16 @@
             nixpkgs = {
               overlays = [
                 (final: prev: {
-                  acpi                        = unstable-pkgs.acpi;
-                  neovim                      = unstable-pkgs.neovim;
-                  nekoray                     = unstable-pkgs.nekoray;
-                  hyprland                    = unstable-pkgs.hyprland;
-                  telegram-desktop            = unstable-pkgs.telegram-desktop;
+                  acpi = unstable-pkgs.acpi;
+                  neovim = unstable-pkgs.neovim;
+                  nekoray = unstable-pkgs.nekoray;
+                  hyprland = unstable-pkgs.hyprland;
+                  telegram-desktop = unstable-pkgs.telegram-desktop;
                   xdg-desktop-portal-hyprland = unstable-pkgs.xdg-desktop-portal-hyprland;
-                  csharp_ls                   = unstable-pkgs.csharp_ls;
-                  brightnessctl               = unstable-pkgs.brightnessctl;
-                  unciv                       = unstable-pkgs.unciv;
-                  quickshell                  = unstable-pkgs.quickshell;
+                  csharp_ls = unstable-pkgs.csharp_ls;
+                  brightnessctl = unstable-pkgs.brightnessctl;
+                  unciv = unstable-pkgs.unciv;
+                  quickshell = unstable-pkgs.quickshell;
                 })
               ];
             };
@@ -124,7 +131,7 @@
           {
             nixpkgs.overlays = [
               (final: prev: {
-                nh     = unstable-pkgs.nh;
+                nh = unstable-pkgs.nh;
                 waybar = unstable-pkgs.waybar;
                 kanata = unstable-pkgs.kanata;
               })
