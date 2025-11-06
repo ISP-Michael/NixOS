@@ -63,7 +63,6 @@ in
     tmuxPkgs ++
     winappsPkgs ++
     (with pkgs; [
-      acpi
       alacritty
       alejandra
       amdgpu_top
@@ -76,57 +75,57 @@ in
       beamMinimal27Packages.elixir
       binutils
       biome
+      black
       blender
       bluetui
       bluez
       brightnessctl
       btop
-      black
       byedpi
       bzip3
-      cargo
       cachix
-      code-cursor-fhs
+      cargo
       chromium
       cl
       clang
       clang-tools
       clipse
       cmake
+      code-cursor-fhs
       copyq
       cron
       csharp-ls
       dart
       dconf
-      deno
       delve
+      deno
       dig
       disko
       dmidecode
       docker-compose
       docker-compose-language-service
       dotnetCorePackages.sdk_9_0-bin
-      dprint
       dpkg
+      dprint
       dua
       dust
-      evtest
       emmet-language-server
       emmet-ls
       entr
       eslint
       et
+      evtest
       eww
       eza
       fastfetch
       fd
-      fontforge
-      fontforge-gtk
+      ffmpeg
       file
       fish-lsp
       flatpak
       flutter
-      ffmpeg
+      fontforge
+      fontforge-gtk
       fuzzel
       fzf
       gcc
@@ -160,49 +159,50 @@ in
       hyprutils
       imagemagick
       imv
-      isort
       iotop
+      isort
+      inkscape-with-extensions
       jdk
       jq
+      kanata
       keepass
       keyd
       kitty
       kotlin
       kotlin-language-server
-      kanata
       lazydocker
       lazygit
       lf
       libffi
       libnotify
+      lm_sensors
+      lshw
       lua
       lua-language-server
-      lshw
-      lm_sensors
       lynx
       mdcat
-      mongodb
       memtester
+      mongodb
       moreutils
       mpv
       mpvpaper
       neovim
       niri
-      nixpkgs-fmt
-      nix-init
-      nix-tree
       nixd
       nixdoc
-      nixos-rebuild-ng
       nixfmt-rfc-style
+      nix-init
+      nixos-rebuild-ng
+      nixpkgs-fmt
+      nix-tree
       nnn
-      ntfs3g
       nordzy-cursor-theme
       nox
+      ntfs3g
       nurl
       nushell
-      obs-studio
       obsidian
+      obs-studio
       openssl
       oxlint
       pamixer
@@ -213,11 +213,11 @@ in
       php
       pipewire
       pkg-config
-      prismlauncher
       playerctl
       polkit
       powershell
       pre-commit
+      prismlauncher
       pv
       pyright
       python12Env
@@ -248,10 +248,10 @@ in
       steam-run
       subversion
       superhtml
-      telegram-desktop
-      tg
       tcpdump
+      telegram-desktop
       tesseract
+      tg
       tlp
       tmux
       tree
@@ -271,19 +271,19 @@ in
       waydroid
       wev
       wget
-      wireplumber
       winetricks
       wineWowPackages.stagingFull
+      wireplumber
       wl-clipboard
-      wtype
       wofi
+      wtype
       xfce.thunar
       xplr
       xray
       yaml-language-server
       ytdownloader
-      zathura
       zapret
+      zathura
       zed-editor-fhs
       zig
       zip

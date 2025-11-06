@@ -98,15 +98,15 @@
               overlays = [
                 (final: prev: {
                   acpi = unstable-pkgs.acpi;
+                  brightnessctl = unstable-pkgs.brightnessctl;
+                  csharp_ls = unstable-pkgs.csharp_ls;
                   neovim = unstable-pkgs.neovim;
                   nekoray = unstable-pkgs.nekoray;
                   hyprland = unstable-pkgs.hyprland;
                   telegram-desktop = unstable-pkgs.telegram-desktop;
-                  xdg-desktop-portal-hyprland = unstable-pkgs.xdg-desktop-portal-hyprland;
-                  csharp_ls = unstable-pkgs.csharp_ls;
-                  brightnessctl = unstable-pkgs.brightnessctl;
                   unciv = unstable-pkgs.unciv;
                   quickshell = unstable-pkgs.quickshell;
+                  xdg-desktop-portal-hyprland = unstable-pkgs.xdg-desktop-portal-hyprland;
                 })
               ];
             };

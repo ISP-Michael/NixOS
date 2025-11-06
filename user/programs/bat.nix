@@ -3,7 +3,7 @@
     bat = {
       enable = true;
       config = {
-        wrap  = "never";
+        wrap = "never";
         theme = "TwoDark";
       };
     };
