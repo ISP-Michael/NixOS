@@ -63,6 +63,7 @@ in
     tmuxPkgs ++
     winappsPkgs ++
     (with pkgs; [
+      acpi
       alacritty
       alejandra
       amdgpu_top
@@ -131,6 +132,7 @@ in
       gcc
       gdu
       ghostty
+      ghc
       git-crypt
       glibc
       glibcLocales
@@ -144,6 +146,7 @@ in
       gosimports
       grim
       gtk4
+      haskell-language-server
       home-manager
       htmlhint
       htop
@@ -175,6 +178,7 @@ in
       lf
       libffi
       libnotify
+      libreoffice
       lm_sensors
       lshw
       lua
@@ -192,6 +196,8 @@ in
       nixdoc
       nixfmt-rfc-style
       nix-init
+      nix-serve
+      nix-serve-ng
       nixos-rebuild-ng
       nixpkgs-fmt
       nix-tree
@@ -284,7 +290,6 @@ in
       ytdownloader
       zapret
       zathura
-      zed-editor-fhs
       zig
       zip
       zlib

@@ -5,7 +5,7 @@
       enable = true;
       fonts = [
         {
-          name    = "FiraCodeRoman-Regular";
+          name = "FiraCodeRoman-Regular";
           package = pkgs.nerd-fonts.fira-code;
         }
       ];

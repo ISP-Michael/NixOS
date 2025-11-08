@@ -32,7 +32,7 @@
         gf           = "git fetch";
         home-rebuild = "ga . && home-manager switch --flake /etc/nixos";
         hyprshot     = "hyprshot -o ~/Images/screenshots";
-        n            = "nvim";
+        e            = "nvim";
         ndw          = "nmcli device wifi";
         py           = "python";
         r            = "reset";

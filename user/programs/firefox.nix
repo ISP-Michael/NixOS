@@ -13,7 +13,7 @@
           name = "Michael";
           extensions = {
             force = true;
-            packages = with nur.legacyPackages."${pkgs.system}".repos.rycee.firefox-addons; [
+            packages = with nur.legacyPackages."x86_64-linux".repos.rycee.firefox-addons; [
               vimium
               translate-web-pages
             ];

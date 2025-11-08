@@ -1,6 +1,6 @@
 {
   system = {
-    stateVersion = "25.05";
+    stateVersion = "25.11";
   };
   hardware = {
     bluetooth = {

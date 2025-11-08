@@ -95,6 +95,9 @@
         modules = [
           {
             nixpkgs = {
+              config = {
+                allowUnfree = true;
+              };
               overlays = [
                 (final: prev: {
                   acpi = unstable-pkgs.acpi;
@@ -129,13 +132,18 @@
         };
         modules = [
           {
-            nixpkgs.overlays = [
-              (final: prev: {
-                nh = unstable-pkgs.nh;
-                waybar = unstable-pkgs.waybar;
-                kanata = unstable-pkgs.kanata;
-              })
-            ];
+            nixpkgs = {
+              config = {
+                allowUnfree = true;
+              };
+              overlays = [
+                (final: prev: {
+                  nh = unstable-pkgs.nh;
+                  waybar = unstable-pkgs.waybar;
+                  kanata = unstable-pkgs.kanata;
+                })
+              ];
+            };
           }
           ./user/standalone.nix
           stylix.homeModules.stylix

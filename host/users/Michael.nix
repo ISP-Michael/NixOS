@@ -1,21 +1,21 @@
-{ pkgs, ... }:
-let
-  extraGroups = [
-    "docker"
-    "dockerd"
-    "input"
-    "networkmanager"
-    "wheel"
-  ];
-in
+{
+  pkgs,
+  ...
+}:
 {
   users = {
     users = {
       Michael = {
         isNormalUser = true;
-        password     = "michael";
-        shell        = pkgs.fish;
-        extraGroups  = extraGroups;
+        password = "michael";
+        shell = pkgs.fish;
+        extraGroups = [
+          "docker"
+          "dockerd"
+          "input"
+          "networkmanager"
+          "wheel"
+        ];
       };
     };
   };
