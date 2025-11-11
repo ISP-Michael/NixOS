@@ -68,6 +68,7 @@ in
       alejandra
       amdgpu_top
       ani-cli
+      ansible
       ansifilter
       autologin
       basedpyright
@@ -77,7 +78,6 @@ in
       binutils
       biome
       black
-      blender
       bluetui
       bluez
       brightnessctl
@@ -168,6 +168,7 @@ in
       jdk
       jq
       kanata
+      kubernetes
       keepass
       keyd
       kitty
@@ -257,6 +258,7 @@ in
       tcpdump
       telegram-desktop
       tesseract
+      terraform
       tg
       tlp
       tmux
@@ -269,6 +271,10 @@ in
       universal-ctags
       unzip
       usbutils
+      uutils-coreutils
+      uutils-findutils
+      uutils-diffutils
+      vagrant
       v2ray
       video-downloader
       vim-language-server

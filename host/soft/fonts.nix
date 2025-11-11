@@ -25,7 +25,9 @@ in
 {
   fonts = {
     enableDefaultPackages = true;
-    fontconfig.enable = true;
+    fontconfig = {
+      enable = true;
+    };
     packages =
       nerdPkgs ++
       (with pkgs; [

@@ -37,7 +37,7 @@
         py           = "python";
         r            = "reset";
         rebuild      = "ga /etc/nixos && nixos-rebuild switch --sudo --flake /etc/nixos";
-        rebuild-boot = "ga /etc/nixos && nixos-rebuild boot --sudo --flake /etc/nixos";
+        rebuild-boot = "ga /etc/nixos && sudo nixos-rebuild boot --flake /etc/nixos";
         rgi          = "rg -i";
         update       = "nix flake update --flake /etc/nixos";
         exa          = "eza -laio --icons --git";

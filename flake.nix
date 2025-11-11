@@ -1,7 +1,8 @@
 {
   inputs = {
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:NixOS/nixpkgs";
+    nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixos-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -67,7 +68,8 @@
   outputs =
     {
       home-manager,
-      nixpkgs-unstable,
+      nixos-unstable,
+      nixos-stable,
       nixpkgs,
       nur,
       self,
@@ -78,11 +80,12 @@
     }@inputs:
     let
       system = "x86_64-linux";
-      unstable-pkgs = nixpkgs-unstable.legacyPackages.${system};
+      unstable-pkgs = nixos-unstable.legacyPackages.${system};
+      master-pkgs = nixpkgs.legacyPackages.${system};
       winapps-pkgs = winapps.packages.${system};
     in
     {
-      nixosConfigurations.MagicBook = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.MagicBook = nixos-stable.lib.nixosSystem {
         specialArgs = {
           inherit
             inputs
@@ -90,7 +93,7 @@
             unstable-pkgs
             nur
             winapps-pkgs
-            ;
+          ;
         };
         modules = [
           {
@@ -110,6 +113,7 @@
                   unciv = unstable-pkgs.unciv;
                   quickshell = unstable-pkgs.quickshell;
                   xdg-desktop-portal-hyprland = unstable-pkgs.xdg-desktop-portal-hyprland;
+                  noto-fonts-color-emoji = unstable-pkgs.noto-fonts-color-emoji;
                 })
               ];
             };
@@ -120,15 +124,15 @@
         ];
       };
       homeConfigurations.Michael = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = nixos-stable.legacyPackages.${system};
         extraSpecialArgs = {
           inherit
-          inputs
+            inputs
             self
             unstable-pkgs
             nur
             winapps-pkgs
-            ;
+          ;
         };
         modules = [
           {
@@ -141,6 +145,7 @@
                   nh = unstable-pkgs.nh;
                   waybar = unstable-pkgs.waybar;
                   kanata = unstable-pkgs.kanata;
+                  firefox = unstable-pkgs.firefox;
                 })
               ];
             };

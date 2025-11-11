@@ -5,7 +5,7 @@
 }:
 {
   boot = {
-    kernelPackages = unstable-pkgs.linuxPackages_zen;
+    kernelPackages = pkgs.linuxPackages_zen;
     kernelParams = [
       "amdgpu.dcdebugmask=0x40000"
     ];

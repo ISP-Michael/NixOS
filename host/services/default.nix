@@ -1,5 +1,6 @@
 {
   imports = [
+    ./nix-serve.nix
     ./mysql.nix
     ./pipewire.nix
     # ./kmscon.nix
