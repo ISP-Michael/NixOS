@@ -1,7 +1,7 @@
 {
   stylix = {
-    enable     = true;
+    enable = true;
     autoEnable = false;
-    polarity   = "dark";
+    polarity = "dark";
   };
 }

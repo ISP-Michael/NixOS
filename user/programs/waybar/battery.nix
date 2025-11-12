@@ -18,11 +18,11 @@ in
       settings = {
         verticalBar = {
           battery = {
-            format       = "{icon}";
+            format = "{icon}";
             format-icons = icons;
-            tooltip      = false;
+            tooltip = false;
             states = {
-              warning  = 30;
+              warning = 30;
               critical = 15;
             };
           };

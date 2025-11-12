@@ -1,6 +1,10 @@
 let
-  output        = [ "eDP-1" ];
-  modules-left  = [ "clock" ];
+  output = [
+    "eDP-1"
+  ];
+  modules-left = [
+    "clock"
+  ];
   modules-right = [
     "network"
     "battery"
@@ -12,11 +16,11 @@ in
       enable = true;
       settings = {
         verticalBar = {
-          width         = 40;
-          layer         = "top";
-          position      = "right";
-          output        = output;
-          modules-left  = modules-left;
+          width = 40;
+          layer = "top";
+          position = "right";
+          output = output;
+          modules-left = modules-left;
           modules-right = modules-right;
         };
       };

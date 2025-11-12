@@ -4,9 +4,9 @@
       settings = {
         verticalBar = {
           network = {
-            format-wifi         = "󰤨 ";
+            format-wifi = "󰤨 ";
             format-disconnected = "󰤭 ";
-            tooltip             = false;
+            tooltip = false;
           };
         };
       };

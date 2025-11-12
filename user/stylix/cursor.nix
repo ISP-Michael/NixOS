@@ -2,9 +2,9 @@
 {
   stylix = {
     cursor = {
-      name    = "Nordzy-cursors-white";
+      name = "Nordzy-cursors-white";
       package = pkgs.nordzy-cursor-theme;
-      size    = 36;
+      size = 36;
     };
   };
 }

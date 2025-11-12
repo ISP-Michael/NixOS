@@ -8,11 +8,21 @@
           "profile"
         ];
       };
-      gtk.enable                = true;
-      hyprland.enable           = true;
-      hyprland.hyprpaper.enable = true;
-      kde.enable                = true;
-      qt.enable                 = true;
+      gtk = {
+        enable = true;
+      };
+      hyprland = {
+        enabl = true;
+      };
+      hyprland = {
+        hyprpaper.enable = true;
+      };
+      kde = {
+        enable = true;
+      };
+      qt = {
+        enable = true;
+      };
     };
   };
 }
