@@ -191,6 +191,7 @@ in
       moreutils
       mpv
       mpvpaper
+      neovide
       neovim
       niri
       nixd

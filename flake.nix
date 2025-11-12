@@ -114,6 +114,7 @@
                   quickshell = unstable-pkgs.quickshell;
                   xdg-desktop-portal-hyprland = unstable-pkgs.xdg-desktop-portal-hyprland;
                   noto-fonts-color-emoji = unstable-pkgs.noto-fonts-color-emoji;
+                  neovide = unstable-pkgs.neovide;
                 })
               ];
             };
