@@ -8,7 +8,7 @@
       url = "github:Mic92/sops-nix";
       inputs = {
         nixpkgs = {
-          follows = "nixpkgs";
+          follows = "nixos-stable";
         };
       };
     };
@@ -17,7 +17,7 @@
       url = "github:nix-community/NUR";
       inputs = {
         nixpkgs = {
-          follows = "nixpkgs";
+          follows = "nixos-stable";
         };
       };
     };
@@ -26,7 +26,7 @@
       url = "github:nix-community/home-manager";
       inputs = {
         nixpkgs = {
-          follows = "nixpkgs";
+          follows = "nixos-stable";
         };
       };
     };
@@ -35,7 +35,7 @@
       url = "github:danth/stylix";
       inputs = {
         nixpkgs = {
-          follows = "nixpkgs";
+          follows = "nixos-stable";
         };
       };
     };
@@ -44,7 +44,7 @@
       url = "github:winapps-org/winapps";
       inputs = {
         nixpkgs = {
-          follows = "nixpkgs";
+          follows = "nixos-stable";
         };
       };
     };
@@ -90,6 +90,7 @@
           inherit
             inputs
             self
+            master-pkgs
             unstable-pkgs
             nur
             winapps-pkgs
@@ -129,6 +130,7 @@
         extraSpecialArgs = {
           inherit
             inputs
+            master-pkgs
             self
             unstable-pkgs
             nur

@@ -180,6 +180,7 @@ in
       libffi
       libnotify
       libreoffice
+      libsForQt5.dolphin
       lm_sensors
       lshw
       lua

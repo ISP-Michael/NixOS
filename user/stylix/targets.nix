@@ -12,7 +12,7 @@
         enable = true;
       };
       hyprland = {
-        enabl = true;
+        enable = true;
       };
       hyprland = {
         hyprpaper.enable = true;
