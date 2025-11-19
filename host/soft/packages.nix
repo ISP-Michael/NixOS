@@ -64,6 +64,7 @@ in
     winappsPkgs ++
     (with pkgs; [
       acpi
+      atuin
       alacritty
       alejandra
       amdgpu_top
@@ -72,12 +73,14 @@ in
       ansifilter
       autologin
       basedpyright
+      bash-completion
       bash-language-server
       bc
       beamMinimal27Packages.elixir
       binutils
       biome
       black
+      blesh
       bluetui
       bluez
       brightnessctl
@@ -98,6 +101,7 @@ in
       csharp-ls
       dart
       dconf
+      devenv
       delve
       deno
       dig
@@ -132,6 +136,7 @@ in
       gcc
       gdu
       ghostty
+      gh
       ghc
       git-crypt
       glibc
@@ -146,6 +151,7 @@ in
       gosimports
       grim
       gtk4
+      grafana
       haskell-language-server
       home-manager
       htmlhint
@@ -178,7 +184,9 @@ in
       lazygit
       lf
       libffi
+      libfprint-tod
       libnotify
+      libusb1
       libreoffice
       libsForQt5.dolphin
       lm_sensors
@@ -186,6 +194,7 @@ in
       lua
       lua-language-server
       lynx
+      manix
       mdcat
       memtester
       mongodb
@@ -195,6 +204,7 @@ in
       neovide
       neovim
       niri
+      nix-bash-completions
       nixd
       nixdoc
       nixfmt-rfc-style
@@ -225,8 +235,9 @@ in
       playerctl
       polkit
       powershell
-      pre-commit
       prismlauncher
+      prometheus
+      pre-commit
       pv
       pyright
       python12Env
@@ -248,6 +259,7 @@ in
       sing-box
       sing-geoip
       sing-geosite
+      shellharden
       smartmontools
       spoofdpi
       sqlite

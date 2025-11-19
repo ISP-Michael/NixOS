@@ -94,7 +94,7 @@
             unstable-pkgs
             nur
             winapps-pkgs
-          ;
+            ;
         };
         modules = [
           {
@@ -104,18 +104,14 @@
               };
               overlays = [
                 (final: prev: {
-                  acpi = unstable-pkgs.acpi;
-                  brightnessctl = unstable-pkgs.brightnessctl;
-                  csharp_ls = unstable-pkgs.csharp_ls;
                   neovim = unstable-pkgs.neovim;
-                  nekoray = unstable-pkgs.nekoray;
                   hyprland = unstable-pkgs.hyprland;
                   telegram-desktop = unstable-pkgs.telegram-desktop;
+                  throne = unstable-pkgs.throne;
                   unciv = unstable-pkgs.unciv;
-                  quickshell = unstable-pkgs.quickshell;
                   xdg-desktop-portal-hyprland = unstable-pkgs.xdg-desktop-portal-hyprland;
-                  noto-fonts-color-emoji = unstable-pkgs.noto-fonts-color-emoji;
                   neovide = unstable-pkgs.neovide;
+                  quickshell = unstable-pkgs.quickshell;
                 })
               ];
             };
@@ -135,7 +131,7 @@
             unstable-pkgs
             nur
             winapps-pkgs
-          ;
+            ;
         };
         modules = [
           {
@@ -146,8 +142,6 @@
               overlays = [
                 (final: prev: {
                   nh = unstable-pkgs.nh;
-                  waybar = unstable-pkgs.waybar;
-                  kanata = unstable-pkgs.kanata;
                   firefox = unstable-pkgs.firefox;
                 })
               ];
