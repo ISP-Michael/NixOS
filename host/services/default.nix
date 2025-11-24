@@ -1,6 +1,7 @@
 {
   imports = [
     ./fprintd.nix
+    ./flatpak.nix
     ./nix-serve.nix
     ./mysql.nix
     ./pipewire.nix

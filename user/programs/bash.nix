@@ -2,6 +2,7 @@
   programs = {
     bash = {
       enable = true;
+      enableCompletion = true;
       shellAliases = {
         bat_h-l = "bat --highlight-line 0:";
         bnc = "brightnessctl";

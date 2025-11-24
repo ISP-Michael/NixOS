@@ -31,6 +31,7 @@ let
       numpy
       pandas
       pillow
+      psutil
       requests
     ]
   );
@@ -48,6 +49,7 @@ let
       numpy
       pandas
       pillow
+      psutil
       requests
     ]
   );
@@ -178,6 +180,7 @@ in
       keepass
       keyd
       kitty
+      kooha
       kotlin
       kotlin-language-server
       lazydocker
@@ -261,6 +264,7 @@ in
       sing-geosite
       shellharden
       smartmontools
+      speedtest-cli
       spoofdpi
       sqlite
       sqlitebrowser
@@ -297,12 +301,13 @@ in
       waydroid
       wev
       wget
-      winetricks
-      wineWowPackages.stagingFull
+      # winetricks
+      # wineWowPackages.stagingFull
       wireplumber
       wl-clipboard
       wofi
       wtype
+      xdg-desktop-portal
       xfce.thunar
       xplr
       xray
