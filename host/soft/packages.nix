@@ -141,6 +141,12 @@ in
       gh
       ghc
       git-crypt
+      gst_all_1.gst-libav
+      gst_all_1.gst-plugins-bad
+      gst_all_1.gst-plugins-good
+      gst_all_1.gst-plugins-ugly
+      gst_all_1.gst-plugins-base
+      gst_all_1.gstreamer
       glibc
       glibcLocales
       glow
@@ -192,6 +198,7 @@ in
       libusb1
       libreoffice
       libsForQt5.dolphin
+      libsForQt5.qt5.qtgraphicaleffects
       lm_sensors
       lshw
       lua
