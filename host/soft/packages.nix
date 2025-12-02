@@ -33,6 +33,8 @@ let
       pillow
       psutil
       requests
+      rich
+      matplotlib
     ]
   );
   python13Env = pkgs.python313.withPackages (
@@ -51,6 +53,8 @@ let
       pillow
       psutil
       requests
+      rich
+      matplotlib
     ]
   );
   winappsPkgs = with winapps-pkgs; [
@@ -82,6 +86,7 @@ in
       binutils
       biome
       black
+      blender
       blesh
       bluetui
       bluez
@@ -147,6 +152,7 @@ in
       gst_all_1.gst-plugins-ugly
       gst_all_1.gst-plugins-base
       gst_all_1.gstreamer
+      glab
       glibc
       glibcLocales
       glow
@@ -200,6 +206,7 @@ in
       libsForQt5.dolphin
       libsForQt5.qt5.qtgraphicaleffects
       lm_sensors
+      lsd
       lshw
       lua
       lua-language-server

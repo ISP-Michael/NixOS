@@ -3,8 +3,8 @@ from itertools import cycle
 
 
 def main():
-    lens:   list[int] = [0] * 4
-    result: list      = []
+    lens: list[int] = [0] * 4
+    result: list[str] = []
     for line in stdin:
         split = line.split('⊖')
         for i in range(len(split)):

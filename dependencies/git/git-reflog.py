@@ -10,10 +10,10 @@ def main():
         3: 50
     }
     lens = [0] * 4
-    result = []
+    result: list[str] = []
     for line in stdin:
         split = line.split()
-        three = []
+        three: list[str] = []
         perm = False
         for i in range(len(split)):
             if perm:
