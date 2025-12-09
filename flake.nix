@@ -4,6 +4,15 @@
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
 
+    # nix-ld = {
+    #   url = "github:Mic92/nix-ld";
+    #   inputs = {
+    #     nixpkgs = {
+    #       follows = "nixos-stable";
+    #     };
+    #   };
+    # };
+
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs = {
@@ -71,6 +80,7 @@
       nixos-unstable,
       nixos-stable,
       nixpkgs,
+      # nix-ld,
       nur,
       self,
       sops-nix,
@@ -143,6 +153,7 @@
                 (final: prev: {
                   nh = unstable-pkgs.nh;
                   firefox = unstable-pkgs.firefox;
+                  kitty = unstable-pkgs.kitty;
                 })
               ];
             };

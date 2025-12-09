@@ -5,7 +5,8 @@
     # ./firefox.nix
     ./hyprland.nix
     ./programs.nix
-    ./nekoray.nix
+    # ./nekoray.nix
+    ./nix-ld.nix
     ./npm.nix
   ];
 }

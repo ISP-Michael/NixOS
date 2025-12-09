@@ -96,6 +96,7 @@ in
       bzip3
       cachix
       cargo
+      copyq
       chromium
       cl
       clang
@@ -121,6 +122,7 @@ in
       dprint
       dua
       dust
+      emacs
       emmet-language-server
       emmet-ls
       entr
@@ -167,6 +169,7 @@ in
       gtk4
       grafana
       haskell-language-server
+      haskellPackages.cabal-install
       home-manager
       htmlhint
       htop
@@ -225,6 +228,7 @@ in
       nixd
       nixdoc
       nixfmt-rfc-style
+      nix-index
       nix-init
       nix-serve
       nix-serve-ng
@@ -262,6 +266,7 @@ in
       python314
       pywal
       quickshell
+			rar
       ranger
       redis
       ripdrag
@@ -301,6 +306,7 @@ in
       ueberzugpp
       unciv
       universal-ctags
+			unrar
       unzip
       usbutils
       uutils-coreutils
@@ -315,8 +321,8 @@ in
       waydroid
       wev
       wget
-      # winetricks
-      # wineWowPackages.stagingFull
+      winetricks
+      wineWowPackages.stagingFull
       wireplumber
       wl-clipboard
       wofi

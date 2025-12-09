@@ -12,4 +12,10 @@
     ./time.nix
     ./users
   ];
+  documentation = {
+    man = {
+      generateCaches = false;
+    };
+  };
 }
+
