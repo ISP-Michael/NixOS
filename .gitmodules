@@ -4,3 +4,6 @@
 [submodule "dependencies/hypr"]
   path = dependencies/hypr
   url = git@github.com:ISP-Michael/Hyprland.git
+[submodule "dependencies/qs"]
+	path = dependencies/qs
+	url = git@github.com:ISP-Michael/Quickshell.git
