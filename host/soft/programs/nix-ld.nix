@@ -16,7 +16,7 @@ in
   programs = {
     nix-ld = {
       enable = true;
-      libraries = with unstable-pkgs; baseQt5Libs ++ [
+      libraries = with unstable-pkgs; [
         libGL
         libice
         libsm
