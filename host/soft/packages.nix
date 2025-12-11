@@ -13,7 +13,6 @@ let
   ];
   nodePkgs = with pkgs.nodePackages_latest; [
     browser-sync
-    live-server
     nodejs
     prettier
   ];
@@ -61,6 +60,13 @@ let
     winapps
     winapps-launcher
   ];
+  latestUnciv = pkgs.unciv.overrideAttrs (oldAttrs: {
+    version = "latest_4.18.19";
+    src = pkgs.fetchurl {
+      url = "https://github.com/yairm210/Unciv/releases/download/4.18.19/Unciv.jar";
+      sha256 = "sha256-t+CEBU6MM5v3lHu1hTWZOUcwKqIpT/jQ9UeKKp/NEwQ=";
+    };
+  });
 in
 {
   environment.systemPackages =
@@ -206,7 +212,7 @@ in
       libnotify
       libusb1
       libreoffice
-      libsForQt5.dolphin
+      kdePackages.dolphin
       libsForQt5.qt5.qtgraphicaleffects
       lm_sensors
       lsd
@@ -304,7 +310,7 @@ in
       typescript-language-server
       ueberzug
       ueberzugpp
-      unciv
+      latestUnciv
       universal-ctags
 			unrar
       unzip

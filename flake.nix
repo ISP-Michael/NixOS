@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixos-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixos-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -63,6 +63,7 @@
       url = "github:PatrickF1/fzf.fish/main";
       flake = false;
     };
+
   };
 
   outputs =

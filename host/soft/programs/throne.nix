@@ -1,22 +1,10 @@
 {
-  unstable-pkgs,
-  ...
-}:
-{
-  imports = [
-    "${unstable-pkgs.path}/nixos/modules/programs/throne.nix"
-  ];
-  disabledModules = [
-    "programs/nekoray.nix"
-  ];
-  config = {
-    programs = {
-      throne = {
+  programs = {
+    throne = {
+      enable = true;
+      tunMode = {
         enable = true;
-        tunMode = {
-          enable = true;
-          setuid = true;
-        };
+        setuid = true;
       };
     };
   };
