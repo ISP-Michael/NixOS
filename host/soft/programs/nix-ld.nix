@@ -1,17 +1,7 @@
 {
   unstable-pkgs,
-  lib,
   ...
 }:
-let
-  allQt5Libs = lib.filter
-    (pkg: let eval = builtins.tryEval (lib.isDerivation pkg); in eval.success && eval.value)
-    (lib.attrValues unstable-pkgs.libsForQt5.qt5);
-  baseQt5Libs = with unstable-pkgs.libsForQt5.qt5; [
-    qtbase
-    qtdeclarative
-  ];
-in
 {
   programs = {
     nix-ld = {

@@ -1,22 +1,5 @@
 {
   "nodes": {
-    "autopair": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1656950411,
-        "narHash": "sha256-qt3t1iKRRNuiLWiVoiAYOu+9E7jsyECyIqZJ/oRIT1A=",
-        "owner": "jorgebucaran",
-        "repo": "autopair.fish",
-        "rev": "4d1752ff5b39819ab58d7337c69220342e9de0e2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "jorgebucaran",
-        "ref": "main",
-        "repo": "autopair.fish",
-        "type": "github"
-      }
-    },
     "base16": {
       "inputs": {
         "fromYaml": "fromYaml"
@@ -82,23 +65,6 @@
         "owner": "tinted-theming",
         "repo": "base16-vim",
         "rev": "577fe8125d74ff456cf942c733a85d769afe58b7",
-        "type": "github"
-      }
-    },
-    "done": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1764605976,
-        "narHash": "sha256-GXKchepYti5Pb1ODFeJL3apDGg7Tn69skQQhvV2nSeQ=",
-        "owner": "franciscolourenco",
-        "repo": "done",
-        "rev": "102cf3986fbcf08e82f4125e208218fd7b597714",
-        "type": "github"
-      },
-      "original": {
-        "owner": "franciscolourenco",
-        "ref": "master",
-        "repo": "done",
         "type": "github"
       }
     },
@@ -205,23 +171,6 @@
       "original": {
         "owner": "SenchoPens",
         "repo": "fromYaml",
-        "type": "github"
-      }
-    },
-    "fzf": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1712464035,
-        "narHash": "sha256-T8KYLA/r/gOKvAivKRoeqIwE2pINlxFQtZJHpOy9GMM=",
-        "owner": "PatrickF1",
-        "repo": "fzf.fish",
-        "rev": "8920367cf85eee5218cc25a11e209d46e2591e7a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "PatrickF1",
-        "ref": "main",
-        "repo": "fzf.fish",
         "type": "github"
       }
     },
@@ -374,9 +323,6 @@
     },
     "root": {
       "inputs": {
-        "autopair": "autopair",
-        "done": "done",
-        "fzf": "fzf",
         "home-manager": "home-manager",
         "nixos-stable": "nixos-stable",
         "nixos-unstable": "nixos-unstable",

@@ -48,22 +48,6 @@
         };
       };
     };
-
-    autopair = {
-      url = "github:jorgebucaran/autopair.fish/main";
-      flake = false;
-    };
-
-    done = {
-      url = "github:franciscolourenco/done/master";
-      flake = false;
-    };
-
-    fzf = {
-      url = "github:PatrickF1/fzf.fish/main";
-      flake = false;
-    };
-
   };
 
   outputs =

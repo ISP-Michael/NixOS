@@ -1,19 +1,30 @@
-{ inputs, ... }:
+{
+  pkgs,
+  ...
+}:
 {
   programs = {
     fish = {
-      plugins = [
+      plugins = with pkgs.fishPlugins; [
         {
           name = "autopair";
-          src = inputs.autopair;
+          src = autopair;
         }
         {
           name = "done";
-          src = inputs.done;
+          src = done;
         }
         {
           name = "fzf";
-          src = inputs.fzf;
+          src = fzf-fish;
+        }
+        {
+          name = "async-prompt";
+          src = async-prompt;
+        }
+        {
+          name = "fifc";
+          src = fifc;
         }
       ];
     };

@@ -141,6 +141,11 @@ in
       fd
       ffmpeg
       file
+      fishPlugins.fifc
+      fishPlugins.done
+      fishPlugins.fzf
+      fishPlugins.async-prompt
+      fishPlugins.autopair
       fish-lsp
       flatpak
       flutter
