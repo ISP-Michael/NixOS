@@ -62,13 +62,6 @@ let
     winapps
     winapps-launcher
   ];
-  latestUnciv = pkgs.unciv.overrideAttrs (oldAttrs: {
-    version = "latest_4.18.19";
-    src = pkgs.fetchurl {
-      url = "https://github.com/yairm210/Unciv/releases/download/4.18.19/Unciv.jar";
-      sha256 = "sha256-t+CEBU6MM5v3lHu1hTWZOUcwKqIpT/jQ9UeKKp/NEwQ=";
-    };
-  });
 in
 {
   environment = {
@@ -233,7 +226,7 @@ in
         manix
         mdcat
         memtester
-        mongodb
+        # mongodb
         moreutils
         mpv
         mpvpaper
@@ -320,7 +313,7 @@ in
         typescript-language-server
         ueberzug
         ueberzugpp
-        latestUnciv
+        unciv
         universal-ctags
         unrar
         unzip
@@ -357,9 +350,9 @@ in
         zlib
         zoxide
       ]);
-      sessionVariables = {
-        GTK_USE_PORTAL = "1";
-        QT_QPA_PLATFORMTHEME = "kde";
-      };
+    sessionVariables = {
+      GTK_USE_PORTAL = "1";
+      QT_QPA_PLATFORMTHEME = "kde";
     };
+  };
 }
