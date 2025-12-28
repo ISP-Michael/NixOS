@@ -3,26 +3,24 @@ from itertools import cycle
 
 
 def main():
-    lens: list[int] = [0] * 4
     result: list[str] = []
+    maxim: int = 0
     for line in stdin:
-        split = line.split('⊖')
+        split = line.split(' × ')
         for i in range(len(split)):
-            if i == 2:
-                split[i] = f'{split[i][:17]}...' if len(split[i]) > 20 else split[i]
-            if i == 3:
-                add = ' '.join(split[i:])
-                result.append(add if len(add) <= 50 else f'{add[:47]}...')
-                break
-            if len(split[i]) > lens[i]:
-                lens[i] = len(split[i])
             result.append(split[i])
+            maxim = len(split[i]) if not (i + 1) % 3 and len(split[i]) > maxim else maxim
         result.append('\n')
     for el, j in zip(result, cycle([0, 1, 2, 3, None])):
         if j is None:
             print()
             continue
-        print(el.ljust(lens[j]), end='   ')
+        if not (j + 1) % 3:
+            amount: int = maxim - len(el)
+            spaces: str = amount * ' '
+            print(f'{spaces}{el}', end=' ')
+            continue
+        print(el, end=' ')
 
 
 if __name__ == '__main__':

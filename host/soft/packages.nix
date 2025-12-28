@@ -115,6 +115,7 @@ in
         delve
         deno
         dig
+        discord
         disko
         dmidecode
         docker-compose
