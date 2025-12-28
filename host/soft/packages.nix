@@ -141,7 +141,6 @@ in
         fishPlugins.fifc
         fishPlugins.done
         fishPlugins.fzf
-        fishPlugins.async-prompt
         fishPlugins.autopair
         fish-lsp
         flatpak

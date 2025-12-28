@@ -23,7 +23,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs = {
         nixpkgs = {
           follows = "nixos-stable";
@@ -32,7 +32,7 @@
     };
 
     stylix = {
-      url = "github:danth/stylix";
+      url = "github:danth/stylix/release-25.11";
       inputs = {
         nixpkgs = {
           follows = "nixos-stable";

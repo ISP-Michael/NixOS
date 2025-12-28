@@ -19,10 +19,6 @@
           src = fzf-fish;
         }
         {
-          name = "async-prompt";
-          src = async-prompt;
-        }
-        {
           name = "fifc";
           src = fifc;
         }
