@@ -105,7 +105,6 @@ in
         clang-tools
         clipse
         cmake
-        code-cursor-fhs
         copyq
         cron
         csharp-ls
