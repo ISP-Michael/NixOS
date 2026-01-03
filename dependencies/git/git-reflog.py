@@ -3,12 +3,6 @@ from itertools import cycle
 
 
 def main():
-    obj = {
-        0: float('inf'),
-        1: float('inf'),
-        2: 20,
-        3: 50
-    }
     lens = [0] * 4
     result: list[str] = []
     for line in stdin:
@@ -36,8 +30,7 @@ def main():
         if j is None:
             print()
             continue
-        el = f'{el[:obj[j] - 1]}...' if len(el) > obj[j] else el
-        print(el.rjust(lens[j]), end='   ')
+        print(el.rjust(lens[j]), end=' ')
 
 
 if __name__ == '__main__':
