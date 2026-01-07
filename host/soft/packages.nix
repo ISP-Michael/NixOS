@@ -32,9 +32,11 @@ let
       pandas
       pillow
       psutil
+      pyrogram
       requests
       rich
       matplotlib
+      tgcrypto
     ]
   );
   python13Env = pkgs.python313.withPackages (
@@ -53,9 +55,11 @@ let
       pandas
       pillow
       psutil
+      pyrogram
       requests
       rich
       matplotlib
+      tgcrypto
     ]
   );
   winappsPkgs = with winapps-pkgs; [
