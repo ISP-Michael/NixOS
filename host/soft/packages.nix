@@ -312,6 +312,7 @@ in
         tlp
         tmux
         tree
+        tshark
         typescript
         typescript-language-server
         ueberzug
@@ -335,6 +336,7 @@ in
         wget
         winetricks
         wineWowPackages.stagingFull
+        wireshark
         wireplumber
         wl-clipboard
         wofi

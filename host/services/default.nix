@@ -8,6 +8,7 @@
     # ./kmscon.nix
     ./services.nix
     ./keyd.nix
+    ./earlyoom.nix
     # ./zapret.nix
   ];
 }
