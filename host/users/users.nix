@@ -4,6 +4,7 @@
       libvirtd = {
         members = [ "Michael" ];
       };
+      media = {};
     };
   };
 }

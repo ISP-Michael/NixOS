@@ -5,6 +5,7 @@
     ./nix-serve.nix
     ./mysql.nix
     ./pipewire.nix
+    ./player.nix
     # ./kmscon.nix
     ./services.nix
     ./keyd.nix

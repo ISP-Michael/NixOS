@@ -139,6 +139,7 @@ in
         eza
         fastfetch
         fd
+        feishin
         ffmpeg
         file
         fishPlugins.fifc
@@ -277,6 +278,7 @@ in
         python13Env
         python314
         pywal
+        qbittorrent
         quickshell
         rar
         ranger
