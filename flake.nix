@@ -93,7 +93,7 @@
                   hyprland = unstable-pkgs.hyprland;
                   telegram-desktop = unstable-pkgs.telegram-desktop;
                   throne = unstable-pkgs.throne;
-                  unciv = unstable-pkgs.unciv;
+                  # unciv = unstable-pkgs.unciv;
                   xdg-desktop-portal-hyprland = unstable-pkgs.xdg-desktop-portal-hyprland;
                   neovide = unstable-pkgs.neovide;
                   quickshell = unstable-pkgs.quickshell;

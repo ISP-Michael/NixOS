@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  unstable-pkgs,
   winapps-pkgs,
   ...
 }:
@@ -66,6 +67,9 @@ let
     winapps
     winapps-launcher
   ];
+  unstablePkgs = with unstable-pkgs; [
+    unciv
+  ];
 in
 {
   environment = {
@@ -74,6 +78,7 @@ in
       nodePkgs ++
       tmuxPkgs ++
       winappsPkgs ++
+      unstablePkgs ++
       (with pkgs; [
         acpi
         atuin
@@ -319,7 +324,6 @@ in
         typescript-language-server
         ueberzug
         ueberzugpp
-        unciv
         universal-ctags
         unrar
         unzip

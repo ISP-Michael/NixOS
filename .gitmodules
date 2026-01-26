@@ -1,9 +1,9 @@
 [submodule "dependencies/n"]
-  path = dependencies/n
-  url = git@github.com:ISP-Michael/Neovim.git
+    path = dependencies/n
+    url = git@github.com:ISP-Michael/Neovim.git
 [submodule "dependencies/hypr"]
-  path = dependencies/hypr
-  url = git@github.com:ISP-Michael/Hyprland.git
+    path = dependencies/hypr
+    url = git@github.com:ISP-Michael/Hyprland.git
 [submodule "dependencies/qs"]
-	path = dependencies/qs
-	url = git@github.com:ISP-Michael/Quickshell.git
+    path = dependencies/qs
+    url = git@github.com:ISP-Michael/Quickshell.git
