@@ -107,6 +107,7 @@ in
         bzip3
         cachix
         cargo
+        ciscoPacketTracer8
         copyq
         chromium
         cl
