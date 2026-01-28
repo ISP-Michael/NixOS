@@ -6,7 +6,6 @@
   ...
 }:
 let
-  dprintPkgs = lib.filter (x: lib.isDerivation x) (lib.attrValues pkgs.dprint-plugins);
   tmuxPkgs = with pkgs.tmuxPlugins; [
     jump
     power-theme
@@ -74,7 +73,6 @@ in
 {
   environment = {
     systemPackages =
-      dprintPkgs ++
       nodePkgs ++
       tmuxPkgs ++
       winappsPkgs ++
@@ -131,7 +129,6 @@ in
         docker-compose-language-service
         dotnetCorePackages.sdk_9_0-bin
         dpkg
-        dprint
         dua
         dust
         emacs
@@ -236,8 +233,9 @@ in
         manix
         mdcat
         memtester
-        # mongodb
+        mongodb
         moreutils
+        mc
         mpv
         mpvpaper
         neovide
@@ -280,9 +278,8 @@ in
         pre-commit
         pv
         pyright
-        python12Env
+        # python12Env
         python13Env
-        python314
         pywal
         qbittorrent
         quickshell

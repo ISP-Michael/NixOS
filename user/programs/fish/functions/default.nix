@@ -1,6 +1,6 @@
 {
   imports = [
-    ./bnc.nix
+    # ./bnc.nix
     ./dotnet.nix
     ./git.nix
     ./prompt.nix
