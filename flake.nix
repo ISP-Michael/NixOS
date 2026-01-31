@@ -82,25 +82,6 @@
             ;
         };
         modules = [
-          {
-            nixpkgs = {
-              config = {
-                allowUnfree = true;
-              };
-              overlays = [
-                (final: prev: {
-                  neovim = unstable-pkgs.neovim;
-                  hyprland = unstable-pkgs.hyprland;
-                  telegram-desktop = unstable-pkgs.telegram-desktop;
-                  throne = unstable-pkgs.throne;
-                  # unciv = unstable-pkgs.unciv;
-                  xdg-desktop-portal-hyprland = unstable-pkgs.xdg-desktop-portal-hyprland;
-                  neovide = unstable-pkgs.neovide;
-                  quickshell = unstable-pkgs.quickshell;
-                })
-              ];
-            };
-          }
           ./host/configuration.nix
           nur.modules.nixos.default
           sops-nix.nixosModules.sops

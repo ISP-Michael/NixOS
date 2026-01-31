@@ -1,4 +1,8 @@
 {
+  lib,
+  ...
+}:
+{
   imports = [
     ./boot.nix
     ./console.nix
@@ -21,6 +25,9 @@
     config = {
       permittedInsecurePackages = [
         "ciscoPacketTracer8-8.2.2"
+      ];
+      allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+        "obsidian"
       ];
     };
   };

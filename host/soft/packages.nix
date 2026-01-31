@@ -67,6 +67,7 @@ let
     winapps-launcher
   ];
   unstablePkgs = with unstable-pkgs; [
+    obsidian
     unciv
   ];
 in
@@ -92,6 +93,7 @@ in
         bash-language-server
         bc
         beamMinimal27Packages.elixir
+        boxes
         binutils
         biome
         black
@@ -258,7 +260,6 @@ in
         ntfs3g
         nurl
         nushell
-        obsidian
         obs-studio
         openssl
         oxlint
@@ -290,6 +291,7 @@ in
         ripgrep
         rofi
         roslyn-ls
+        ruff
         rust-analyzer
         ryzenadj
         sass
@@ -319,6 +321,7 @@ in
         tree
         tshark
         typescript
+        ty
         typescript-language-server
         ueberzug
         ueberzugpp
@@ -333,6 +336,8 @@ in
         v2ray
         video-downloader
         vim-language-server
+        vscode-css-languageserver
+        vscode-json-languageserver
         vscode-fhs
         w3m
         waydroid
