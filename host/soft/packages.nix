@@ -69,6 +69,7 @@ let
   unstablePkgs = with unstable-pkgs; [
     obsidian
     unciv
+    ty
   ];
 in
 {
@@ -235,6 +236,7 @@ in
         manix
         mdcat
         memtester
+        minikube
         mongodb
         moreutils
         mc
@@ -321,7 +323,6 @@ in
         tree
         tshark
         typescript
-        ty
         typescript-language-server
         ueberzug
         ueberzugpp
@@ -343,8 +344,8 @@ in
         waydroid
         wev
         wget
-        winetricks
-        wineWowPackages.stagingFull
+        # winetricks
+        # wineWowPackages.stagingFull
         wireshark
         wireplumber
         wl-clipboard

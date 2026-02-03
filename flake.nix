@@ -65,7 +65,12 @@
     }@inputs:
     let
       system = "x86_64-linux";
-      unstable-pkgs = nixos-unstable.legacyPackages.${system};
+      unstable-pkgs = import nixos-unstable {
+        inherit system;
+        config = {
+          allowUnfree = true;
+        };
+      };
       master-pkgs = nixpkgs.legacyPackages.${system};
       winapps-pkgs = winapps.packages.${system};
     in

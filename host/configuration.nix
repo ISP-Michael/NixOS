@@ -1,8 +1,4 @@
 {
-  lib,
-  ...
-}:
-{
   imports = [
     ./boot.nix
     ./console.nix
@@ -19,16 +15,6 @@
   documentation = {
     man = {
       generateCaches = false;
-    };
-  };
-  nixpkgs = {
-    config = {
-      permittedInsecurePackages = [
-        "ciscoPacketTracer8-8.2.2"
-      ];
-      allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-        "obsidian"
-      ];
     };
   };
 }
