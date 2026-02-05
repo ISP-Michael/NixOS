@@ -4,7 +4,7 @@
       enable = true;
       config = {
         wrap = "never";
-        theme = "TwoDark";
+        theme = "zenburn";
       };
     };
   };
