@@ -338,6 +338,7 @@ in
         video-downloader
         vim-language-server
         vscode-css-languageserver
+        vscode-langservers-extracted
         vscode-json-languageserver
         vscode-fhs
         w3m

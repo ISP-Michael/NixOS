@@ -20,6 +20,8 @@
         selection_foreground = "none";
         foreground = "#c0caf5";
         background = "#1a1b26";
+        repaint_delay = 2;
+        input_delay = 0;
       };
     };
   };
