@@ -1,7 +1,7 @@
 {
   services = {
     navidrome = {
-      enable = true;
+      enable = false;
       settings = {
         MusicFolder = "/var/lib/music";
         DataFolder = "/var/lib/navidrome";

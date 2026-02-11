@@ -67,8 +67,11 @@ let
     winapps-launcher
   ];
   unstablePkgs = with unstable-pkgs; [
+    ciscoPacketTracer9
     obsidian
+    lua-language-server
     unciv
+    ruff
     ty
   ];
 in
@@ -108,7 +111,6 @@ in
         bzip3
         cachix
         cargo
-        ciscoPacketTracer8
         copyq
         chromium
         cl
@@ -147,6 +149,7 @@ in
         fd
         feishin
         ffmpeg
+        foliate
         file
         fishPlugins.fifc
         fishPlugins.done
@@ -231,7 +234,6 @@ in
         lsd
         lshw
         lua
-        lua-language-server
         lynx
         manix
         mdcat
@@ -293,7 +295,6 @@ in
         ripgrep
         rofi
         roslyn-ls
-        ruff
         rust-analyzer
         ryzenadj
         sass
@@ -302,6 +303,7 @@ in
         sing-box
         sing-geoip
         sing-geosite
+        socat
         shellharden
         smartmontools
         speedtest-cli
@@ -317,6 +319,7 @@ in
         telegram-desktop
         tesseract
         terraform
+        tig
         tg
         tlp
         tmux
@@ -337,6 +340,7 @@ in
         v2ray
         video-downloader
         vim-language-server
+        vlc
         vscode-css-languageserver
         vscode-langservers-extracted
         vscode-json-languageserver
