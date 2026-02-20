@@ -1,44 +1,14 @@
 {
-  lib,
   pkgs,
   unstable-pkgs,
-  winapps-pkgs,
   ...
 }:
 let
-  tmuxPkgs = with pkgs.tmuxPlugins; [
-    jump
-    power-theme
-    tmux-fzf
-  ];
   nodePkgs = with pkgs.nodePackages_latest; [
     browser-sync
     nodejs
     prettier
   ];
-  python12Env = pkgs.python312.withPackages (
-    ps: with ps; [
-      aiogram
-      cython
-      debugpy
-      django
-      grip
-      fastapi
-      fastapi-cli
-      fontforge
-      nox
-      nuitka
-      numpy
-      pandas
-      pillow
-      psutil
-      pyrogram
-      requests
-      rich
-      matplotlib
-      tgcrypto
-    ]
-  );
   python13Env = pkgs.python313.withPackages (
     ps: with ps; [
       aiogram
@@ -62,10 +32,6 @@ let
       tgcrypto
     ]
   );
-  winappsPkgs = with winapps-pkgs; [
-    winapps
-    winapps-launcher
-  ];
   unstablePkgs = with unstable-pkgs; [
     ciscoPacketTracer9
     obsidian
@@ -79,8 +45,6 @@ in
   environment = {
     systemPackages =
       nodePkgs ++
-      tmuxPkgs ++
-      winappsPkgs ++
       unstablePkgs ++
       (with pkgs; [
         acpi
@@ -265,6 +229,7 @@ in
         nurl
         nushell
         obs-studio
+        opencode
         openssl
         oxlint
         pamixer
@@ -283,7 +248,6 @@ in
         pre-commit
         pv
         pyright
-        # python12Env
         python13Env
         pywal
         qbittorrent
@@ -349,8 +313,6 @@ in
         waydroid
         wev
         wget
-        # winetricks
-        # wineWowPackages.stagingFull
         wireshark
         wireplumber
         wl-clipboard
