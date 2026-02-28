@@ -33,7 +33,7 @@ let
     ]
   );
   unstablePkgs = with unstable-pkgs; [
-    ciscoPacketTracer9
+    cisco-packet-tracer_9
     obsidian
     lua-language-server
     unciv
