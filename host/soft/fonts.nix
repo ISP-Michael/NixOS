@@ -38,7 +38,6 @@ in
         noto-fonts
         noto-fonts-cjk-sans
         source-code-pro
-        # texlivePackages.alegreya
         hackgen-font
       ]);
   };

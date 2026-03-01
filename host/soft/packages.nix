@@ -310,7 +310,6 @@ in
         vscode-json-languageserver
         vscode-fhs
         w3m
-        waydroid
         wev
         wget
         wireshark
