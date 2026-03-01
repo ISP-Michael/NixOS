@@ -9,7 +9,6 @@
     ./lutris.nix
     ./nh
     ./kitty
-    # ./waybar
     ./firefox.nix
     ./yazi.nix
   ];
