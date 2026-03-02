@@ -4,6 +4,6 @@
     ./nixpkgs.nix
     ./packages.nix
     ./programs
-    ./virtualization.nix
+    ./virtualisation.nix
   ];
 }

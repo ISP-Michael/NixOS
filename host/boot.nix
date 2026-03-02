@@ -8,6 +8,7 @@
     kernelParams = [
       "amdgpu.dcdebugmask=0x40000"
     ];
+
     loader = {
       efi = {
         canTouchEfiVariables = true;

@@ -3,6 +3,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs";
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+    hyprland.url = "github:hyprwm/Hyprland";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -57,6 +58,7 @@
       nixos-stable,
       nixpkgs,
       nur,
+      hyprland,
       self,
       sops-nix,
       stylix,
@@ -72,6 +74,7 @@
         };
       };
       master-pkgs = nixpkgs.legacyPackages.${system};
+      hyprland-pkgs = hyprland.packages.${system};
       winapps-pkgs = winapps.packages.${system};
     in
     {
@@ -83,6 +86,7 @@
             master-pkgs
             unstable-pkgs
             nur
+            hyprland-pkgs
             winapps-pkgs
             ;
         };
@@ -101,6 +105,7 @@
             self
             unstable-pkgs
             nur
+            hyprland-pkgs
             winapps-pkgs
             ;
         };
