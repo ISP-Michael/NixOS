@@ -8,7 +8,6 @@
     ./helix.nix
     ./lutris.nix
     ./nh
-    ./kitty
     ./firefox.nix
     ./yazi.nix
   ];
