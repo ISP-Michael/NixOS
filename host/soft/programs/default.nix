@@ -1,6 +1,7 @@
 {
   imports = [
     ./appimage.nix
+    ./dconf.nix
     ./throne.nix
     ./hyprland.nix
     ./programs.nix
