@@ -33,6 +33,8 @@ let
     ]
   );
   unstablePkgs = with unstable-pkgs; [
+    steam-run
+    telegram-desktop
     cisco-packet-tracer_9
     obsidian
     lua-language-server
@@ -63,7 +65,6 @@ in
         beamMinimal27Packages.elixir
         boxes
         binutils
-        biome
         black
         blender
         blesh
@@ -71,7 +72,6 @@ in
         bluez
         brightnessctl
         btop
-        byedpi
         bzip3
         cachix
         cargo
@@ -85,7 +85,6 @@ in
         copyq
         cron
         csharp-ls
-        dart
         dconf
         devenv
         delve
@@ -121,9 +120,6 @@ in
         fishPlugins.autopair
         fish-lsp
         flatpak
-        flutter
-        fontforge
-        fontforge-gtk
         fuzzel
         fzf
         gcc
@@ -145,7 +141,6 @@ in
         gnumake
         gnupg
         go
-        godot_4
         goimports-reviser
         gopls
         gosimports
@@ -178,6 +173,7 @@ in
         kubernetes
         keepass
         keyd
+        killall
         kitty
         kooha
         kotlin
@@ -253,7 +249,6 @@ in
         qbittorrent
         quickshell
         rar
-        ranger
         redis
         ripdrag
         ripgrep
@@ -268,19 +263,15 @@ in
         sing-geoip
         sing-geosite
         socat
-        shellharden
         smartmontools
         speedtest-cli
-        spoofdpi
         sqlite
         sqlitebrowser
         sqls
         starship
-        steam-run
         subversion
         superhtml
         tcpdump
-        telegram-desktop
         tesseract
         terraform
         tig
@@ -324,6 +315,7 @@ in
         xray
         yaml-language-server
         ytdownloader
+        yt-dlp
         zapret
         zathura
         zig
@@ -331,9 +323,5 @@ in
         zlib
         zoxide
       ]);
-    sessionVariables = {
-      GTK_USE_PORTAL = "1";
-      QT_QPA_PLATFORMTHEME = "kde";
-    };
   };
 }

@@ -1,5 +1,6 @@
 {
   imports = [
+    # ./display.nix
     ./fprintd.nix
     ./flatpak.nix
     ./mysql.nix
