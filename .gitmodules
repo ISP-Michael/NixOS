@@ -7,3 +7,6 @@
 [submodule "dependencies/qs"]
     path = dependencies/qs
     url = git@github.com:ISP-Michael/Quickshell.git
+[submodule "dependencies/kitty"]
+	path = dependencies/kitty
+	url = git@github.com:ISP-Michael/Kitty.git
