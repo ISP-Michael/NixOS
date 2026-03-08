@@ -224,6 +224,8 @@ in
         ntfs3g
         nurl
         nushell
+        obs-cli
+        obs-cmd
         obs-studio
         opencode
         openssl
