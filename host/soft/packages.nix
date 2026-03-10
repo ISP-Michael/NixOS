@@ -189,6 +189,8 @@ in
         kdePackages.dolphin
         kdePackages.kdialog
         kdePackages.xdg-desktop-portal-kde
+        kdePackages.kio-admin
+        kdePackages.kio-extras
         libsForQt5.qt5.qtgraphicaleffects
         lm_sensors
         lsd
@@ -284,6 +286,8 @@ in
         tshark
         typescript
         typescript-language-server
+        udisks
+        udiskie
         ueberzug
         ueberzugpp
         universal-ctags
@@ -294,6 +298,7 @@ in
         uutils-findutils
         uutils-diffutils
         vagrant
+        ventoy-full
         v2ray
         video-downloader
         vim-language-server

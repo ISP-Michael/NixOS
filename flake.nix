@@ -94,6 +94,19 @@
           ./host/configuration.nix
           nur.modules.nixos.default
           sops-nix.nixosModules.sops
+          {
+            nixpkgs = {
+              config = {
+                allowUnfree = true;
+                allowBroken = true;
+                allowUnsupportedSystem = true;
+                android_sdk.accept_license = true;
+                permittedInsecurePackages = [
+                  "ventoy-1.1.10"
+                ];
+              };
+            };
+          }
         ];
       };
       homeConfigurations.Michael = home-manager.lib.homeManagerConfiguration {
