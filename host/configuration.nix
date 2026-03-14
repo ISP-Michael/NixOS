@@ -7,6 +7,7 @@
     ./scripts
     ./services
     ./settings
+    ./sops.nix
     ./soft
     ./system
     ./time.nix

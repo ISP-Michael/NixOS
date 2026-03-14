@@ -213,6 +213,7 @@ in
         nixd
         nixdoc
         nixfmt-rfc-style
+        nix-diff
         nix-index
         nix-init
         nix-serve
@@ -226,6 +227,7 @@ in
         ntfs3g
         nurl
         nushell
+        nvd
         obs-cli
         obs-cmd
         obs-studio
@@ -267,6 +269,8 @@ in
         sing-geoip
         sing-geosite
         socat
+        sops
+        ssh-to-age
         smartmontools
         speedtest-cli
         sqlite

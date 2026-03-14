@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   ...
 }:
 {
@@ -7,8 +8,8 @@
     users = {
       Michael = {
         isNormalUser = true;
-        password = "michael";
         shell = pkgs.fish;
+        hashedPasswordFile = config.sops.secrets."user-password".path;
         extraGroups = [
           "docker"
           "dockerd"

@@ -2,9 +2,13 @@
   users = {
     groups = {
       libvirtd = {
-        members = [ "Michael" ];
+        members = [
+          "Michael"
+        ];
       };
-      media = {};
+      media = {
+
+      };
     };
   };
 }
