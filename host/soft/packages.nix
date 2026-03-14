@@ -18,7 +18,6 @@ let
       grip
       fastapi
       fastapi-cli
-      fontforge
       nox
       nuitka
       numpy
@@ -33,6 +32,7 @@ let
     ]
   );
   unstablePkgs = with unstable-pkgs; [
+    uv
     steam-run
     telegram-desktop
     cisco-packet-tracer_9
