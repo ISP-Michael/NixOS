@@ -277,6 +277,7 @@ in
         sqlitebrowser
         sqls
         starship
+        statix
         subversion
         superhtml
         tcpdump

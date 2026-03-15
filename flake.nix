@@ -130,10 +130,12 @@
               };
               overlays = [
                 (final: prev: {
-                  nh = unstable-pkgs.nh;
-                  firefox = unstable-pkgs.firefox;
-                  kitty = unstable-pkgs.kitty;
-                  fish = unstable-pkgs.fish;
+                  inherit (unstable-pkgs)
+                    nh
+                    firefox
+                    kitty
+                    fish
+                    ;
                 })
               ];
             };
