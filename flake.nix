@@ -5,6 +5,15 @@
     nixos-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     hyprland.url = "github:hyprwm/Hyprland";
 
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs = {
+        nixpkgs = {
+          follows = "nixos-stable";
+        };
+      };
+    };
+
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs = {
@@ -56,6 +65,7 @@
       home-manager,
       nixos-unstable,
       nixos-stable,
+      nixos-generators,
       nixpkgs,
       nur,
       hyprland,
@@ -142,6 +152,20 @@
           }
           ./user/standalone.nix
           stylix.homeModules.stylix
+        ];
+      };
+      nixosConfigurations.iso = nixos-stable.lib.nixosSystem {
+        inherit system;
+        modules = [
+          "${nixos-stable}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+          ./iso/iso.nix
+          {
+            nixpkgs = {
+              config = {
+                allowUnfree = true;
+              };
+            };
+          }
         ];
       };
     };
