@@ -1,5 +1,5 @@
 keys:
-  - &admin_user age17m0j8906l9wu6zux32aw3afarp3t4dvqey8px4x7tqr5mawedfhs5aztrd
+  - &admin_user age1q7jwqf24aqvkrkncp5vuezlrdvvwm7zaus0sfynvffrns7wu2qhsqd8p4x
   - &host_magicbook age1735arg9q4e0dfc9d3apln2a9daplrf5eqyuefl8capa7wjzy5e2spwwclh
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
