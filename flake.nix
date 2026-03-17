@@ -156,9 +156,15 @@
       };
       nixosConfigurations.iso = nixos-stable.lib.nixosSystem {
         inherit system;
+        specialArgs = {
+          inherit
+            inputs
+            self
+            ;
+        };
         modules = [
           "${nixos-stable}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
-          ./iso/iso.nix
+          ./iso/configuration.nix
           {
             nixpkgs = {
               config = {

@@ -1,0 +1,25 @@
+local enable = vim.lsp.enable
+enable('bashls')
+enable('biome')
+enable('clangd')
+enable('dartls')
+enable('docker_compose_language_service')
+enable('dockerls')
+enable('emmet_ls')
+enable('fish_lsp')
+enable('gopls')
+enable('hyprls')
+enable('hyprls')
+enable('lua_ls')
+enable('nixd')
+enable('phpactor')
+enable('basedpyright')
+enable('roslyn_ls')
+enable('rust_analyzer')
+enable('superhtml')
+enable('ts_ls')
+enable('vimls')
+enable('sqls')
+
+local config = vim.lsp.config
+

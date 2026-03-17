@@ -1,0 +1,21 @@
+[font]
+normal = ["FiraCode Nerd Font"]
+size = 12
+
+[font.features]
+"FiraCode Nerd Font" = [
+  "+ss01",
+  "+ss03",
+  "+ss06",
+  "+ss07",
+  "+ss10",
+  "+cv02",
+  "+cv18",
+  "+cv25",
+  "+cv26",
+  "+cv27",
+  "+cv29",
+  "+cv30",
+  "+cv32",
+  "+zero"
+]
