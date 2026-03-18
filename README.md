@@ -31,13 +31,7 @@
 > I prefer fast dynamic configuration, which is impossible by implementing it through regular rebuild of home-manager after each change
 
 ## ✨ Desktop Preview
-> [!TIP]
-> Fastfetch
-
 ![ff.png](./dependencies/images/ff.png)
-> [!TIP]
-> Neovide
-
 ![neovide.png](./dependencies/images/neovide.png)
 
 ## 📦 Software
