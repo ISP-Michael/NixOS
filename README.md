@@ -33,9 +33,11 @@
 ## ✨ Desktop Preview
 > [!TIP]
 > Fastfetch
+
 ![ff.png](./dependencies/images/ff.png)
 > [!TIP]
 > Neovide
+
 ![neovide.png](./dependencies/images/neovide.png)
 
 ## 📦 Software
