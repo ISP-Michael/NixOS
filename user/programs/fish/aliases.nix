@@ -25,7 +25,7 @@
         grm = "git remote";
         gpll = "git pull";
         gpsh = "git push";
-        gs = "git status";
+        gs = "git status -s";
         gsb = "git submodule";
         gsh = "git stash";
         gsw = "git switch";

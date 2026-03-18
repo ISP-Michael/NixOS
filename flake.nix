@@ -3,16 +3,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs";
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
-    hyprland.url = "github:hyprwm/Hyprland";
-
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs = {
-        nixpkgs = {
-          follows = "nixos-stable";
-        };
-      };
-    };
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -49,15 +39,6 @@
         };
       };
     };
-
-    winapps = {
-      url = "github:winapps-org/winapps";
-      inputs = {
-        nixpkgs = {
-          follows = "nixos-stable";
-        };
-      };
-    };
   };
 
   outputs =
@@ -65,14 +46,10 @@
       home-manager,
       nixos-unstable,
       nixos-stable,
-      nixos-generators,
-      nixpkgs,
       nur,
-      hyprland,
       self,
       sops-nix,
       stylix,
-      winapps,
       ...
     }@inputs:
     let
@@ -83,9 +60,6 @@
           allowUnfree = true;
         };
       };
-      master-pkgs = nixpkgs.legacyPackages.${system};
-      hyprland-pkgs = hyprland.packages.${system};
-      winapps-pkgs = winapps.packages.${system};
     in
     {
       nixosConfigurations.MagicBook = nixos-stable.lib.nixosSystem {
@@ -93,11 +67,8 @@
           inherit
             inputs
             self
-            master-pkgs
             unstable-pkgs
             nur
-            hyprland-pkgs
-            winapps-pkgs
             ;
         };
         modules = [
@@ -124,12 +95,9 @@
         extraSpecialArgs = {
           inherit
             inputs
-            master-pkgs
             self
             unstable-pkgs
             nur
-            hyprland-pkgs
-            winapps-pkgs
             ;
         };
         modules = [
