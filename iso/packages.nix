@@ -6,8 +6,8 @@
   environment = {
     systemPackages = with pkgs; [
       firefox
-      kitty
       git
+      kitty
       neovim
       telegram-desktop
     ];

@@ -40,6 +40,7 @@
         rebuild = "ga /etc/nixos && nixos-rebuild switch --sudo --flake /etc/nixos";
         rebuild-boot = "ga /etc/nixos && sudo nixos-rebuild boot --flake /etc/nixos";
         rgi = "rg -i";
+        se = "sudoedit";
         update = "nix flake update --flake /etc/nixos";
         exa = "eza -laio --icons --git";
         exa-tree = "eza -aT -L=1 --icons";
