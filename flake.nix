@@ -86,6 +86,13 @@
                   "ventoy-1.1.10"
                 ];
               };
+              overlays = [
+                (final: prev: {
+                  inherit (unstable-pkgs)
+                    kitty
+                    ;
+                })
+              ];
             };
           }
         ];
