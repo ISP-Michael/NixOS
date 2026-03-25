@@ -31,6 +31,7 @@ in
       nerdPkgs ++
       (with pkgs; [
         alegreya-sans
+        cascadia-code
         corefonts
         comic-mono
         fira-code

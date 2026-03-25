@@ -118,7 +118,6 @@
                   inherit (unstable-pkgs)
                     nh
                     firefox
-                    kitty
                     fish
                     ;
                 })
