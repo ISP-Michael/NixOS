@@ -304,7 +304,6 @@ in
         uutils-diffutils
         vagrant
         ventoy-full
-        v2ray
         video-downloader
         vim-language-server
         vlc

@@ -6,6 +6,7 @@
     ./mysql.nix
     ./resolved.nix
     ./pipewire.nix
+    ./proxy.nix
     ./services.nix
     ./keyd.nix
   ];
