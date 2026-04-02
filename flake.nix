@@ -56,9 +56,10 @@
       system = "x86_64-linux";
       unstable-pkgs = import nixos-unstable {
         inherit system;
-        config = {
-          allowUnfree = true;
-        };
+        config.allowUnfree = true;
+        overlays = [
+          # (import ./overlays/unciv.nix)
+        ];
       };
     in
     {

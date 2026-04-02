@@ -263,6 +263,7 @@ in
         rust-analyzer
         ryzenadj
         sass
+        sbc
         sddm-astronaut
         silver-searcher
         sing-box
