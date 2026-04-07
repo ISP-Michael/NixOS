@@ -35,7 +35,6 @@ let
     uv
     steam-run
     telegram-desktop
-    cisco-packet-tracer_9
     obsidian
     lua-language-server
     unciv
@@ -90,7 +89,6 @@ in
         delve
         deno
         dig
-        discord
         disko
         dmidecode
         docker-compose
