@@ -209,13 +209,14 @@ in
         neovide
         neovim
         niri
-        nix-bash-completions
         nixd
         nixdoc
         nixfmt-rfc-style
+        nix-bash-completions
         nix-diff
         nix-index
         nix-init
+        nix-output-monitor
         nix-serve
         nix-serve-ng
         nixos-rebuild-ng
