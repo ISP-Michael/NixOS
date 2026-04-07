@@ -34,27 +34,27 @@
   };
 
 
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-uuid/e4d3f4ad-1139-4f49-a60a-a4c2fbf67e1b";
-      fsType = "ext4";
-    };
-  };
+  # fileSystems = {
+  #   "/" = {
+  #     device = "/dev/disk/by-uuid/e4d3f4ad-1139-4f49-a60a-a4c2fbf67e1b";
+  #     fsType = "ext4";
+  #   };
+  # };
 
-  fileSystems = {
-    "/boot" = {
-      device = "/dev/disk/by-uuid/8FC0-5952";
-      fsType = "vfat";
-      options = [
-        "fmask=0022"
-        "dmask=0022"
-      ];
-    };
-  };
+  # fileSystems = {
+  #   "/boot" = {
+  #     device = "/dev/disk/by-uuid/8FC0-5952";
+  #     fsType = "vfat";
+  #     options = [
+  #       "fmask=0022"
+  #       "dmask=0022"
+  #     ];
+  #   };
+  # };
 
-  swapDevices = [
-
-  ];
+  # swapDevices = [
+  #
+  # ];
 
   networking = {
     useDHCP = lib.mkDefault true;

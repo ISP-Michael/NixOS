@@ -4,6 +4,15 @@
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
 
+    disko = {
+      url = "github:nix-community/disko";
+      inputs = {
+        nixpkgs = {
+          follows = "nixos-stable";
+        };
+      };
+    };
+
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs = {
@@ -43,6 +52,7 @@
 
   outputs =
     {
+      disko,
       home-manager,
       nixos-unstable,
       nixos-stable,
@@ -74,6 +84,7 @@
         };
         modules = [
           ./host/configuration.nix
+          disko.nixosModules.disko
           nur.modules.nixos.default
           sops-nix.nixosModules.sops
           {
