@@ -1,13 +1,13 @@
 {
   disko = {
-    devivces = {
+    devices = {
       disk = {
         main = {
           type = "disk";
           device = "/dev/nvme0n1";
           content = {
             type = "gpt";
-            partions = {
+            partitions = {
               ESP = {
                 size = "1G";
                 type = "EF00";
