@@ -1,5 +1,5 @@
 NOW=$(date +"%Y-%m-%d_%H:%M:%S")
-PASS="97I66bYCJvIXfwdD"
+PASS="2IMcQ5XEd66auim0"
 WS="obsws://localhost:4455/$PASS"
 DIR="$HOME/Images/screenshots"
 NAME="obs_$NOW.png"
