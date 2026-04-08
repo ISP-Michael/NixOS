@@ -36,6 +36,7 @@ let
     steam-run
     telegram-desktop
     obsidian
+    neovide
     lua-language-server
     unciv
     ruff
@@ -204,7 +205,6 @@ in
         mc
         mpv
         mpvpaper
-        neovide
         neovim
         niri
         nixd

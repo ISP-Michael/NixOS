@@ -1,7 +1,7 @@
 {
   imports = [
     ./cache.nix
-    ./experimental-featuers.nix
+    ./experimental-features.nix
     ./settings.nix
   ];
 }

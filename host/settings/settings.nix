@@ -1,5 +1,10 @@
 {
+  pkgs,
+  ...
+}:
+{
   nix = {
+    package = pkgs.lixPackageSets.stable.lix;
     settings = {
       cores = 1;
       max-jobs = 4;

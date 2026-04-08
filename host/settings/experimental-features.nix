@@ -4,7 +4,7 @@
       experimental-features = [
         "flakes"
         "nix-command"
-        "pipe-operators"
+        # "pipe-operators"  # Not working for Lix
       ];
     };
   };
