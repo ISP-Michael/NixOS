@@ -1,0 +1,7 @@
+{
+  documentation = {
+    man = {
+      generateCaches = false;
+    };
+  };
+}
