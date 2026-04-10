@@ -1,9 +1,16 @@
 {
   pkgs,
   unstable-pkgs,
+  freesmlauncher,
   ...
 }:
 let
+  useLatestNeovim = false;
+  neovimPkg = if useLatestNeovim
+              then unstable-pkgs.neovim
+              else pkgs.neovim;
+
+  freesmlauncherPkg = freesmlauncher.packages."x86_64-linux".default;
   nodePkgs = with pkgs.nodePackages_latest; [
     browser-sync
     nodejs
@@ -120,6 +127,7 @@ in
         fish-lsp
         flatpak
         fuzzel
+        freesmlauncherPkg
         fzf
         gcc
         gdu
@@ -205,7 +213,7 @@ in
         mc
         mpv
         mpvpaper
-        neovim
+        neovimPkg
         niri
         nixd
         nixdoc
@@ -244,7 +252,6 @@ in
         playerctl
         polkit
         powershell
-        prismlauncher
         prometheus
         pre-commit
         pv

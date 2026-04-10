@@ -13,6 +13,15 @@
       };
     };
 
+    freesmlauncher = {
+      url = "github:FreesmTeam/FreesmLauncher";
+      inputs = {
+        nixpkgs = {
+          follows = "nixos-stable";
+        };
+      };
+    };
+
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs = {
@@ -60,6 +69,7 @@
       self,
       sops-nix,
       stylix,
+      freesmlauncher,
       ...
     }@inputs:
     let
@@ -80,6 +90,8 @@
             self
             unstable-pkgs
             nur
+            system
+            freesmlauncher
             ;
         };
         modules = [
