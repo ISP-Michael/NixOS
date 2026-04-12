@@ -5,11 +5,6 @@
   ...
 }:
 let
-  useLatestNeovim = false;
-  neovimPkg = if useLatestNeovim
-              then unstable-pkgs.neovim
-              else pkgs.neovim;
-
   freesmlauncherPkg = freesmlauncher.packages."x86_64-linux".default;
   nodePkgs = with pkgs.nodePackages_latest; [
     browser-sync
@@ -43,6 +38,7 @@ let
     steam-run
     telegram-desktop
     obsidian
+    kdePackages.okular
     neovide
     lua-language-server
     unciv
@@ -188,6 +184,7 @@ in
         lazydocker
         lazygit
         lf
+        libva-utils
         libffi
         libfprint-tod
         libnotify
@@ -213,7 +210,7 @@ in
         mc
         mpv
         mpvpaper
-        neovimPkg
+        neovim
         niri
         nixd
         nixdoc
