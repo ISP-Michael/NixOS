@@ -1,14 +1,22 @@
 {
-  services = {
-    blueman.enable = true;
-    libinput.enable = true;
-    postgresql.enable = true;
-    udisks2.enable = true;
-    openssh = {
+  lib,
+  ...
+}:
+let
+  enabledDefaults = lib.genAttrs [
+    "blueman"
+    "libinput"
+    "udisks2"
+  ]
+  (name: {
       enable = true;
-      settings = {
-        PermitRootLogin = "yes";
-      };
+    }
+  );
+in
+{
+  services = enabledDefaults // {
+    postgresql = {
+      enable = true;
     };
   };
 }
