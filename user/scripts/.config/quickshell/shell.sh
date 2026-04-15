@@ -1,0 +1,1 @@
+nohup qs &> ./shell.log &

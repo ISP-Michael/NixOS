@@ -84,6 +84,7 @@ in
         clang
         clang-tools
         clipse
+        cloudflare-warp
         cmake
         copyq
         cron
@@ -190,18 +191,20 @@ in
         libnotify
         libusb1
         libreoffice
-        kdePackages.dolphin
-        kdePackages.kdialog
-        kdePackages.xdg-desktop-portal-kde
-        kdePackages.kio-admin
-        kdePackages.kio-extras
         libsForQt5.qt5.qtgraphicaleffects
+        lsyncd
         lm_sensors
         lsd
         lshw
         lua
         lynx
+        kdePackages.dolphin
+        kdePackages.kdialog
+        kdePackages.xdg-desktop-portal-kde
+        kdePackages.kio-admin
+        kdePackages.kio-extras
         manix
+        makemkv
         mdcat
         memtester
         minikube
