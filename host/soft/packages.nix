@@ -40,6 +40,7 @@ let
     obsidian
     kdePackages.okular
     neovide
+    neovim
     lua-language-server
     unciv
     ruff
@@ -213,7 +214,6 @@ in
         mc
         mpv
         mpvpaper
-        neovim
         niri
         nixd
         nixdoc
@@ -295,6 +295,7 @@ in
         tlp
         tmux
         tree
+        tree-sitter
         tshark
         typescript
         typescript-language-server
