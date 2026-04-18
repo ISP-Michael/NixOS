@@ -23,4 +23,9 @@
       };
     };
   };
+  manual = {
+    manpages = {
+      enable = false;
+    };
+  };
 }
