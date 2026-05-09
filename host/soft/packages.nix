@@ -42,6 +42,7 @@ let
     neovide
     neovim
     lua-language-server
+    luajitPackages.tree-sitter-cli
     unciv
     ruff
     ty
@@ -292,10 +293,10 @@ in
         terraform
         tig
         tg
+        tor-browser
         tlp
         tmux
         tree
-        tree-sitter
         tshark
         typescript
         typescript-language-server

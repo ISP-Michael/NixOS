@@ -34,6 +34,7 @@
         home-rebuild = "ga . && home-manager switch --flake /etc/nixos";
         hyprshot = "hyprshot -o ~/Images/screenshots";
         e = "nvim";
+        efuzzy = "nvim (fzf || echo '-c q')";
         ndw = "nmcli device wifi";
         py = "python";
         r = "reset";
