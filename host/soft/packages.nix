@@ -88,7 +88,6 @@ in
         clipse
         cloudflare-warp
         cmake
-        copyq
         cron
         csharp-ls
         dconf

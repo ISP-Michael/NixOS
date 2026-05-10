@@ -5,7 +5,7 @@
       allowBroken = true;
       allowUnsupportedSystem = true;
       android_sdk.accept_license = true;
-      permittedInseurePackages = [
+      permittedInsecurePackages = [
         "ventoy-1.1.10"
       ];
     };
