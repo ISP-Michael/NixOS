@@ -3,6 +3,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs";
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
     disko = {
       url = "github:nix-community/disko";
       inputs = {
@@ -62,13 +63,16 @@
     sops-nix,
     stylix,
     freesmlauncher,
+    nix-flatpak,
     ...
   }@inputs:
   let
     system = "x86_64-linux";
     unstable-pkgs = import nixos-unstable {
       inherit system;
-      config.allowUnfree = true;
+      config = {
+        allowUnfree = true;
+      };
     };
   in
   {
@@ -88,6 +92,7 @@
         disko.nixosModules.disko
         nur.modules.nixos.default
         sops-nix.nixosModules.sops
+        nix-flatpak.nixosModules.nix-flatpak
         {
           nixpkgs = {
             config = {
@@ -100,13 +105,11 @@
               ];
             };
             overlays = [
-              (final:
-                prev: {
-                  inherit (unstable-pkgs)
-                    kitty
-                    ;
-                }
-              )
+              (final: prev: {
+                inherit (unstable-pkgs)
+                  kitty
+                  ;
+              })
             ];
           };
         }
@@ -129,15 +132,13 @@
               allowUnfree = true;
             };
             overlays = [
-              (final:
-                prev: {
-                  inherit (unstable-pkgs)
-                    nh
-                    firefox
-                    fish
-                    ;
-                }
-              )
+              (final: prev: {
+                inherit (unstable-pkgs)
+                  nh
+                  firefox
+                  fish
+                  ;
+              })
             ];
           };
         }

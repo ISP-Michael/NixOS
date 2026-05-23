@@ -214,6 +214,7 @@ in
         mc
         mpv
         mpvpaper
+        networkmanagerapplet
         niri
         nixd
         nixdoc
