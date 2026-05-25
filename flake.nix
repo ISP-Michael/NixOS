@@ -4,16 +4,9 @@
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     nix-flatpak.url = "github:gmodena/nix-flatpak";
+    freesmlauncher.url = "github:FreesmTeam/FreesmLauncher";
     disko = {
       url = "github:nix-community/disko";
-      inputs = {
-        nixpkgs = {
-          follows = "nixos-stable";
-        };
-      };
-    };
-    freesmlauncher = {
-      url = "github:FreesmTeam/FreesmLauncher";
       inputs = {
         nixpkgs = {
           follows = "nixos-stable";

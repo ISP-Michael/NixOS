@@ -104,6 +104,7 @@ in
         dua
         dust
         emacs
+        emacsPackages.telega
         emmet-language-server
         emmet-ls
         entr
@@ -259,6 +260,7 @@ in
         pyright
         python13Env
         pywal
+        p7zip
         qbittorrent
         quickshell
         rar
