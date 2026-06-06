@@ -1,10 +1,13 @@
 {
   pkgs,
+  unstable-pkgs,
   ...
 }:
 {
   nix = {
-    package = pkgs.lixPackageSets.stable.lix;
+    package = unstable-pkgs.lixPackageSets.latest.lix;
+    daemonCPUSchedPolicy = "idle";
+    daemonIOSchedClass = "idle";
     settings = {
       cores = 1;
       max-jobs = 4;

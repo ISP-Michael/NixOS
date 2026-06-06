@@ -11,6 +11,7 @@
     ./settings
     ./sops.nix
     ./soft
+    ./ssh.nix
     ./systemd.nix
     ./system
     ./time.nix

@@ -28,8 +28,8 @@ in
       enable = true;
     };
     packages =
-      nerdPkgs ++
-      (with pkgs; [
+      nerdPkgs ++ (
+        with pkgs; [
         alegreya-sans
         cascadia-code
         corefonts
@@ -40,6 +40,7 @@ in
         noto-fonts-cjk-sans
         source-code-pro
         hackgen-font
-      ]);
+      ]
+    );
   };
 }

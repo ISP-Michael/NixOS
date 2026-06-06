@@ -95,6 +95,7 @@
               android_sdk.accept_license = true;
               permittedInsecurePackages = [
                 "ventoy-1.1.10"
+                "docker-28.5.2"
               ];
             };
             overlays = [
