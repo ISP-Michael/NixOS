@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixos-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixos-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
     nix-flatpak.url = "github:gmodena/nix-flatpak";
     freesmlauncher.url = "github:FreesmTeam/FreesmLauncher";
     disko = {
@@ -94,7 +94,7 @@
               allowUnsupportedSystem = true;
               android_sdk.accept_license = true;
               permittedInsecurePackages = [
-                "ventoy-1.1.10"
+                "ventoy-1.1.12"
                 "docker-28.5.2"
               ];
             };

@@ -6,11 +6,6 @@
 }:
 let
   freesmlauncherPkg = freesmlauncher.packages."x86_64-linux".default;
-  nodePkgs = with pkgs.nodePackages_latest; [
-    browser-sync
-    nodejs
-    prettier
-  ];
   python13Env = pkgs.python313.withPackages (
     ps: with ps; [
       aiogram
@@ -26,14 +21,14 @@ let
       pandas
       pillow
       psutil
-      pyrogram
       requests
       rich
       matplotlib
-      tgcrypto
     ]
   );
   unstablePkgs = with unstable-pkgs; [
+    browser-sync
+    prettier
     distant
     uv
     steam-run
@@ -42,6 +37,7 @@ let
     kdePackages.okular
     neovide
     neovim
+    nodejs_latest
     sshfs-fuse
     lua-language-server
     luajitPackages.tree-sitter-cli
@@ -53,7 +49,6 @@ in
 {
   environment = {
     systemPackages =
-      nodePkgs ++
       unstablePkgs ++
       (with pkgs;
         [
@@ -224,7 +219,7 @@ in
           niri
           nixd
           nixdoc
-          nixfmt-rfc-style
+          nixfmt
           nix-bash-completions
           nix-diff
           nix-index
@@ -338,7 +333,7 @@ in
           wtype
           xdg-desktop-portal
           xdg-desktop-portal-gtk
-          xfce.thunar
+          thunar
           xplr
           xray
           yaml-language-server

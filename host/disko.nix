@@ -39,6 +39,7 @@
                         mountOptions = [
                           "compress=zstd"
                           "noatime"
+                          "commit=120"
                         ];
                       };
                       "/home" = {
@@ -46,6 +47,7 @@
                         mountOptions = [
                           "compress=zstd"
                           "noatime"
+                          "commit=120"
                         ];
                       };
                       "/nix" = {
@@ -53,6 +55,7 @@
                         mountOptions = [
                           "compress=zstd"
                           "noatime"
+                          "commit=120"
                         ];
                       };
                       "/swap" = {
