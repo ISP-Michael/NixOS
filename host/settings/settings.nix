@@ -35,11 +35,6 @@
   boot = {
     kernelModules = [
       "tcp_bbr"
-      "amd_pstate_ut"
-      "amd_pstate"
-    ];
-    kernelParams = [
-      "amd_pstate=active"
     ];
     kernel = {
       sysctl = {

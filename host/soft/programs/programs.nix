@@ -8,5 +8,6 @@
     steam.enable = true;
     ccache.enable = true;
     virt-manager.enable = true;
+    ydotool.enable = true;
   };
 }

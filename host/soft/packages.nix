@@ -280,6 +280,7 @@ in
           sing-geosite
           socat
           sops
+          slurp
           ssh-to-age
           smartmontools
           speedtest-cli
@@ -339,6 +340,7 @@ in
           yaml-language-server
           ytdownloader
           yt-dlp
+          ydotool
           zapret
           zathura
           zig

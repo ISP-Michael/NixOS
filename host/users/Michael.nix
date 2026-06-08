@@ -16,6 +16,7 @@
           "input"
           "networkmanager"
           "wheel"
+          "ydotool"
         ];
       };
       root = {
