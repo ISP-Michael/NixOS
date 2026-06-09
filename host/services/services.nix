@@ -15,8 +15,8 @@ let
 in
 {
   services = enabledDefaults // {
-    postgresql = {
-      enable = true;
-    };
+    postgresql.enable = true;
+    tuned.enable = true;
+    upower.enable = true;
   };
 }

@@ -1,10 +1,12 @@
 {
+  inputs,
   pkgs,
   unstable-pkgs,
   freesmlauncher,
   ...
 }:
 let
+  noctalia-shell = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
   freesmlauncherPkg = freesmlauncher.packages."x86_64-linux".default;
   python13Env = pkgs.python313.withPackages (
     ps: with ps; [
@@ -231,6 +233,7 @@ in
           nixpkgs-fmt
           nix-tree
           nnn
+          noctalia-shell
           nordzy-cursor-theme
           nox
           ntfs3g

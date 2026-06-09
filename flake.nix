@@ -4,6 +4,7 @@
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
     nix-flatpak.url = "github:gmodena/nix-flatpak";
+    noctalia.url = "github:noctalia-dev/noctalia/legacy-v4";
     freesmlauncher.url = "github:FreesmTeam/FreesmLauncher";
     disko = {
       url = "github:nix-community/disko";
