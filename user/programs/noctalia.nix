@@ -3,18 +3,13 @@
   ...
 }:
 {
-  home-manager = {
-    users = {
-      drfoobar = {
-        imports = [
-          inputs.noctalia.homeModules.default
-        ];
-        programs = {
-          noctalia-shell = {
-            enable = true;
-          };
-        };
-      };
+  imports = [
+    inputs.noctalia.homeModules.default
+  ];
+  programs = {
+    noctalia = {
+      systemd.enable = true;
+      enable = true;
     };
   };
 }
