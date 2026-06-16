@@ -9,5 +9,7 @@
     ccache.enable = true;
     virt-manager.enable = true;
     ydotool.enable = true;
+    gamemode.enable = true;
+    gpu-screen-recorder.enable = true;
   };
 }

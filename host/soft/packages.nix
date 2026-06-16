@@ -145,6 +145,7 @@ in
           glibc
           glibcLocales
           glow
+          gpu-screen-recorder
           gnumake
           gnupg
           go
@@ -336,7 +337,6 @@ in
           wofi
           wtype
           xdg-desktop-portal
-          xdg-desktop-portal-gtk
           thunar
           xplr
           xray

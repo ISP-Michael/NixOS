@@ -1,5 +1,10 @@
 {
   xdg = {
+    configFile = {
+      "mimeapps.list" = {
+        force = true;
+      };
+    };
     mimeApps = {
       enable = true;
       defaultApplications = {

@@ -1,5 +1,4 @@
 {
-  hyprland-pkgs,
   unstable-pkgs,
   pkgs,
   ...
@@ -10,12 +9,13 @@
       enable = true;
       extraPortals = [
         unstable-pkgs.xdg-desktop-portal-hyprland
+        pkgs.kdePackages.xdg-desktop-portal-kde
         pkgs.xdg-desktop-portal-gtk
       ];
       config = {
         "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
-        "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
         "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
+        "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
       };
     };
   };
