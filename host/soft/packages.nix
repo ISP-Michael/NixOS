@@ -244,6 +244,7 @@ in
           obs-cli
           obs-cmd
           obs-studio
+          openclaw
           opencode
           openssl
           oxlint
