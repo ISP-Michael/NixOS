@@ -1,6 +1,7 @@
 {
   inputs,
   unstable-pkgs,
+  git-pkgs,
   ...
 }:
 {

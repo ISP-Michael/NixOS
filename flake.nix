@@ -50,6 +50,7 @@
   outputs = {
     disko,
     home-manager,
+    nixpkgs,
     nixos-unstable,
     nixos-stable,
     nur,
@@ -68,6 +69,12 @@
         allowUnfree = true;
       };
     };
+    git-pkgs = import nixpkgs {
+      inherit system;
+      config = {
+        allowUnfree = true;
+      };
+    };
   in
   {
     nixosConfigurations.MagicBook = nixos-stable.lib.nixosSystem {
@@ -76,6 +83,7 @@
           inputs
           self
           unstable-pkgs
+          git-pkgs
           nur
           system
           freesmlauncher
@@ -118,6 +126,7 @@
           inputs
           self
           unstable-pkgs
+          git-pkgs
           nur
           ;
       };
