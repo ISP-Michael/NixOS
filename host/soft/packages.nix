@@ -328,6 +328,7 @@ in
           vscode-langservers-extracted
           vscode-json-languageserver
           vscode-fhs
+          v2rayn
           w3m
           wev
           wget
@@ -350,6 +351,7 @@ in
           zig
           zip
           zlib
+          zbar
           zoxide
         ]
       );
