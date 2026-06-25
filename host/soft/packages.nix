@@ -163,7 +163,6 @@ in
           hyprcursor
           hypridle
           hyprlang
-          hyprlock
           hyprls
           hyprpaper
           hyprpicker
