@@ -1,6 +1,6 @@
 {
   imports = [
-    ./filesystems.nix
+    # ./filesystems.nix
     ./swap.nix
     ./system.nix
   ];

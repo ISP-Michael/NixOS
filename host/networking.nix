@@ -3,12 +3,13 @@
     hostName = "MagicBook";
     enableIPv6 = false;
     nameservers = [
-      "8.8.8.8"
       "1.1.1.1"
+      "8.8.8.8"
+      "9.9.9.9"
+      "1.0.0.1"
     ];
     networkmanager = {
       enable = true;
-      dns = "systemd-resolved";
       wifi = {
         scanRandMacAddress = false;
       };

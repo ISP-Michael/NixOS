@@ -63,6 +63,7 @@
   }@inputs:
   let
     system = "x86_64-linux";
+    unstable-lib = nixos-unstable.lib;
     unstable-pkgs = import nixos-unstable {
       inherit system;
       config = {
@@ -83,6 +84,7 @@
           inputs
           self
           unstable-pkgs
+          unstable-lib
           git-pkgs
           nur
           system
@@ -126,6 +128,7 @@
           inputs
           self
           unstable-pkgs
+          unstable-lib
           git-pkgs
           nur
           ;
