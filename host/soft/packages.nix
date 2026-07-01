@@ -236,7 +236,8 @@ in
           noctalia-shell
           nordzy-cursor-theme
           nox
-          ntfs3g
+          exfatprogs
+          ntfsprogs-plus
           nurl
           nushell
           nvd

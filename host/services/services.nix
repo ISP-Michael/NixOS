@@ -15,6 +15,7 @@ let
 in
 {
   services = enabledDefaults // {
+    gvfs.enable = true;
     postgresql.enable = true;
     tuned.enable = true;
     upower.enable = true;

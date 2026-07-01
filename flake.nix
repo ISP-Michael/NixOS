@@ -114,6 +114,7 @@
               (final: prev: {
                 inherit (unstable-pkgs)
                   kitty
+                  opencode
                   ;
               })
             ];

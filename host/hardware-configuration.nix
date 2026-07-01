@@ -26,6 +26,7 @@
 
     kernelModules = [
       "kvm-amd"
+      "ntfs"
     ];
 
     extraModulePackages = [
