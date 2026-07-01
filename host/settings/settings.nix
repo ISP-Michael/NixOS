@@ -25,13 +25,6 @@
       ];
     };
   };
-  services = {
-    scx = {
-      enable = true;
-      package = unstable-pkgs.scx.full;
-      scheduler = "scx_lavd";
-    };
-  };
   boot = {
     kernelModules = [
       "tcp_bbr"
@@ -41,19 +34,13 @@
         "vm.swappiness" = 10;
         "vm.dirty_background_ratio" = 5;
         "vm.dirty_ratio" = 10;
+        "vm.vfs_cache_pressure" = 50;
         "net.core.default_qdisc" = "fq";
         "net.ipv4.tcp_congestion_control" = "bbr";
       };
     };
   };
   powerManagement = {
-    cpuFreqGovernor = "powersave";
-  };
-  systemd = {
-    tmpfiles = {
-      rules = [
-        "w- /sys/devices/system/cpu/cpufreq/boost - - - - 0"
-      ];
-    };
+    cpuFreqGovernor = "schedutil";
   };
 }

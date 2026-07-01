@@ -22,7 +22,7 @@
         "text/markdown" = [ "obsidian.desktop" ];
         "text/plain" = [ "nvim.desktop" ];
         "text/x-readme" = [ "obsidian.desktop" ];
-        "text/x-shellscriipt" = [ "nvim.desktop" ];
+        "text/x-shellscript" = [ "nvim.desktop" ];
         "video/mp4" = [ "mpv.desktop" ];
         "video/webm" = [ "mpv.desktop" ];
         "video/x-matroska" = [ "mpv.desktop" ];

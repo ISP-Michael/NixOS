@@ -1,5 +1,5 @@
 {
   imports = [
-    ./copy.nix
+    # ./copy.nix
   ];
 }

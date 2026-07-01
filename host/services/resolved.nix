@@ -4,8 +4,8 @@
       enable = true;
       settings = {
         Resolve = {
-          DNSSEC = true;
-          DNSOverTLS = true;
+          DNSSEC = false;
+          DNSOverTLS = false;
         };
       };
     };

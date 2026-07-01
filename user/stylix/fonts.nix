@@ -7,7 +7,7 @@
         package = pkgs.noto-fonts;
       };
       monospace = {
-        name = "FiraCodeRoman-Regular";
+        name = "UbuntuSansMono Nerd Font";
         package = pkgs.ubuntu-sans-mono;
       };
     };

@@ -107,7 +107,7 @@
               permittedInsecurePackages = [
                 "ventoy-1.1.12"
                 "docker-28.5.2"
-                "openclaw-2026.5.7"
+                "pnpm-10.29.2"
               ];
             };
             overlays = [
