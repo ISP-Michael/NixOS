@@ -7,29 +7,36 @@
     displayManager = {
       sddm = {
         enable = true;
-        wayland.enable = true;
+        wayland.enable = false;
         package = pkgs.kdePackages.sddm;
-        theme = "sddm-astronaut-theme";
-        extraPackages = with pkgs; [
-          sddm-astronaut
-          kdePackages.qtmultimedia
-          kdePackages.qtsvg
-        ];
+        theme = "breeze";
+        settings = {
+          Input = {
+            XkbLayout = "us,ru";
+            XkbOptions = "grp:win_space_toggle";
+          };
+        };
       };
     };
-
     xserver = {
       enable = true;
       xkb = {
         layout = "us,ru";
-        options = "grp:alt_shift_toggle";
+        options = "grp:win_space_toggle";
       };
     };
   };
-
+  console = {
+    keyMap = "us";
+  };
   boot = {
     consoleLogLevel = 0;
     initrd.verbose = false;
     plymouth.enable = true;
+    kernelParams = [
+      "quiet"
+      "splash"
+      "udev.log_level=3"
+    ];
   };
 }
