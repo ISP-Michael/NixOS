@@ -149,6 +149,8 @@ in
           gnumake
           gnupg
           go
+          gogcli
+          google-cloud-sdk
           goimports-reviser
           gopls
           gosimports
@@ -159,6 +161,7 @@ in
           haskellPackages.cabal-install
           home-manager
           htmlhint
+          himalaya
           htop
           hyprcursor
           hypridle
@@ -182,6 +185,7 @@ in
           keyd
           killall
           kitty
+          khal
           kooha
           kotlin
           kotlin-language-server
@@ -323,6 +327,7 @@ in
           video-downloader
           vim-language-server
           vlc
+          vdirsyncer
           vscode-css-languageserver
           vscode-langservers-extracted
           vscode-json-languageserver
@@ -335,6 +340,7 @@ in
           wireshark
           wireplumber
           wl-clipboard
+          whisper-ctranslate2
           wofi
           wtype
           xdg-desktop-portal

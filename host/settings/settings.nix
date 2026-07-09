@@ -41,6 +41,6 @@
     };
   };
   powerManagement = {
-    cpuFreqGovernor = "schedutil";
+    cpuFreqGovernor = "powersave";
   };
 }

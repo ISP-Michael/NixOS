@@ -46,6 +46,9 @@
         };
       };
     };
+    nix-openclaw = {
+      url = "github:openclaw/nix-openclaw";
+    };
   };
   outputs = {
     disko,
@@ -59,6 +62,7 @@
     stylix,
     freesmlauncher,
     nix-flatpak,
+    nix-openclaw,
     ...
   }@inputs:
   let
@@ -68,6 +72,8 @@
       inherit system;
       config = {
         allowUnfree = true;
+        permittedInsecurePackages = [
+        ];
       };
     };
     git-pkgs = import nixpkgs {
@@ -99,6 +105,14 @@
         nix-flatpak.nixosModules.nix-flatpak
         {
           nixpkgs = {
+            overlays = [
+              (final: prev: {
+                inherit (unstable-pkgs)
+                  kitty
+                  opencode
+                  ;
+              })
+            ];
             config = {
               allowUnfree = true;
               allowBroken = true;
@@ -110,14 +124,6 @@
                 "pnpm-10.29.2"
               ];
             };
-            overlays = [
-              (final: prev: {
-                inherit (unstable-pkgs)
-                  kitty
-                  opencode
-                  ;
-              })
-            ];
           };
         }
       ];
@@ -148,6 +154,7 @@
                   fish
                   ;
               })
+              inputs.nix-openclaw.overlays.default
             ];
           };
         }

@@ -1,6 +1,5 @@
 {
   imports = [
-    # ./display.nix
     ./fprintd.nix
     ./flatpak.nix
     ./mysql.nix
@@ -9,6 +8,6 @@
     ./proxy.nix
     ./services.nix
     ./keyd.nix
-    # ./zapret.nix
+    ./zapret.nix
   ];
 }
