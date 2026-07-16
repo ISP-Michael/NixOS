@@ -11,6 +11,6 @@
     ./noctalia.nix
     ./firefox.nix
     ./yazi.nix
-    ./openclaw.nix
+    ./openclaw-module.nix
   ];
 }
