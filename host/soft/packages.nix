@@ -104,8 +104,6 @@ in
           dpkg
           dua
           dust
-          emacs
-          emacsPackages.telega
           emmet-language-server
           emmet-ls
           entr
