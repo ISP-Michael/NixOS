@@ -1,5 +1,6 @@
 {
   imports = [
+    ./logind.nix
     ./fprintd.nix
     ./flatpak.nix
     ./mysql.nix

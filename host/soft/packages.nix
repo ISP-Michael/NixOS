@@ -58,6 +58,7 @@ in
           atuin
           alacritty
           alejandra
+          amberol
           amdgpu_top
           ani-cli
           ansible
@@ -297,6 +298,7 @@ in
           statix
           subversion
           superhtml
+          tauon
           tcpdump
           tesseract
           terraform

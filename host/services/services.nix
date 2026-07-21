@@ -19,5 +19,6 @@ in
     postgresql.enable = true;
     tuned.enable = true;
     upower.enable = true;
+    fstrim.enable = true;
   };
 }

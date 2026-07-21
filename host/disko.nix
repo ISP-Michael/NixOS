@@ -37,7 +37,7 @@
                       "/root" = {
                         mountpoint = "/";
                         mountOptions = [
-                          "compress=zstd"
+                          "compress=zstd:1"
                           "noatime"
                           "commit=120"
                         ];
@@ -45,7 +45,7 @@
                       "/home" = {
                         mountpoint = "/home";
                         mountOptions = [
-                          "compress=zstd"
+                          "compress=zstd:1"
                           "noatime"
                           "commit=120"
                         ];
@@ -53,7 +53,7 @@
                       "/nix" = {
                         mountpoint = "/nix";
                         mountOptions = [
-                          "compress=zstd"
+                          "compress=zstd:1"
                           "noatime"
                           "commit=120"
                         ];
