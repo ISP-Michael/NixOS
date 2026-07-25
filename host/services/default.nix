@@ -1,6 +1,7 @@
 {
   imports = [
     ./logind.nix
+    ./fstrim.nix
     ./fprintd.nix
     ./flatpak.nix
     ./mysql.nix
