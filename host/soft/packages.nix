@@ -3,11 +3,13 @@
   pkgs,
   unstable-pkgs,
   freesmlauncher,
+  system,
   ...
 }:
 let
-  noctalia-shell = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  freesmlauncherPkg = freesmlauncher.packages."x86_64-linux".default;
+  noctalia-shell = inputs.noctalia.packages.${system}.default;
+  zen = inputs.zen-browser.packages.${system}.default;
+  freesmlauncherPkg = freesmlauncher.packages.${system}.freesmlauncher;
   python13Env = pkgs.python313.withPackages (
     ps: with ps; [
       aiogram
@@ -353,6 +355,7 @@ in
           ydotool
           zapret
           zathura
+          zen
           zig
           zip
           zlib

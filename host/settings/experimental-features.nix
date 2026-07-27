@@ -6,6 +6,7 @@
         "nix-command"
         # "pipe-operators"  # Not working for Lix
       ];
+      accept-flake-config = true;
     };
   };
 }

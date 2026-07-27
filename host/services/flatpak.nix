@@ -3,7 +3,9 @@
     flatpak = {
       enable = true;
       update.onActivation = true;
-      packages = [];
+      packages = [
+        # "flathub:app.zen_browser.zen"
+      ];
     };
   };
 }

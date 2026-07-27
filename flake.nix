@@ -49,6 +49,14 @@
     nix-openclaw = {
       url = "github:openclaw/nix-openclaw";
     };
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs = {
+        nixpkgs = {
+          follows = "nixos-stable";
+        };
+      };
+    };
   };
   outputs = {
     disko,
