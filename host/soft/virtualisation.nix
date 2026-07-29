@@ -15,7 +15,11 @@
     podman.enable = true;
     libvirtd.enable = true;
     spiceUSBRedirection.enable = true;
-    waydroid.enable = true;
-    waydroid.package = unstable-pkgs.waydroid;
+    waydroid = {
+      enable = true;
+      package = unstable-pkgs.waydroid.override {
+        withNftables = true;
+      };
+    };
   };
 }

@@ -111,6 +111,7 @@
         nur.modules.nixos.default
         sops-nix.nixosModules.sops
         nix-flatpak.nixosModules.nix-flatpak
+        ./happ-nixos/happ-module.nix
         {
           nixpkgs = {
             overlays = [
@@ -131,6 +132,13 @@
                 "docker-28.5.2"
                 "pnpm-10.29.2"
               ];
+            };
+          };
+          services = {
+            happ = {
+              enable = true;
+              forceXwayland = true;
+              forceSoftwareRendering = true;
             };
           };
         }

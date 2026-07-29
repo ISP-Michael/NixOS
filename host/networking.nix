@@ -20,7 +20,6 @@
     };
     firewall = {
       enable = true;
-      checkReversePath = false;
     };
   };
 }

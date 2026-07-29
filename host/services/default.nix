@@ -10,6 +10,6 @@
     ./proxy.nix
     ./services.nix
     ./keyd.nix
-    ./zapret.nix
+    # ./zapret.nix
   ];
 }
