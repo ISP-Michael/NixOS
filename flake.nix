@@ -106,6 +106,12 @@
           ;
       };
       modules = [
+        {
+          disabledModules = [
+            "programs/amnezia-vpn.nix"
+          ];
+        }
+        "${nixos-unstable}/nixos/modules/programs/amnezia-vpn.nix"
         ./host/configuration.nix
         disko.nixosModules.disko
         nur.modules.nixos.default
@@ -115,12 +121,14 @@
         {
           nixpkgs = {
             overlays = [
-              (final: prev: {
-                inherit (unstable-pkgs)
-                  kitty
-                  opencode
-                  ;
-              })
+              (final:
+                prev: {
+                  inherit (unstable-pkgs)
+                    kitty
+                    opencode
+                    ;
+                }
+              )
             ];
             config = {
               allowUnfree = true;
@@ -163,13 +171,15 @@
               allowUnfree = true;
             };
             overlays = [
-              (final: prev: {
-                inherit (unstable-pkgs)
-                  nh
-                  firefox
-                  fish
-                  ;
-              })
+              (final:
+                prev: {
+                  inherit (unstable-pkgs)
+                    nh
+                    firefox
+                    fish
+                    ;
+                }
+              )
               inputs.nix-openclaw.overlays.default
             ];
           };

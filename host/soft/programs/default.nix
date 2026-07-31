@@ -1,5 +1,6 @@
 {
   imports = [
+    ./amnezia-vpn.nix
     ./appimage.nix
     # ./clash.nix
     ./dconf.nix
