@@ -1,15 +1,15 @@
 {
   imports = [
-    ./logind.nix
-    ./fstrim.nix
-    ./fprintd.nix
     ./flatpak.nix
+    ./fprintd.nix
+    ./fstrim.nix
+    ./keyd.nix
+    ./logind.nix
     ./mysql.nix
-    ./resolved.nix
     ./pipewire.nix
     ./proxy.nix
+    ./resolved.nix
     ./services.nix
-    ./keyd.nix
     # ./zapret.nix
   ];
 }

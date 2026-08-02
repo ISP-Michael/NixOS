@@ -1,26 +1,19 @@
 {
-  unstable-pkgs,
+  pkgs,
   ...
 }:
 {
   programs = {
     nix-ld = {
       enable = true;
-      libraries = with unstable-pkgs; [
+      libraries = with pkgs; [
+        libfontenc
         libGL
         libice
         libsm
+        libx11
         libxau
         libxaw
-        libxdamage
-        libxdmcp
-        libxext
-        libxv
-        libxkbfile
-        libxtst
-        libxt
-        libxfixes
-        libx11
         libxcb
         libxcb-cursor
         libxcb-image
@@ -30,16 +23,23 @@
         libxcb-wm
         libxcomposite
         libxcursor
-        libxinerama
+        libxdamage
+        libxdmcp
+        libxext
+        libxfixes
         libxi
-        libxrandr
-        libxres
-        libxrender
-        libxpm
+        libxinerama
+        libxkbfile
         libxmu
+        libxpm
+        libxrandr
+        libxrender
+        libxres
         libxscrnsaver
+        libxt
+        libxtst
+        libxv
         libxxf86vm
-        libfontenc
         stdenv.cc.cc.lib
       ];
     };

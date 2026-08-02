@@ -2,15 +2,15 @@
   imports = [
     ./bash.nix
     ./bat.nix
-    ./home-manager.nix
+    ./firefox.nix
     ./fish
     ./git.nix
     ./helix.nix
+    ./home-manager.nix
     ./lutris.nix
     ./nh
     ./noctalia.nix
-    ./firefox.nix
-    ./yazi.nix
     # ./openclaw-module.nix
+    ./yazi.nix
   ];
 }

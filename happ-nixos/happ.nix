@@ -27,10 +27,10 @@ let
   #   - ps / kill (procps)               -> managing the bundled cores
   runtimeDeps = with pkgs; [
     coreutils
-    lsb-release
-    net-tools
     iproute2
     iptables
+    lsb-release
+    net-tools
     procps
   ];
 in
@@ -44,8 +44,8 @@ pkgs.stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = with pkgs; [
-    dpkg
     autoPatchelfHook
+    dpkg
     makeWrapper
     qt6.wrapQtAppsHook
   ];
@@ -60,20 +60,20 @@ pkgs.stdenv.mkDerivation rec {
   dontWrapQtApps = true;
 
   buildInputs = with pkgs; [
-    stdenv.cc.cc.lib
-    libGL
-    libX11
-    libSM
-    libICE
-    libXext
-    libXi
-    libXtst
     e2fsprogs
     fontconfig
     freetype
+    libGL
     libgpg-error
-    qt6.qtwayland
+    libICE
+    libSM
+    libX11
+    libXext
+    libXi
+    libXtst
     openssl
+    qt6.qtwayland
+    stdenv.cc.cc.lib
   ];
 
   dontUnpack = true;

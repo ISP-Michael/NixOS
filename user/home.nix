@@ -5,8 +5,9 @@
 {
   home = {
     username = "Michael";
-    stateVersion = "25.11";
+    stateVersion = "26.05";
     homeDirectory = "/home/Michael";
+    pointerCursor.enable = true;
     sessionVariables = {
       EDITOR = "nvim";
       YDOTOOL_SOCKET = "/run/user/1000/.ydotool_socket";

@@ -1,8 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
-    nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixos-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-flatpak.url = "github:gmodena/nix-flatpak";
     noctalia.url = "github:noctalia-dev/noctalia";
     freesmlauncher.url = "github:FreesmTeam/FreesmLauncher";
@@ -10,7 +8,7 @@
       url = "github:nix-community/disko";
       inputs = {
         nixpkgs = {
-          follows = "nixos-stable";
+          follows = "nixpkgs";
         };
       };
     };
@@ -18,7 +16,7 @@
       url = "github:Mic92/sops-nix";
       inputs = {
         nixpkgs = {
-          follows = "nixos-stable";
+          follows = "nixpkgs";
         };
       };
     };
@@ -26,23 +24,23 @@
       url = "github:nix-community/NUR";
       inputs = {
         nixpkgs = {
-          follows = "nixos-stable";
+          follows = "nixpkgs";
         };
       };
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager";
       inputs = {
         nixpkgs = {
-          follows = "nixos-stable";
+          follows = "nixpkgs";
         };
       };
     };
     stylix = {
-      url = "github:danth/stylix/release-25.11";
+      url = "github:danth/stylix";
       inputs = {
         nixpkgs = {
-          follows = "nixos-stable";
+          follows = "nixpkgs";
         };
       };
     };
@@ -53,7 +51,7 @@
       url = "github:youwen5/zen-browser-flake";
       inputs = {
         nixpkgs = {
-          follows = "nixos-stable";
+          follows = "nixpkgs";
         };
       };
     };
@@ -62,8 +60,6 @@
     disko,
     home-manager,
     nixpkgs,
-    nixos-unstable,
-    nixos-stable,
     nur,
     self,
     sops-nix,
@@ -75,70 +71,34 @@
   }@inputs:
   let
     system = "x86_64-linux";
-    unstable-lib = nixos-unstable.lib;
-    unstable-pkgs = import nixos-unstable {
-      inherit system;
-      config = {
-        allowUnfree = true;
-        permittedInsecurePackages = [
-        ];
-      };
-    };
-    git-pkgs = import nixpkgs {
-      inherit system;
-      config = {
-        allowUnfree = true;
-      };
-    };
   in
   {
-    nixosConfigurations.MagicBook = nixos-stable.lib.nixosSystem {
+    nixosConfigurations.MagicBook = nixpkgs.lib.nixosSystem {
       specialArgs = {
         inherit
           inputs
           self
-          unstable-pkgs
-          unstable-lib
-          git-pkgs
           nur
           system
           freesmlauncher
           ;
       };
       modules = [
-        {
-          disabledModules = [
-            "programs/amnezia-vpn.nix"
-          ];
-        }
-        "${nixos-unstable}/nixos/modules/programs/amnezia-vpn.nix"
         ./host/configuration.nix
+        ./happ-nixos/happ-module.nix
         disko.nixosModules.disko
+        nix-flatpak.nixosModules.nix-flatpak
         nur.modules.nixos.default
         sops-nix.nixosModules.sops
-        nix-flatpak.nixosModules.nix-flatpak
-        ./happ-nixos/happ-module.nix
         {
           nixpkgs = {
-            overlays = [
-              (final:
-                prev: {
-                  inherit (unstable-pkgs)
-                    kitty
-                    opencode
-                    ;
-                }
-              )
-            ];
             config = {
               allowUnfree = true;
               allowBroken = true;
               allowUnsupportedSystem = true;
               android_sdk.accept_license = true;
               permittedInsecurePackages = [
-                "ventoy-1.1.12"
-                "docker-28.5.2"
-                "pnpm-10.29.2"
+                "docker-29.6.2"
               ];
             };
           };
@@ -153,14 +113,11 @@
       ];
     };
     homeConfigurations.Michael = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixos-stable.legacyPackages.${system};
+      pkgs = nixpkgs.legacyPackages.${system};
       extraSpecialArgs = {
         inherit
           inputs
           self
-          unstable-pkgs
-          unstable-lib
-          git-pkgs
           nur
           ;
       };
@@ -171,15 +128,6 @@
               allowUnfree = true;
             };
             overlays = [
-              (final:
-                prev: {
-                  inherit (unstable-pkgs)
-                    nh
-                    firefox
-                    fish
-                    ;
-                }
-              )
               inputs.nix-openclaw.overlays.default
             ];
           };
@@ -187,8 +135,9 @@
         ./user/standalone.nix
         stylix.homeModules.stylix
       ];
+
     };
-    nixosConfigurations.iso = nixos-stable.lib.nixosSystem {
+    nixosConfigurations.iso = nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
         inherit
@@ -197,8 +146,8 @@
           ;
       };
       modules = [
-        "${nixos-stable}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
         ./iso/configuration.nix
+        "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
         {
           nixpkgs = {
             config = {

@@ -9,11 +9,11 @@
     ./scripts
     ./services
     ./settings
-    ./sops.nix
     ./soft
+    ./sops.nix
     ./ssh.nix
-    ./systemd.nix
     ./system
+    ./systemd.nix
     ./time.nix
     ./users
   ];

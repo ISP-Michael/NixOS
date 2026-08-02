@@ -15,12 +15,12 @@
           src = done;
         }
         {
-          name = "fzf";
-          src = fzf-fish;
-        }
-        {
           name = "fifc";
           src = fifc;
+        }
+        {
+          name = "fzf";
+          src = fzf-fish;
         }
       ];
     };

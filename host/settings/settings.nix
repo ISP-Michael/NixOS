@@ -1,11 +1,10 @@
 {
   pkgs,
-  unstable-pkgs,
   ...
 }:
 {
   nix = {
-    package = unstable-pkgs.lixPackageSets.latest.lix;
+    package = pkgs.lixPackageSets.latest.lix;
     daemonCPUSchedPolicy = "idle";
     daemonIOSchedClass = "idle";
     settings = {
@@ -14,6 +13,7 @@
       warn-dirty = false;
       auto-optimise-store = false;
       always-allow-substitutes = true;
+      extra-deprecated-features = "or-as-identifier";
       max-substitution-jobs = 16;
       min-free = "${toString (5 * 1024 * 1024 * 1024)}";
       max-free = "${toString (10 * 1024 * 1024 * 1024)}";
@@ -41,6 +41,14 @@
     };
   };
   powerManagement = {
-    cpuFreqGovernor = "powersave";
+    cpuFreqGovernor = "schedutil";
+    cpufreq = {
+      max = 2100000;
+    };
+  };
+  services = {
+    power-profiles-daemon = {
+      enable = true;
+    };
   };
 }

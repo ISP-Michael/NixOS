@@ -1,11 +1,10 @@
 {
-  unstable-pkgs,
   pkgs,
   ...
 }:
 {
   boot = {
-    kernelPackages = unstable-pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "amdgpu.dcdebugmask=0x40000"
     ];

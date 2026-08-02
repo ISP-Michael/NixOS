@@ -10,6 +10,7 @@ let
     comic-shanns-mono
     fira-code
     fira-mono
+    hack
     iosevka
     jetbrains-mono
     monoid
@@ -18,29 +19,26 @@ let
     ubuntu-mono
     ubuntu-sans
     victor-mono
-    hack
   ];
 in
 {
   fonts = {
     enableDefaultPackages = true;
-    fontconfig = {
-      enable = true;
-    };
+    fontconfig.enable = true;
     packages =
-      nerdPkgs ++ (
+      nerdPkgs
+      ++ (
         with pkgs; [
-        alegreya-sans
-        cascadia-code
-        corefonts
-        comic-mono
-        fira-code
-        hasklig
-        noto-fonts
-        noto-fonts-cjk-sans
-        source-code-pro
-        hackgen-font
-      ]
-    );
+          alegreya-sans
+          cascadia-code
+          comic-mono
+          fira-code
+          hackgen-font
+          hasklig
+          noto-fonts
+          noto-fonts-cjk-sans
+          source-code-pro
+        ]
+      );
   };
 }
