@@ -7,6 +7,7 @@
             Environment = [
               "QT_QPA_PLATFORMTHEME="
               "QT_STYLE_OVERRIDE="
+              "R600_DEBUG=nodcc"
             ];
           };
         };

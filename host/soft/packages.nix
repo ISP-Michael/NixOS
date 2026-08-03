@@ -38,6 +38,7 @@ in
         acpi
         alacritty
         alejandra
+        google-authenticator
         amberol
         amdgpu_top
         ani-cli
@@ -254,7 +255,6 @@ in
         pyright
         python13Env
         pywal
-        qbittorrent
         qt5.qtgraphicaleffects
         quickshell
         rar

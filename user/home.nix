@@ -9,8 +9,8 @@
     homeDirectory = "/home/Michael";
     pointerCursor.enable = true;
     sessionVariables = {
+      BROWSER = "zen";
       EDITOR = "nvim";
-      YDOTOOL_SOCKET = "/run/user/1000/.ydotool_socket";
     };
     packages = with pkgs; [
       glib

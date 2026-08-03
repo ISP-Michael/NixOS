@@ -8,6 +8,7 @@
     ./mysql.nix
     ./pipewire.nix
     ./proxy.nix
+    ./qbittorrent.nix
     ./resolved.nix
     ./services.nix
     # ./zapret.nix
