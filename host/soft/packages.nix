@@ -38,7 +38,6 @@ in
         acpi
         alacritty
         alejandra
-        google-authenticator
         amberol
         amdgpu_top
         ani-cli
@@ -52,6 +51,7 @@ in
         bc
         beamMinimal27Packages.elixir
         binutils
+        bitwarden-desktop
         black
         blender
         blesh
@@ -178,6 +178,11 @@ in
         kotlin
         kotlin-language-server
         kubernetes
+        kdePackages.kwallet
+        kdePackages.signon-kwallet-extension
+        kdePackages.ksshaskpass
+        kdePackages.kwalletmanager
+        kdePackages.kwallet-pam
         lazydocker
         lazygit
         lf
@@ -196,6 +201,7 @@ in
         lua-language-server
         luajitPackages.tree-sitter-cli
         lynx
+        mailspring
         manix
         mc
         mdcat
