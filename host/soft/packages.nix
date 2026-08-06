@@ -153,7 +153,6 @@ in
         hyprpaper
         hyprpicker
         hyprpolkitagent
-        hyprshot
         hyprutils
         imagemagick
         imv

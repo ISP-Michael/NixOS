@@ -3,6 +3,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-flatpak.url = "github:gmodena/nix-flatpak";
     noctalia.url = "github:noctalia-dev/noctalia";
+    hyprland.url = "github:hyprwm/Hyprland";
     freesmlauncher.url = "github:FreesmTeam/FreesmLauncher";
     disko = {
       url = "github:nix-community/disko";

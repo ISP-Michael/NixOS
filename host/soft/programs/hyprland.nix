@@ -1,12 +1,15 @@
 {
+  inputs,
   pkgs,
+  system,
   ...
 }:
 {
   programs = {
     hyprland = {
       enable = true;
-      portalPackage = pkgs.xdg-desktop-portal-hyprland;
+      package = inputs.hyprland.packages.${system}.hyprland;
+      portalPackage = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
       xwayland = {
         enable = true;
       };
