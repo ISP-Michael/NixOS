@@ -150,7 +150,6 @@ in
         hypridle
         hyprlang
         hyprls
-        hyprpaper
         hyprpicker
         hyprpolkitagent
         hyprutils
