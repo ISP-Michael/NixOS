@@ -11,6 +11,7 @@
         set -gx nixos /etc/nixos
         set -gx nvim ~/.config/nvim/init.vim
         set -gx fish_greeting ""
+        set -gx OPENCLAW_NIX_MODE 0
         zoxide init fish | source
       '';
     };

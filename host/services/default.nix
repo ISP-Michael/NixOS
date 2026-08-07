@@ -1,5 +1,6 @@
 {
   imports = [
+    # ./emias-monitor.nix
     ./flatpak.nix
     ./fprintd.nix
     ./fstrim.nix

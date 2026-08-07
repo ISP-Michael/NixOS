@@ -17,6 +17,13 @@
       gtk3
     ];
   };
+  xdg = {
+    configFile = {
+      "environment.d/10-openclaw.conf".text = ''
+        OPENCLAW_NIX_MODE=0
+      '';
+    };
+  };
   dconf = {
     enable = true;
     settings = {
