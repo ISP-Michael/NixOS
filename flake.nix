@@ -108,6 +108,11 @@
               forceXwayland = true;
               forceSoftwareRendering = true;
             };
+            btrfs = {
+              autoScrub = {
+                enable = true;
+              };
+            };
           };
         }
       ];
