@@ -7,8 +7,8 @@
         package = pkgs.noto-fonts;
       };
       monospace = {
-        name = "UbuntuSansMono Nerd Font";
-        package = pkgs.ubuntu-sans-mono;
+        name = "FiraCode Nerd Font NDD";
+        package = pkgs.nerd-fonts.fira-code;
       };
     };
   };

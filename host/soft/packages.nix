@@ -211,6 +211,7 @@ in
         neovide
         neovim
         networkmanagerapplet
+        nftables
         nix-bash-completions
         nix-diff
         nix-index
