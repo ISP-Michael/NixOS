@@ -8,8 +8,8 @@
     daemonCPUSchedPolicy = "idle";
     daemonIOSchedClass = "idle";
     settings = {
-      cores = 2;
-      max-jobs = 2;
+      cores = 0;
+      max-jobs = 3;
       warn-dirty = false;
       auto-optimise-store = false;
       always-allow-substitutes = true;
