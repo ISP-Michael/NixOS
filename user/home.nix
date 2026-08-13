@@ -11,6 +11,8 @@
     sessionVariables = {
       BROWSER = "zen";
       EDITOR = "nvim";
+      SUDO_EDITOR = "nvim";
+      VISUAL = "nvim";
     };
     packages = with pkgs; [
       glib

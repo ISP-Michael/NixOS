@@ -20,6 +20,13 @@
     };
     firewall = {
       enable = true;
+      interfaces = {
+        virbr0 = {
+          allowedTCPPorts = [
+            37963
+          ];
+        };
+      };
     };
   };
 }

@@ -1,6 +1,5 @@
 {
   pkgs,
-  config,
   ...
 }:
 let
@@ -86,15 +85,17 @@ let
     fi
   '';
 
-  # Block ALL forwarded traffic (libvirt VMs, docker/podman, waydroid) from
-  # entering ANY VPN tunnel (AmneziaWG "amn0", Xray "throne-tun", ...).
-  # Locally generated qbittorrent traffic is already covered by the uid rules
-  # above; forwarded traffic has no socket uid and would otherwise ride the
-  # main table into the tunnel.
+  # Block forwarded traffic from other local sources (docker/podman, waydroid)
+  # from entering ANY VPN tunnel (AmneziaWG "amn0", Xray "throne-tun", ...).
+  # The libvirt VM network (virbr0) is explicitly allowed: the VM is expected
+  # to ride the VPN tunnel by policy. Locally generated qbittorrent traffic is
+  # already covered by the uid rules above; forwarded traffic has no socket uid
+  # and would otherwise ride the main table into the tunnel.
   p2pGuardRules = pkgs.writeText "p2p-guard.nft" ''
     table inet p2pguard {
       chain forward {
         type filter hook forward priority filter; policy accept;
+        iifname "virbr0" counter accept
         oifname { "amn0", "throne-tun" } counter drop
       }
       chain outguard {

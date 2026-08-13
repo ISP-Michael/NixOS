@@ -8,6 +8,7 @@
       enable = true;
       generateCompletions = false;
     };
+    zsh.enable = true;
     steam.enable = true;
     ccache.enable = true;
     virt-manager.enable = true;

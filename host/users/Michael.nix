@@ -8,7 +8,7 @@
     users = {
       Michael = {
         isNormalUser = true;
-        shell = pkgs.fish;
+        shell = pkgs.zsh;
         hashedPasswordFile = config.sops.secrets."user-password".path;
         extraGroups = [
           "docker"

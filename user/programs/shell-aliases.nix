@@ -40,4 +40,5 @@
   rgi = "rg -i";
   se = "sudoedit";
   update = "nix flake update --flake /etc/nixos";
+  vmview = "spicy -h 127.0.0.1 -p 5900";
 }

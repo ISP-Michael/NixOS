@@ -273,7 +273,6 @@ in
         ryzenadj
         sass
         sbc
-        sddm-astronaut
         silver-searcher-ng
         sing-box
         sing-geoip
@@ -283,6 +282,7 @@ in
         socat
         sops
         speedtest-cli
+        spice-gtk
         sqlite
         sqlitebrowser
         sqls
@@ -325,6 +325,7 @@ in
         vdirsyncer
         video-downloader
         vim-language-server
+        virt-viewer
         vlc
         w3m
         wev
@@ -349,6 +350,7 @@ in
         zig
         zip
         zlib
+        zsh
         zoxide
       ]
     );
