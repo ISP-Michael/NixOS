@@ -1,350 +1,70 @@
 {
-  inputs,
   pkgs,
-  freesmlauncher,
-  system,
   ...
 }:
-let
-  noctalia-shell = inputs.noctalia.packages.${system}.default;
-  zen = inputs.zen-browser.packages.${system}.default;
-  freesmlauncherPkg = freesmlauncher.packages.${system}.freesmlauncher;
-  python13Env = pkgs.python313.withPackages (
-    ps:
-      with ps; [
-        aiogram
-        cython
-        debugpy
-        django
-        fastapi
-        fastapi-cli
-        grip
-        matplotlib
-        nox
-        nuitka
-        numpy
-        pandas
-        pillow
-        psutil
-        requests
-        rich
-      ]
-  );
-in
 {
   environment = {
     systemPackages = (
       with pkgs; [
-        acpi
-        alacritty
-        alejandra
-        amberol
-        amdgpu_top
-        ani-cli
         ansible
-        ansifilter
-        atuin
         autologin
         bash-completion
-        bash-language-server
         bc
         binutils
-        bitwarden-desktop
-        black
-        blender
-        blesh
-        bluetui
         bluez
-        boxes
-        brightnessctl
-        browser-sync
-        btop
-        bzip3
         cachix
-        cargo
-        chromium
-        cl
-        clang
-        clang-tools
-        cmake
-        copyq
         cron
-        csharp-ls
         dconf
-        delve
-        deno
-        devenv
         dig
         disko
-        distant
         dmidecode
         docker-compose
-        docker-compose-language-service
-        dotnetCorePackages.sdk_9_0-bin
-        dpkg
-        dua
-        dust
-        emmet-language-server
-        emmet-ls
-        entr
-        eslint
-        et
         evtest
-        eww
         exfatprogs
-        eza
-        fastfetch
-        fd
-        feishin
-        ffmpeg
-        file
-        fish-lsp
-        fishPlugins.autopair
-        fishPlugins.done
-        fishPlugins.fifc
-        fishPlugins.fzf
         flatpak
-        foliate
-        freesmlauncherPkg
-        fuzzel
-        fzf
-        gcc
-        gdu
-        gh
-        ghc
-        ghostty
-        git-crypt
-        glab
         glibc
         glibcLocales
-        glow
-        gnumake
         gnupg
-        go
-        gogcli
-        goimports-reviser
-        google-cloud-sdk
-        gopls
-        gosimports
         gpu-screen-recorder
         grafana
-        grim
-        gst_all_1.gst-libav
-        gst_all_1.gst-plugins-bad
-        gst_all_1.gst-plugins-base
-        gst_all_1.gst-plugins-good
-        gst_all_1.gst-plugins-ugly
-        gst_all_1.gstreamer
-        gtk4
-        haskell-language-server
-        haskellPackages.cabal-install
-        himalaya
-        home-manager
-        htmlhint
-        htop
-        hyprcursor
-        hypridle
-        hyprlang
-        hyprls
-        hyprpicker
-        hyprpolkitagent
-        hyprutils
-        imagemagick
-        imv
-        inkscape-with-extensions
         iotop
-        isort
-        jdk
-        jq
         kanata
-        kdePackages.dolphin
-        kdePackages.kdialog
-        kdePackages.kio-admin
-        kdePackages.kio-extras
-        kdePackages.okular
-        kdePackages.xdg-desktop-portal-kde
-        keepass
         keyd
-        khal
         killall
-        kitty
-        kooha
-        kubernetes
-        kdePackages.kwallet
-        kdePackages.signon-kwallet-extension
-        kdePackages.ksshaskpass
-        kdePackages.kwalletmanager
-        kdePackages.kwallet-pam
-        lazydocker
-        lazygit
-        lf
-        libffi
         libfprint-tod
-        libnotify
-        libreoffice
+        libffi
         libusb1
-        libva-utils
         lm_sensors
         logrotate
-        lsd
-        lshw
         lsyncd
-        lua
-        lua-language-server
-        luajitPackages.tree-sitter-cli
-        lynx
-        mailspring
-        manix
-        mc
-        mdcat
         memtester
-        minikube
-        moreutils
-        mpv
-        mpvpaper
-        neovide
-        neovim
-        networkmanagerapplet
         nftables
-        nix-bash-completions
-        nix-diff
-        nix-index
-        nix-init
-        nix-output-monitor
         nix-serve
         nix-serve-ng
-        nix-tree
-        nixd
-        nixdoc
-        nixfmt
         nixos-rebuild-ng
-        nixpkgs-fmt
-        nnn
-        noctalia-shell
-        nodejs_latest
-        nordzy-cursor-theme
-        nox
         ntfsprogs-plus
-        nurl
-        nushell
-        nvd
-        obs-cli
-        obs-cmd
-        obs-studio
-        obsidian
-        opencode
         openssl
-        oxlint
-        p7zip
-        pamixer
-        pandoc
-        pass
-        pavucontrol
-        perl
-        php
         pipewire
         pkg-config
-        playerctl
         polkit
-        powershell
-        pre-commit
-        prettier
         prometheus
-        pv
-        python13Env
-        pywal
-        qt5.qtgraphicaleffects
-        quickshell
-        rar
         redis
-        ripdrag
-        ripgrep
-        rofi
-        roslyn-ls
-        ruff
-        rust-analyzer
         ryzenadj
-        sass
-        sbc
-        silver-searcher-ng
-        sing-box
-        sing-geoip
-        sing-geosite
-        slurp
         smartmontools
         socat
-        sops
-        speedtest-cli
-        spice-gtk
-        sqlite
-        sqlitebrowser
-        sqls
         ssh-to-age
-        sshfs-fuse
-        starship
-        statix
-        steam-run
-        subversion
-        superhtml
-        tauon
         tcpdump
-        telegram-desktop
-        tesseract
-        tg
-        thunar
-        tig
         tlp
-        tmux
-        tor-browser
-        tree
         tshark
-        ty
-        typescript
-        typescript-language-server
-        udiskie
         udisks
-        ueberzug
-        ueberzugpp
-        unciv
-        universal-ctags
-        unrar
-        unzip
         usbutils
-        uutils-coreutils
-        uutils-diffutils
-        uutils-findutils
-        uv
-        v2rayn
-        vdirsyncer
-        video-downloader
-        vim-language-server
-        virt-viewer
-        vlc
-        w3m
-        wev
-        wget
-        wifi-qr
-        wireplumber
         wireshark
-        wl-clipboard
-        wofi
-        wtype
+        wireplumber
         xdg-desktop-portal
-        xplr
-        xray
-        yaml-language-server
         ydotool
-        yt-dlp
-        ytdownloader
         zapret
-        zathura
-        zbar
-        zen
-        zig
-        zip
         zlib
         zsh
-        zoxide
       ]
     );
   };

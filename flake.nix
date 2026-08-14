@@ -123,6 +123,7 @@
         inherit
           inputs
           self
+          system
           nur
           ;
       };
@@ -132,9 +133,6 @@
             config = {
               allowUnfree = true;
             };
-            overlays = [
-              inputs.nix-openclaw.overlays.default
-            ];
           };
         }
         ./user/standalone.nix

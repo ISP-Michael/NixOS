@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   ...
 }:
 {
@@ -20,9 +21,11 @@
     ];
   };
   xdg = {
+    mime.sharedMimeInfoPackage = lib.hiPrio pkgs.shared-mime-info;
     configFile = {
       "environment.d/10-openclaw.conf".text = ''
         OPENCLAW_NIX_MODE=0
+        OPENCLAW_DISABLE_PERSISTED_PLUGIN_REGISTRY=0
       '';
     };
   };
