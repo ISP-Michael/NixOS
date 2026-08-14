@@ -8,7 +8,7 @@
     daemonCPUSchedPolicy = "idle";
     daemonIOSchedClass = "idle";
     settings = {
-      cores = 0;
+      cores = 4;
       max-jobs = 3;
       warn-dirty = false;
       auto-optimise-store = false;

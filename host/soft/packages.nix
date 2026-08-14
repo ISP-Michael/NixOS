@@ -45,11 +45,9 @@ in
         ansifilter
         atuin
         autologin
-        basedpyright
         bash-completion
         bash-language-server
         bc
-        beamMinimal27Packages.elixir
         binutils
         bitwarden-desktop
         black
@@ -68,8 +66,6 @@ in
         cl
         clang
         clang-tools
-        clashtui
-        clipse
         cmake
         copyq
         cron
@@ -173,8 +169,6 @@ in
         killall
         kitty
         kooha
-        kotlin
-        kotlin-language-server
         kubernetes
         kdePackages.kwallet
         kdePackages.signon-kwallet-extension
@@ -257,7 +251,6 @@ in
         prettier
         prometheus
         pv
-        pyright
         python13Env
         pywal
         qt5.qtgraphicaleffects
