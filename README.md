@@ -31,7 +31,7 @@
 > I prefer fast dynamic configuration, which is impossible by implementing it through regular rebuild of home-manager after each change
 
 ## ✨ Desktop Preview
-![ff.png](./dependencies/images/ff.png)
+![ff.png](./dependencies/images/NixOS.png)
 ![neovide.png](./dependencies/images/neovide.png)
 
 ## 📦 Software
@@ -41,7 +41,7 @@
 | WM       | [Hyprland](https://hypr.land)                                 |
 | Theme    | [Stylix](https://nix-community.github.io/stylix)              |
 | Editor   | [Neovim](https://neovim.io/)                                  |
-| Bar      | [Quickshell](https://github.com/quickshell-mirror/quickshell) |
+| Bar      | [Noctalia](https://noctalia.dev/)                             |
 | Terminal | [Kitty](https://sw.kovidgoyal.net/kitty/)                     |
-| Shell    | [Fish](https://fishshell.com/)                                |
+| Shell    | [Zsh](https://en.wikipedia.org/wiki/Z_shell)                  |
 
