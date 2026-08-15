@@ -19,4 +19,9 @@
     gamemode.enable = true;
     gpu-screen-recorder.enable = true;
   };
+  qt = {
+    enable = true;
+    platformTheme = "qt5ct";
+    style = "kvantum";
+  };
 }

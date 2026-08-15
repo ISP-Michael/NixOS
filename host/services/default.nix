@@ -1,6 +1,7 @@
 {
   imports = [
     ./amnezia-escape.nix
+    ./amnezia-vpn-service.nix
     # ./emias-monitor.nix
     ./flatpak.nix
     ./fprintd.nix

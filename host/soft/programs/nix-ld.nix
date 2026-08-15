@@ -1,13 +1,24 @@
 {
   pkgs,
+  lib,
   ...
 }:
 {
+  system.activationScripts.nix-ld-bin-bash = lib.mkAfter ''
+    ln -sfn ${pkgs.bash}/bin/bash /bin/bash
+  '';
   programs = {
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
+        brotli.lib
+        dbus.lib
+        fontconfig.lib
+        freetype
+        glib
+        krb5.lib
         libfontenc
+        libxkbcommon
         libGL
         libice
         libsm
