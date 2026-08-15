@@ -31,8 +31,8 @@
 > I prefer fast dynamic configuration, which is impossible by implementing it through regular rebuild of home-manager after each change
 
 ## ✨ Desktop Preview
-![ff.png](./dependencies/images/NixOS.png)
-![neovide.png](./dependencies/images/neovide.png)
+![ff.png](./dependencies/images/fastfetch_new.png)
+![neovide.png](./dependencies/images/neovide_new.png)
 
 ## 📦 Software
 | Soft     | Name                                                          |

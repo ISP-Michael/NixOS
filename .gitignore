@@ -5,3 +5,4 @@ goodix-fp-dump/
 *.log
 config.json
 user/programs/openclaw-module.nix
+result
