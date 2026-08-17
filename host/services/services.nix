@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   ...
 }:
@@ -16,7 +17,10 @@ in
 {
   services = enabledDefaults // {
     gvfs.enable = true;
-    postgresql.enable = true;
     upower.enable = true;
+    postgresql = {
+      enable = true;
+      package = pkgs.postgresql;
+    };
   };
 }
