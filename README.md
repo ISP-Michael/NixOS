@@ -1,47 +1,48 @@
-## 📁 File Structure
-- [📜 flake.nix](flake.nix) — configuration entry point
-- [💻 host](host) — system configuration tool entry point
-  - [🛠️ scripts](host/scripts)
-  - [🔧 services](host/services) — system servcies
-  - [⚙️ settings](host/settings) — garbage-collector, cache, features
-  - [📦 soft](host/soft) — fonts, packages, virtualization
-    - [🌐 programs](host/soft/programs) — packages via options
-  - [🧩 system](host/system) — file system, swap
-  - [👥 users](host/users) — user settings
-- [👤 user](user) — user configuration tool entry point
-  - [💭 hyprland](user/hyprland) — not configured via .nix yet
-  - [</> programs](user/programs) — declarative program customization
-    - [🐚 fish](user/programs/fish) — aliases, functions, plugins
-    - [🪛 nh](user/programs/nh) — NixOS management utility
-  - [💬 services](user/services) — settings up services such as hyprpaper, mako (notifications)
-  - [🎨 stylix](user/services) — theme managemant utility
-- [🧩 dependencies](dependencies) — dependent files
-  - [✉️ fonts](dependencies/fonts)
-  - [⾕ from_home](dependencies/from_home) — files from home direcotory
-  - [</> git](dependencies/git) — rewriting output of some git commands (git ref{,log})
-  - [💭 hypr](dependencies/hypr) — submodule for hyprland configuration
-  - [📝 n](dependencies/n) — submodule for neovim configuration
-  - [🐚 qs](dependencies/qs) — submodule for quickshell configuration
-  - [🐱 kitty](dependencies/kitty) — submodule for kitty configuration
-  - [🎥 images](dependencies/images)
+# NixOS Configuration
 
-> [!NOTE]
-> Why Hyprland, Neovim, Kitty, Quickshell are not configured via nix and included as submodules in the repository?
->
-> I prefer fast dynamic configuration, which is impossible by implementing it through regular rebuild of home-manager after each change
+Declarative NixOS + Home Manager configuration for a Hyprland-based desktop.
 
-## ✨ Desktop Preview
-![ff.png](./dependencies/images/fastfetch_new.png)
-![neovide.png](./dependencies/images/neovide_new.png)
+## Key Technologies
 
-## 📦 Software
-| Soft     | Name                                                          |
-|----------|---------------------------------------------------------------|
-| OS       | [NixOS](https://nixos.org)                                    |
-| WM       | [Hyprland](https://hypr.land)                                 |
-| Theme    | [Stylix](https://nix-community.github.io/stylix)              |
-| Editor   | [Neovim](https://neovim.io/)                                  |
-| Bar      | [Noctalia](https://noctalia.dev/)                             |
-| Terminal | [Kitty](https://sw.kovidgoyal.net/kitty/)                     |
-| Shell    | [Zsh](https://en.wikipedia.org/wiki/Z_shell)                  |
+| Category   | Tool                                                        |
+|------------|-------------------------------------------------------------|
+| OS         | [NixOS](https://nixos.org) (unstable)                       |
+| Flake      | [Home Manager](https://github.com/nix-community/home-manager), [Disko](https://github.com/nix-community/disko), [SOPS-Nix](https://github.com/Mic92/sops-nix), [NUR](https://github.com/nix-community/NUR) |
+| Desktop    | [Hyprland](https://hypr.land), [Noctalia](https://noctalia.dev/) bar, [Stylix](https://github.com/danth/stylix) theming |
+| Editor     | [Neovim](https://neovim.io)                                 |
+| Terminal   | [Kitty](https://sw.kovidgoyal.net/kitty/)                   |
+| Shell      | [Zsh](https://en.wikipedia.org/wiki/Z_shell)                |
+| Browser    | [Zen Browser](https://zen-browser.com/)                     |
 
+## Architecture
+
+The configuration is split into three top-level directories:
+
+- **`host/`** — NixOS system-level configuration: boot, disk layout (Disko), networking, services, packages, secrets (SOPS), users, and system settings.
+- **`user/`** — Home Manager user-level configuration: program dotfiles, services (Hyprpaper, Mako), Stylix theme, and shell setup.
+- **`dependencies/`** — External assets and submodules: fonts, wallpapers, git overrides, and git submodules for tools configured outside of Nix.
+
+The entry point is `flake.nix`, which defines three configurations:
+
+| Configuration          | Purpose                                        |
+|------------------------|------------------------------------------------|
+| `nixosConfigurations.MagicBook` | Main NixOS system with Home Manager |
+| `homeConfigurations.Michael`    | Standalone Home Manager (for non-NixOS use)  |
+| `nixosConfigurations.iso`      | Minimal installation ISO                      |
+
+## Why Some Tools Are Submodules
+
+Hyprland, Neovim, Kitty, and Quickshell are not configured via Nix modules. They live as git submodules in `dependencies/` and are managed independently. This allows instant, dynamic configuration changes without rebuilding Home Manager after every tweak.
+
+## Desktop Preview
+
+![Fastfetch](./dependencies/images/fastfetch_new.png)
+![Neovide](./dependencies/images/neovide_new.png)
+
+## Secrets
+
+Encrypted with [SOPS-Nix](https://github.com/Mic92/sops-nix) using age. Secrets are stored in `secrets/secrets.yaml` and decrypted at boot time using the host SSH key.
+
+## License
+
+[Unlicense](LICENSE) — public domain.
