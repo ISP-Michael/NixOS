@@ -89,6 +89,7 @@
         ./happ-nixos/happ-module.nix
         disko.nixosModules.disko
         nix-flatpak.nixosModules.nix-flatpak
+        home-manager.nixosModules.home-manager
         nur.modules.nixos.default
         sops-nix.nixosModules.sops
         {
@@ -116,29 +117,6 @@
           };
         }
       ];
-    };
-    homeConfigurations.Michael = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.${system};
-      extraSpecialArgs = {
-        inherit
-          inputs
-          self
-          system
-          nur
-          ;
-      };
-      modules = [
-        {
-          nixpkgs = {
-            config = {
-              allowUnfree = true;
-            };
-          };
-        }
-        ./user/standalone.nix
-        stylix.homeModules.stylix
-      ];
-
     };
     nixosConfigurations.iso = nixpkgs.lib.nixosSystem {
       inherit system;

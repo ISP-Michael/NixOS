@@ -83,15 +83,13 @@ in
         feishin
         ffmpeg
         file
-        fish-lsp
         foliate
-        freesmlauncherPkg
+        # freesmlauncherPkg
         fuzzel
         fzf
         gcc
         gdu
         gh
-        ghc
         ghostty
         git-crypt
         glab
@@ -111,8 +109,6 @@ in
         gst_all_1.gst-plugins-ugly
         gst_all_1.gstreamer
         gtk4
-        haskell-language-server
-        haskellPackages.cabal-install
         himalaya
         htmlhint
         htop
@@ -176,8 +172,6 @@ in
         nix-tree
         nixd
         nixdoc
-        nixfmt
-        nixpkgs-fmt
         nnn
         noctalia-shell
         nodejs_latest
@@ -206,7 +200,6 @@ in
         python13Env
         pywal
         qt5.qtgraphicaleffects
-
         (lib.hiPrio rar)
         ripdrag
         ripgrep
@@ -246,7 +239,6 @@ in
         typescript
         typescript-language-server
         udiskie
-        (lib.hiPrio ueberzug)
         ueberzugpp
         unciv
         universal-ctags

@@ -4,10 +4,6 @@
       enable = true;
       nix-direnv.enable = true;
     };
-    fish = {
-      enable = true;
-      generateCompletions = false;
-    };
     zsh = {
       enable = true;
       enableGlobalCompInit = false;

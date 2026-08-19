@@ -5,6 +5,7 @@
     ./disko.nix
     ./documentation.nix
     ./hardware-configuration.nix
+    ./home-manager.nix
     ./networking.nix
     ./scripts
     ./services
