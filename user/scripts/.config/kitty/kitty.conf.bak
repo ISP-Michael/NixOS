@@ -1,0 +1,57 @@
+color0  #0b0c15
+color1  #d2556c
+color2  #7cd47b
+color3  #efb184
+color4  #6ca1f3
+color5  #b78df0
+color6  #69bcf4
+color7  #c0caf5
+color8  #39404a
+color9  #f7768e
+color10 #85e89d
+color11 #f4cf8d
+color12 #8fb9ff
+color13 #d9a3ff
+color14 #8fd3ff
+color15 #f0f3f6
+
+disable_ligatures       no
+shell_integration       no
+cursor_trail            1
+cursor                  none
+cursor_text_color       background
+cursor_shape            block
+cursor_blink_interval   0
+touch_scroll_multiplier 3.0
+copy_on_select          yes
+window_padding_width    5
+confirm_os_window_close 0
+
+tab_bar_style             fade
+tab_bar_edge              top
+tab_title_template        '{index}'
+active_tab_title_template '0'
+active_tab_background     #242933
+inactive_tab_background   #1D2129
+active_tab_foreground     #BFBEB7
+inactive_tab_foreground   #48525D
+
+background_opacity   1.0
+background_image     none
+selection_background none
+selection_foreground none
+foreground           #c0caf5
+background           #1a1b26
+repaint_delay        1
+input_delay          0
+sync_to_monitor      no
+resize_debounce_time 0.01
+
+font_family FiraCode Nerd Font
+font_size   11.75
+
+font_features FiraCodeNF-Reg +ss01 +ss03 +ss06 +ss07 +ss10 +cv02 +cv18 +cv25 +cv26 +cv27 +cv29 +cv30 +cv32 +zero
+# font_features FiraCode +ss01 +ss03 +ss06 +ss07 +ss10 +cv02 +cv18 +cv25 +cv26 +cv27 +cv29 +cv30 +cv32 +zero
+
+map ctrl+shift+f select_tab
+

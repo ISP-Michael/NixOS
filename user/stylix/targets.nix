@@ -10,7 +10,6 @@
       };
       gtk.enable = true;
       hyprland.enable = true;
-      # hyprland.hyprpaper.enable = true;
       kde.enable = true;
       qt.enable = true;
     };

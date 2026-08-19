@@ -206,7 +206,7 @@ in
         python13Env
         pywal
         qt5.qtgraphicaleffects
-        quickshell
+
         (lib.hiPrio rar)
         ripdrag
         ripgrep

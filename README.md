@@ -19,8 +19,8 @@ Declarative NixOS + Home Manager configuration for a Hyprland-based desktop.
 The configuration is split into three top-level directories:
 
 - **`host/`** — NixOS system-level configuration: boot, disk layout (Disko), networking, services, packages, secrets (SOPS), users, and system settings.
-- **`user/`** — Home Manager user-level configuration: program dotfiles, services (Hyprpaper, Mako), Stylix theme, and shell setup.
-- **`dependencies/`** — External assets and submodules: fonts, wallpapers, git overrides, and git submodules for tools configured outside of Nix.
+- **`user/`** — Home Manager user-level configuration: program dotfiles, services (Hyprpaper, Mako), Stylix theme, shell setup, and user config symlinks (`user/scripts/.config/`).
+- **`dependencies/`** — External assets: wallpapers and screenshots.
 
 The entry point is `flake.nix`, which defines three configurations:
 
@@ -30,9 +30,11 @@ The entry point is `flake.nix`, which defines three configurations:
 | `homeConfigurations.Michael`    | Standalone Home Manager (for non-NixOS use)  |
 | `nixosConfigurations.iso`      | Minimal installation ISO                      |
 
-## Why Some Tools Are Submodules
+## Config Deployment
 
-Hyprland, Neovim, Kitty, and Quickshell are not configured via Nix modules. They live as git submodules in `dependencies/` and are managed independently. This allows instant, dynamic configuration changes without rebuilding Home Manager after every tweak.
+Tools like Hyprland, Neovim, Kitty, and Fastfetch are configured via their native config files in `~/.config/`, not through Nix modules. On a fresh install, these configs are deployed from `user/scripts/.config/` to `~/.config/` by an activation script — only if the target directories do not already exist. Your live config is never overwritten.
+
+System-level configs like keyd live in `host/scripts/etc/` and are symlinked to `/etc/` via a NixOS activation script.
 
 ## Desktop Preview
 

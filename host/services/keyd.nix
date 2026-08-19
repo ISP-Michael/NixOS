@@ -1,4 +1,7 @@
 {
+  ...
+}:
+{
   services = {
     keyd = {
       enable = true;

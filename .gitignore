@@ -6,3 +6,4 @@ goodix-fp-dump/
 config.json
 user/programs/openclaw-module.nix
 result
+.git
