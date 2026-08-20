@@ -36,22 +36,10 @@ Tools like Hyprland, Neovim, Kitty, and Fastfetch are configured via their nativ
 
 System-level configs like keyd live in `host/scripts/etc/` and are symlinked to `/etc/` via a NixOS activation script.
 
-## Shell (Zsh)
+## Desktop Preview
 
-Zsh is configured entirely in `~/.config/zsh/` via `ZDOTDIR`, set in `/etc/zshenv.local`. The `.zshrc` uses [antidote](https://getantidote.github.io/) for plugin management. Plugins are cloned to `~/.local/share/zsh/antidote-plugins/`.
-
-## XDG Compliance
-
-Where possible, data is stored in XDG-compliant locations:
-
-| Program  | Data location                  | Mechanism            |
-|----------|--------------------------------|----------------------|
-| Zsh      | `~/.config/zsh/`              | `ZDOTDIR`            |
-| Unciv    | `~/.local/share/unciv/`       | `--data-dir=` flag   |
-| wget     | `~/.local/share/wget/`        | `WGET_HSTS_FILE`     |
-| antidote | `~/.local/share/zsh/antidote-plugins/` | `ANTIDOTE_HOME` |
-
-Programs that hardcode `~` (Steam, Docker, GPG, SSH, etc.) are left as-is.
+![Fastfetch](./dependencies/images/fastfetch_new.png)
+![Neovide](./dependencies/images/neovide_new.png)
 
 ## Secrets
 
