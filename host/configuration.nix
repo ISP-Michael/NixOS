@@ -18,4 +18,10 @@
     ./time.nix
     ./users
   ];
+  environment = {
+    sessionVariables = { };
+  };
+  environment.etc."zshenv.local".text = ''
+    export ZDOTDIR="$HOME/.config/zsh"
+  '';
 }

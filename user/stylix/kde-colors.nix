@@ -1,7 +1,3 @@
-{
-  pkgs,
-  ...
-}:
 let
   bg = "30,30,46";
   fg = "205,214,244";
@@ -12,7 +8,6 @@ let
   neu = "137,180,250";
   pos = "166,227,161";
   vis = "205,214,244";
-
   colorSection = {
     BackgroundNormal = bg;
     BackgroundAlternate = bg;
@@ -27,14 +22,12 @@ let
     DecorationFocus = deco;
     DecorationHover = deco;
   };
-
   sectionText = name: attrs:
     ''
       [Colors:${name}]
     '' + builtins.concatStringsSep "\n" (
       map (k: "${k}=${attrs.${k}}") (builtins.attrNames attrs)
     );
-
   kdeglobals = ''
     [General]
     desktopFont[$i]=Noto Fonts,10,-1,5,50,0,0,0,0,0
@@ -76,5 +69,11 @@ let
   '';
 in
 {
-  xdg.configFile."kdeglobals".text = kdeglobals;
+  xdg = {
+    configFile = {
+      "kdeglobals" = {
+        text = kdeglobals;
+      };
+    };
+  };
 }

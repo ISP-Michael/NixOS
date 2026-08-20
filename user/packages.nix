@@ -7,8 +7,8 @@
 let
   noctalia-shell = inputs.noctalia.packages.${system}.default;
   zen = inputs.zen-browser.packages.${system}.default;
-  freesmlauncherPkg = inputs.freesmlauncher.packages.${system}.freesmlauncher;
   openclaw = inputs.nix-openclaw.packages.${system}.openclaw;
+  freesmlauncher = inputs.freesmlauncher.packages.${system}.freesmlauncher;
   python13Env = pkgs.python313.withPackages (
     ps:
       with ps; [
@@ -84,7 +84,7 @@ in
         ffmpeg
         file
         foliate
-        # freesmlauncherPkg
+        freesmlauncher
         fuzzel
         fzf
         gcc
@@ -221,7 +221,6 @@ in
         sqlitebrowser
         sqls
         sshfs-fuse
-        starship
         statix
         steam-run
         subversion

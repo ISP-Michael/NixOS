@@ -16,19 +16,19 @@ Declarative NixOS + Home Manager configuration for a Hyprland-based desktop.
 
 ## Architecture
 
-The configuration is split into three top-level directories:
+The configuration is split into two top-level directories:
 
 - **`host/`** — NixOS system-level configuration: boot, disk layout (Disko), networking, services, packages, secrets (SOPS), users, and system settings.
-- **`user/`** — Home Manager user-level configuration: program dotfiles, services (Hyprpaper, Mako), Stylix theme, shell setup, and user config symlinks (`user/scripts/.config/`).
-- **`dependencies/`** — External assets: wallpapers and screenshots.
+- **`user/`** — Home Manager user-level configuration: program dotfiles, services (Hyprpaper, Mako), Stylix theme, and user config symlinks (`user/scripts/.config/`).
 
-The entry point is `flake.nix`, which defines three configurations:
+The entry point is `flake.nix`, which defines two configurations:
 
 | Configuration          | Purpose                                        |
 |------------------------|------------------------------------------------|
-| `nixosConfigurations.MagicBook` | Main NixOS system with Home Manager |
-| `homeConfigurations.Michael`    | Standalone Home Manager (for non-NixOS use)  |
+| `nixosConfigurations.MagicBook` | Main NixOS system with integrated Home Manager |
 | `nixosConfigurations.iso`      | Minimal installation ISO                      |
+
+Home Manager is integrated as a NixOS module — a single `nh os switch .` handles both system and user configuration.
 
 ## Config Deployment
 
@@ -36,10 +36,22 @@ Tools like Hyprland, Neovim, Kitty, and Fastfetch are configured via their nativ
 
 System-level configs like keyd live in `host/scripts/etc/` and are symlinked to `/etc/` via a NixOS activation script.
 
-## Desktop Preview
+## Shell (Zsh)
 
-![Fastfetch](./dependencies/images/fastfetch_new.png)
-![Neovide](./dependencies/images/neovide_new.png)
+Zsh is configured entirely in `~/.config/zsh/` via `ZDOTDIR`, set in `/etc/zshenv.local`. The `.zshrc` uses [antidote](https://getantidote.github.io/) for plugin management. Plugins are cloned to `~/.local/share/zsh/antidote-plugins/`.
+
+## XDG Compliance
+
+Where possible, data is stored in XDG-compliant locations:
+
+| Program  | Data location                  | Mechanism            |
+|----------|--------------------------------|----------------------|
+| Zsh      | `~/.config/zsh/`              | `ZDOTDIR`            |
+| Unciv    | `~/.local/share/unciv/`       | `--data-dir=` flag   |
+| wget     | `~/.local/share/wget/`        | `WGET_HSTS_FILE`     |
+| antidote | `~/.local/share/zsh/antidote-plugins/` | `ANTIDOTE_HOME` |
+
+Programs that hardcode `~` (Steam, Docker, GPG, SSH, etc.) are left as-is.
 
 ## Secrets
 

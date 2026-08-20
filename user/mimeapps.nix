@@ -21,8 +21,8 @@
         "video/mp4"                    = [             "mpv.desktop" ];
         "video/webm"                   = [             "mpv.desktop" ];
         "video/x-matroska"             = [             "mpv.desktop" ];
-        "x-scheme-handler/http"        = [            "zen.desktop" ];
-        "x-scheme-handler/https"       = [            "zen.desktop" ];
+        "x-scheme-handler/http"        = [             "zen.desktop" ];
+        "x-scheme-handler/https"       = [             "zen.desktop" ];
         "x-scheme-handler/tg"          = [        "telegram.desktop" ];
         "x-scheme-handler/tonsite"     = [        "telegram.desktop" ];
         "inode/directory"              = [ "org.kde.dolphin.desktop" ];

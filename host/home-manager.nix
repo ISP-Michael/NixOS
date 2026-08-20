@@ -7,11 +7,16 @@
 }:
 {
   home-manager = {
-    extraSpecialArgs = {
-      inherit inputs self nur system;
-    };
     useGlobalPkgs = true;
     useUserPackages = true;
+    extraSpecialArgs = {
+      inherit
+        inputs
+        self
+        nur
+        system
+        ;
+    };
     users = {
       Michael = {
         imports = [
@@ -22,13 +27,9 @@
           ../user/scripts
           ../user/services
           ../user/stylix
+          ../user/xdg.nix
           inputs.stylix.homeModules.stylix
         ];
-        nixpkgs = {
-          config = {
-            allowUnfree = true;
-          };
-        };
       };
     };
   };
