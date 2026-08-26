@@ -20,14 +20,14 @@
     users = {
       Michael = {
         imports = [
-          ../user/home.nix
-          ../user/mimeapps.nix
-          ../user/packages.nix
-          ../user/programs
-          ../user/scripts
-          ../user/services
-          ../user/stylix
-          ../user/xdg.nix
+          "${self}/user/home.nix"
+          "${self}/user/mimeapps.nix"
+          "${self}/user/packages.nix"
+          "${self}/user/programs"
+          "${self}/user/scripts"
+          "${self}/user/services"
+          "${self}/user/stylix"
+          "${self}/user/xdg.nix"
           inputs.stylix.homeModules.stylix
         ];
       };
