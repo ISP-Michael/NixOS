@@ -61,7 +61,6 @@
         wireshark
         wireplumber
         xdg-desktop-portal
-        ydotool
         zapret
         zlib
         zsh

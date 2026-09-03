@@ -27,15 +27,6 @@
     mime = {
       sharedMimeInfoPackage = lib.hiPrio pkgs.shared-mime-info;
     };
-    desktopEntries = {
-      unciv = {
-        name = "Unciv";
-        exec = "unciv --data-dir=${config.home.homeDirectory}/.local/share/unciv";
-        icon = "unciv";
-        categories = [ "Game" ];
-        comment = "An open-source Android/Desktop remake of Civ V";
-      };
-    };
     configFile = {
       "environment.d/10-openclaw.conf".text = ''
         OPENCLAW_NIX_MODE=0
