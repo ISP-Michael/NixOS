@@ -15,6 +15,8 @@
       always-allow-substitutes = true;
       extra-deprecated-features = "or-as-identifier";
       max-substitution-jobs = 16;
+      keep-outputs = true;
+      keep-derivations = true;
       min-free = "${toString (5 * 1024 * 1024 * 1024)}";
       max-free = "${toString (10 * 1024 * 1024 * 1024)}";
     };

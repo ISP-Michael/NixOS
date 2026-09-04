@@ -3,7 +3,7 @@ hl.config(
     general = {
       gaps_in = 0,
       gaps_out = 0,
-      border_size = 0,
+      border_size = 10,
       col = {
         active_border = 'rgba(102, 102, 102, 0.06)',
         inactive_border = 'rgba(170, 170, 170, 0.02)',
@@ -13,9 +13,9 @@ hl.config(
       layout = 'scrolling',
     },
     decoration = {
-      rounding = 0,
+      rounding = 10,
       active_opacity = 1.0,
-      inactive_opacity = 1.0,
+      inactive_opacity = 0.5,
       shadow = {
         enabled = false,
         range = 100,
@@ -27,7 +27,7 @@ hl.config(
       blur = {
         enabled = false,
         ignore_opacity = true,
-        size = 8,
+        size = 3,
         passes = 4,
         noise = 0.03,
         xray = true,
