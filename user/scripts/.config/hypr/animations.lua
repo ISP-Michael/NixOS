@@ -21,7 +21,7 @@ hl.animation(
     enabled = true,
     speed = 12,
     bezier = 'mac',
-    style = 'slidefadevert'
+    style = 'slidevert'
   }
 )
 

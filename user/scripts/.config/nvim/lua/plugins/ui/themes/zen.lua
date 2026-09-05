@@ -17,6 +17,5 @@ return {
         },
       }
     )
-    vim.cmd.colorscheme('zen')
   end
 }
