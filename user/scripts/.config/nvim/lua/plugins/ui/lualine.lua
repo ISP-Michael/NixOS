@@ -6,13 +6,7 @@ return {
     require('lualine').setup(
       {
         options = {
-          theme = function()
-            local name = vim.g.colors_name or ''
-            if name:match('^zen') then
-              return 'zen'
-            end
-            return 'tokyonight'
-          end,
+          theme = 'auto',
           icons_enabled = false,
           component_separators = '│',
           section_separators = {

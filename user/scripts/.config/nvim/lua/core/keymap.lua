@@ -2,17 +2,6 @@ local set = vim.keymap.set
 
 set(
   'n',
-  '<leader>th',
-  function()
-    require('core.themes').next()
-  end,
-  {
-    desc = 'Switch theme'
-  }
-)
-
-set(
-  'n',
   '<C-s>',
   '<cmd>write<CR>',
   {
