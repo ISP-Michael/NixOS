@@ -200,6 +200,7 @@ in
         python13Env
         pywal
         qt5.qtgraphicaleffects
+        qrencode
         (lib.hiPrio rar)
         ripdrag
         ripgrep

@@ -7,6 +7,7 @@
     ./hyprland.nix
     ./nix-ld.nix
     ./npm.nix
+    ./opt-vpn.nix
     ./programs.nix
     ./throne.nix
   ];

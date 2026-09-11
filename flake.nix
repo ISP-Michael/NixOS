@@ -2,9 +2,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-flatpak.url = "github:gmodena/nix-flatpak";
-    noctalia.url = "github:noctalia-dev/noctalia";
-    hyprland.url = "github:hyprwm/Hyprland";
-    freesmlauncher.url = "github:FreesmTeam/FreesmLauncher";
+    noctalia.url = "github:noctalia-dev/noctalia/1acdc7d229c49d9e337da10d4c536e5c5f38cd20";
+    hyprland.url = "github:hyprwm/Hyprland/2eb5180c6f258bb73c4b9b71a1361dede0e1453e";
+    freesmlauncher.url = "github:FreesmTeam/FreesmLauncher/be4e50d06ad0fea34bf3dc0ff83e1fda4cad33eb";
     disko = {
       url = "github:nix-community/disko";
       inputs = {
@@ -46,10 +46,10 @@
       };
     };
     nix-openclaw = {
-      url = "github:openclaw/nix-openclaw";
+      url = "github:openclaw/nix-openclaw/d3760a6f103642f11e24bc01ee9aec80a0153774";
     };
     zen-browser = {
-      url = "github:youwen5/zen-browser-flake";
+      url = "github:youwen5/zen-browser-flake/afbbbef7c3c00f160f4a9dfdd8c6c6b8b089a33f";
       inputs = {
         nixpkgs = {
           follows = "nixpkgs";

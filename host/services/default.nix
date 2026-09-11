@@ -1,6 +1,6 @@
 {
   imports = [
-    ./amnezia-escape.nix
+    # ./amnezia-escape.nix
     ./amnezia-vpn-service.nix
     ./flatpak.nix
     ./fprintd.nix

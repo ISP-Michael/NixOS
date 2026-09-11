@@ -6,6 +6,7 @@ return {
     config = function()
       local langs = {
         'bash',
+        'cpp',
         'http',
         'python',
         'javascript',
