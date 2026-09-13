@@ -43,8 +43,20 @@ return {
       end
     },
     {
+      '<leader>fg',
+      ':lua require("fzf-lua").live_grep()<CR>'
+    },
+    {
+      '<leader>fw',
+      ':lua require("fzf-lua").grep_cword()<CR>'
+    },
+    {
       '<leader>fb',
       ':lua require("fzf-lua").buffers()<CR>'
+    },
+    {
+      '<leader>de',
+      ':lua require("fzf-lua").diagnostics_workspace()<CR>'
     },
   },
   config = function()
@@ -70,15 +82,12 @@ return {
         buffers = {
           previewer = false,
           file_icons = true,
-          sort_lastused = true,
-          ignore_current_buffer = false,
-          _headers = {},
           actions = {
             ['ctrl-x'] = {
               require('fzf-lua').actions.buf_del,
               require('fzf-lua').actions.resume,
-            },
-          },
+            }
+          }
         },
         lsp = {
           file_icons = true,

@@ -22,6 +22,7 @@ option.signcolumn = 'yes:1'
 option.smoothscroll = true
 option.fillchars = { eob = ' ' }
 option.completeopt = { 'menu', 'menuone', 'noselect', 'noinsert' }
+option.showtabline = 0
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','

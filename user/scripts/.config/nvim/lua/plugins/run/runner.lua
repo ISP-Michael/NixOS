@@ -14,7 +14,7 @@ return {
           javascript = 'node',
           typescript = 'node',
           rust = 'cargo run',
-          cpp = 'g++ $fileName -o $fileNameWithoutExt && ./$fileNameWithoutExt',
+          cpp = 'g++ -std=c++20 $fileName -o $fileNameWithoutExt && ./$fileNameWithoutExt',
           cs = 'dotnet run',
           go = 'go run'
         },

@@ -57,6 +57,48 @@ set(
   }
 )
 
+set(
+  'n',
+  '<leader>bb',
+  function()
+    require('fzf-lua').buffers()
+  end,
+  {
+    desc = 'Buffers (fzf)'
+  }
+)
+
+set(
+  'n',
+  '<leader>bd',
+  function()
+    local current = vim.api.nvim_get_current_buf()
+    vim.cmd('bprevious')
+    vim.cmd('bdelete ' .. current)
+  end,
+  {
+    desc = 'Close current buffer'
+  }
+)
+
+set(
+  'n',
+  '<M-j>',
+  '<cmd>bnext<CR>',
+  {
+    desc = 'Next buffer'
+  }
+)
+
+set(
+  'n',
+  '<M-k>',
+  '<cmd>bprevious<CR>',
+  {
+    desc = 'Previous buffer'
+  }
+)
+
 vim.api.nvim_create_autocmd(
   {
     'LspAttach'

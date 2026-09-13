@@ -40,6 +40,7 @@
                           "compress=zstd:1"
                           "noatime"
                           "commit=120"
+                          "discard=async"
                         ];
                       };
                       "/home" = {
@@ -48,6 +49,7 @@
                           "compress=zstd:1"
                           "noatime"
                           "commit=120"
+                          "discard=async"
                         ];
                       };
                       "/nix" = {
@@ -56,6 +58,7 @@
                           "compress=zstd:1"
                           "noatime"
                           "commit=120"
+                          "discard=async"
                         ];
                       };
                       "/swap" = {

@@ -62,6 +62,7 @@
       xdg-desktop-portal
       zapret
       zlib
+      zellij
       zsh
     ];
   };
