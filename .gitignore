@@ -7,3 +7,4 @@ config.json
 user/programs/openclaw-module.nix
 result
 .git
+dependencies/videos/wallpapers/*.mp4

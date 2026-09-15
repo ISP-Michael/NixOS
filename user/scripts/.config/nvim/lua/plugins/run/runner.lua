@@ -4,7 +4,14 @@ return {
     'akinsho/toggleterm.nvim'
   },
   keys = {
-    { '<leader>rc', ':RunCode<cr>', mode = { 'v', 'n' } }
+    {
+      '<leader>rc',
+      ':RunCode<cr>',
+      mode = {
+        'v',
+        'n'
+      }
+    }
   },
   config = function()
     require('code_runner').setup(
