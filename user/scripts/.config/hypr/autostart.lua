@@ -56,7 +56,7 @@ hl.on(
       }
     )
     hl.exec_cmd(
-      'mpv',
+      'lutris',
       {
         workspace = '5'
       }
