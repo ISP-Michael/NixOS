@@ -26,8 +26,8 @@ in
     enableDefaultPackages = true;
     fontconfig.enable = true;
     packages =
-      nerdPkgs
-      ++ (
+      nerdPkgs ++
+      (
         with pkgs; [
           alegreya-sans
           cascadia-code
