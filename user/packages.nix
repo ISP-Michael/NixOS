@@ -183,7 +183,6 @@ in
         obs-studio
         obsidian
         openclaw
-        opencode
         oxlint
         p7zip
         pamixer
