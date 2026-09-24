@@ -9,6 +9,7 @@ let
   zen = inputs.zen-browser.packages.${system}.default;
   openclaw = inputs.nix-openclaw.packages.${system}.openclaw;
   freesmlauncher = inputs.freesmlauncher.packages.${system}.freesmlauncher;
+  neovim-nightly = inputs.neovim-nightly-overlay.packages.${system}.default;
   python13Env = pkgs.python313.withPackages (
     ps:
       with ps; [
@@ -162,7 +163,7 @@ in
         mpv
         mpvpaper
         neovide
-        neovim
+        neovim-nightly
         networkmanagerapplet
         nix-bash-completions
         nix-diff

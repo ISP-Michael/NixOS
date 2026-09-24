@@ -5,6 +5,7 @@
     noctalia.url = "github:noctalia-dev/noctalia/1acdc7d229c49d9e337da10d4c536e5c5f38cd20";
     hyprland.url = "github:hyprwm/Hyprland/2eb5180c6f258bb73c4b9b71a1361dede0e1453e";
     freesmlauncher.url = "github:FreesmTeam/FreesmLauncher/be4e50d06ad0fea34bf3dc0ff83e1fda4cad33eb";
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     disko = {
       url = "github:nix-community/disko";
       inputs = {
