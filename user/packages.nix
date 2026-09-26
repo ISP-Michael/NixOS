@@ -223,6 +223,7 @@ in
         sqls
         sshfs-fuse
         statix
+        starship
         steam-run
         subversion
         superhtml
