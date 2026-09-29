@@ -93,6 +93,7 @@ in
         gh
         ghostty
         git-crypt
+        gimp
         glab
         glow
         gnumake

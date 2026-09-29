@@ -22,5 +22,9 @@ in
       enable = true;
       package = pkgs.postgresql;
     };
+    chrony = {
+      enable = true;
+      enableNTS = true;
+    };
   };
 }
