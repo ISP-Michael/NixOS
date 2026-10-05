@@ -10,8 +10,8 @@ return {
           icons_enabled = false,
           component_separators = '│',
           section_separators = {
-            left = '',
-            right = ''
+            -- left = '',
+            -- right = ''
           }
         },
         sections = {

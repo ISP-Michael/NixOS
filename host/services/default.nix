@@ -7,6 +7,7 @@
     ./fstrim.nix
     ./keyd.nix
     ./logind.nix
+    ./mihomo.nix
     ./pipewire.nix
     ./proxy.nix
     ./qbittorrent.nix

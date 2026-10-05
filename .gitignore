@@ -1,10 +1,4 @@
-**/*/id_ed25519
-todo
-nohup.out
-goodix-fp-dump/
-*.log
-config.json
 user/programs/openclaw-module.nix
 result
-.git
 dependencies/videos/wallpapers/*.mp4
+host/services/mihomo.yaml

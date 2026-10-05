@@ -9,7 +9,8 @@ let
     "libinput"
     "udisks2"
   ]
-  (name: {
+  (
+    name: {
       enable = true;
     }
   );
@@ -24,7 +25,7 @@ in
     };
     chrony = {
       enable = true;
-      enableNTS = true;
+      enableNTS = false;
     };
   };
 }

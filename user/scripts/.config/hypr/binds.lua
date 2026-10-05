@@ -2,12 +2,21 @@
 ---@module 'variables'
 local M = require('variables')
 
+-- Раньше было: 'pkill rofi || rofi -show drun' с release = true.
+-- pkill на этой машине стоит 130-170 мс сам по себе (обходит весь /proc) —
+-- почти столько же, сколько весь остальной запуск. Переключать открытие/закрытие
+-- нечем: Esc закрывает rofi. Остался один процесс и одно нажатие.
+-- -show-icons убран: в лаунчере нужны только названия, и в rofi 2.0 иконки
+-- по умолчанию выключены. Тема — ~/.config/rofi/config.rasi (обычный каталог,
+-- не флейк).
 hl.bind(
   M.mainMod .. ' + R',
-  hl.dsp.exec_cmd('pkill rofi || rofi -show drun'),
-  {
-    release = true
-  }
+  hl.dsp.exec_cmd('rofi -show drun')
+)
+
+hl.bind(
+  M.mainMod .. ' + SHIFT + R',
+  hl.dsp.exec_cmd('rofi -show window')
 )
 
 hl.bind(
@@ -20,14 +29,12 @@ hl.bind(
   hl.dsp.exec_cmd(M.fileManager)
 )
 
+-- Раньше на SUPER + P висело ДВА бинда сразу: hyprpicker и window.pseudo().
+-- Одно нажатие запускало пипетку и заодно включало pseudo-режим.
+-- Теперь: SUPER + P — пипетка, SUPER + SHIFT + V — pseudo (рядом с флоатом).
 hl.bind(
   M.mainMod .. ' + P',
   hl.dsp.exec_cmd('hyprpicker -a')
-)
-
-hl.bind(
-  M.mainMod .. ' + P',
-  hl.dsp.window.pseudo()
 )
 
 hl.bind(
@@ -305,6 +312,11 @@ hl.bind(
 )
 
 hl.bind(
+  M.mainMod .. ' + SHIFT + V',
+  hl.dsp.window.pseudo()
+)
+
+hl.bind(
   M.mainMod .. ' + G',
   hl.dsp.group.toggle()
 )
@@ -327,29 +339,26 @@ hl.bind(
   )
 )
 
-hl.bind(
-  M.mainMod .. ' + SHIFT + P',
-  hl.dsp.exec_cmd(
-    '/etc/nixos/dependencies/scripts/obs_screenshot.sh'
-  )
-)
+-- ОТКЛЮЧЕНО: /etc/nixos/dependencies/scripts/obs_screenshot.sh не существует
+-- (каталог dependencies/scripts был пустой). Чтобы вернуть — положи скрипт
+-- по этому пути или удали эти строки.
+-- hl.bind(
+--   M.mainMod .. ' + SHIFT + P',
+--   hl.dsp.exec_cmd('/etc/nixos/dependencies/scripts/obs_screenshot.sh')
+-- )
 
+-- Зум курсора. Раньше: hyprctl keyword ... | jq ... с repeating = true.
+-- Два исправления:
+--   1) `hyprctl keyword` в этой сборке Hyprland 0.56 отвечает "unknown request"
+--      на ЛЮБУЮ опцию — зум вообще не менялся. Рабочий путь — hyprctl eval.
+--   2) repeating = true = 4 процесса на КАЖДЫЙ автоповтор. Одно нажатие = 2
+--      процесса (~80 мс), jq убран.
 hl.bind(
   M.mainMod .. ' + equal',
-  hl.dsp.exec_cmd(
-    'hyprctl keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor -j | jq \'.float + 1\')'
-  ),
-  {
-    repeating = true
-  }
+  hl.dsp.exec_cmd('/etc/nixos/dependencies/scripts/zoom.sh up')
 )
 
 hl.bind(
   M.mainMod .. ' + minus',
-  hl.dsp.exec_cmd(
-    'hyprctl keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor -j | jq \'.float - 1\')'
-  ),
-  {
-    repeating = true
-  }
+  hl.dsp.exec_cmd('/etc/nixos/dependencies/scripts/zoom.sh down')
 )

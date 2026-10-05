@@ -30,13 +30,15 @@ let
     );
   kdeglobals = ''
     [General]
-    desktopFont[$i]=Noto Fonts,10,-1,5,50,0,0,0,0,0
+    desktopFont[$i]=Noto Sans,10,-1,5,50,0,0,0,0,0
     fixed[$i]=FiraCode Nerd Font NDD,12,-1,5,50,0,0,0,0,0
-    font[$i]=Noto Fonts,12,-1,5,50,0,0,0,0,0
-    menuFont[$i]=Noto Fonts,10,-1,5,50,0,0,0,0,0
-    smallestReadableFont[$i]=Noto Fonts,10,-1,5,50,0,0,0,0,0
-    taskbarFont[$i]=Noto Fonts,10,-1,5,50,0,0,0,0,0
-    toolBarFont[$i]=Noto Fonts,10,-1,5,50,0,0,0,0,0
+    font[$i]=Noto Sans,12,-1,5,50,0,0,0,0,0
+    menuFont[$i]=Noto Sans,10,-1,5,50,0,0,0,0,0
+    smallestReadableFont[$i]=Noto Sans,10,-1,5,50,0,0,0,0,0
+    taskbarFont[$i]=Noto Sans,10,-1,5,50,0,0,0,0,0
+    toolBarFont[$i]=Noto Sans,10,-1,5,50,0,0,0,0,0
+    [Icons]
+    Theme=Nordzy-purple-dark
     [KDE]
     widgetStyle=Breeze
     [UiSettings]

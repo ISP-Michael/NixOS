@@ -63,6 +63,7 @@ in
         cmake
         copyq
         csharp-ls
+        dbeaver-bin
         delve
         deno
         devenv
@@ -256,6 +257,7 @@ in
         vim-language-server
         virt-viewer
         vlc
+        vtracer
         w3m
         wev
         wget
