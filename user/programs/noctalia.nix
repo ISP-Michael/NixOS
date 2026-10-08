@@ -1,6 +1,5 @@
 {
-  inputs,
-  system,
+  pkgs,
   ...
 }:
 {
@@ -8,7 +7,7 @@
     noctalia = {
       systemd.enable = true;
       enable = true;
-      package = inputs.noctalia.packages.${system}.default;
+      package = pkgs.noctalia;
     };
   };
 }

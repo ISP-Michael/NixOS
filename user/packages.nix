@@ -5,7 +5,7 @@
   ...
 }:
 let
-  noctalia-shell = inputs.noctalia.packages.${system}.default;
+  noctalia-shell = pkgs.noctalia;
   zen = inputs.zen-browser.packages.${system}.default;
   openclaw = inputs.nix-openclaw.packages.${system}.openclaw;
   freesmlauncher = inputs.freesmlauncher.packages.${system}.freesmlauncher;
