@@ -4,18 +4,26 @@ return {
     branch = 'main',
     build = ':TSUpdate',
     config = function()
+      -- Только языки, парсеры для которых уже установлены
+      -- (nvim-treesitter ветки main ставит их через :TSInstall, а не install()).
       local langs = {
         'bash',
+        'c',
         'cpp',
         'http',
-        'python',
         'javascript',
+        'json',
+        'lua',
+        'markdown',
+        'python',
+        'toml',
         'dockerfile',
+        'typescript',
         'yaml',
         'nix',
         'qmljs',
+        'rust',
       }
-      require('nvim-treesitter').install(langs)
       vim.api.nvim_create_autocmd(
         'FileType',
         {

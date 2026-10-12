@@ -30,15 +30,7 @@ require('core.options')
 require('core.indent')
 require('core.keymap')
 require('core.diagnostic')
-require('lazy').setup(
-  'plugins',
-  {
-    reset_packpath = true,
-    rtp = {
-      reset = true
-    }
-  }
-)
+require('lazy').setup('plugins', {})
 require('core.O_o')
 require('core.py')
 require('autocmds.python_template')

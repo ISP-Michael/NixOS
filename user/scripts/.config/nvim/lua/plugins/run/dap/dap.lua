@@ -17,7 +17,7 @@ return {
         request = 'launch',
         name = 'Launch file',
         program = '${file}',
-        pythonPath = function()
+        python = function()
           return 'python3'
         end
       }

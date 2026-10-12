@@ -126,16 +126,6 @@ vim.api.nvim_create_autocmd(
           desc = 'LSP: go to declaration'
         }
       )
-
-      set(
-        'n',
-        'K',
-        buf.hover,
-        {
-          buffer = event.buf,
-          desc = 'LSP: hover'
-        }
-      )
     end
   }
 )

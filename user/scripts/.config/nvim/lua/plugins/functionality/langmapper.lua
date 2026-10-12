@@ -1,7 +1,6 @@
 return {
   'Wansmer/langmapper.nvim',
-  lazy = false,
-  priority = 50,
+  event = 'VeryLazy',
   config = function()
     require('langmapper').setup()
   end

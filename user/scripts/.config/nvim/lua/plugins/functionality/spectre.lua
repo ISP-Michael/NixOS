@@ -3,23 +3,15 @@ return {
   dependencies = {
     'nvim-lua/plenary.nvim'
   },
-  config = function()
-    require('spectre').setup(
-      {
-        is_live = true,
-        open_cmd = 'vnew',
-      }
-    )
-    vim.keymap.set(
-      'n',
+  keys = {
+    {
       '<leader>S',
-      '<cmd>lua require("spectre").toggle()<CR>',
-      {
-        desc = 'Toggle Spectre (Search and Replace)'
-      }
-    )
-    vim.keymap.set(
-      'n',
+      function()
+        require('spectre').toggle()
+      end,
+      desc = 'Toggle Spectre (Search and Replace)'
+    },
+    {
       '<leader>sw',
       function()
         require('spectre').open_visual(
@@ -28,8 +20,14 @@ return {
           }
         )
       end,
+      desc = 'Search current word'
+    }
+  },
+  config = function()
+    require('spectre').setup(
       {
-        desc = 'Search current word'
+        is_live = true,
+        open_cmd = 'vnew',
       }
     )
   end

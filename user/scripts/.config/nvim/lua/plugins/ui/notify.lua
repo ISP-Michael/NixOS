@@ -1,16 +1,14 @@
 return {
-  'rcarriga/nvim-notify',
+  'folke/snacks.nvim',
   lazy = false,
   priority = 100,
-  config = function()
-    require('notify').setup(
-      {
-        fps = 60,
-        level = vim.log.levels.INFO,
-        stages = 'fade',
-        render = 'minimal'
-      }
-    )
-    vim.notify = require('notify')
+  opts = {
+    notifier = {
+      enabled = true,
+      timeout = 3000,
+    },
+  },
+  config = function(_, opts)
+    require('snacks').setup(opts)
   end
 }
