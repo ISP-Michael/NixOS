@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мои заявки — Конференции.РФ</title>
+<link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="#"><span class="logo-mark" aria-hidden="true">К</span><span class="logo-text">Конференции<em>.РФ</em></span></a>
+    <nav class="main-nav" aria-label="Основная навигация">
+      <a href="#">Мои заявки</a>
+      <a href="new-request.html">Создать заявку</a>
+      <span class="user-chip">ivanov</span>
+      <a class="nav-exit" href="login.html">Выйти</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" id="main">
+  <section class="page-head" aria-labelledby="h-app">
+    <h1 id="h-app">Мои заявки</h1>
+    <span class="muted">Заявки, которые вы отправили на портал</span>
+  </section>
+
+  <div class="card-list">
+
+    <article class="card booking">
+      <div class="booking-head">
+        <h2>Кинозал «Заря»</h2>
+        <span class="badge status-completed">Завершено</span>
+      </div>
+      <dl class="booking-info">
+        <div><dt>Дата конференции</dt><dd>2026-10-07</dd></div>
+        <div><dt>Способ оплаты</dt><dd>Наличными</dd></div>
+        <div><dt>Номер заявки</dt><dd>#1</dd></div>
+      </dl>
+      <div class="review">
+        <div class="rating" aria-label="Оценка 5 из 5">★★★★★</div>
+        <p>Проектор работал отлично, звук хороший. Персонал помог с настройкой.</p>
+        <small class="muted">Ваш отзыв</small>
+      </div>
+    </article>
+
+    <article class="card booking">
+      <div class="booking-head">
+        <h2>Аудитория 101</h2>
+        <span class="badge status-scheduled">Мероприятие назначено</span>
+      </div>
+      <dl class="booking-info">
+        <div><dt>Дата конференции</dt><dd>2026-11-20</dd></div>
+        <div><dt>Способ оплаты</dt><dd>СБП</dd></div>
+        <div><dt>Номер заявки</dt><dd>#2</dd></div>
+      </dl>
+    </article>
+
+    <article class="card booking">
+      <div class="booking-head">
+        <h2>Коворкинг «Точка»</h2>
+        <span class="badge status-completed">Завершено</span>
+      </div>
+      <dl class="booking-info">
+        <div><dt>Дата конференции</dt><dd>2026-09-15</dd></div>
+        <div><dt>Способ оплаты</dt><dd>Банковской картой</dd></div>
+        <div><dt>Номер заявки</dt><dd>#3</dd></div>
+      </dl>
+      <p class="muted">Мероприятие завершено — вы можете оставить отзыв.</p>
+      <form method="post" class="form review-form">
+        <div class="form-group">
+          <label for="m-rating">Оценка</label>
+          <input type="number" id="m-rating" name="rating" min="1" max="5" value="5">
+        </div>
+        <div class="form-group">
+          <label for="m-review">Отзыв</label>
+          <textarea id="m-review" name="text" rows="3" placeholder="Что понравилось, что улучшить"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Оставить отзыв</button>
+      </form>
+    </article>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Портал «Конференции.РФ» — бронирование помещений для Всероссийских конференций.</p>
+  </div>
+</footer>
+
+</body>
+</html>

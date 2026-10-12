@@ -1,0 +1,41 @@
+[project]
+name = "conf2027-django"
+version = "0.1.0"
+description = "Портал «Конференции.РФ» — демонстрационный экзамен 09.02.07"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.2",
+    "psycopg[binary]>=3.2",
+]
+
+[dependency-groups]
+dev = [
+    "django-stubs>=6.0.9",
+    "ruff>=0.17.0",
+    "ty>=0.0.86",
+]
+
+[tool.ty.environment]
+python = ".venv"
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint.per-file-ignores]
+# RUF012 на атрибутах Meta и списках choices.
+#
+# Это ложное срабатывание, а не пропущенная ошибка. Проверено:
+# Django только читает Meta.ordering, Meta.fields, Meta.widgets и
+# choices — нигде не мутирует их, поэтому общий изменяемый классовый
+# атрибут здесь безопасен. Причина в самом устройстве Django: поля
+# модели и настройки форм задаются декларативно, через обычные списки
+# и словари в классе. Пометка ClassVar решает в ruff models.py, но в
+# формах остаётся (RUF012 цепляется к Meta.fields), и в коде, который
+# надо запомнить, появляется шум без выигрыша.
+"main/models.py" = ["RUF012"]
+"main/forms.py" = ["RUF012"]
+# Файл создан командой makemigrations, руками не пишется и не
+# меняется — RUF012 на его Meta.options неприменим.
+"main/migrations/*" = ["RUF012"]

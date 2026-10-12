@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Мои заявки — Конференции.РФ{% endblock %}
+
+{% block content %}
+<section class="page-head" aria-labelledby="h-list">
+  <h1 id="h-list">Мои заявки</h1>
+  <a class="btn btn-primary" href="/application/new/">Создать заявку</a>
+</section>
+
+{% if not bookings %}
+  <div class="card card-empty">
+    <p>Заявок пока нет.</p>
+    <a class="btn btn-primary" href="/application/new/">Забронировать помещение</a>
+  </div>
+{% else %}
+  <div class="card-list" data-testid="req-list">
+    {% for b in bookings %}
+      <article class="card booking">
+        <div class="booking-head">
+          <h2>{{ b.room_name }}</h2>
+          <span class="badge status-{{ b.status }}">{{ b.get_status_display }}</span>
+        </div>
+
+        <dl class="booking-info">
+          <div><dt>Дата конференции</dt><dd>{{ b.event_date }}</dd></div>
+          <div><dt>Способ оплаты</dt><dd>{{ b.get_payment_method_display }}</dd></div>
+          <div><dt>Номер заявки</dt><dd>#{{ b.id }}</dd></div>
+        </dl>
+
+        {% if b.review %}
+          <div class="review">
+            <div class="rating" aria-label="Оценка {{ b.review.rating }} из 5">
+              {{ "★"|slice:":"|default:"" }}{% for i in "12345"|make_list %}{% if forloop.counter <= b.review.rating %}★{% else %}☆{% endif %}{% endfor %}
+            </div>
+            <p>{{ b.review.text }}</p>
+            <small class="muted">Ваш отзыв</small>
+          </div>
+
+        {% elif b.status == "completed" %}
+          <p class="muted">Мероприятие завершено — вы можете оставить отзыв.</p>
+
+          <form method="post" class="form review-form">
+            <input type="hidden" name="action" value="review">
+            <input type="hidden" name="booking_id" value="{{ b.id }}">
+
+            <div class="form-group">
+              <label for="rating-{{ b.id }}">Оценка</label>
+              <select id="rating-{{ b.id }}" name="rating" data-testid="req-rating">
+                <option value="">Выберите оценку</option>
+                <option value="5">5 — отлично</option>
+                <option value="4">4 — хорошо</option>
+                <option value="3">3 — нормально</option>
+                <option value="2">2 — плохо</option>
+                <option value="1">1 — очень плохо</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="review-{{ b.id }}">Отзыв</label>
+              <textarea id="review-{{ b.id }}" name="text" rows="3" maxlength="500"
+                data-testid="req-review"
+                placeholder="Как прошло мероприятие?"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Отправить отзыв</button>
+          </form>
+
+        {% else %}
+          <p class="muted small">
+            Отзыв станет доступен после того, как администратор
+            переведёт заявку в статус «Завершено».
+          </p>
+        {% endif %}
+
+        <details class="row-actions">
+          <summary>Изменить или удалить заявку</summary>
+
+          <form method="post" class="inline-form">
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="booking_id" value="{{ b.id }}">
+            <input type="date" name="event_date" value="{{ b.event_date|date:'Y-m-d' }}"
+              data-testid="req-edit-date" aria-label="Новая дата">
+            <button type="submit" class="btn btn-secondary btn-sm"
+              data-testid="req-update">Сохранить</button>
+          </form>
+
+          <form method="post" class="inline-form">
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="booking_id" value="{{ b.id }}">
+            <button type="submit" class="btn btn-danger btn-sm"
+              data-testid="req-delete">Удалить заявку</button>
+          </form>
+        </details>
+      </article>
+    {% endfor %}
+  </div>
+{% endif %}
+{% endblock %}

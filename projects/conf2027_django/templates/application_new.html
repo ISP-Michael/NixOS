@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Новая заявка — Конференции.РФ{% endblock %}
+
+{% block content %}
+<section class="card card-narrow" aria-labelledby="h-new">
+  <h1 id="h-new">Формирование заявки</h1>
+  <p class="muted">Заявка поступит на рассмотрение администратору портала.</p>
+
+  <form method="post" class="form" novalidate>
+    {% include "form_fields.html" %}
+
+    <button type="submit" class="btn btn-primary btn-block" data-testid="req-submit">Отправить</button>
+  </form>
+</section>
+{% endblock %}

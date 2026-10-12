@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Панель администратора — Конференции.РФ{% endblock %}
+
+{% block content %}
+<section class="page-head" aria-labelledby="h-admin">
+  <h1 id="h-admin">Панель администратора</h1>
+  <span class="muted">Вы вошли как {{ user.username }}</span>
+</section>
+
+<form method="get" action="/admin/" class="filter-bar">
+  <label for="status">Показывать заявки со статусом:</label>
+  <select name="status" id="status">
+    <option value="">все</option>
+    {% for value, label in statuses %}
+      <option value="{{ value }}" {% if status == value %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit" class="btn btn-secondary">Показать</button>
+</form>
+
+{% if not bookings %}
+  <div class="card card-empty"><p>Заявок с таким статусом нет.</p></div>
+{% else %}
+  <div class="card table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th scope="col">№</th>
+          <th scope="col">Пользователь</th>
+          <th scope="col">Помещение</th>
+          <th scope="col">Статус</th>
+          <th scope="col">Смена статуса</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in bookings %}
+          <tr data-testid="admin-row">
+            <td data-label="№">{{ b.id }}</td>
+            <td data-label="Пользователь">{{ b.user.first_name }}<br>
+              <small class="muted">{{ b.user.username }}</small></td>
+            <td data-label="Помещение">{{ b.room_name }}<br>
+              <small class="muted">{{ b.event_date|date:"d.m.Y" }}</small></td>
+            <td data-label="Статус">{{ b.get_status_display }}</td>
+            <td data-label="Смена статуса">
+              <form method="post" class="inline-form">
+                <input type="hidden" name="booking_id" value="{{ b.id }}">
+                <select name="status" data-testid="admin-status">
+                  {% for value, label in statuses %}
+                    <option value="{{ value }}"
+                      {% if b.status == value %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-sm">Сохранить</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,12 @@
+# База живёт в PostgreSQL, в репозитории её нет
+# Виртуальное окружение и кэш
+.venv/
+__pycache__/
+*.pyc
+.ruff_cache/
+.ty_cache/
+
+# Служебное
+.DS_Store
+*.log
+backups/

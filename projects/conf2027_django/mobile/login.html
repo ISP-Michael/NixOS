@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вход — Конференции.РФ</title>
+<link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="#"><span class="logo-mark" aria-hidden="true">К</span><span class="logo-text">Конференции<em>.РФ</em></span></a>
+    <nav class="main-nav" aria-label="Основная навигация">
+      <a href="#">Вход</a>
+      <a class="btn btn-primary btn-sm" href="register.html">Регистрация</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" id="main">
+  <section class="card card-narrow" aria-labelledby="h-login">
+    <h1 id="h-login">Вход</h1>
+
+    <form method="post" class="form" novalidate>
+      <div class="form-group">
+        <label for="m-login">Логин</label>
+        <input type="text" id="m-login" name="username" placeholder="Введите логин" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label for="m-pass">Пароль</label>
+        <input type="password" id="m-pass" name="password" placeholder="Введите пароль" autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Войти</button>
+    </form>
+
+    <p class="form-footer">
+      <a href="register.html">Еще не зарегистрированы? Регистрация</a>
+    </p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Портал «Конференции.РФ» — бронирование помещений для Всероссийских конференций.</p>
+  </div>
+</footer>
+
+</body>
+</html>

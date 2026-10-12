@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Регистрация — Конференции.РФ{% endblock %}
+
+{% block content %}
+<div class="cover">
+  <img src="/static/img/coworking.jpg" width="800" height="457"
+    alt="Коворкинг — одно из помещений, доступных для бронирования">
+</div>
+
+<section class="card card-narrow" aria-labelledby="h-register">
+  <h1 id="h-register">Регистрация</h1>
+  <p class="muted">Все поля обязательны для заполнения.</p>
+
+  <form method="post" class="form" novalidate>
+    {% include "form_fields.html" %}
+    <button type="submit" class="btn btn-primary btn-block" data-testid="reg-submit">Создать пользователя</button>
+  </form>
+
+  <p class="form-footer">Уже зарегистрированы? <a href="/login/">Войти</a></p>
+</section>
+{% endblock %}

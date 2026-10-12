@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="572" viewBox="0 0 1000 572" font-family="PT Sans, Arial, sans-serif">
+  <rect width="1000" height="560" fill="#ffffff"/>
+  <text x="500" y="36" font-size="24" font-weight="700" fill="#0d47a1" text-anchor="middle">ER-диаграмма: Портал «Конференции.РФ»</text>
+  <text x="500" y="58" font-size="14" fill="#6c757d" text-anchor="middle">СУБД: PostgreSQL, база conf2027</text>
+
+  <rect x="60" y="90" width="290" height="230" fill="#e7f1ff" stroke="#0d47a1" stroke-width="2" rx="6"/>
+  <rect x="60" y="90" width="290" height="40" fill="#0d47a1" rx="6"/>
+  <text x="205" y="116" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle">auth_user</text>
+  <text x="78" y="160" font-size="14" fill="#0d47a1">PK  id</text>
+  <text x="78" y="190" font-size="14" fill="#212529">    username</text>
+  <text x="78" y="218" font-size="14" fill="#212529">    password</text>
+  <text x="78" y="246" font-size="14" fill="#212529">    first_name</text>
+  <text x="78" y="274" font-size="14" fill="#212529">    email</text>
+  <text x="78" y="306" font-size="12" font-style="italic" fill="#6c757d">создаётся Django автоматически</text>
+
+  <rect x="560" y="90" width="380" height="230" fill="#f8f9fa" stroke="#007bff" stroke-width="2" rx="6"/>
+  <rect x="560" y="90" width="380" height="40" fill="#007bff" rx="6"/>
+  <text x="750" y="116" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle">main_booking</text>
+  <text x="578" y="160" font-size="14" fill="#007bff">PK  id</text>
+  <text x="578" y="192" font-size="14" fill="#0d47a1">FK  user_id → auth_user.id</text>
+  <text x="578" y="222" font-size="14" fill="#212529">    room_name</text>
+  <text x="578" y="250" font-size="14" fill="#212529">    event_date</text>
+  <text x="578" y="278" font-size="14" fill="#212529">    payment_method</text>
+  <text x="578" y="306" font-size="14" fill="#212529">    status</text>
+
+  <rect x="560" y="370" width="380" height="160" fill="#f8f9fa" stroke="#007bff" stroke-width="2" rx="6"/>
+  <rect x="560" y="370" width="380" height="40" fill="#007bff" rx="6"/>
+  <text x="750" y="396" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle">main_review</text>
+  <text x="578" y="442" font-size="14" fill="#007bff">PK  id</text>
+  <text x="578" y="472" font-size="14" fill="#0d47a1">FK  booking_id → main_booking.id</text>
+  <text x="578" y="500" font-size="14" fill="#212529">    rating</text>
+  <text x="700" y="500" font-size="12" font-style="italic" fill="#6c757d">оценка</text>
+  <text x="578" y="522" font-size="14" fill="#212529">    text</text>
+
+  <line x1="350" y1="175" x2="556" y2="175" stroke="#0d47a1" stroke-width="2"/>
+  <text x="453" y="164" font-size="13" font-weight="700" fill="#0d47a1" text-anchor="middle">1 : N</text>
+
+  <line x1="750" y1="322" x2="750" y2="366" stroke="#007bff" stroke-width="2"/>
+  <text x="766" y="349" font-size="13" font-weight="700" fill="#007bff">1 : 1</text>
+
+  <text x="60" y="380" font-size="15" font-weight="700" fill="#0d47a1">Связи</text>
+  <text x="60" y="406" font-size="13" fill="#212529">auth_user  1 → N  main_booking</text>
+  <text x="60" y="426" font-size="12" font-style="italic" fill="#6c757d">у пользователя много заявок</text>
+  <text x="60" y="454" font-size="13" fill="#212529">main_booking  1 → 1  main_review</text>
+  <text x="60" y="474" font-size="12" font-style="italic" fill="#6c757d">один отзыв на заявку, только после завершения</text>
+  <text x="60" y="508" font-size="12" font-style="italic" fill="#6c757d">«Помещение» хранится текстом: по заданию</text>
+  <text x="60" y="526" font-size="12" font-style="italic" fill="#6c757d">пользователь сам вводит название.</text>
+  <text x="560" y="548" font-size="12" font-style="italic" fill="#6c757d">Модуль 4 работает с отдельной базой shop.</text>
+</svg>
