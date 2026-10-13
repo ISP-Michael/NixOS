@@ -1,5 +1,5 @@
 ---@diagnostic disable: undefined-field
----@module 'variables'
+---@module 'binds'
 local M = require('variables')
 
 -- Раньше было: 'pkill rofi || rofi -show drun' с release = true.
@@ -31,7 +31,6 @@ hl.bind(
 
 -- Раньше на SUPER + P висело ДВА бинда сразу: hyprpicker и window.pseudo().
 -- Одно нажатие запускало пипетку и заодно включало pseudo-режим.
--- Теперь: SUPER + P — пипетка, SUPER + SHIFT + V — pseudo (рядом с флоатом).
 hl.bind(
   M.mainMod .. ' + P',
   hl.dsp.exec_cmd('hyprpicker -a')
@@ -42,10 +41,38 @@ hl.bind(
   hl.dsp.window.close()
 )
 
-hl.bind(
-  M.mainMod .. ' + J',
-  hl.dsp.layout('togglesplit')
-)
+-- ------------------------------------------------------------------
+-- MONOCLE: переключение окон
+-- ------------------------------------------------------------------
+-- ВАЖНО. До перехода на monocle тут стояло hl.dsp.layout('togglesplit')
+-- на SUPER + J, и оно было мёртвым ещё при scrolling:
+--     $ hyprctl dispatch 'hl.dsp.layout("togglesplit")'
+--     error: =[C]:-1: no such layoutmsg for scrolling
+-- Scrolling принимает ровно 12 команд (move, colresize, fit, focus,
+-- promote, expel, consume, consume_or_expel, swapcol, center,
+-- inhibit_scroll, fit_into_view), togglesplit там нет — он есть только
+-- у dwindle. В monocle команд всего две: cyclenext и cycleprev.
+--
+-- Тот же бинд SUPER + J удалён: ни в одном layout функции «разделить»
+-- в monocle не существует, окно всегда во весь экран.
+--
+-- ЕЩЁ ВАЖНЕЕ. Стрелки в monocle тоже перестают работать. В
+-- MonocleAlgorithm.cpp moveTargetInDirection() делает ровно одно —
+-- ищет другой монитор в этом направлении, и если не находит, выходит
+-- с noop. Монитор у тебя один (eDP-1), значит SUPER + стрелки были бы
+-- полностью мёртвыми. Поэтому все четыре стрелки и обе точки
+-- переключают окна циклом — иначе переключиться с клавиатуры
+-- было бы нечем.
+local function cycle(step)
+  hl.dispatch(hl.dsp.layout(step > 0 and 'cyclenext' or 'cycleprev'))
+end
+
+hl.bind(M.mainMod .. ' + right', function() cycle(1) end)
+hl.bind(M.mainMod .. ' + left', function() cycle(-1) end)
+hl.bind(M.mainMod .. ' + down', function() cycle(1) end)
+hl.bind(M.mainMod .. ' + up', function() cycle(-1) end)
+hl.bind(M.mainMod .. ' + comma', function() cycle(1) end)
+hl.bind(M.mainMod .. ' + period', function() cycle(-1) end)
 
 hl.bind(
   M.mainMod .. ' + V',
@@ -64,42 +91,6 @@ hl.bind(
 hl.bind(
   'F11',
   hl.dsp.window.fullscreen()
-)
-
-hl.bind(
-  M.mainMod .. ' + left',
-  hl.dsp.focus(
-    {
-      direction = 'l'
-    }
-  )
-)
-
-hl.bind(
-  M.mainMod .. ' + right',
-  hl.dsp.focus(
-    {
-      direction = 'r'
-    }
-  )
-)
-
-hl.bind(
-  M.mainMod .. ' + up',
-  hl.dsp.focus(
-    {
-      direction = 'u'
-    }
-  )
-)
-
-hl.bind(
-  M.mainMod .. ' + down',
-  hl.dsp.focus(
-    {
-      direction = 'd'
-    }
-  )
 )
 
 for i = 1, 10 do
@@ -167,20 +158,6 @@ hl.bind(
     {
       workspace = 'e-1'
     }
-  )
-)
-
-hl.bind(
-  M.mainMod .. ' + period',
-  hl.dsp.layout(
-    'move +col'
-  )
-)
-
-hl.bind(
-  M.mainMod .. ' + comma',
-  hl.dsp.layout(
-    'move -col'
   )
 )
 
@@ -340,25 +317,33 @@ hl.bind(
 )
 
 -- ОТКЛЮЧЕНО: /etc/nixos/dependencies/scripts/obs_screenshot.sh не существует
--- (каталог dependencies/scripts был пустой). Чтобы вернуть — положи скрипт
+-- (каталог dependencies/scripts был пустым). Чтобы вернуть — положи скрипт
 -- по этому пути или удали эти строки.
 -- hl.bind(
 --   M.mainMod .. ' + SHIFT + P',
 --   hl.dsp.exec_cmd('/etc/nixos/dependencies/scripts/obs_screenshot.sh')
 -- )
 
--- Зум курсора. Раньше: hyprctl keyword ... | jq ... с repeating = true.
--- Два исправления:
---   1) `hyprctl keyword` в этой сборке Hyprland 0.56 отвечает "unknown request"
---      на ЛЮБУЮ опцию — зум вообще не менялся. Рабочий путь — hyprctl eval.
---   2) repeating = true = 4 процесса на КАЖДЫЙ автоповтор. Одно нажатие = 2
---      процесса (~80 мс), jq убран.
-hl.bind(
-  M.mainMod .. ' + equal',
-  hl.dsp.exec_cmd('/etc/nixos/dependencies/scripts/zoom.sh up')
-)
+-- ------------------------------------------------------------------
+-- ЗУМ КУРСОРА — целиком на Lua, внешний скрипт zoom.sh удалён
+-- ------------------------------------------------------------------
+-- Раньше здесь стоял exec_cmd('/etc/nixos/dependencies/scripts/zoom.sh up').
+-- Скрипт делал две вещи, и обе стоили процесса:
+--   1) hyprctl getoption cursor:zoom_factor — прочитать текущее (~35-40 мс)
+--   2) hyprctl eval 'hl.config({...})' — записать новое (~35-40 мс)
+-- то есть ~70-80 мс и два запуска клиента на одно нажатие, плюс
+-- разбор вывода через awk.
+--
+-- `hyprctl keyword` в этой сборке не работает вообще (unknown request на
+-- любую опцию), поэтому вариант «менять опцию напрямую» и не
+-- рассматривался. А вот hl.config() из самого конфига — это прямая
+-- запись, без процесса и без IPC: значение меняется мгновенно.
+local zoom_index = 1
 
-hl.bind(
-  M.mainMod .. ' + minus',
-  hl.dsp.exec_cmd('/etc/nixos/dependencies/scripts/zoom.sh down')
-)
+local function zoom(step)
+  zoom_index = math.min(#M.zoomSteps, math.max(1, zoom_index + step))
+  hl.config({ cursor = { zoom_factor = M.zoomSteps[zoom_index] } })
+end
+
+hl.bind(M.mainMod .. ' + equal', function() zoom(1) end)
+hl.bind(M.mainMod .. ' + minus', function() zoom(-1) end)

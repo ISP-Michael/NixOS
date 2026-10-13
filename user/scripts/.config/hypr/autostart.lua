@@ -22,9 +22,13 @@ hl.on(
     hl.exec_cmd(
       'noctalia'
     )
-    hl.exec_cmd(
-      'opencode web'
-    )
+    -- Строка 'opencode web' удалена. В opencode v2.0.15 команды web
+    -- нет вообще, и она падала при каждом входе:
+    --     $ opencode web
+    --     Error: ENOENT: ... chdir '.../.config/hypr' -> 'web'
+    -- opencode принимает 'web' за имя каталога. Служба и так уже
+    -- поднята системой при загрузке:
+    --     opencode serve --service   ->  0.0.0.0:49374
     hl.exec_cmd(
       'openclaw gateway run'
     )
@@ -73,8 +77,16 @@ hl.on(
         workspace = '9'
       }
     )
+    -- 'AmneziaVPN' заменено на 'amnezia-vpn'. Сам бинарник лежит в
+    -- /opt/AmneziaVPN/bin/ и в PATH не попадает:
+    --     $ command -v AmneziaVPN   ->  пусто
+    -- Зато есть обёртка из NixOS-модуля host/services/amnezia-vpn-service.nix:
+    --     /run/current-system/sw/bin/amnezia-vpn
+    --         exec env NIX_LD_LIBRARY_PATH=… /opt/AmneziaVPN/bin/AmneziaVPN "$@"
+    -- Desktop-файлов у приложения нет ни одного, так что запустить
+    -- его можно только этой обёрткой.
     hl.exec_cmd(
-      'AmneziaVPN',
+      'amnezia-vpn',
       {
         workspace = '9'
       }

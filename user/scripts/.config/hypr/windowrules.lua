@@ -139,38 +139,13 @@ hl.window_rule(
   }
 )
 
-hl.window_rule(
-  {
-    name  = 'little-window-blueman',
-    match = {
-      class = '^(.blueman-manager-wrapped)$',
-      title = '^(blueman)$'
-    },
-    float = true,
-  }
-)
+-- Правила для blueman, qbittorrent и telegraph удалены: ни одного из
+-- них в системе нет (`command -v` пусто, desktop-файлов тоже), и в
+-- autostart.lua qbittorrent закомментирован. Вернутся сами, если
+-- поставишь.
 
-hl.window_rule(
-  {
-    name = 'telegraph',
-    match = {
-      title = '^.*(Telegraph)$'
-    },
-    float = true,
-  }
-)
-
-hl.window_rule(
-  {
-    name = 'qbittorrent-under-firefox',
-    match = {
-      class = 'org.qbittorrent.qBittorrent',
-      workspace = '2'
-    },
-    float = true,
-  }
-)
-
+-- Диалог выбора окна для захвата в OBS. obs в системе есть,
+-- правило живое — осталось.
 hl.window_rule(
   {
     name = 'obs-studio-select',

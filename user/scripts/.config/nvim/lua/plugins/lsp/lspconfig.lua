@@ -103,16 +103,6 @@ return {
       }
     )
     vim.keymap.set(
-      'i',
-      'K',
-      function()
-        vim.lsp.buf.signature_help()
-      end,
-      {
-        desc = 'LSP: signature help'
-      }
-    )
-    vim.keymap.set(
       'n',
       '<leader>e',
       vim.diagnostic.open_float

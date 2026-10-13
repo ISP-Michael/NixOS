@@ -1,5 +1,6 @@
 require('variables')
 require('env')
+require('permissions')
 require('monitors')
 require('autostart')
 require('config')
