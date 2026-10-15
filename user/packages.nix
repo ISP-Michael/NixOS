@@ -230,6 +230,7 @@ in
         subversion
         superhtml
         tauon
+        tea
         telegram-desktop
         tesseract
         tg
@@ -240,7 +241,6 @@ in
         tree
         ty
         typescript
-        typescript-language-server
         udiskie
         ueberzugpp
         unciv
