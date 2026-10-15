@@ -2,3 +2,4 @@ user/programs/openclaw-module.nix
 result
 dependencies/videos/wallpapers/*.mp4
 host/services/mihomo.yaml
+result-lib
