@@ -1,95 +1,100 @@
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
-    "source": "/home/Michael/Images/nixos-logo.png",
-    "width": 34,
-    "height": 17,
-    "padding": {
-        "top": 1,
-        "left": 3
+    "type": "none"
+  },
+  "display": {
+    "separator": "  ",
+    "key": {
+      "width": 13
+    },
+    "brightColor": false,
+    "color": {
+      "keys": "38;2;108;112;134",
+      "separator": "38;2;108;112;134"
     }
   },
   "modules": [
-    "break",
-    "break",
-    "break",
-    "break",
+    {
+      "type": "title",
+      "format": "{user-name-colored}{at-symbol-colored}{host-name-colored}",
+      "color": {
+        "user": "38;2;137;180;250",
+        "at": "38;2;108;112;134",
+        "host": "38;2;205;214;244"
+      }
+    },
     {
       "type": "custom",
-      "format": "╭──────────────────────────────────────────────────"
+      "format": ""
+    },
+    {
+      "type": "host",
+      "key": "  Host",
+      "format": "{vendor} {family} ({name})"
     },
     {
       "type": "os",
-      "format": "│   {name} {version}",
-      "key": " ",
-      "keyWidth": 0
+      "key": "  OS",
+      "format": "{name} {version}"
     },
     {
       "type": "kernel",
-      "format": "│ 󰹻  {release}",
-      "key": " ",
-      "keyWidth": 0
+      "key": "  Kernel"
+    },
+    {
+      "type": "bootmgr",
+      "key": "  Bootmgr",
+      "format": "{name} ({firmware-name})"
     },
     {
       "type": "packages",
-      "format": "│   {nix-system} (nix-system)",
-      "key": " ",
-      "keyWidth": 0
+      "key": "  Packages",
+      "format": "{nix-system} (nix-system)"
     },
     {
       "type": "shell",
-      "format": "│   {} {version}",
-      "key": " ",
-      "keyWidth": 0
-    },
-    {
-      "type": "display",
-      "format": "│ 󰍹  ({name}) {scaled-width}x{scaled-height} @ {refresh-rate} Hz in {inch}` [{type}]",
-      "key": " ",
-      "keyWidth": 0
-    },
-    {
-      "type": "wm",
-      "format": "│   {} (Wayland)",
-      "key": " ",
-      "keyWidth": 0
+      "key": "  Shell",
+      "format": "{pretty-name} {version}"
     },
     {
       "type": "terminal",
-      "format": "│   kitty {version}",
-      "key": " ",
-      "keyWidth": 0
+      "key": "  Terminal",
+      "format": "{pretty-name}"
+    },
+    {
+      "type": "wm",
+      "key": "  WM",
+      "format": "{pretty-name} {version}"
+    },
+    {
+      "type": "display",
+      "key": "  Display",
+      "format": "{name} ({scaled-width}x{scaled-height} @ {refresh-rate} Hz)"
     },
     {
       "type": "cpu",
-      "format": "│   {name} ({cores-logical}) @ {freq-max}",
-      "key": " ",
-      "keyWidth": 0
+      "key": "  CPU",
+      "format": "{name} ({cores-physical}C/{cores-logical}T) @ {freq-max}"
     },
     {
       "type": "gpu",
-      "format": "│   {name} [{type}]",
-      "key": " ",
-      "keyWidth": 0
+      "key": "  GPU",
+      "format": "{name}"
+    },
+    {
+      "type": "memory",
+      "key": "  Memory"
+    },
+    {
+      "type": "swap",
+      "key": "  Swap"
     },
     {
       "type": "disk",
-      "format": "│   (/) {size-used} / {size-total} - {filesystem}",
-      "key": " ",
-      "keyWidth": 0
-    },
-    {
-      "type": "localip",
-      "format": "│ 󰩟  {}",
-      "key": " ",
-      "keyWidth": 0
-    },
-    {
-      "type": "custom",
-      "format": "╰──────────────────────────────────────────────────"
-    },
-    "break",
-    "break",
-    "break"
+      "key": "  Disk",
+      "folders": "/",
+      "format": "{size-used} / {size-total} ({filesystem}, {size-percentage})"
+    }
   ]
 }
