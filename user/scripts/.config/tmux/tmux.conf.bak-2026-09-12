@@ -1,0 +1,122 @@
+# ============================================================
+#  tmux.conf — базовый конфиг: prefix Ctrl+Space, nvim-стайл
+#  Hyprland/Wayland, catppuccin mocha
+# ============================================================
+
+# ---------- База ----------
+set -g prefix C-Space          # лидер: Ctrl+Space
+unbind C-b
+set -g base-index 1            # окна нумеруются с 1
+setw -g pane-base-index 1      # панели тоже с 1
+set -g renumber-windows on     # после закрытия окна номера схлопываются
+set -g mouse on                # мышь: выделение, скролл, ресайз
+set -g escape-time 10          # мгновенный выход из ESC (важно для nvim)
+set -g repeat-time 300         # окно повтора для биндов с -r
+set -g history-limit 50000     # глубина буфера прокрутки
+set -g focus-events on         # focus-события для nvim (авто-read)
+set -g status-interval 5
+set -g status-position top     # статуслайн сверху
+setw -g mode-keys vi           # vi-навигация в copy-mode
+set -g status-keys vi
+
+# ---------- Имена вкладок: по имени текущей директории ----------
+# allow-rename off — шелл больше НЕ может переименовывать окна через title
+# (раньше prompt слал hostname «MagicBook» — поэтому все вкладки так и звались).
+# automatic-rename + формат — окно само называется по папке, в которой работает:
+#   workspace → «workspace», /tmp → «tmp»
+# Ручное переименование (prefix + ,) фиксирует имя навсегда для этого окна.
+set -g allow-rename off
+set -g automatic-rename on
+set -g automatic-rename-format '#{b:pane_current_path}'
+
+# Wayland-переменные в окружение новых панелей (иначе wl-copy/yank сломается)
+set -ga update-environment 'WAYLAND_DISPLAY XDG_RUNTIME_DIR'
+
+# Путь TPM (убирает warning "unknown variable: TMUX_PLUGIN_MANAGER_PATH")
+set-environment -g TMUX_PLUGIN_MANAGER_PATH ~/.config/tmux/plugins/
+
+# ---------- Перезагрузка конфига ----------
+bind r source-file ~/.config/tmux/tmux.conf \; display-message "Config reloaded!"
+
+# ---------- Навигация по панелям (prefix + hjkl, как в nvim) ----------
+bind -r h select-pane -L
+bind -r j select-pane -D
+bind -r k select-pane -U
+bind -r l select-pane -R
+
+# ---------- Ресайз панелей (prefix + Ctrl+hjkl) ----------
+bind -r C-h resize-pane -L 2
+bind -r C-j resize-pane -D 2
+bind -r C-k resize-pane -U 2
+bind -r C-l resize-pane -R 2
+
+# ---------- Окна и панели ----------
+bind -r c new-window -c "#{pane_current_path}"         # новое окно (в текущей папке)
+bind -r "|" split-window -h -c "#{pane_current_path}"  # верт. сплит (панель справа)
+bind -r "-" split-window -v -c "#{pane_current_path}"  # гориз. сплит (панель снизу)
+bind -r Tab next-window
+bind -r BTab previous-window
+bind -r n next-window
+bind -r p previous-window
+
+# ---------- Copy-mode (vi) ----------
+bind P paste-buffer                          # вставить из буфера tmux
+bind -T copy-mode-vi v send -X begin-selection
+bind -T copy-mode-vi V send -X select-line
+bind -T copy-mode-vi y send -X copy-selection-and-cancel
+bind -T copy-mode-vi r send -X rectangle-toggle   # прямоугольное выделение
+bind -T copy-mode-vi Escape send -X cancel
+bind -T copy-mode-vi C-v send -X page-down
+bind -T copy-mode-vi C-u send -X page-up
+
+# ---------- Popup: дерево сессий/окон (prefix + .) ----------
+bind . display-popup -E "tmux choose-tree -Zw"
+
+# ---------- Тема: catppuccin mocha (v2.3) ----------
+set -g @plugin 'catppuccin/tmux'
+set -g @catppuccin_flavor 'mocha'
+set -g @catppuccin_status_background 'none'       # прозрачный фон статуслайна
+set -g @catppuccin_date_time_text ' %H:%M'        # в статусе только время
+
+# ---------- Вкладки окон: слитно, без лишних пробелов ----------
+# Текст вкладки = имя окна (#W), а не title (#T) — иначе шелл переименовывает
+# вкладки в hostname через title.
+set -g @catppuccin_window_text "#W"
+set -g @catppuccin_window_current_text "#W"
+
+# ---------- Git-ветка в статусе (без gitmux, лёгкий формат) ----------
+set -g @git_branch_fmt "#(cd #{pane_current_path} 2>/dev/null && git symbolic-ref --short -q HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null || true)"
+
+# Стилизованный сегмент ветки. Отдельная опция чтобы запятые в #[...]
+# не ломали #{?...} (tmux режет conditional по первой запятой глубины 0).
+set -g @git_branch_style "#[fg=#{@thm_green}]#{E:@catppuccin_status_left_separator}#[fg=#{@thm_crust},bg=#{@thm_green}]󰊢 #[fg=#{@thm_fg},bg=#{@thm_surface_0}] #{E:@git_branch_fmt}#[fg=#{@thm_surface_0}] "
+
+# Сборка статуслайна: сессия + вкладки слева, приложение + ветка + время справа
+set -g status-left "#{E:@catppuccin_status_session}"
+set -g status-right "#{E:@catppuccin_status_application}#{?#{E:@git_branch_fmt},#{E:@git_branch_style},}#{E:@catppuccin_status_date_time}"
+set -g status-left-length 60
+set -g status-right-length 150
+
+# ---------- Плагины: переживание перезагрузок + yank ----------
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @continuum-restore 'on'                    # авто-восстановление при старте
+set -g @continuum-save-interval '15'              # авто-сохранение каждые 15 мин
+set -g @resurrect-capture-pane-contents 'on'      # сохранять даже содержимое панелей
+set -g @plugin 'tmux-plugins/tmux-yank'           # prefix + y — копировать в системный буфер
+
+# ---------- TPM (обязательно в самом конце!) ----------
+set -g @plugin 'tmux-plugins/tpm'
+run '~/.config/tmux/plugins/tpm/tpm'
+
+# ---------- Вкладки: свой компактный формат (ПОСЛЕ tpm) ----------
+# Плагин задаёт window-status-format с разделителями-пробелами вокруг номера
+# и текста (set -gq перезаписывает безусловно — до tpm не обойти).
+# Переопределяем после загрузки плагина: вкладка = «1 tmp», между вкладками
+# ровно один пробел. Цвета — литералы mocha (раскрывать #I/#W при установке
+# НЕЛЬЗЯ: -gF съест их, а вложенные #{@...} не до-раскрываются).
+# Палитра mocha: crust #11111b, fg #cdd6f4, surface0 #313244, surface1 #45475a,
+# mauve #cba6f7, overlay2 #9399b2.
+set -g window-status-format "#[fg=#11111b,bg=#9399b2]#I #[fg=#cdd6f4,bg=#313244]#W"
+set -g window-status-current-format "#[fg=#11111b,bg=#cba6f7]#I #[fg=#cdd6f4,bg=#45475a]#W"
+set -g window-status-separator " "

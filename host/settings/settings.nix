@@ -42,28 +42,28 @@
       };
     };
   };
-  powerManagement = {
-    cpuFreqGovernor = "schedutil";
-    cpufreq = {
-      max = 2100000;
-    };
-  };
-  systemd = {
-    services = {
-      disable-cpu-boost = {
-        description = "Disable AMD Core Performance Boost";
-        wantedBy = [
-          "multi-user.target"
-        ];
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = ''
-            ${pkgs.bash}/bin/sh -c 'echo 0 > /sys/devices/system/cpu/cpufreq/boost'
-          '';
-        };
-      };
-    };
-  };
+  # powerManagement = {
+  #   cpuFreqGovernor = "schedutil";
+  #   cpufreq = {
+  #     max = 2100000;
+  #   };
+  # };
+  # systemd = {
+  #   services = {
+  #     disable-cpu-boost = {
+  #       description = "Disable AMD Core Performance Boost";
+  #       wantedBy = [
+  #         "multi-user.target"
+  #       ];
+  #       serviceConfig = {
+  #         Type = "oneshot";
+  #         ExecStart = ''
+  #           ${pkgs.bash}/bin/sh -c 'echo 0 > /sys/devices/system/cpu/cpufreq/boost'
+  #         '';
+  #       };
+  #     };
+  #   };
+  # };
   services = {
     power-profiles-daemon = {
       enable = true;

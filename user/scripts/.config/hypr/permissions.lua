@@ -7,9 +7,9 @@
 -- То есть при enforce_permissions = 0 (дефолт) разрешено ВСЁ и никаких
 -- вопросов не бывает. Как только включаешь 1, для каждого клиента без
 -- подходящего правила вызывается askForPermission() и возвращается
--- PENDING — всплывает диалог. Типов разрешений всего два:
--- PERMISSION_TYPE_SCREENCOPY (доступ к экрану) и PERMISSION_TYPE_PLUGIN
--- (загрузка плагинов), плюс проверка клавиатуры для инъекции ввода.
+-- PENDING — всплывает диалог. Типов разрешений в исходнике пять:
+-- SCREENCOPY (доступ к экрану), CURSOR_POS, INPUT_CAPTURE, PLUGIN
+-- (загрузка плагинов) и KEYBOARD (новая виртуальная клавиатура).
 --
 -- Правило hl.permission() получает РЕГУЛЯРКУ и проверяется через
 -- RE2::FullMatch — то есть по ВСЕМУ пути целиком, а не по имени файла.
@@ -24,11 +24,13 @@
 -- они не подхватываются. hyprctl reload config-only тут не поможет,
 -- нужен полный перезапуск сессии.
 
-hl.config({
-  ecosystem = {
-    enforce_permissions = true,
-  },
-})
+hl.config(
+  {
+    ecosystem = {
+      enforce_permissions = true,
+    },
+  }
+)
 
 -- Скриншоты. Кто угодно пишущий в wlr-screencopy.
 hl.permission('/nix/store/[^/]*/bin/grim', 'screencopy', 'allow')
@@ -36,6 +38,12 @@ hl.permission('/nix/store/[^/]*/bin/slurp', 'screencopy', 'allow')
 hl.permission('/nix/store/[^/]*/bin/hyprshot', 'screencopy', 'allow')
 hl.permission('/nix/store/[^/]*/bin/satty', 'screencopy', 'allow')
 hl.permission('/nix/store/[^/]*/bin/wl-copy', 'screencopy', 'allow')
+
+-- Локскрин Noctalia снимает экран для фона за окном входа.
+hl.permission('/nix/store/[^/]*/bin/noctalia', 'screencopy', 'allow')
+
+-- Пипетка (SUPER + P) — тоже ходит через wlr-screencopy.
+hl.permission('/nix/store/[^/]*/bin/hyprpicker', 'screencopy', 'allow')
 
 -- Портал Hyprland: через него OBS, Discord, Telegram и браузер делают
 -- захват экрана и демонстрацию окна. Если это не разрешить, screen

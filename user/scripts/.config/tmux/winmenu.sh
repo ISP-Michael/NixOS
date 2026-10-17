@@ -1,0 +1,270 @@
+#!/usr/bin/env bash
+# winmenu.sh — переключатель окон tmux: окошко на весь экран, кроме строки статуса.
+# Запускается из tmux.conf через run-shell: сам считает размер и открывает себя в display-popup.
+# Нумерация снизу вверх с единицы. Цифры 1-9,0 — прыжок, / — поиск, Enter — выбрать, Esc/q — выход.
+
+set -uo pipefail
+
+# ---------- локаль ----------
+# окружение tmux-сервера может не иметь UTF-8 — тогда кириллица не читается
+case ${LC_ALL:-${LC_CTYPE:-${LANG:-}}} in
+    *UTF-8*|*utf8*|*utf-8*) ;;
+    *) export LC_ALL=C.UTF-8 ;;
+esac
+
+# ---------- режим запуска: посчитать размер окошка и открыть себя в popup ----------
+# Из tmux.conf приходят: сокет, имя клиента, ширина и высота клиента.
+if [[ ${WINMENU_INNER:-} != 1 ]]; then
+    sock=${1:-} client=${2:-} cw=${3:-} ch=${4:-}
+    T=(); [[ -n $sock ]] && T=(-S "$sock")
+    if [[ -z $client || ! $cw =~ ^[0-9]+$ || ! $ch =~ ^[0-9]+$ ]]; then
+        read -r _cl _cw _ch < <(tmux "${T[@]}" list-clients -F '#{client_name} #{client_width} #{client_height}' 2>/dev/null | head -1)
+        [[ -z $client ]] && client=${_cl:-}
+        [[ ! $cw =~ ^[0-9]+$ ]] && cw=${_cw:-160}
+        [[ ! $ch =~ ^[0-9]+$ ]] && ch=${_ch:-40}
+    fi
+    mapfile -t lines < <(tmux "${T[@]}" list-windows -a -F $'#{session_name}\t#{window_name}' 2>/dev/null)
+    n=${#lines[@]}
+    (( n < 1 )) && exit 0
+    # окошко на весь экран, кроме строки статуса — как нативный fzf
+    st=$(tmux "${T[@]}" show -gv status 2>/dev/null)
+    case $st in
+        off) srows=0 ;;
+        *[!0-9]*) srows=1 ;;
+        *) srows=$st ;;
+    esac
+    [[ $(tmux "${T[@]}" show -gv status-position 2>/dev/null) == top ]] && srows=0
+    H=$(( ch - srows ))
+    (( H < 3 )) && H=3
+    (( H > ch )) && H=$ch
+    W=$cw
+    # -y у display-popup — это нижняя кромка окошка: ставим её на строку над статусбаром
+    y=$(( ch - srows ))
+    (( y < 1 )) && y=1
+    (( y > ch )) && y=$ch
+    C=(); [[ -n $client ]] && C=(-c "$client")
+    exec tmux "${T[@]}" display-popup -E -B "${C[@]}" -w "$W" -h "$H" -x 0 -y "$y" \
+        "WINMENU_INNER=1 exec '$0' '$sock' '$client' '$cw' '$ch'"
+fi
+
+# ---------- цвета (catppuccin mocha) ----------
+esc=$'\e'
+c_reset=$'\e[0m'
+c_text=$'\e[38;2;205;214;244m'
+c_dim=$'\e[38;2;108;112;134m'
+c_sess=$'\e[38;2;147;153;178m'
+c_acc=$'\e[38;2;203;166;247m'
+c_sel=$'\e[48;2;49;50;68m'
+
+# ---------- список окон ----------
+# внутри popup первый аргумент — тот же сокет, что передал запускатель
+T=()
+[[ -n ${1:-} ]] && T=(-S "$1")
+client=${2:-}
+# текущее окно спрашиваем явно у клиента: его сессия + активное окно этой сессии.
+# (display-message «от себя» внутри popup возвращает текущее окно не той сессии)
+cur=""
+if [[ -n $client ]]; then
+    while IFS=$'\t' read -r cn cs; do
+        [[ $cn == "$client" ]] && { sess=$cs; break; }
+    done < <(tmux "${T[@]}" list-clients -F $'#{client_name}\t#{client_session}' 2>/dev/null)
+    [[ -n ${sess:-} ]] && cur="$sess:$(tmux "${T[@]}" display-message -p -t "$sess" '#{window_index}' 2>/dev/null)"
+fi
+[[ -z $cur ]] && cur=$(tmux "${T[@]}" display-message -p '#{session_name}:#{window_index}' 2>/dev/null || true)
+S=(); I=(); W=(); n=0; cur_pos=0
+while IFS=$'\t' read -r sess widx wname; do
+    n=$((n + 1))
+    S+=("$sess"); I+=("$widx"); W+=("$wname")
+    [[ "$sess:$widx" == "$cur" ]] && cur_pos=$n
+done < <(tmux "${T[@]}" list-windows -a -F $'#{session_name}\t#{window_index}\t#{window_name}')
+
+# ---------- размеры и ширины столбцов ----------
+sz=$(stty size 2>/dev/null || true)
+L=${sz%% *}; C=${sz##* }
+[[ $L =~ ^[0-9]+$ ]] || L=24
+[[ $C =~ ^[0-9]+$ ]] || C=80
+(( L < 2 )) && L=24
+# порог ниже минимальной ширины окошка (wN + wS + 4 + 8 = 14), иначе узкие popup раздувались до 80
+(( C < 12 )) && C=80
+
+wN=${#n}
+wS=0
+for s in "${S[@]}"; do
+    (( ${#s} > wS )) && wS=${#s}
+done
+(( wS > 24 )) && wS=24
+wW=0
+for s in "${W[@]}"; do
+    (( ${#s} > wW )) && wW=${#s}
+done
+cap=$(( C - 2 - wN - 3 - wS - 3 ))
+# сначала минимум, потом обрезка: иначе минимум перебьёт cap и строка вылезет за ширину
+(( wW < 4 )) && wW=4
+(( wW > cap )) && wW=$cap
+
+# ---------- состояние ----------
+mode=normal
+query=""
+sel=$(( cur_pos > 0 ? cur_pos - 1 : 0 ))
+vis=()
+
+build_vis() {
+    vis=()
+    local -a words=()
+    local i w ok hay
+    if [[ -n $query ]]; then
+        read -ra words <<< "${query,,}"
+    fi
+    for (( i = 0; i < n; i++ )); do
+        if (( ${#words[@]} )); then
+            hay="${S[i],,} ${W[i],,}"
+            ok=1
+            for w in "${words[@]}"; do
+                [[ $hay == *"$w"* ]] || { ok=0; break; }
+            done
+            (( ok )) || continue
+        fi
+        vis+=("$i")
+    done
+    if (( ${#vis[@]} == 0 )); then
+        sel=0
+    elif (( sel >= ${#vis[@]} )); then
+        sel=$(( ${#vis[@]} - 1 ))
+    elif (( sel < 0 )); then
+        sel=0
+    fi
+}
+
+row() {
+    local i=$1 s=$2 num sess name out="" p1 p2
+    printf -v num '%-*d' "$wN" "$(( i + 1 ))"
+    sess=${S[i]}
+    (( ${#sess} > wS )) && sess="${sess:0:wS - 1}…"
+    p1=""
+    while (( ${#sess} + ${#p1} < wS )); do
+        p1+=" "
+    done
+    name=${W[i]}
+    (( ${#name} > wW )) && name="${name:0:wW - 1}…"
+    p2=""
+    while (( ${#name} + ${#p2} < wW )); do
+        p2+=" "
+    done
+    if (( s )); then out+="$c_acc> "; else out+="  "; fi
+    out+="$c_acc$num$c_dim │ "
+    # выделение — фоном только по словам (сессия, окно), без добивки до ширины столбца
+    if (( s )); then
+        out+="$c_sel$c_sess$sess$c_reset$p1$c_dim │ $c_sel$c_text$name$c_reset$p2"
+    else
+        out+="$c_sess$sess$p1$c_dim │ $c_text$name$p2"
+    fi
+    printf '%s' "$out"
+}
+
+render() {
+    local out k r s idx start rows d fill box
+    out="$esc[0m$esc[?25l$esc[H$esc[J"
+    rows=$(( L - 2 ))
+    d=${#vis[@]}
+    (( d > rows )) && d=$rows
+    start=0
+    (( sel >= rows )) && start=$(( sel - rows + 1 ))
+    # нумерация снизу вверх: пункт 1 — в нижней строке списка, выше — второй и т.д.
+    for (( k = start; k < start + d; k++ )); do
+        r=$(( L - 2 - (k - start) ))
+        if (( k == sel )); then s=1; else s=0; fi
+        idx=${vis[k]}
+        out+="$esc[$r;1H"
+        out+="$(row "$idx" "$s")"
+        out+="$esc[K"
+    done
+    # строка-разделитель: сплошная линия во всю ширину, как в fzf
+    box=$'\u2500'
+    printf -v fill '%*s' "$C" ''
+    fill=${fill// /$box}
+    out+="$esc[$(( L - 1 ));1H$c_dim$fill$c_reset$esc[K"
+    if [[ $mode == search ]]; then
+        local disp=$query
+        # длинный запрос не должен переноситься: показываем хвост
+        if (( ${#disp} > C - 3 )); then
+            local cut=$(( ${#disp} - C + 3 ))
+            disp=${disp:cut}
+        fi
+        out+="$esc[$L;1H"
+        out+="${c_acc}/${c_reset}${c_text}${disp}${c_reset}"
+        out+="$esc[K$esc[?25h"
+        out+="$esc[$L;$(( 2 + ${#disp} ))H"
+    fi
+    printf '%s' "$out"
+}
+
+# список пронумерован снизу вверх, поэтому «вверх» — к большим номерам
+move_up()   { (( sel < ${#vis[@]} - 1 )) && sel=$(( sel + 1 )); return 0; }
+move_down() { (( sel > 0 )) && sel=$(( sel - 1 )); return 0; }
+
+go() { local -a A=(); [[ -n ${client:-} ]] && A=(-c "$client"); tmux "${T[@]}" switch-client "${A[@]}" -t "${S[$1]}:${I[$1]}"; exit 0; }
+
+jump() {
+    local p=$1
+    (( p >= 1 && p <= ${#vis[@]} )) || return 0
+    go "${vis[p - 1]}"
+}
+
+accept() {
+    (( ${#vis[@]} )) || return 0
+    go "${vis[sel]}"
+}
+
+# ---------- основной цикл ----------
+while :; do
+    build_vis
+    render
+    IFS= read -rsn1 -d '' key || exit 0
+    case $key in
+        $'\e')
+            if IFS= read -rsn1 -d '' -t 0.1 k2 && { [[ $k2 == '[' ]] || [[ $k2 == 'O' ]]; } && IFS= read -rsn1 -d '' -t 0.1 k3; then
+                case $k3 in
+                    A) move_up ;;
+                    B) move_down ;;
+                esac
+            else
+                if [[ $mode == search ]]; then
+                    mode=normal
+                    query=""
+                    sel=$(( cur_pos > 0 ? cur_pos - 1 : 0 ))
+                else
+                    exit 0
+                fi
+            fi
+            ;;
+        $'\r'|$'\n')
+            accept
+            ;;
+        $'\x03')
+            exit 0
+            ;;
+        $'\x7f'|$'\x08')
+            if [[ $mode == search && -n $query ]]; then
+                query=${query%?}
+                sel=0
+            fi
+            ;;
+        *)
+            if [[ $mode == search ]]; then
+                if [[ $key =~ [[:print:]] ]]; then
+                    query+=$key
+                    sel=0
+                fi
+            else
+                case $key in
+                    [1-9]) jump "$key" ;;
+                    0)     jump 10 ;;
+                    /)     mode=search; query="" ;;
+                    j)     move_down ;;
+                    k)     move_up ;;
+                    q)     exit 0 ;;
+                esac
+            fi
+            ;;
+    esac
+done

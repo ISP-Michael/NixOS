@@ -1,0 +1,26 @@
+diff --git a/scripts/restore.sh b/scripts/restore.sh
+index 1a5e3f9..f52fd39 100755
+--- a/scripts/restore.sh
++++ b/scripts/restore.sh
+@@ -178,6 +178,7 @@ restore_pane() {
+ 	while IFS=$d read line_type session_name window_number window_active window_flags pane_index pane_title dir pane_active pane_command pane_full_command; do
+ 		dir="$(remove_first_char "$dir")"
+ 		pane_full_command="$(remove_first_char "$pane_full_command")"
++		pane_title="${pane_title#:}" # drop the leading colon added by save.sh
+ 		if [ "$session_name" == "0" ]; then
+ 			restored_session_0_true
+ 		fi
+diff --git a/scripts/save.sh b/scripts/save.sh
+index 01edcde..14388b1 100755
+--- a/scripts/save.sh
++++ b/scripts/save.sh
+@@ -39,7 +39,8 @@ pane_format() {
+ 	format+="${delimiter}"
+ 	format+="#{pane_index}"
+ 	format+="${delimiter}"
+-	format+="#{pane_title}"
++	# leading colon keeps this field non-empty when a pane has no title
++	format+=":#{pane_title}"
+ 	format+="${delimiter}"
+ 	format+=":#{pane_current_path}"
+ 	format+="${delimiter}"

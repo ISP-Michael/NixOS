@@ -10,8 +10,8 @@ return {
           icons_enabled = false,
           component_separators = '│',
           section_separators = {
-            -- left = '',
-            -- right = ''
+            left = '',
+            right = ''
           }
         },
         sections = {
@@ -19,8 +19,8 @@ return {
             {
               'mode',
               separator = {
-                -- left = '',
-                right = ''
+                left = '',
+                right = ''
               },
               right_padding = 2
             }
@@ -43,7 +43,8 @@ return {
             {
               'location',
               separator = {
-                -- right = ''
+                left = '',
+                right = ''
               },
               left_padding = 2
             }

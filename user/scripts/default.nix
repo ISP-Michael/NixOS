@@ -9,6 +9,7 @@ let
     "nvim"
     "kitty"
     "fastfetch"
+    "tmux"
   ];
   linkScript = builtins.concatStringsSep "\n" (
     map

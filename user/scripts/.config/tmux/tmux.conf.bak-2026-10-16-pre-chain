@@ -1,0 +1,134 @@
+# ============================================================
+#  tmux.conf — vanilla, без плагинов и TPM
+#  Тема: Catppuccin mocha (палитра вписана в код)
+#  Prefix: Ctrl+Space
+# ============================================================
+
+# ---------- База ----------
+set -g prefix C-Space          # лидер: Ctrl+Space
+unbind C-b
+set -g base-index 1            # окна нумеруются с 1
+setw -g pane-base-index 1      # панели тоже с 1
+set -g renumber-windows on     # номера окон схлопываются после закрытия
+set -g mouse on                # мышь: выделение, скролл, ресайз
+set -g escape-time 10          # мгновенный выход из ESC (важно для nvim)
+set -g repeat-time 300         # окно повтора для биндов с -r
+set -g history-limit 50000     # глубина буфера прокрутки
+set -g focus-events on         # focus-события для nvim (авто-read)
+set -g status-interval 5
+set -g status-position bottom  # статуслайн снизу
+setw -g mode-keys vi           # vi-навигация в copy-mode
+set -g status-keys vi
+
+# Синхронный вывод (kitty): кадры рисуются целиком — нет рваной прокрутки
+set -ga terminal-features ",*:sync"
+
+# ---------- Имена окон: имя текущей директории ----------
+set -g allow-rename off
+set -g automatic-rename on
+set -g automatic-rename-format '#{b:pane_current_path}'
+
+# ---------- Wayland ----------
+set -ga update-environment 'WAYLAND_DISPLAY XDG_RUNTIME_DIR HYPRLAND_INSTANCE_SIGNATURE'
+
+# ---------- Перезагрузка конфига ----------
+bind r source-file ~/.config/tmux/tmux.conf \; display-message "Config reloaded!"
+
+# ---------- Навигация по панелям (prefix + hjkl) ----------
+bind -r h select-pane -L
+bind -r j select-pane -D
+bind -r k select-pane -U
+bind -r l select-pane -R
+
+# ---------- Ресайз панелей (prefix + ctrl+hjkl) ----------
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+# ---------- Окна и панели ----------
+bind c new-window -c "#{pane_current_path}"         # новое окно в текущей папке
+bind | split-window -h -c "#{pane_current_path}"    # верт. сплит (панель справа)
+bind - split-window -v -c "#{pane_current_path}"    # гориз. сплит (панель снизу)
+bind Tab next-window
+bind BTab previous-window
+
+# ---------- Copy-mode (vi) ----------
+bind P paste-buffer
+bind -T copy-mode-vi v send -X begin-selection
+bind -T copy-mode-vi V send -X select-line
+bind -T copy-mode-vi y send -X copy-selection-and-cancel
+bind -T copy-mode-vi r send -X rectangle-toggle
+bind -T copy-mode-vi Escape send -X cancel
+bind -T copy-mode-vi C-v send -X page-down
+bind -T copy-mode-vi C-u send -X page-up
+
+# ---------- Плавная прокрутка колесом ----------
+# Не прыжок на 5 строк, а 3 строки по одной с паузой 10 мс (smooth-scroll.sh) —
+# движение как у прокрутки собственного буфера kitty. Числа правятся в скрипте.
+bind -T copy-mode-vi WheelUpPane   select-pane \; run-shell -b 'exec ~/.config/tmux/smooth-scroll.sh up "#{pane_id}"'
+bind -T copy-mode-vi WheelDownPane select-pane \; run-shell -b 'exec ~/.config/tmux/smooth-scroll.sh down "#{pane_id}"'
+
+# ---------- Окна: переключатель (prefix + w / s / .) ----------
+# Маленькое окошко у низа экрана: фон терминала и статуслайн не трогает.
+# Цифра = переход к окну, ввод = фильтр, Enter = выбрать, Esc = выход
+bind w run-shell -b 'exec ~/.config/tmux/winmenu.sh "#{socket_path}" "#{client_name}" "#{client_width}" "#{client_height}"'
+bind s run-shell -b 'exec ~/.config/tmux/winmenu.sh "#{socket_path}" "#{client_name}" "#{client_width}" "#{client_height}"'
+bind . run-shell -b 'exec ~/.config/tmux/winmenu.sh "#{socket_path}" "#{client_name}" "#{client_width}" "#{client_height}"'
+
+# ============================================================
+#  Тема: Catppuccin mocha
+# ============================================================
+
+# ---------- Палитра ----------
+set -g @mocha_base      "#1e1e2e"
+set -g @mocha_mantle    "#181825"
+set -g @mocha_crust     "#11111b"
+set -g @mocha_surface0  "#313244"
+set -g @mocha_surface1  "#45475a"
+set -g @mocha_surface2  "#585b70"
+set -g @mocha_overlay0  "#6c7086"
+set -g @mocha_overlay2  "#9399b2"
+set -g @mocha_text      "#cdd6f4"
+set -g @mocha_subtext1  "#bac2de"
+set -g @mocha_blue      "#89b4fa"
+set -g @mocha_peach     "#fab387"
+set -g @mocha_mauve     "#cba6f7"
+set -g @mocha_green     "#a6e3a1"
+set -g @mocha_yellow    "#f9e2af"
+
+# ---------- Статуслайн ----------
+set -g status-style "bg=#{@mocha_base},fg=#{@mocha_text}"
+set -g status-left "#[fg=#{@mocha_green},bg=#{@mocha_base}]#[fg=#{@mocha_crust},bg=#{@mocha_green}] #S #[fg=#{@mocha_green},bg=#{@mocha_base}] "
+set -g status-left-length 40
+set -g status-right "#[fg=#{@mocha_peach},bg=#{@mocha_base}]#[fg=#{@mocha_crust},bg=#{@mocha_peach}] %H:%M #[fg=#{@mocha_peach},bg=#{@mocha_base}] "
+set -g status-right-length 60
+set -g status-justify left
+
+# ---------- Вкладки окон ----------
+setw -g window-status-format "#[fg=#{@mocha_overlay2},bg=#{@mocha_base}]#[fg=#{@mocha_crust},bg=#{@mocha_overlay2}] #I #[fg=#{@mocha_overlay2},bg=#{@mocha_surface0}]#[fg=#{@mocha_text},bg=#{@mocha_surface0}] #W #[fg=#{@mocha_surface0},bg=#{@mocha_base}]"
+setw -g window-status-current-format "#[fg=#{@mocha_mauve},bg=#{@mocha_base}]#[fg=#{@mocha_crust},bg=#{@mocha_mauve}] #I #[fg=#{@mocha_mauve},bg=#{@mocha_surface1}]#[fg=#{@mocha_text},bg=#{@mocha_surface1}] #W #[fg=#{@mocha_surface1},bg=#{@mocha_base}]"
+setw -g window-status-separator " "
+
+# ---------- Остальное ----------
+set -g message-style "bg=#{@mocha_surface1},fg=#{@mocha_text}"
+set -g message-command-style "bg=#{@mocha_surface1},fg=#{@mocha_text}"
+set -g menu-style "bg=#{@mocha_mantle},fg=#{@mocha_text}"
+set -g menu-selected-style "bg=#{@mocha_mauve},fg=#{@mocha_crust}"
+set -g menu-border-style "fg=#{@mocha_surface2},bg=#{@mocha_mantle}"
+set -g menu-border-lines rounded
+set -g pane-border-style "fg=#{@mocha_surface1}"
+set -g pane-active-border-style "fg=#{@mocha_mauve}"
+set -g pane-border-lines heavy
+set -g display-panes-active-colour "#cba6f7"
+set -g display-panes-colour "#45475a"
+set -g clock-mode-colour "#89b4fa"
+
+# ---------- Сохранение и восстановление сессий (tmux-resurrect + tmux-continuum) ----------
+set -g @resurrect-dir '~/.local/share/tmux/resurrect'
+set -g @continuum-restore 'on'
+set -g @continuum-save-interval '15'
+set -g @resurrect-capture-pane-contents 'on'
+set -g @continuum-boot 'on'
+run-shell '~/.config/tmux/plugins/tmux-resurrect/resurrect.tmux'
+run-shell '~/.config/tmux/plugins/tmux-continuum/continuum.tmux'
