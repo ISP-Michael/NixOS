@@ -7,6 +7,11 @@
         description = "Hyprland session";
         bindsTo = [ "graphical-session.target" ];
         after = [ "graphical-session.target" ];
+        # Агент авторизации polkit: диалоги запрашивают пароль/отпечаток.
+        # Через systemd у него чистое окружение — при запуске из Hyprland в него
+        # попадают QT_STYLE_OVERRIDE=kvantum и прочее, и QML-диалог падает
+        # с ошибкой QQuickStyle.
+        wants = [ "hyprpolkitagent.service" ];
       };
       services = {
         xdg-desktop-portal-hyprland = {

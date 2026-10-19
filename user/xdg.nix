@@ -1,10 +1,23 @@
 {
   config,
+  pkgs,
   ...
 }:
 {
   xdg = {
     enable = true;
+
+    # «Показать в папке» (D-Bus org.freedesktop.FileManager1) — всегда
+    # Dolphin: у Thunar точно такое же имя, а кто победит — решает
+    # порядок чтения каталога сервисов. force перекрывает ручной файл.
+    dataFile."dbus-1/services/org.freedesktop.FileManager1.service" = {
+      force = true;
+      text = ''
+        [D-BUS Service]
+        Name=org.freedesktop.FileManager1
+        Exec=${pkgs.kdePackages.dolphin}/bin/dolphin --daemon
+      '';
+    };
     userDirs = {
       enable = true;
       createDirectories = true;

@@ -90,7 +90,10 @@ hl.config(
 
     render = {
       new_render_scheduling = true,
-      direct_scanout = true,
+
+      -- Прямой сканаут выключен: с ним у полноэкранных Wayland-окон
+      -- (mpv, виртуалки) чёрный экран — апстрим issue #14843.
+      direct_scanout = false,
     },
 
     cursor = {

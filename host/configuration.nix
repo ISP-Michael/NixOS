@@ -19,7 +19,12 @@
     ./users
   ];
   environment = {
-    sessionVariables = { };
+    sessionVariables = {
+      # Файловые диалоги GTK-приложений (Zen и прочие) — через XDG-портал,
+      # чтобы выглядели как у Dolphin (KDE-бэкенд выбран в hyprland.nix),
+      # а не как нативный GTK-пикер.
+      GTK_USE_PORTAL = "1";
+    };
   };
   environment.etc."zshenv.local".text = ''
     export ZDOTDIR="$HOME/.config/zsh"

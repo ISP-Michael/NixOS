@@ -3,10 +3,11 @@ hl.on(
   function()
     local home_dir = os.getenv('HOME')
     -- Импорт XDG_SESSION_ID юзер-менеджеру systemd: без него юнит Noctalia
-    -- не видит logind-сессию (локскрин, блокировка при засыпании).
+    -- не видит logind-сессию (локскрин, блокировка при засыпании), а у агента
+    -- авторизации polkit не выполнилось бы условие WAYLAND_DISPLAY.
     -- Одной командой — чтобы импорт успел до старта target.
     hl.exec_cmd(
-      'systemctl --user import-environment XDG_SESSION_ID; systemctl --user start hyprland-session.target'
+      'systemctl --user import-environment XDG_SESSION_ID WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE; systemctl --user start hyprland-session.target'
     )
     hl.exec_cmd(
       'copyq'
@@ -51,12 +52,6 @@ hl.on(
       'amnezia-vpn',
       {
         workspace = '9'
-      }
-    )
-    hl.exec_cmd(
-      'virt-manager -c qemu:///system --show-domain-console ubuntu25.10',
-      {
-        workspace = '10'
       }
     )
     hl.exec_cmd(
