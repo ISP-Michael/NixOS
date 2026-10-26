@@ -1,0 +1,13 @@
+--- a/src/auth/fingerprint_authenticator.cpp
++++ b/src/auth/fingerprint_authenticator.cpp
+@@ -189,6 +189,10 @@
+         kLog.info("claimed fingerprint device");
+         if (m_active && !m_sleeping) {
+           startVerify(false);
++        } else {
++          /* Claim may complete after the session was unlocked; release the
++             device so it does not stay claimed forever. */
++          releaseDevice();
+         }
+       });
+ }

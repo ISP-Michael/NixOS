@@ -26,6 +26,11 @@
         "12:00"
       ];
     };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 14d";
+    };
   };
   boot = {
     kernelModules = [
@@ -34,6 +39,7 @@
     kernel = {
       sysctl = {
         "vm.swappiness" = 10;
+        "vm.page-cluster" = 0;
         "vm.dirty_background_ratio" = 5;
         "vm.dirty_ratio" = 10;
         "vm.vfs_cache_pressure" = 50;
@@ -67,6 +73,10 @@
   services = {
     power-profiles-daemon = {
       enable = true;
+    };
+    scx = {
+      enable = true;
+      scheduler = "scx_bpfland";
     };
   };
 }

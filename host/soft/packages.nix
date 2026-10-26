@@ -12,7 +12,6 @@
       binutils
       bluez
       cachix
-      cron
       dconf
       dig
       disko
@@ -25,9 +24,7 @@
       glibcLocales
       gnupg
       gpu-screen-recorder
-      grafana
       iotop
-      kanata
       keyd
       killall
       libfprint-tod
@@ -38,16 +35,12 @@
       lsyncd
       memtester
       nftables
-      nix-serve
-      nix-serve-ng
       nixos-rebuild-ng
       ntfsprogs-plus
       openssl
       pipewire
       pkg-config
       polkit
-      prometheus
-      redis
       ryzenadj
       smartmontools
       socat
@@ -60,7 +53,6 @@
       wireshark
       wireplumber
       xdg-desktop-portal
-      zapret
       zlib
       zellij
       zsh

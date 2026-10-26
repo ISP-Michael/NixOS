@@ -19,10 +19,6 @@ in
   services = enabledDefaults // {
     gvfs.enable = true;
     upower.enable = true;
-    postgresql = {
-      enable = true;
-      package = pkgs.postgresql;
-    };
     chrony = {
       enable = true;
       enableNTS = false;

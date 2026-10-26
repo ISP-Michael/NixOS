@@ -1,0 +1,221 @@
+diff --git a/libfprint/drivers/goodixtls/goodix.c b/libfprint/drivers/goodixtls/goodix.c
+index 1a61cc9..b841021 100644
+--- a/libfprint/drivers/goodixtls/goodix.c
++++ b/libfprint/drivers/goodixtls/goodix.c
+@@ -89,6 +89,20 @@ goodix_receive_done(FpDevice *dev, guint8 *data, guint16 length, GError *error)
+     callback(dev, data, length, user_data, error);
+ }
+ 
++void
++goodix_cancel_pending_command(FpDevice *dev)
++{
++  FpiDeviceGoodixTlsPrivate *priv = fpi_device_goodixtls_get_instance_private(
++      FPI_DEVICE_GOODIXTLS(dev));
++
++  /* Complete the innermost command callback, letting nested SSMs unwind.
++   * A SIGFM worker, when active instead, owns the device cancellable. */
++  if (priv->ack || priv->reply)
++    goodix_receive_done(dev, NULL, 0,
++                        g_error_new_literal(G_IO_ERROR, G_IO_ERROR_CANCELLED,
++                                            "Fingerprint operation cancelled"));
++}
++
+ static void
+ goodix_receive_none(FpDevice *dev, guint8 *data, guint16 length, gpointer user_data,
+                     GError *error)
+@@ -1002,7 +1016,16 @@ tls_handshake_done(FpiSsm *ssm, FpDevice *dev, GError *error)
+   if (error)
+     {
+       fp_err("TLS handshake failed: %s (code: %d)", error->message, error->code);
+-      g_error_free(error);
++      FpiDeviceGoodixTls *self = FPI_DEVICE_GOODIXTLS(dev);
++      FpiDeviceGoodixTlsPrivate *priv = fpi_device_goodixtls_get_instance_private(self);
++      GoodixCallbackInfo *callback = g_steal_pointer(&priv->tls_ready_callback);
++      if (callback)
++        {
++          ((GoodixNoneCallback)callback->callback)(dev, callback->user_data, error);
++          g_free(callback);
++        }
++      else
++        g_error_free(error);
+       return;
+     }
+   goodix_send_tls_successfully_established(dev, on_tls_successfully_established, NULL);
+diff --git a/libfprint/drivers/goodixtls/goodix.h b/libfprint/drivers/goodixtls/goodix.h
+index c80d162..b732c9c 100644
+--- a/libfprint/drivers/goodixtls/goodix.h
++++ b/libfprint/drivers/goodixtls/goodix.h
+@@ -201,6 +201,9 @@ goodix_dev_deinit(FpDevice *dev, GError **error);
+ void
+ goodix_reset_state(FpDevice *dev);
+ 
++void
++goodix_cancel_pending_command(FpDevice *dev);
++
+ /* ---- DEV SECTION END ---- */
+ 
+ /* ----------------------------------------------------------------------------- */
+diff --git a/libfprint/drivers/goodixtls/goodix5xx.c b/libfprint/drivers/goodixtls/goodix5xx.c
+index 7b04d05..9d68ee7 100644
+--- a/libfprint/drivers/goodixtls/goodix5xx.c
++++ b/libfprint/drivers/goodixtls/goodix5xx.c
+@@ -1327,6 +1327,12 @@ dev_verify_identify (FpDevice *dev)
+   fpi_ssm_start (priv->task_ssm, verify_ssm_done);
+ }
+ 
++static void
++dev_cancel (FpDevice *dev)
++{
++  goodix_cancel_pending_command (dev);
++}
++
+ /* ---- GObject class init ---- */
+ 
+ void
+@@ -1346,6 +1352,7 @@ fpi_device_goodixtls5xx_class_init(FpiDeviceGoodixTls5xxClass *self)
+   dev_cls->enroll   = dev_enroll;
+   dev_cls->verify   = dev_verify_identify;
+   dev_cls->identify = dev_verify_identify;
++  dev_cls->cancel   = dev_cancel;
+ }
+ 
+ void
+diff --git a/tests/meson.build b/tests/meson.build
+index a38899e..6ea1cad 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -274,6 +274,17 @@ test_utils = static_library('fprint-test-utils',
+     dependencies: libfprint_private_dep,
+     install: false)
+ 
++if 'goodixtls511' in drivers
++    goodixtls_test = executable('test-goodixtls',
++        sources: 'test-goodixtls.c',
++        dependencies: libfprint_private_dep,
++        link_with: libfprint_drivers,
++        install: false)
++    test('goodixtls', goodixtls_test,
++        suite: ['unit-tests'],
++        env: envs)
++endif
++
+ unit_tests = [
+     'fpi-device',
+     'fpi-ssm',
+diff --git a/tests/test-goodixtls.c b/tests/test-goodixtls.c
+new file mode 100644
+index 0000000..f933650
+--- /dev/null
++++ b/tests/test-goodixtls.c
+@@ -0,0 +1,111 @@
++/* SPDX-License-Identifier: LGPL-2.1-or-later */
++
++/* Exercise private command state without a USB device or a TLS peer. */
++#include "drivers/goodixtls/goodix.c"
++
++typedef struct
++{
++  FpiDeviceGoodixTls parent;
++} TestGoodixDevice;
++
++typedef FpiDeviceGoodixTlsClass TestGoodixDeviceClass;
++
++GType test_goodix_device_get_type (void);
++G_DEFINE_TYPE (TestGoodixDevice, test_goodix_device, FPI_TYPE_DEVICE_GOODIXTLS)
++
++static void
++test_goodix_device_class_init (TestGoodixDeviceClass *klass)
++{
++  FpDeviceClass *device_class = FP_DEVICE_CLASS (klass);
++
++  device_class->type = FP_DEVICE_TYPE_VIRTUAL;
++  device_class->features = FP_DEVICE_FEATURE_VERIFY;
++  device_class->temp_hot_seconds = -1;
++}
++
++static void
++test_goodix_device_init (TestGoodixDevice *self)
++{
++}
++
++static void
++command_cancelled (FpDevice *dev, guint8 *data, guint16 length,
++                   gpointer user_data, GError *error)
++{
++  guint *calls = user_data;
++  FpiDeviceGoodixTlsPrivate *priv = fpi_device_goodixtls_get_instance_private (
++      FPI_DEVICE_GOODIXTLS (dev));
++
++  (*calls)++;
++  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
++  g_assert_null (data);
++  g_assert_cmpuint (length, ==, 0);
++  g_assert_false (priv->ack);
++  g_assert_false (priv->reply);
++  g_assert_null (priv->callback);
++  g_assert_null (priv->user_data);
++  g_clear_error (&error);
++}
++
++static void
++test_cancel_command (gconstpointer user_data)
++{
++  g_autoptr(FpDevice) dev = g_object_new (test_goodix_device_get_type (), NULL);
++  FpiDeviceGoodixTlsPrivate *priv = fpi_device_goodixtls_get_instance_private (
++      FPI_DEVICE_GOODIXTLS (dev));
++  guint calls = 0;
++  guint state = GPOINTER_TO_UINT (user_data);
++
++  priv->ack = state == 1;
++  priv->reply = state == 2;
++  priv->callback = command_cancelled;
++  priv->user_data = &calls;
++
++  goodix_cancel_pending_command (dev);
++  g_assert_cmpuint (calls, ==, state ? 1 : 0);
++  /* Cancelling an already completed command must not invoke its callback again. */
++  goodix_cancel_pending_command (dev);
++  g_assert_cmpuint (calls, ==, state ? 1 : 0);
++}
++
++static void
++tls_failed (FpDevice *dev, gpointer user_data, GError *error)
++{
++  guint *calls = user_data;
++  FpiDeviceGoodixTlsPrivate *priv = fpi_device_goodixtls_get_instance_private (
++      FPI_DEVICE_GOODIXTLS (dev));
++
++  (*calls)++;
++  g_assert_null (priv->tls_ready_callback);
++  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
++  g_clear_error (&error);
++}
++
++static void
++test_tls_failure (void)
++{
++  g_autoptr(FpDevice) dev = g_object_new (test_goodix_device_get_type (), NULL);
++  FpiDeviceGoodixTlsPrivate *priv = fpi_device_goodixtls_get_instance_private (
++      FPI_DEVICE_GOODIXTLS (dev));
++  guint calls = 0;
++
++  priv->tls_ready_callback = goodix_make_cb_info (G_CALLBACK (tls_failed), &calls);
++  g_test_expect_message ("libfprint-goodixtls", G_LOG_LEVEL_CRITICAL,
++                         "*TLS handshake failed*");
++  tls_handshake_done (NULL, dev,
++                     g_error_new_literal (G_IO_ERROR, G_IO_ERROR_CANCELLED,
++                                          "Cancelled during TLS handshake"));
++  g_test_assert_expected_messages ();
++  g_assert_cmpuint (calls, ==, 1);
++}
++
++int
++main (int argc, char **argv)
++{
++  g_test_init (&argc, &argv, NULL);
++  g_test_add_data_func ("/goodixtls/cancel/idle", GUINT_TO_POINTER (0), test_cancel_command);
++  g_test_add_data_func ("/goodixtls/cancel/ack", GUINT_TO_POINTER (1), test_cancel_command);
++  g_test_add_data_func ("/goodixtls/cancel/reply", GUINT_TO_POINTER (2), test_cancel_command);
++  g_test_add_func ("/goodixtls/tls/failure", test_tls_failure);
++  return g_test_run ();
++}

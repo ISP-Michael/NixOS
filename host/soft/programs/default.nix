@@ -3,6 +3,7 @@
     ./amnezia-vpn.nix
     ./appimage.nix
     # ./clash.nix
+    ./gamemode.nix
     ./dconf.nix
     ./hyprland.nix
     ./nix-ld.nix

@@ -7,7 +7,7 @@ in
       enable = true;
       webuiPort = 8080;
       torrentingPort = 52000;
-      openFirewall = true;
+      openFirewall = false;
     };
   };
   users = {
@@ -36,6 +36,9 @@ in
   };
   networking = {
     firewall = {
+      allowedTCPPorts = [
+        52000
+      ];
       allowedUDPPorts = [
         52000
       ];

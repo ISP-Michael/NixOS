@@ -7,7 +7,7 @@
     noctalia = {
       systemd.enable = true;
       enable = true;
-      package = pkgs.noctalia;
+      package = import ../noctalia-patched.nix { inherit pkgs; };
     };
   };
 }

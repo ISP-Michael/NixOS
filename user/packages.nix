@@ -5,10 +5,26 @@
   ...
 }:
 let
-  noctalia-shell = pkgs.noctalia;
+  noctalia-shell = import ./noctalia-patched.nix { inherit pkgs; };
   zen = inputs.zen-browser.packages.${system}.default;
-  openclaw = inputs.nix-openclaw.packages.${system}.openclaw;
   freesmlauncher = inputs.freesmlauncher.packages.${system}.freesmlauncher;
+  # nixpkgs 26.11.20261020: pywal16 задаёт makeWrapperArgs одной строкой, а новый
+  # make-shell-wrapper читает аргументы по одному и падает с
+  # "makeWrapper doesn't understand the arg --prefix PATH : ...". Разбиваем на элементы.
+  pywal16 = pkgs.pywal16.overrideAttrs (
+    _: {
+      makeWrapperArgs = [
+        "--prefix"
+        "PATH"
+        ":"
+        (
+          pkgs.lib.makeBinPath [
+            pkgs.imagemagick
+          ]
+        )
+      ];
+    }
+  );
   # Telegram: файловый диалог через портал (KDE), а не встроенный Qt из-за сессионного qt5ct
   telegram-portal = pkgs.runCommand "telegram-desktop-portal" {
     nativeBuildInputs = [ pkgs.makeWrapper ];
@@ -240,7 +256,6 @@ in
         obs-cmd
         obs-studio
         obsidian
-        openclaw
         oxlint
         p7zip
         pamixer
@@ -255,7 +270,7 @@ in
         prettier
         pv
         python13Env
-        pywal
+        pywal16
         qt5.qtgraphicaleffects
         qrencode
         (lib.hiPrio rar)
@@ -268,9 +283,6 @@ in
         sass
         sbc
         silver-searcher-ng
-        sing-box
-        sing-geoip
-        sing-geosite
         slurp
         sops
         speedtest-cli
@@ -306,7 +318,6 @@ in
         uutils-diffutils
         uutils-findutils
         uv
-        v2rayn
         vdirsyncer
         video-downloader
         vim-language-server
@@ -321,7 +332,6 @@ in
         wofi
         wtype
         xplr
-        xray
         yaml-language-server
         yt-dlp
         ytdownloader

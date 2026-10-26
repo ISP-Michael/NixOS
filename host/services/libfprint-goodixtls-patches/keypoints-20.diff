@@ -1,0 +1,11 @@
+--- a/libfprint/drivers/goodixtls/goodix5xx.c
++++ b/libfprint/drivers/goodixtls/goodix5xx.c
+@@ -747,7 +747,7 @@
+ /* ---- SIGFM vfunc implementations ---- */
+ 
+ #define GOODIX_SIGFM_THRESHOLD    7
+-#define GOODIX_SIGFM_MIN_KEYPOINTS 25
++#define GOODIX_SIGFM_MIN_KEYPOINTS 20
+ 
+ typedef struct
+ {

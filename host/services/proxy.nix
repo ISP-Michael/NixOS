@@ -5,7 +5,7 @@
 {
   services = {
     v2raya = {
-      enable = true;
+      enable = false;
       cliPackage = pkgs.v2ray;
     };
   };

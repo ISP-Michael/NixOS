@@ -46,9 +46,6 @@
         };
       };
     };
-    nix-openclaw = {
-      url = "github:openclaw/nix-openclaw/d3760a6f103642f11e24bc01ee9aec80a0153774";
-    };
     zen-browser = {
       url = "github:youwen5/zen-browser-flake/afbbbef7c3c00f160f4a9dfdd8c6c6b8b089a33f";
       inputs = {
@@ -68,7 +65,6 @@
     stylix,
     freesmlauncher,
     nix-flatpak,
-    nix-openclaw,
     ...
   }@inputs:
   let
@@ -87,7 +83,6 @@
       };
       modules = [
         ./host/configuration.nix
-        ./happ-nixos/happ-module.nix
         disko.nixosModules.disko
         nix-flatpak.nixosModules.nix-flatpak
         home-manager.nixosModules.home-manager
@@ -99,17 +94,9 @@
               allowUnfree = true;
               allowUnsupportedSystem = true;
               android_sdk.accept_license = true;
-              permittedInsecurePackages = [
-                "docker-29.6.2"
-              ];
             };
           };
           services = {
-            happ = {
-              enable = true;
-              forceXwayland = true;
-              forceSoftwareRendering = true;
-            };
             btrfs = {
               autoScrub = {
                 enable = true;

@@ -7,6 +7,7 @@
     ./hardware-configuration.nix
     ./home-manager.nix
     ./networking.nix
+    ./overlays.nix
     ./scripts
     ./services
     ./settings
@@ -29,4 +30,5 @@
   environment.etc."zshenv.local".text = ''
     export ZDOTDIR="$HOME/.config/zsh"
   '';
+  services.journald.settings.Journal.SystemMaxUse = "1G";
 }
