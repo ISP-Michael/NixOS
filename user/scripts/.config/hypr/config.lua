@@ -24,6 +24,15 @@ hl.config(
     },
 
     decoration = {
+      blur = {
+        enabled = true,
+        size = 3,
+        passes = 4,
+        new_optimizations = true,
+        ignore_opacity = true,
+        popups = true
+      },
+
       rounding = 10,
       active_opacity = 1.0,
       inactive_opacity = 1.0,
@@ -103,12 +112,3 @@ hl.config(
     },
   }
 )
-
--- Блоки dwindle / master / scrolling / blur убраны.
--- Первые три не применяются: layout = 'monocle', до их кода не доходит.
--- blur был целиком выключен (enabled = false), то есть все его
--- параметры — инерты. Если блюр понадобится, включать нужно так:
---   blur = { enabled = true, size = 3, passes = 1, new_optimizations = true,
---            ignore_opacity = true, popups = true }
--- passes = 1 вместо 4, и new_optimizations = true — это как раз тот
--- случай, когда блюр подешевел.

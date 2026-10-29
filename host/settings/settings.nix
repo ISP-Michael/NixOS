@@ -39,7 +39,7 @@
     kernel = {
       sysctl = {
         "vm.swappiness" = 10;
-        "vm.page-cluster" = 0;
+        "vm.page-cluster" = 3;
         "vm.dirty_background_ratio" = 5;
         "vm.dirty_ratio" = 10;
         "vm.vfs_cache_pressure" = 50;
@@ -48,28 +48,6 @@
       };
     };
   };
-  # powerManagement = {
-  #   cpuFreqGovernor = "schedutil";
-  #   cpufreq = {
-  #     max = 2100000;
-  #   };
-  # };
-  # systemd = {
-  #   services = {
-  #     disable-cpu-boost = {
-  #       description = "Disable AMD Core Performance Boost";
-  #       wantedBy = [
-  #         "multi-user.target"
-  #       ];
-  #       serviceConfig = {
-  #         Type = "oneshot";
-  #         ExecStart = ''
-  #           ${pkgs.bash}/bin/sh -c 'echo 0 > /sys/devices/system/cpu/cpufreq/boost'
-  #         '';
-  #       };
-  #     };
-  #   };
-  # };
   services = {
     power-profiles-daemon = {
       enable = true;

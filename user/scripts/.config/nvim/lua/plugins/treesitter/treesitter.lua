@@ -4,8 +4,6 @@ return {
     branch = 'main',
     build = ':TSUpdate',
     config = function()
-      -- Только языки, парсеры для которых уже установлены
-      -- (nvim-treesitter ветки main ставит их через :TSInstall, а не install()).
       local langs = {
         'bash',
         'c',
