@@ -1,0 +1,10 @@
+jeffreytse/zsh-vi-mode
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-completions
+zsh-users/zsh-history-substring-search
+hlissner/zsh-autopair
+Aloxaf/fzf-tab
+MichaelAquilina/zsh-you-should-use
+zsh-users/zsh-syntax-highlighting
+kutsan/zsh-system-clipboard
+MichaelAquilina/zsh-auto-notify

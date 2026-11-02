@@ -21,7 +21,7 @@ option.undodir = undodir
 option.signcolumn = 'yes:1'
 option.smoothscroll = true
 option.fillchars = { eob = ' ' }
-option.completeopt = { 'menu', 'menuone', 'noselect', 'noinsert', 'fuzzy', 'popup' }
+option.completeopt = { 'menu', 'menuone', 'noinsert', 'fuzzy', 'popup' }
 option.showtabline = 0
 
 local function fix_float_normal()

@@ -1,0 +1,5 @@
+# Копирование файлов в системный клипборд как file:// URI.
+[[mgr.prepend_keymap]]
+on = [ "c", "s" ]
+run = "shell --orphan -- ~/.config/yazi/copy-uri.sh %S"
+desc = "Copy to clipboard"

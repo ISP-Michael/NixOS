@@ -1,4 +1,6 @@
 {
+  # Без rtkit PipeWire не получает SCHED_FIFO и рвётся под нагрузкой.
+  security.rtkit.enable = true;
   services = {
     pipewire = {
       enable = true;

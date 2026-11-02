@@ -1,5 +1,23 @@
 user/programs/openclaw-module.nix
 result
+result-*
+result-lib
 dependencies/videos/wallpapers/*.mp4
 host/services/mihomo.yaml
-result-lib
+
+# Nix build state
+.direnv/
+.devenv/
+
+# Generated and backup files
+.zcompdump
+.zcompdump-*
+*.bak
+*.bak-*
+*~
+*.swp
+*.swo
+*.log
+__pycache__/
+*.pyc
+.DS_Store

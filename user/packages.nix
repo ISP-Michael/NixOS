@@ -141,7 +141,7 @@ in
         devenv
         distant
         docker-compose-language-service
-        dotnetCorePackages.sdk_9_0-bin
+        dotnetCorePackages.sdk_10_0-bin
         dpkg
         dua
         dust
@@ -265,6 +265,7 @@ in
         perl
         php
         playerctl
+        poppler-utils
         powershell
         pre-commit
         prettier
@@ -308,6 +309,7 @@ in
         tree
         ty
         typescript
+        typescript-language-server
         udiskie
         ueberzugpp
         unciv

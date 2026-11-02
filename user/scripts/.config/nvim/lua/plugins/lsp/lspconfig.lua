@@ -24,6 +24,9 @@ return {
       {
         settings = {
           Lua = {
+            runtime = {
+              version = 'LuaJIT'
+            },
             diagnostics = {
               globals = {
                 'vim',
@@ -31,7 +34,11 @@ return {
               }
             },
             workspace = {
-              library = vim.api.nvim_get_runtime_file('', true),
+              -- Only the Neovim runtime, not every directory from 'runtimepath'.
+              -- The full list makes lua_ls index every installed plugin.
+              library = {
+                vim.env.VIMRUNTIME
+              },
               checkThirdParty = false,
             }
           }
@@ -50,52 +57,61 @@ return {
         }
       }
     )
+    vim.lsp.config(
+      'nixd',
+      {
+        cmd = {
+          'nixd',
+          '--log=error'
+        },
+        settings = {
+          nixd = {
+            formatting = {
+              command = {
+                'alejandra'
+              }
+            },
+            options = {
+              nixpkgs = {
+                expr = 'import <nixpkgs> {}'
+              }
+            }
+          }
+        }
+      }
+    )
     local lsp_servers = {
       'ty',
       'ruff',
-      'csharp_ls',
       'nixd',
       'clangd',
-      'lua_ls',
-      'emmet_ls',
       'gopls',
+      'lua_ls',
+      'rust_analyzer',
+      'ts_ls',
+      'csharp_ls',
+      'emmet_language_server',
+      'superhtml',
+      'bashls',
+      'yamlls',
+      'sqls',
     }
     for _, server in ipairs(lsp_servers) do
       vim.lsp.enable(server)
     end
-    vim.api.nvim_create_autocmd(
-      'BufWritePre',
-      {
-        pattern = {
-          '*.py',
-          '*.go',
-        },
-        callback = function(args)
-          vim.lsp.buf.code_action(
-            {
-              context = {
-                only = {
-                  'source.organizeImports'
-                },
-                diagnostics = {
-
-                },
-              },
-              apply = true
-            }
-          )
-          vim.lsp.buf.format(
-            {
-              bufnr = args.buf
-            }
-          )
-        end
-      }
-    )
     vim.keymap.set(
       'i',
-      '<C-b>',
+      '<C-l>',
       function()
+        if vim.fn.pumvisible() == 1 then
+          -- Keep the built-in popup action: add one character from the match.
+          vim.api.nvim_feedkeys(
+            vim.api.nvim_replace_termcodes('<C-l>', true, false, true),
+            'n',
+            false
+          )
+          return
+        end
         vim.lsp.completion.get()
       end,
       {
@@ -105,7 +121,10 @@ return {
     vim.keymap.set(
       'n',
       '<leader>e',
-      vim.diagnostic.open_float
+      vim.diagnostic.open_float,
+      {
+        desc = 'Diagnostic: show float'
+      }
     )
     -- Signature help opens on its own: after picking an item from the list
     -- (CompleteDone) or right after typing '(' or ','.
@@ -121,7 +140,7 @@ return {
           -- ruff has no completion (completionProvider = false); without this
           -- check it still gets the request and throws an error on screen
           if client:supports_method('textDocument/completion', ev.buf) then
-            vim.lsp.completion.enable(true, ev.data.client_id, ev.buf)
+            vim.lsp.completion.enable(true, ev.data.client_id, ev.buf, { autotrigger = false })
           end
           if not client:supports_method('textDocument/signatureHelp', ev.buf) then
             return

@@ -13,36 +13,6 @@ return {
       ':lua require("fzf-lua").oldfiles()<cr>'
     },
     {
-      '<leader>fc',
-      function()
-        local fzf = require('fzf-lua')
-        local quick_dirs = {
-          '~/.config',
-          '~/Downloads',
-          '~/Projects',
-          '~',
-          vim.fn.getcwd(),
-          '/etc'
-        }
-        fzf.fzf_exec(
-          quick_dirs,
-          {
-            actions = {
-              ['default'] = function(selected)
-                if #selected > 0 then
-                  fzf.files(
-                    {
-                      cwd = selected[1]
-                    }
-                  )
-                end
-              end
-            }
-          }
-        )
-      end
-    },
-    {
       '<leader>fb',
       ':lua require("fzf-lua").buffers()<CR>'
     },

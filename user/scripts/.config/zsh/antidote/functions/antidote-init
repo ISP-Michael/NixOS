@@ -1,0 +1,39 @@
+#!/bin/zsh
+
+### Emit the dynamic-mode antidote function.
+#
+# Mirrors antidote_init in antidote.zsh, but resolves home and config in
+# the parent shell so `source <(antidote init)` costs no subprocess.
+#
+#function antidote-init {
+  emulate -L zsh
+  setopt local_options
+
+  if [[ "$1" == -h || "$1" == --help ]]; then
+    antidote-help init
+    return $?
+  fi
+
+  # antidote-setup normalized ANTIDOTE_CONFIG. >/dev/null drops the print.
+  local ahome script
+  antidote-home >/dev/null; ahome=$REPLY
+
+  # Keep this template byte-identical to _ANTIDOTE_INIT_SCRIPT.
+  read -rd '' script <<'EOS' || true
+#!/usr/bin/env zsh
+function antidote {
+  case "$1" in
+    bundle)
+      shift
+      antidote-bundle-dynamic @ANTIDOTE_HOME@ @ANTIDOTE_CONFIG@ "$@"
+      ;;
+    *)
+      ANTIDOTE_DYNAMIC=true antidote-dispatch $@
+      ;;
+  esac
+}
+EOS
+  script=${script//@ANTIDOTE_HOME@/${(qq)ahome}}
+  script=${script//@ANTIDOTE_CONFIG@/${(qq)ANTIDOTE_CONFIG}}
+  print -rn -- "$script"
+#}

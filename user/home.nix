@@ -15,7 +15,6 @@
       SUDO_EDITOR = "nvim";
       VISUAL = "nvim";
       WGET_HSTS_FILE = "$HOME/.local/share/wget/hsts";
-      ANTIDOTE_HOME = "$HOME/.local/share/zsh/antidote-plugins";
     };
     packages = with pkgs; [
       glib

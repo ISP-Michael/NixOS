@@ -1,0 +1,57 @@
+[[plugin.deps]]
+use = "macydnah/office"
+rev = "41ebef8"
+hash = "5805affd3ae8adcb3c72b6997d21c0a6"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-filter"
+rev = "f703392"
+hash = "d6f7351ea25a43c9b5f4315fa1e23935"
+
+[[plugin.deps]]
+use = "grappas/wl-clipboard"
+rev = "8cc5524"
+hash = "5c587834c274dca9059092714ece1f18"
+
+[[plugin.deps]]
+use = "Reledia/glow"
+rev = "bd3eaa5"
+hash = "92b5c58159a51c567f82b618cee2b78"
+
+[[plugin.deps]]
+use = "Reledia/hexyl"
+rev = "016a09b"
+hash = "50da29476e744dba37d77fb209328fd1"
+
+[[plugin.deps]]
+use = "boydaihungst/mediainfo"
+rev = "f1cec0b"
+hash = "fd9312e974c63438b1f8737711462d52"
+
+[[plugin.deps]]
+use = "ryanda/video-grid"
+rev = "9274cba"
+hash = "74a763c400ba68e2affb23e5cfbfedcf"
+
+[[plugin.deps]]
+use = "AminurAlam/yazi-plugins:preview-sqlite"
+rev = "9997d5b"
+hash = "11ee002ea5080a73f2c2db5dceda50df"
+
+[[plugin.deps]]
+use = "AminurAlam/yazi-plugins:preview-cbz"
+rev = "9997d5b"
+hash = "2a6846d55010bd8a3d2ecb2f55984296"
+
+[[plugin.deps]]
+use = "AnirudhG07/nbpreview"
+rev = "b504594"
+hash = "b83919985400521dee78e1c352b5d9db"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:zoom"
+rev = "f703392"
+hash = "558bbb58e3dd36d488280a8f10e7b904"
+
+[flavor]
+deps = []

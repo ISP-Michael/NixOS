@@ -10,6 +10,8 @@ let
     "kitty"
     "fastfetch"
     "tmux"
+    "zsh"
+    "yazi"
   ];
   linkScript = builtins.concatStringsSep "\n" (
     map

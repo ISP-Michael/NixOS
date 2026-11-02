@@ -1,0 +1,36 @@
+#!/bin/zsh
+
+### Show antidote documentation.
+#
+# When called with no arguments, shows the antidote man page.
+# When called with a topic, shows the man page for that topic.
+#
+#function antidote-help {
+  __antidote_usage() {
+    antidote-zsh __private__ usage
+    print -r -- "  help      Show documentation"
+    print -r -- "  load      Statically source all bundles from the plugins file"
+  }
+
+  local manpage
+  if [[ "$1" == -h || "$1" == --help ]]; then
+    manpage=antidote-help
+  elif [[ -z "$1" || "$1" == antidote ]]; then
+    manpage=antidote
+  else
+    manpage="antidote-${1}"
+  fi
+
+  local ret=0
+  if (( $+commands[man] )) && man "$manpage" 2>/dev/null; then
+    :
+  else
+    if [[ "$manpage" != antidote && "$manpage" != antidote-help ]]; then
+      printf '%s\n' "No manual entry for $manpage"
+      ret=1
+    fi
+    __antidote_usage
+  fi
+  (( $+functions[__antidote_usage] )) && unfunction __antidote_usage
+  return $ret
+#}

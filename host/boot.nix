@@ -7,9 +7,10 @@
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "amdgpu.dcdebugmask=0x40000"
+      "amdgpu.ppfeaturemask=0xfffffeff"
+      "iomem=relaxed"
       "preempt=full"
     ];
-
     loader = {
       efi = {
         canTouchEfiVariables = true;

@@ -1,0 +1,72 @@
+#!/bin/zsh
+
+### The antidote dispatcher.
+# This allows the `antidote` function to be overridden via `antidote init`.
+# The init command switches antidote from static mode to dynamic mode, but this
+# core dispatcher remains.
+#function antidote-dispatch {
+  0=${(%):-%x}
+
+  # KSH_ARRAYS and SH_GLOB break this code, but emulate -L would stop
+  # sourced plugin setopts sticking. Turn them off, restore on exit.
+  local ksh_arrays=0 sh_glob=0
+  [[ -o KSH_ARRAYS ]] && ksh_arrays=1 && unsetopt KSH_ARRAYS
+  [[ -o SH_GLOB    ]] && sh_glob=1    && unsetopt SH_GLOB
+
+  __antidote_dispatch_usage() {
+    antidote-zsh __private__ usage
+    print -r -- "  help      Show documentation"
+    print -r -- "  load      Statically source all bundles from the plugins file"
+  }
+
+  local ret=0
+
+  if [[ "$1" == "__private__" ]]; then
+    # Route __private__ directly to antidote-zsh subprocess
+    antidote-zsh "$@"
+    ret=$?
+
+  elif [[ -z "$1" ]]; then
+    __antidote_dispatch_usage
+    ret=2
+
+  elif [[ "$1" == -h || "$1" == --help ]]; then
+    __antidote_dispatch_usage
+
+  elif [[ "$1" == -* ]]; then
+    # Flags like --version, --diagnostics go to subprocess
+    antidote-zsh "$@"
+    ret=$?
+
+  else
+    local cmd=$1; shift
+
+    if (( $+functions[antidote-${cmd}] )); then
+      # Commands with parent-shell wrappers: help, home, init, load, update
+      antidote-${cmd} "$@"
+      ret=$?
+    else
+      # Check for -h/--help on any subcommand
+      local -a o_help=()
+      zparseopts ${_adote_zparopt_flags} -- h=o_help -help=h 2>/dev/null
+      if (( $#o_help )); then
+        antidote-help "$cmd"
+        ret=$?
+      elif [[ "$cmd" == path ]]; then
+        set -- "${(@e)@}"  # Expand variables in parent shell context
+        antidote-zsh "$cmd" "$@"
+        ret=$?
+      else
+        antidote-zsh "$cmd" "$@"
+        ret=$?
+      fi
+    fi
+  fi
+
+  # guard: nested dispatch calls (eg load -> bundle) share this function name
+  (( $+functions[__antidote_dispatch_usage] )) && unfunction __antidote_dispatch_usage
+
+  (( ksh_arrays )) && setopt KSH_ARRAYS
+  (( sh_glob ))    && setopt SH_GLOB
+  return $ret
+#}

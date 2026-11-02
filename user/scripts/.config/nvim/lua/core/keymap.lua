@@ -105,27 +105,35 @@ vim.api.nvim_create_autocmd(
   },
   {
     callback = function(event)
+      local client = vim.lsp.get_client_by_id(event.data.client_id)
+      if not client then
+        return
+      end
       local buf = vim.lsp.buf
 
-      set(
-        'n',
-        'gd',
-        buf.definition,
-        {
-          buffer = event.buf,
-          desc = 'LSP: go to definition'
-        }
-      )
+      if client:supports_method('textDocument/definition', event.buf) then
+        set(
+          'n',
+          'gd',
+          buf.definition,
+          {
+            buffer = event.buf,
+            desc = 'LSP: go to definition'
+          }
+        )
+      end
 
-      set(
-        'n',
-        'gD',
-        buf.declaration,
-        {
-          buffer = event.buf,
-          desc = 'LSP: go to declaration'
-        }
-      )
+      if client:supports_method('textDocument/declaration', event.buf) then
+        set(
+          'n',
+          'gD',
+          buf.declaration,
+          {
+            buffer = event.buf,
+            desc = 'LSP: go to declaration'
+          }
+        )
+      end
     end
   }
 )

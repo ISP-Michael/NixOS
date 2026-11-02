@@ -1,0 +1,24 @@
+[mgr]
+show_hidden = true
+
+[plugin]
+
+prepend_preloaders = [
+	# Office documents (.doc/.xls/.ppt/.docx/.xlsx/.pptx/.odt/.ods/.odp)
+	{ mime = "application/msword", run = "office" },
+	{ mime = "application/vnd.ms-excel", run = "office" },
+	{ mime = "application/vnd.ms-powerpoint", run = "office" },
+	{ mime = "application/vnd.openxmlformats-officedocument.*", run = "office" },
+	{ mime = "application/vnd.oasis.opendocument.*", run = "office" },
+	{ url = "*.{doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp}", run = "office" },
+]
+
+prepend_previewers = [
+	# Office documents (.doc/.xls/.ppt/.docx/.xlsx/.pptx/.odt/.ods/.odp)
+	{ mime = "application/msword", run = "office" },
+	{ mime = "application/vnd.ms-excel", run = "office" },
+	{ mime = "application/vnd.ms-powerpoint", run = "office" },
+	{ mime = "application/vnd.openxmlformats-officedocument.*", run = "office" },
+	{ mime = "application/vnd.oasis.opendocument.*", run = "office" },
+	{ url = "*.{doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp}", run = "office" },
+]

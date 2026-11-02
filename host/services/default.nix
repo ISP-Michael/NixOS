@@ -5,6 +5,7 @@
     ./flatpak.nix
     ./fprintd.nix
     ./fstrim.nix
+    ./happ.nix
     ./keyd.nix
     ./logind.nix
     ./mihomo.nix
