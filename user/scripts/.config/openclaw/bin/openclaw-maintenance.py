@@ -283,6 +283,8 @@ def build_dashboard_data(cache, jobs):
             "when": describe_schedule(sched),
             "rel": meta["rel"],
             "last": ts_fmt((j.get("state") or {}).get("lastRunAtMs")),
+            "next": ts_fmt((j.get("state") or {}).get("nextRunAtMs")
+                           or j.get("nextRunAtMs")),
             "status": (j.get("state") or {}).get("lastRunStatus")
                       or (j.get("state") or {}).get("lastStatus") or "—",
             "summary": cj.get("summary") or "",
