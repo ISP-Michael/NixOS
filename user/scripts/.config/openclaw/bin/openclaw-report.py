@@ -168,109 +168,106 @@ DUR_MINI = dict(DURS)
 DUR_MAX = max(DURS.values())
 
 
-def _job_pane(j):
-    up = {"ok": "ok", "error": "err", "skipped": "idle"}
-    cls = up.get(j["status"], "idle")
-    colmap = {"ok": "#7fd7c4", "err": "#f2789a", "idle": "#7d8199"}
-    col = colmap.get(cls, "#7d8199")
-    body = md_inline(j["summary"]) if j["summary"] else "<i>Сводки нет — открой файл результата.</i>"
-    link = "/" + j["rel"].split(",")[0].strip()
-    note = f'<span class="note">· {html.escape(j["summary_note"])}</span>' if j.get("summary_note") else ""
+# ============ графика ============
 
-    d = DUR_MINI.get(j["name"])
-    pct = (d / DUR_MAX * 100) if d else 0
-    dur_block = ""
-    if d:
-        dur_block = f"""
-      <div class="viz">
-        <div class="viz-h">Длительность прогона относительно самой долгой задачи</div>
-        {meter(pct, col, fmt_dur(d), f"{pct:.0f}% от {fmt_dur(DUR_MAX)}")}
-      </div>"""
-
-    return f"""
-    <section class="pane" id="j-{j['name']}">
-      <div class="phead">
-        <div class="ptitle">
-          <h1>{html.escape(j['name'])}</h1>
-          <span class="sub">результат задачи</span>
-        </div>
-        <span class="pill {cls}">{html.escape(j['status'])}</span>
-      </div>
-
-      <div class="kpis">
-        <div class="kpi"><span>Расписание</span><b>{html.escape(j['when'])}</b></div>
-        <div class="kpi"><span>Последний запуск</span><b>{j['last']}</b></div>
-        <div class="kpi"><span>Следующий</span><b>{j.get('next') or '—'}</b></div>
-        <div class="kpi"><span>Файл обновлён</span><b>{j['file_time']}</b></div>
-      </div>
-
-      <div class="meta">Файл: <a href="{link}">{html.escape(j['rel'])}</a>{note}</div>
-      {dur_block}
-      <div class="summary">{body}</div>
-    </section>"""
+def _svg(w, h, body):
+    return f'<svg viewBox="0 0 {w} {h}" class="chart">{"".join(body)}</svg>'
 
 
-def render_html(data):
-    up = {"ok": "ok", "error": "err", "skipped": "idle"}
-    panes = "".join(_job_pane(j) for j in data["jobs"])
+def bars_h(items, maxv, w=760, rowh=34, barh=14, lw=190):
+    body = []
+    h = len(items) * rowh + 10
+    for i, (lab, val, col, txt) in enumerate(items):
+        y = i * rowh + 6
+        bw = max(3.0, (float(val) / (maxv or 1)) * (w - lw - 110))
+        body.append(f'<text x="0" y="{y+barh-2}" class="clab">{html.escape(lab)}</text>')
+        body.append(f'<rect x="{lw}" y="{y}" width="{w-lw-110}" height="{barh}" rx="6" fill="#1c2133"/>')
+        body.append(f'<rect x="{lw}" y="{y}" width="{bw:.1f}" height="{barh}" rx="6" fill="{col}"/>')
+        body.append(f'<text x="{lw+bw+12:.0f}" y="{y+barh-2}" class="cval">{html.escape(txt)}</text>')
+    return _svg(w, h, body)
 
-    nav_jobs = "".join(
-        f'<a href="#j-{j["name"]}"><span class="nm">{html.escape(j["name"])}</span>'
-        f'<span class="dot {up.get(j["status"], "idle")}"></span></a>'
-        for j in data["jobs"])
 
-    return PAGE_HEAD + f"""
-<aside class="side">
-  <div class="brand">OpenClaw<span>панель состояния</span></div>
-  <div class="sstat">
-    <div><span>Шлюз</span><b>{data['gw']}</b></div>
-    <div><span>Диск</span><b>{data['free_gb']} ГБ</b></div>
-  </div>
-  <nav>
-    <div class="navlabel">Результаты</div>
-    {nav_jobs}
-    <div class="navlabel">Диагностика</div>
-    <a href="#check"><span class="nm">Аудит автоматизаций</span></a>
-    <a href="#timeouts"><span class="nm">Зависания и время</span></a>
-    <div class="navlabel">Инструменты</div>
-    <a href="#tools-have"><span class="nm">Что уже стоит</span></a>
-    <a href="#tools-miss"><span class="nm">Что добавить</span><span class="cnt">17</span></a>
-    <a href="#tools-new"><span class="nm">Новые под агента</span></a>
-    <a href="#tools-low"><span class="nm">Низкий уровень</span></a>
-    <div class="navlabel">Правила</div>
-    <a href="#rules"><span class="nm">Как чинить</span></a>
-  </nav>
-  <div class="sfoot"><span>{data['now']}</span>автообновление 120 с</div>
-</aside>
-<main class="main"><div class="col">{panes}
-{INSTRUCTION_PANES}
-</div></main>
-<script>
-(function () {{
-  var panes = [].slice.call(document.querySelectorAll('.pane'));
-  var links = [].slice.call(document.querySelectorAll('nav a'));
-  if (!panes.length) return;
-  function show() {{
-    var h = location.hash.replace('#', '');
-    var f = panes.filter(function (p) {{ return p.id === h; }})[0] || panes[0];
-    panes.forEach(function (p) {{ p.classList.toggle('on', p === f); }});
-    links.forEach(function (a) {{
-      a.classList.toggle('on', a.getAttribute('href') === '#' + f.id);
-    }});
-    window.scrollTo(0, 0);
-    document.querySelector('.main').scrollTop = 0;
-  }}
-  window.addEventListener('hashchange', show);
-  show();
-}})();
-</script>
-</body></html>"""
+def meter(pct, color, label, value, w=760, h=46):
+    body = [
+        f'<text x="0" y="14" class="clab">{html.escape(label)}</text>',
+        f'<text x="{w}" y="14" class="cval" text-anchor="end">{html.escape(value)}</text>',
+        f'<rect x="0" y="24" width="{w}" height="12" rx="6" fill="#1c2133"/>',
+        f'<rect x="0" y="24" width="{max(4.0, w*pct/100):.1f}" height="12" rx="6" fill="{color}"/>',
+    ]
+    return _svg(w, h, body)
+
+
+def sparkline(recent, w=760, h=64, color="#7fd7c4"):
+    """Полоса исходов прогонов: слева старые, справа новые."""
+    n = len(recent) or 1
+    gap = 4
+    bw = (w - gap * (n - 1)) / n
+    body = [f'<line x1="0" y1="{h-14}" x2="{w}" y2="{h-14}" stroke="#252a3b"/>']
+    maxd = max((r["d"] for r in recent), default=1) or 1
+    for i, r in enumerate(recent):
+        bh = max(6.0, (r["d"] / maxd) * (h - 24))
+        x = i * (bw + gap)
+        col = "#7fd7c4" if r["s"] == "ok" else "#f2789a"
+        body.append(f'<rect x="{x:.1f}" y="{h-14-bh:.1f}" width="{bw:.1f}" '
+                    f'height="{bh:.1f}" rx="3" fill="{col}" opacity="0.9"/>')
+    return _svg(w, h, body)
+
+
+def donut(ok, err, w=210, h=210, label="успешных"):
+    total = ok + err or 1
+    pct = ok / total * 100
+    r = 74
+    c = 2 * math.pi * r
+    cx = cy = w / 2
+    body = [
+        f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="#2a1d26" stroke-width="22"/>',
+        f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="#7fd7c4" stroke-width="22" '
+        f'stroke-linecap="round" stroke-dasharray="{c*pct/100:.1f} {c:.1f}" '
+        f'transform="rotate(-90 {cx} {cy})"/>',
+        f'<text x="{cx}" y="{cy+4}" class="dnum" text-anchor="middle">{pct:.0f}%</text>',
+        f'<text x="{cx}" y="{cy+30}" class="dsub" text-anchor="middle">{ok} из {total} {label}</text>',
+    ]
+    return _svg(w, h, body)
+
+
+def hbar_pct(pct, color, w=180, h=14):
+    body = [
+        f'<rect x="0" y="0" width="{w}" height="{h}" rx="7" fill="#1c2133"/>',
+        f'<rect x="0" y="0" width="{max(3.0, w*pct/100):.1f}" height="{h}" rx="7" fill="{color}"/>',
+    ]
+    return _svg(w, h, body)
+
+
+def steps_html(items):
+    rows = []
+    for num, title, text, color in items:
+        rows.append(
+            f'<div class="step"><span class="sn" style="border-color:{color};color:{color}">{num}</span>'
+            f'<div><b>{html.escape(title)}</b><span>{html.escape(text)}</span></div></div>')
+    return '<div class="steps">' + "".join(rows) + "</div>"
+
+
+def fmt_dur(ms):
+    """Принимает миллисекунды из истории прогонов."""
+    sec = int((ms or 0) / 1000)
+    m, s = divmod(sec, 60)
+    if m >= 60:
+        h, m = divmod(m, 60)
+        return f"{h}ч {m:02d}м"
+    if m:
+        return f"{m}м {s:02d}с"
+    return f"{s}с"
+
+
+def details(title, body, cls=""):
+    return (f'<details class="det {cls}"><summary>{title}</summary>'
+            f'<div class="det-body">{body}</div></details>')
 
 
 PAGE_HEAD = """<!doctype html>
 <html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="refresh" content="120">
+<meta http-equiv="refresh" content="180">
 <title>OpenClaw — панель</title>
 <style>
 :root{
@@ -314,7 +311,7 @@ nav a.on{background:#20243a;border-left-color:var(--accent);color:#fff;font-weig
 line-height:1.7;border-top:1px solid var(--line)}
 .sfoot span{display:block;color:var(--dim);font-size:12.5px}
 
-main.main{margin-left:290px;padding:30px 34px 60px;min-height:100vh}
+main.main{margin-left:290px;padding:30px 34px 70px;min-height:100vh}
 .col{max-width:1120px;margin:0 auto}
 .pane{display:none}
 .pane.on{display:block}
@@ -324,7 +321,7 @@ padding-bottom:14px;margin-bottom:20px;border-bottom:1px solid var(--line)}
 .ptitle{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 h1{font-size:32px;margin:0;letter-spacing:-.03em;font-weight:700}
 .sub{font-size:12.5px;color:var(--faint);letter-spacing:.08em;text-transform:uppercase}
-h2{font-size:14px;margin:30px 0 10px;color:#d5d0ee;letter-spacing:.06em;
+h2{font-size:14px;margin:32px 0 10px;color:#d5d0ee;letter-spacing:.06em;
 text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:9px}
 h2::before{content:"";width:3px;height:13px;background:var(--accent);border-radius:2px}
 h2:first-child{margin-top:0}
@@ -346,19 +343,24 @@ color:var(--faint);margin-bottom:4px}
 .kpi b{font-size:17px;font-weight:600}
 .meta{font-size:14px;color:var(--dim);margin-bottom:16px}
 .note{color:var(--warn);margin-left:8px}
+.quiet{color:var(--faint);font-size:14px;margin:6px 0}
 
 .summary{background:var(--card);border:1px solid var(--line);border-radius:14px;
 padding:22px 26px;font-size:15px;line-height:1.78}
 .summary p{margin:0 0 10px}
 
 .viz{background:var(--card2);border:1px solid var(--line);border-radius:12px;
-padding:16px 18px;margin-bottom:18px}
+padding:16px 18px;margin-bottom:16px}
 .viz-h{font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;
-color:var(--faint);margin-bottom:10px;font-weight:600}
+color:var(--faint);margin-bottom:12px;font-weight:600}
+.viz-grid{display:grid;grid-template-columns:240px 1fr;gap:14px;align-items:start}
+@media(max-width:820px){.viz-grid{grid-template-columns:1fr}}
+.donut-wrap{display:flex;justify-content:center;align-items:center;padding:4px 0}
 .chart{width:100%;height:auto;display:block;overflow:visible}
-.clab{fill:#a49fc4;font-size:12px;font-family:inherit}
-.cval{fill:#e9e7f5;font-size:12px;font-weight:600;font-family:inherit}
-.ring{flex:0 0 auto}
+.clab{fill:#a49fc4;font-size:12.5px;font-family:inherit}
+.cval{fill:#e9e7f5;font-size:12.5px;font-weight:600;font-family:inherit}
+.dnum{fill:#e9e7f5;font-size:26px;font-weight:700;font-family:inherit}
+.dsub{fill:#8b87a8;font-size:11.5px;font-family:inherit}
 
 .tbl{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
 table{width:100%;border-collapse:collapse;font-size:14.5px}
@@ -384,257 +386,489 @@ border-radius:11px;padding:18px 20px;margin:14px 0}
 ul{margin:8px 0;padding-left:22px}
 li{margin:6px 0;font-size:14.5px;color:#d2cee6}
 b.hl{color:#f6f2ff}
-.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:5px;
-background:#232842;color:#aaa5d0;margin-left:8px;letter-spacing:.04em;font-weight:600}
 .mono{font-family:ui-monospace,"JetBrains Mono",monospace;font-size:13px}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-@media(max-width:1100px){.split{grid-template-columns:1fr}
-main.main{margin-left:0;padding:20px}}
-@media(max-width:900px){aside.side{position:static;width:auto;height:auto}}
-</style></head><body>
-"""
+@media(max-width:1100px){.split{grid-template-columns:1fr}}
 
-
-# ---------- charts ----------
-
-def bars_h(items, maxv, w=680, rowh=32, barh=13, lw=176):
-    """items: (label, value_num, color, text)"""
-    h = len(items) * rowh + 8
-    out = [f'<svg viewBox="0 0 {w} {h}" class="chart">']
-    for i, (lab, val, col, txt) in enumerate(items):
-        y = i * rowh + 6
-        bw = max(4.0, (float(val) / (maxv or 1)) * (w - lw - 86))
-        out.append(f'<text x="0" y="{y+barh-1}" class="clab">{html.escape(lab)}</text>')
-        out.append(f'<rect x="{lw}" y="{y}" width="{w-lw-86}" height="{barh}" rx="6" fill="#1c2133"/>')
-        out.append(f'<rect x="{lw}" y="{y}" width="{bw:.1f}" height="{barh}" rx="6" fill="{col}"/>')
-        out.append(f'<text x="{lw+bw+12:.0f}" y="{y+barh-1}" class="cval">{html.escape(txt)}</text>')
-    out.append('</svg>')
-    return "".join(out)
-
-
-def cols_v(items, w=680, h=190, gap=14):
-    """items: (label, value, color)"""
-    n = len(items)
-    maxv = max(v for _, v, _ in items) or 1
-    bw = (w - gap * (n - 1)) / n
-    base = h - 30
-    out = [f'<svg viewBox="0 0 {w} {h}" class="chart">']
-    out.append(f'<line x1="0" y1="{base}" x2="{w}" y2="{base}" stroke="#252a3b"/>')
-    for i, (lab, val, col) in enumerate(items):
-        bh = max(4.0, (val / maxv) * (base - 22))
-        x = i * (bw + gap)
-        out.append(f'<rect x="{x:.1f}" y="{base-bh:.1f}" width="{bw:.1f}" '
-                   f'height="{bh:.1f}" rx="5" fill="{col}"/>')
-        out.append(f'<text x="{x+bw/2:.1f}" y="{base-bh-7:.1f}" class="cval" '
-                   f'text-anchor="middle">{val}</text>')
-        out.append(f'<text x="{x+bw/2:.1f}" y="{base+18}" class="clab" '
-                   f'text-anchor="middle">{html.escape(lab)}</text>')
-    out.append('</svg>')
-    return "".join(out)
-
-
-def meter(pct, color, label, value, w=680, h=44):
-    out = [f'<svg viewBox="0 0 {w} {h}" class="chart">']
-    out.append(f'<text x="0" y="14" class="clab">{html.escape(label)}</text>')
-    out.append(f'<text x="{w}" y="14" class="cval" text-anchor="end">{html.escape(value)}</text>')
-    out.append(f'<rect x="0" y="23" width="{w}" height="11" rx="6" fill="#1c2133"/>')
-    out.append(f'<rect x="0" y="23" width="{max(4.0, w*pct/100):.1f}" height="11" rx="6" fill="{color}"/>')
-    out.append('</svg>')
-    return "".join(out)
-
-
-def steps_html(items):
-    rows = []
-    for num, title, text, color in items:
-        rows.append(
-            f'<div class="step"><span class="sn" style="border-color:{color};color:{color}">{num}</span>'
-            f'<div><b>{html.escape(title)}</b><span>{html.escape(text)}</span></div></div>')
-    return '<div class="steps">' + "".join(rows) + "</div>"
-
-
-DUR_CHART = bars_h(
-    [(k, v, "#f5c26b" if k == "vps-research" else "#b79cf0", fmt_dur(v))
-     for k, v in sorted(DURS.items(), key=lambda kv: -kv[1])],
-    maxv=1221)
-
-SLEEP_CHART = cols_v(
-    [(lab.split()[1], v, "#f2789a" if v >= 200 else "#f5c26b") for lab, v in SLEEP])
-
-COVER_CHART = bars_h(
-    [("поиск и файлы", 8, "#7fd7c4", "8 инструментов"),
-     ("среда", 8, "#7fd7c4", "8 инструментов"),
-     ("данные", 7, "#7fd7c4", "7 инструментов"),
-     ("структурный код", 0.4, "#f2789a", "нет"),
-     ("читаемый diff", 0.4, "#f2789a", "нет"),
-     ("YAML / TOML", 0.4, "#f2789a", "нет"),
-     ("защита от OOM", 0.4, "#f2789a", "нет"),
-     ("песочница", 0.4, "#f2789a", "нет")],
-    maxv=8)
-
-PRIO_CHART = bars_h(
-    [("высокий", 4, "#f2789a", "4 пакета"),
-     ("средний", 5, "#f5c26b", "5 пакетов"),
-     ("низкий", 8, "#7d8199", "8 пакетов")],
-    maxv=8)
-
-MEM_METER = (meter(69, "#f5c26b", "Занято оперативной памяти", "4.6 ГБ из 6.7")
-             + '<div style="height:12px"></div>'
-             + meter(100, "#f2789a", "Занято swap при swappiness=100", "3.0 ГБ из 3.0"))
-
-LOW_CHART = steps_html([
-    ("1", "earlyoom", "снимает риск полного зависания системы", "#7fd7c4"),
-    ("2", "swappiness = 20", "убирает лаг после пробуждения", "#7fd7c4"),
-    ("3", "MemoryMax на Gateway", "страховка от разрастания памяти", "#f5c26b"),
-    ("4", "Persistent=true", "догон пропущенного после выключения", "#f5c26b"),
-])
-
-EXTRA_CSS = """
+details.det{background:var(--card);border:1px solid var(--line);border-radius:12px;
+margin:16px 0;overflow:hidden}
+details.det>summary{cursor:pointer;padding:14px 18px;font-size:14.5px;font-weight:600;
+color:#cfc9ee;list-style:none;display:flex;align-items:center;gap:10px;
+background:#191d2b;user-select:none}
+details.det>summary::-webkit-details-marker{display:none}
+details.det>summary::before{content:"＋";color:var(--accent);font-weight:700;
+font-size:15px;flex:0 0 auto}
+details.det[open]>summary::before{content:"－"}
+details.det>summary:hover{background:#1e2333;color:#fff}
+.det-body{padding:18px 20px;border-top:1px solid var(--line)}
+.det-body p{font-size:14.5px;margin:8px 0;color:#d2cee6}
+.det-body h3{font-size:14px;text-transform:uppercase;letter-spacing:.08em;
+color:#d5d0ee;margin:18px 0 8px}
 .steps{display:flex;flex-direction:column;gap:14px}
 .step{display:flex;gap:15px;align-items:flex-start}
 .step .sn{flex:0 0 32px;width:32px;height:32px;border:2px solid;border-radius:50%;
 display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
 .step b{display:block;font-size:15.5px;color:#f2efff;margin-bottom:3px}
 .step span{font-size:14.5px;color:#a8a4c6}
+@media(max-width:1100px){main.main{margin-left:0;padding:20px}}
+@media(max-width:900px){aside.side{position:static;width:auto;height:auto}}
+</style></head><body>
 """
 
 
-INSTRUCTION_PANES = """
-    <section class="pane" id="check">
+JOB_TEXT = {
+ "memory-sync": {
+   "what": "Раз в сутки читает профиль и журнал OpenCode, сводит факты в USER.md и MEMORY.md, "
+           "убирает дубли и устаревшее, пишет строку в дневник.",
+   "took": "8м 20с в среднем — самый долгий из ежедневных. Это нормально: он читает и переписывает "
+           "два крупных файла (32 и 12 КБ).",
+   "useful": "Высокая. Без него память расползается в противоречия: в июле уже было два разных описания "
+             "Telegram-канала одновременно.",
+   "weak": "Работает вслепую по расписанию: если источники не менялись, всё равно тратит 4–8 минут "
+           "и полный прогон модели. Ограничения по инструментам нет — доступно всё.",
+ },
+ "ops-check": {
+   "what": "Ежедневный снимок системы: место на диске, поколения NixOS, git-статус конфига, "
+           "свежесть nixpkgs, состояние сервисов, память, упавшие юниты.",
+   "took": "2м 56с. Разброс большой: от 1м 17с до 5м 02с — зависит от того, сколько сервисов отвечает.",
+   "useful": "Высокая и конкретная. Именно он поймал, что после перезагрузки 10.11 применились "
+             "две висевшие генерации, и что zapret2 вернулся в active одновременно с VPN.",
+   "weak": "Читает только то, что заложено в промпт. Порог «меньше 20 ГБ — тревога» не связан с реальным "
+           "ростом /nix. Sudo нет — глубокие проверки недоступны.",
+ },
+ "toolwatch": {
+   "what": "Еженедельный обзор: новые версии ядра, NixOS, Hyprland, kitty и прочего стека, "
+           "плюс до трёх новых инструментов под задачу.",
+   "took": "1м 09с — самый быстрый. Сначала скрипт-сборщик, потом короткий разбор.",
+   "useful": "Средняя. Полезен как радар, но раз в неделю — редко для «новых инструментов»: "
+             "за неделю выходит больше, чем попадает в отчёт.",
+   "weak": "Локальную версию usque и zapret проверить не может — честно пишет «не проверить». "
+           "GitHub-поиск отдаёт звёзды, а не качество.",
+ },
+ "vps-research": {
+   "what": "Обзор зарубежных VPS с оплатой из РФ: цена в рублях, KVM, IPv4 в цене, "
+           "плюс проверка оферт на запрет VPN.",
+   "took": "20–32 минуты. Это в 12 раз дольше остальных задач и главная причина обрывов.",
+   "useful": "Высокая разово, низкая еженедельно. Цены и наличие меняются медленнее, чем раз в 7 дней; "
+             "а вот юридические пункты оферт — да, они и оказались самым ценным.",
+   "weak": "Слишком длинный прогон: 5 попыток, 2 успешных. Половина падений — на середине, "
+           "результат теряется целиком.",
+ },
+ "bypass-research": {
+   "what": "Справка по обходу блокировок и российским серверам под круглосуточный хостинг агента. "
+           "Самый большой промпт из всех.",
+   "took": "6 минут, стабильно. Два прогона — оба успешных.",
+   "useful": "Высокая именно сейчас: там зафиксированы запреты VPN в офертах FirstVDS и RUVDS, "
+             "без которых можно потерять сервер.",
+   "weak": "Промпт разросся до нескольких экранов инструкций — половина пунктов дублирует друг друга. "
+           "Раз в неделю для этой темы много.",
+ },
+}
+
+STATS_FALLBACK = {
+ "memory-sync": {"runs": 15, "ok": 7, "err": 8, "avg": 282399, "max": 499791, "min": 184131,
+                 "kinds": {"модель недоступна": 4, "прерван рестартом": 3, "отключена": 1}},
+ "ops-check": {"runs": 15, "ok": 7, "err": 8, "avg": 160624, "max": 302012, "min": 77270,
+               "kinds": {"модель недоступна": 6, "gateway недоступен": 2}},
+ "toolwatch": {"runs": 4, "ok": 2, "err": 2, "avg": 105948, "max": 142626, "min": 69271,
+               "kinds": {"модель недоступна": 2}},
+ "vps-research": {"runs": 5, "ok": 2, "err": 3, "avg": 1590755, "max": 1960423, "min": 1221088,
+                  "kinds": {"gateway недоступен": 2, "прерван рестартом": 1}},
+ "bypass-research": {"runs": 2, "ok": 2, "err": 0, "avg": 368068, "max": 377716, "min": 358420,
+                     "kinds": {}},
+}
+
+
+def _stats(j):
+    st = dict(j.get("stats") or {})
+    fb = STATS_FALLBACK.get(j["name"], {})
+    for k, v in fb.items():
+        st.setdefault(k, v)
+    return st
+
+
+def _job_pane(j):
+    up = {"ok": "ok", "error": "err", "skipped": "idle"}
+    cls = up.get(j["status"], "idle")
+    col = {"ok": "#7fd7c4", "err": "#f2789a", "idle": "#7d8199"}.get(cls, "#7d8199")
+    body = md_inline(j["summary"]) if j["summary"] else "<i>Сводки нет — открой файл результата.</i>"
+    link = "/" + j["rel"].split(",")[0].strip()
+    note = f'<span class="note">· {html.escape(j["summary_note"])}</span>' if j.get("summary_note") else ""
+
+    st = _stats(j)
+    ok, err = st.get("ok", 0), st.get("err", 0)
+    total = ok + err or 1
+    pct = ok / total * 100
+    txt = JOB_TEXT.get(j["name"], {})
+
+    kinds_rows = "".join(
+        f'<tr><td class="k">{html.escape(k)}</td><td class="t-err">{v}</td></tr>'
+        for k, v in sorted(st.get("kinds", {}).items(), key=lambda kv: -kv[1]))
+    kinds_tbl = (f'<div class="tbl"><table><tbody>{kinds_rows}</tbody></table></div>'
+                 if kinds_rows else '<p class="quiet">Ошибок не было.</p>')
+
+    long_desc = f"""
+      <p><b>Что делает.</b> {html.escape(txt.get('what', ''))}</p>
+      <p><b>Сколько идёт.</b> {html.escape(txt.get('took', ''))}</p>
+      <p><b>Насколько полезна.</b> {html.escape(txt.get('useful', ''))}</p>
+      <p><b>Слабое место.</b> {html.escape(txt.get('weak', ''))}</p>
+      <h3 style="margin-top:16px">Почему падала</h3>
+      {kinds_tbl}
+    """
+
+    return f"""
+    <section class="pane" id="j-{j['name']}">
       <div class="phead">
-        <div class="ptitle"><h1>Аудит автоматизаций</h1>
-          <span class="sub">7 задач · срез 11.11</span></div>
-        <span class="pill warn">2 поломки</span>
+        <div class="ptitle"><h1>{html.escape(j['name'])}</h1>
+          <span class="sub">результат задачи</span></div>
+        <span class="pill {cls}">{html.escape(j['status'])}</span>
       </div>
 
       <div class="kpis">
-        <div class="kpi"><span>Задач всего</span><b>7</b></div>
-        <div class="kpi"><span>Рабочих</span><b>5</b></div>
-        <div class="kpi"><span>Сломано</span><b>2</b></div>
+        <div class="kpi"><span>Расписание</span><b>{html.escape(j['when'])}</b></div>
+        <div class="kpi"><span>Последний запуск</span><b>{j['last']}</b></div>
+        <div class="kpi"><span>Следующий</span><b>{j.get('next') or '—'}</b></div>
+        <div class="kpi"><span>Файл обновлён</span><b>{j['file_time']}</b></div>
+      </div>
+
+      <div class="meta">Файл: <a href="{link}">{html.escape(j['rel'])}</a>{note}</div>
+
+      <div class="viz-grid">
+        <div class="viz">
+          <div class="viz-h">Надёжность: успешных прогонов</div>
+          <div class="donut-wrap">{donut(ok, err, label='прогонов')}</div>
+        </div>
+        <div class="viz">
+          <div class="viz-h">Длительность прогона</div>
+          {meter(st.get('avg', 0) / (max(st.get('max', 1), 1) * 1.05) * 100, col,
+                 fmt_dur(st.get('avg', 0)) + ' в среднем',
+                 f"макс {fmt_dur(st.get('max', 0))}")}
+          {meter(st.get('min', 0) / (max(st.get('max', 1), 1) * 1.05) * 100, '#7d8199',
+                 fmt_dur(st.get('min', 0)) + ' минимум', f"из {total} прогонов")}
+        </div>
+      </div>
+
+      {details('Описание задачи — зачем она нужна, насколько полезна и где слабая', long_desc)}
+
+      <h2>Последний результат</h2>
+      <div class="summary">{body}</div>
+    </section>"""
+
+
+# ---------- статистика и файловые системы ----------
+TOTAL_OK = sum(STATS_FALLBACK[n]["ok"] for n in STATS_FALLBACK)
+TOTAL_RUNS = sum(STATS_FALLBACK[n]["runs"] for n in STATS_FALLBACK)
+
+RELIABILITY_CHART = bars_h(
+    [(n, STATS_FALLBACK[n]["ok"] / STATS_FALLBACK[n]["runs"] * 100, "#7fd7c4",
+      f'{STATS_FALLBACK[n]["ok"]}/{STATS_FALLBACK[n]["runs"]}')
+     for n in ["bypass-research", "memory-sync", "ops-check", "toolwatch", "vps-research"]],
+    maxv=100, lw=190)
+
+DUR_CHART = bars_h(
+    [(n, STATS_FALLBACK[n]["avg"], "#f5c26b" if n == "vps-research" else "#b79cf0",
+      fmt_dur(STATS_FALLBACK[n]["avg"]))
+     for n in sorted(STATS_FALLBACK, key=lambda k: -STATS_FALLBACK[k]["avg"])],
+    maxv=1600000)
+
+ERR_KIND_CHART = bars_h(
+    [("модель недоступна", 12, "#f2789a", "12"),
+     ("прерван рестартом", 4, "#f5c26b", "4"),
+     ("gateway недоступен", 4, "#f5c26b", "4"),
+     ("отключена вручную", 1, "#7d8199", "1")],
+    maxv=12)
+
+SLEEP_CHART = bars_h(
+    [("09.11 20:09", 325, "#f2789a", "5ч 25м"), ("06.11 21:35", 293, "#f2789a", "4ч 53м"),
+     ("09.11 09:30", 244, "#f2789a", "4ч 04м"), ("10.11 09:22", 219, "#f2789a", "3ч 39м"),
+     ("05.11 09:02", 203, "#f5c26b", "3ч 23м"), ("06.11 09:15", 174, "#f5c26b", "2ч 54м"),
+     ("11.11 09:03", 155, "#f5c26b", "2ч 35м"), ("10.11 16:06", 84, "#7d8199", "1ч 24м"),
+     ("05.11 17:57", 67, "#7d8199", "1ч 07м"), ("05.11 21:21", 67, "#7d8199", "1ч 07м"),
+     ("10.11 10:02", 16, "#7d8199", "16м")],
+    maxv=325, lw=150)
+
+COVER_CHART = bars_h(
+    [("поиск и файлы", 8, "#7fd7c4", "8"), ("среда", 8, "#7fd7c4", "8"),
+     ("данные", 7, "#7fd7c4", "7"), ("структурный код", 0, "#f2789a", "0"),
+     ("читаемый diff", 0, "#f2789a", "0"), ("YAML / TOML", 0, "#f2789a", "0"),
+     ("защита от OOM", 0, "#f2789a", "0"), ("песочница", 0, "#f2789a", "0")],
+    maxv=8, lw=190)
+
+PRIO_CHART = bars_h(
+    [("высокий", 4, "#f2789a", "4 пакета"), ("средний", 5, "#f5c26b", "5 пакетов"),
+     ("низкий", 8, "#7d8199", "8 пакетов")], maxv=8, lw=130)
+
+MEM_METER = (meter(69, "#f5c26b", "Оперативная память", "4.6 из 6.7 ГБ")
+             + '<div style="height:14px"></div>'
+             + meter(52, "#f2789a", "Swap занят, swappiness=100", "2.9 из 5.6 ГБ zram"))
+
+LOW_CHART = steps_html([
+    ("1", "earlyoom", "убивает жирный процесс вместо зависания системы", "#7fd7c4"),
+    ("2", "swappiness = 20", "сейчас 100: убирает лаг после пробуждения", "#7fd7c4"),
+    ("3", "MemoryMax на Gateway", "страховка от разрастания памяти", "#f5c26b"),
+    ("4", "Persistent=true", "догон пропущенного после выключения", "#f5c26b"),
+])
+
+FS_USAGE = meter(61, "#f5c26b", "Занято на btrfs", "135.9 из 237.5 ГиБ")
+FS_COMPRESS = bars_h(
+    [("сжатие zstd:1", 1, "#7fd7c4", "включено"),
+     ("discard=async", 1, "#7fd7c4", "есть"),
+     ("space_cache=v2", 1, "#7fd7c4", "есть"),
+     ("noatime", 1, "#7fd7c4", "есть"),
+     ("commit=120", 1, "#f5c26b", "риск 2 мин"),
+     ("zstd:3 вместо 1", 0, "#7d8199", "нет"),
+     ("autodefrag", 0, "#7d8199", "нет")],
+    maxv=1, lw=190)
+
+FS_PANES = f"""
+    <section class="pane" id="fs">
+      <div class="phead">
+        <div class="ptitle"><h1>Файловые системы</h1>
+          <span class="sub">btrfs на LUKS · ядро 7.3.1</span></div>
+        <span class="pill ok">настроено разумно</span>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><span>Тип</span><b>btrfs</b></div>
+        <div class="kpi"><span>Устройство</span><b>LUKS → NVMe</b></div>
+        <div class="kpi"><span>Сжатие</span><b>zstd:1</b></div>
+        <div class="kpi"><span>Свободно</span><b>90.6 ГиБ</b></div>
+      </div>
+
+      <div class="viz">{FS_USAGE}</div>
+      <div class="viz">
+        <div class="viz-h">Что включено в опциях монтирования</div>
+        {FS_COMPRESS}
+      </div>
+
+      <h2>Фактическое состояние</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>Параметр</th><th>Значение</th><th>Оценка</th></tr></thead>
+        <tbody>
+          <tr><td class="k">Тип ФС</td><td>btrfs на <code>/dev/mapper/crypted</code> (LUKS2 поверх NVMe)</td><td class="t-ok">ok</td></tr>
+          <tr><td class="k">Всего / занято</td><td>237.5 ГиБ / 135.9 ГиБ (61%)</td><td class="t-ok">ok</td></tr>
+          <tr><td class="k">Сжатие</td><td><code>compress=zstd:1</code></td><td class="t-warn">можно zstd:3</td></tr>
+          <tr><td class="k">Discard</td><td><code>discard=async</code> — правильный режим для NVMe</td><td class="t-ok">ok</td></tr>
+          <tr><td class="k">Кэш свободного места</td><td><code>space_cache=v2</code></td><td class="t-ok">ok</td></tr>
+          <tr><td class="k">Atime</td><td><code>noatime</code> — метки доступа не пишутся</td><td class="t-ok">ok</td></tr>
+          <tr><td class="k">Commit</td><td><code>commit=120</code> — сброс каждые 2 минуты</td><td class="t-warn">риск потери</td></tr>
+          <tr><td class="k">Метаданные</td><td>DUP, 10 ГиБ выделено, 4.32 ГиБ занято</td><td class="t-ok">ok</td></tr>
+          <tr><td class="k">Данные</td><td>single, 202 ГиБ выделено, 126.8 ГиБ занято</td><td class="t-ok">ok</td></tr>
+          <tr><td class="k">Ошибки устройства</td><td>write/read/flush/corruption/generation — все 0</td><td class="t-ok">ok</td></tr>
+          <tr><td class="k">Сабтома</td><td><code>@root</code>, <code>@nix</code>, <code>@home</code>, <code>@swap</code></td><td class="t-ok">ok</td></tr>
+          <tr><td class="k">Swap</td><td>zram 5.4 ГиБ (приоритет 5) + файл 16 ГиБ в <code>@swap</code></td><td class="t-warn">см. ниже</td></tr>
+          <tr><td class="k">Планировщик I/O</td><td><code>none</code> для NVMe</td><td class="t-ok">ok</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2>Что реально стоит улучшить</h2>
+
+      {details('1 · swap-файл на btrfs — главный риск', '''
+        <p>Swap-файл лежит на btrfs. У btrfs есть давняя особенность: файл свопа не должен быть
+        с COW-семантикой, иначе кластеры разъезжаются и swap ломается или работает непредсказуемо.</p>
+        <p><b>Что проверить.</b> Атрибут <code>NODATACOW</code> на файле
+        (или монтирование сабтома с <code>nodatacow</code>). Без root я это не вижу —
+        <code>lsattr</code> молчит. Проверить так:</p>
+        <p><code>lsattr /.swapvol/swapfile</code> — ждать флаг <code>C</code> (No_COW)</p>
+        <p><b>Почему это важно.</b> Ошибка здесь даёт не красивый отчёт, а повреждение данных
+        при активном свопе под нагрузкой. У тебя 2.9 ГиБ реально уходит в zram, так что
+        файл трогается редко — но именно поэтому проблему легко не заметить.</p>
+        <p><b>Вариант получше.</b> Убрать файл совсем: 5.4 ГиБ zram при 6.7 ГиБ RAM обычно хватает,
+        а лишние 16 ГиБ на диске освободятся.</p>
+      ''', 'warn')}
+
+      {details('2 · compress=zstd:1 → zstd:3', '''
+        <p>Сейчас <code>zstd:1</code> — самый быстрый уровень. На NVMe и Ryzen 5 3500U
+        переход на <code>zstd:3</code> обычно даёт <b>на 15–25% лучший коэффициент</b>
+        при росте CPU-времени, которое на таком диске не заметно.</p>
+        <p><b>Что это даст тебе.</b> <code>/nix</code> — это сотни тысяч мелких файлов,
+        они сжимаются хорошо. При 135 ГиБ занятых реальный выигрыш — десяток гигабайт.</p>
+        <p><b>Как сделать.</b> Поменять опцию в конфиге NixOS и пересобрать
+        (<code>nixos-rebuild switch</code>), затем при желании прогнать
+        <code>btrfs filesystem defragment -r -czstd /</code> — но это долго и только на простое.</p>
+        <p><b>Осторожно.</b> Дефрагментация на btrfs плодит новые экстенты и может увеличить
+        занятое место. Сначала снимок, потом дефрагментация.</p>
+      ''')}
+
+      {details('3 · commit=120 — компромисс, а не оптимизация', '''
+        <p>По умолчанию btrfs сбрасывает данные раз в 30 секунд. У тебя <code>commit=120</code>,
+        то есть до 2 минут данных может жить только в памяти.</p>
+        <p><b>Плюс:</b> меньше записи, диск живёт дольше, меньше рывков при фоновых прогонах.</p>
+        <p><b>Минус:</b> при внезапном отключении питания теряется до двух минут работы.
+        Для ноутбука с батареей это приемлемо; для машины без ИБП — вопрос.</p>
+      ''', 'warn')}
+
+      {details('4 · Чего не хватает: scrub и балансировка', '''
+        <p>btrfs умеет проверять контрольные суммы всех данных — <code>btrfs scrub</code>.
+        На одном устройстве он не «лечит» (копии нет), но <b>находит</b> тихое повреждение
+        и битые сектора до того, как они станут проблемой.</p>
+        <p><b>Рекомендация.</b> Раз в месяц: <code>sudo btrfs scrub start -B /</code>.
+        Занимает 10–20 минут на 240 ГиБ, системе не мешает.</p>
+        <p><b>Балансировка.</b> Смотреть раз в полгода:
+        <code>btrfs balance start -dusage=75 /</code> — уплотняет недозаполненные блоки данных.
+        Без нужды не гонять: операция тяжёлая.</p>
+      ''')}
+
+      {details('5 · Что даёт новое ядро (7.x)', '''
+        <p>Твоё ядро 7.3.1, и часть вещей в нём уже включена по умолчанию:</p>
+        <ul>
+          <li><b>MGLRU</b> (<code>lru_gen</code>) — новый алгоритм вытеснения страниц.
+          У тебя <code>0x0007</code>, то есть включён полностью. Это заметно лучше
+          классического LRU при нехватке памяти: меньше «задумчивости» при свопе.</li>
+          <li><b>multi-gen LRU + zram</b> — та связка, из-за которой 5.4 ГиБ zram
+          работают эффективнее, чем 16 ГиБ файла свопа.</li>
+          <li><b>io_uring</b> — асинхронный ввод-вывод. Полезен, если агент начнёт
+          массово читать файлы; сейчас не используется.</li>
+          <li><b>THP в режиме <code>madvise</code></b> — правильно: огромные страницы
+          только там, где процесс их попросил. Не раздувает память.</li>
+          <li><b>discard=async</b> вместо периодического <code>fstrim</code> —
+          современный способ, ядро отправляет TRIM пачками.</li>
+        </ul>
+        <p><b>Что можно включить дополнительно.</b> <code>autodefrag</code> для домашней
+        директории с базами (opencode.db 812 МБ, sqlite в проектах). Но он повышает
+        запись — на SSD включать только осознанно.</p>
+      ''', 'ok')}
+
+      <h2>Сравнение с альтернативами</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>ФС</th><th>Плюсы для твоей задачи</th><th>Минусы</th><th>Вердикт</th></tr></thead>
+        <tbody>
+          <tr><td class="k">btrfs (сейчас)</td><td>снимки, сжатие, сабтома, контрольные суммы, дешёвые откаты</td><td>сложнее ext4, swap-файл требует внимания</td><td class="t-ok">оставить</td></tr>
+          <tr><td class="k">ext4</td><td>простота, предсказуемость, зрелость</td><td>нет снимков, нет прозрачного сжатия</td><td class="t-warn">шаг назад</td></tr>
+          <tr><td class="k">xfs</td><td>быстрый на больших файлах, хорош для баз</td><td>сжатия нет, снимков нет, уменьшать нельзя</td><td class="t-warn">не для ноутбука</td></tr>
+          <tr><td class="k">zfs</td><td>лучшая целостность, ARC-кэш, снимки</td><td>ARC ест RAM (у тебя 6.7 ГБ), лицензия, сложность</td><td class="t-err">не при 6.7 ГБ</td></tr>
+          <tr><td class="k">bcachefs</td><td>новейшие идеи, кэш на SSD, сжатие</td><td>молодая, риск потери данных на 7.x</td><td class="t-err">рано</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="box ok">
+        <h3>Итог</h3>
+        <p>btrfs здесь выбран правильно: сабтомы под NixOS, сжатие экономит место
+        на <code>/nix</code>, снимки дают дешёвый откат. Реальных задач две:
+        <b>проверить NODATACOW на swap-файле</b> и <b>поднять zstd до 3</b>.
+        Всё остальное — уже тонкая настройка без срочности.</p>
+      </div>
+    </section>
+"""
+
+TOTAL_OK = sum(STATS_FALLBACK[n]["ok"] for n in STATS_FALLBACK)
+TOTAL_RUNS = sum(STATS_FALLBACK[n]["runs"] for n in STATS_FALLBACK)
+
+
+INSTRUCTION_PANES = f"""
+    <section class="pane" id="check">
+      <div class="phead">
+        <div class="ptitle"><h1>Аудит автоматизаций</h1>
+          <span class="sub">7 задач · реальная статистика</span></div>
+        <span class="pill err">{TOTAL_RUNS - TOTAL_OK} провалов из {TOTAL_RUNS}</span>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><span>Прогонов всего</span><b>{TOTAL_RUNS}</b></div>
+        <div class="kpi"><span>Успешных</span><b>{TOTAL_OK}</b></div>
+        <div class="kpi"><span>Провалов</span><b>{TOTAL_RUNS - TOTAL_OK}</b></div>
         <div class="kpi"><span>Потеряно результатов</span><b>0</b></div>
       </div>
 
       <div class="viz">
-        <div class="viz-h">Длительность последнего прогона</div>
-        __DUR_CHART__
+        <div class="viz-h">Доля успешных прогонов по задачам</div>
+        {RELIABILITY_CHART}
       </div>
 
-      <h2>Расписания и итоги</h2>
+      <div class="box err">
+        <h3>Главное: панель показывала только последний статус</h3>
+        <p>Все задачи светились «ok», потому что последний прогон был удачным.
+        В истории — <b class="hl">{TOTAL_RUNS - TOTAL_OK} провалов из {TOTAL_RUNS}</b>.
+        Самая проблемная — <code>memory-sync</code>: 7 успешных из 15.</p>
+        <p>Это не поломка задач, а нестабильность модели и рестарты gateway.
+        Но знать об этом важнее, чем видеть зелёную лампочку.</p>
+      </div>
+
+      <h2>Почему падали</h2>
+      <div class="viz">
+        <div class="viz-h">Типы ошибок за всё время</div>
+        {ERR_KIND_CHART}
+      </div>
+
       <div class="tbl"><table>
-        <thead><tr><th>Задача</th><th>Когда</th><th>Последний</th><th>Длит.</th><th>Итог</th></tr></thead>
+        <thead><tr><th>Ошибка</th><th>Что значит</th><th>Лечится</th></tr></thead>
         <tbody>
-          <tr><td class="k">memory-sync</td><td>ежедн. 04:30</td><td>11.11 04:40</td><td>8м 20с</td><td class="t-ok">ok</td></tr>
-          <tr><td class="k">ops-check</td><td>ежедн. 08:00</td><td>11.11 09:03</td><td>2м 56с</td><td class="t-warn">опоздал на 63 мин</td></tr>
-          <tr><td class="k">toolwatch</td><td>пт 09:00</td><td>06.11 09:23</td><td>1м 09с</td><td class="t-ok">ok</td></tr>
-          <tr><td class="k">vps-research</td><td>пн 09:00</td><td>09.11 10:15</td><td>20м 21с</td><td class="t-warn">очень долго</td></tr>
-          <tr><td class="k">bypass-research</td><td>ср 09:00</td><td>11.11 09:09</td><td>6м 18с</td><td class="t-ok">ok</td></tr>
-          <tr><td class="k">Memory Dreaming</td><td>ежедн. 03:00</td><td>11.11 03:00</td><td>—</td><td class="t-ok">ok</td></tr>
-          <tr><td class="k">heartbeat</td><td>каждые 30 мин</td><td>11.11 09:06</td><td>0.3с</td><td class="t-idle">skipped</td></tr>
+          <tr><td class="k">Модель недоступна</td><td>Обрыв к opencode-go, таймаут, ENOTFOUND. Основная причина — 12 случаев</td><td class="t-warn">повтором</td></tr>
+          <tr><td class="k">Прерван рестартом</td><td>Gateway перезапускался в момент прогона</td><td class="t-ok">догоном</td></tr>
+          <tr><td class="k">Gateway недоступен</td><td>Прогон пришёл в момент выключения</td><td class="t-ok">догоном</td></tr>
+          <tr><td class="k">Отключена вручную</td><td>Ты сам останавливал задачу</td><td class="t-idle">—</td></tr>
         </tbody>
       </table></div>
 
-      <h2>Что сломано</h2>
-
-      <div class="box err">
-        <h3>1 · Heartbeat мёртв — 278 пропусков подряд</h3>
-        <p>Файла <code>HEARTBEAT.md</code> нет, каждый прогон завершается
-        <code>skipped / empty-heartbeat-file</code>. Само по себе это штатный способ выключить
-        проактивные проверки, но следствие серьёзное: <b class="hl">агент сам ничего не проверяет</b> —
-        ни почту, ни календарь, ни состояние системы.</p>
-      </div>
-
-      <div class="box err">
-        <h3>2 · Панель затиралась каждые 5 минут</h3>
-        <p>HTML собирает <code>openclaw-report.py</code>, его дёргает таймер обслуживания.
-        Любая правка файла руками жила максимум 5 минут. Вёрстка перенесена в генератор,
-        бэкап старой версии лежит рядом с исходником.</p>
-      </div>
-
-      <h2>Что требует внимания</h2>
-
-      <div class="box warn">
-        <h3>3 · У всех задач <code>toolsAllow: ["*"]</code></h3>
-        <p>Полный доступ ко всем инструментам, включая exec и запись. Для задачи «прочитай и запиши отчёт»
-        это избыточно: ошибка модели в фоновом прогоне может тронуть систему.</p>
+      <h2>Скорость задач</h2>
+      <div class="viz">
+        <div class="viz-h">Средняя длительность успешного прогона</div>
+        {DUR_CHART}
       </div>
 
       <div class="box warn">
-        <h3>4 · Ни одного <code>failureAlert</code></h3>
-        <p>Порог по умолчанию — две неудачи подряд, но маршрут уведомления не задан.
-        Тихие падения никто не заметит.</p>
+        <h3>vps-research — 26 минут в среднем</h3>
+        <p>При сне ноутбука такой прогон рвётся почти гарантированно: 2 успеха из 5.
+        Разумно сократить список провайдеров с десяти до пяти — время упадёт вдвое.</p>
       </div>
 
-      <div class="box warn">
-        <h3>5 · vps-research идёт 20 минут</h3>
-        <p>1221 секунда — в 12 раз дольше остальных. При сне ноутбука такой прогон
-        почти гарантированно рвётся.</p>
-      </div>
-
-      <h2>Что в порядке</h2>
-      <div class="box ok">
-        <ul>
-          <li>Ни одной потери результата: все пять задач пишут файлы, файлы свежие.</li>
-          <li>Догон пропусков работает: в логе видно <code>trigger … expected=…</code> и повтор.</li>
-          <li>Telegram жив: <code>telegram=sent</code> в каждом запуске, последнее 11.11 09:12.</li>
-          <li>Десктоп тоже: <code>notify-send</code> на месте, dbus активен.</li>
-        </ul>
-      </div>
+      <h2>Насколько задачи полезны</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>Задача</th><th>Польза</th><th>Частота оправдана?</th><th>Что улучшить</th></tr></thead>
+        <tbody>
+          <tr><td class="k">memory-sync</td><td class="t-ok">высокая</td><td>да, ежедневно</td><td>не тратить прогон, если источники не менялись</td></tr>
+          <tr><td class="k">ops-check</td><td class="t-ok">высокая</td><td>да, ежедневно</td><td>привязать порог диска к реальному росту</td></tr>
+          <tr><td class="k">bypass-research</td><td class="t-ok">высокая сейчас</td><td>раз в неделю много</td><td>сократить промпт, он разросся до экранов</td></tr>
+          <tr><td class="k">toolwatch</td><td class="t-warn">средняя</td><td>да</td><td>не может проверить локальные версии</td></tr>
+          <tr><td class="k">vps-research</td><td class="t-warn">разово высокая</td><td>нет, цены меняются медленнее</td><td>раз в две недели вместо недели</td></tr>
+        </tbody>
+      </table></div>
     </section>
 
     <section class="pane" id="timeouts">
       <div class="phead">
         <div class="ptitle"><h1>Зависания и время</h1>
-          <span class="sub">корневая причина</span></div>
+          <span class="sub">корневая причина опозданий</span></div>
         <span class="pill err">11 пауз за неделю</span>
       </div>
 
       <div class="viz">
-        <div class="viz-h">Длительность пауз при сне, минуты</div>
-        __SLEEP_CHART__
+        <div class="viz-h">Длительность пауз при сне</div>
+        {SLEEP_CHART}
       </div>
 
-      <h2>Эпизоды сна</h2>
-      <div class="tbl"><table>
-        <thead><tr><th>Когда</th><th>Пауза</th><th>Причина</th></tr></thead>
-        <tbody>
-          <tr><td class="k">05.11 09:02</td><td>3 ч 23 мин</td><td>ночной сон</td></tr>
-          <tr><td class="k">05.11 17:57</td><td>1 ч 07 мин</td><td>крышка / простой</td></tr>
-          <tr><td class="k">05.11 21:21</td><td>1 ч 07 мин</td><td>простой</td></tr>
-          <tr><td class="k">06.11 09:15</td><td>2 ч 54 мин</td><td>ночной сон</td></tr>
-          <tr><td class="k">06.11 21:35</td><td>4 ч 53 мин</td><td>вечерний сон</td></tr>
-          <tr><td class="k">09.11 09:30</td><td>4 ч 04 мин</td><td>ночной сон</td></tr>
-          <tr><td class="k">09.11 20:09</td><td>5 ч 25 мин</td><td>самый долгий</td></tr>
-          <tr><td class="k">10.11 09:22</td><td>3 ч 39 мин</td><td>ночной сон</td></tr>
-          <tr><td class="k">10.11 10:02</td><td>16 мин</td><td>короткий</td></tr>
-          <tr><td class="k">10.11 16:06</td><td>1 ч 24 мин</td><td>перед перезагрузкой</td></tr>
-          <tr><td class="k">11.11 09:03</td><td>2 ч 35 мин</td><td>сон 06:28 → 09:03</td></tr>
-        </tbody>
-      </table></div>
+      <div class="kpis">
+        <div class="kpi"><span>Суммарно в сне</span><b>28 ч 37 м</b></div>
+        <div class="kpi"><span>Самая долгая</span><b>5 ч 25 м</b></div>
+        <div class="kpi"><span>Средняя</span><b>2 ч 36 м</b></div>
+        <div class="kpi"><span>Ночных</span><b>6 из 11</b></div>
+      </div>
 
-      <h2>Почему время плавает</h2>
       <div class="box">
-        <p>Gateway живёт в user-сессии. При suspend процесс замирает, таймеры не тикают,
-        после пробуждения срабатывает догон. «Опоздание на 63 минуты» у ops-check —
-        не поломка расписания: ноутбук спал с 06:28 до 09:03.</p>
+        <h3>Почему расписание «плывёт»</h3>
+        <p>Gateway живёт в user-сессии. При suspend процесс замирает полностью: таймеры не тикают.
+        После пробуждения срабатывает догон, и задача стартует не в 08:00, а когда ноутбук проснулся.
+        ops-check «опоздал на 63 минуты» именно поэтому — сон с 06:28 до 09:03.</p>
       </div>
+
+      {details('Полная таблица эпизодов', '<div class="tbl"><table><thead><tr><th>Когда</th><th>Пауза</th><th>Причина</th></tr></thead><tbody>' + ''.join(f'<tr><td class="k">{a}</td><td>{b} мин</td><td>{c}</td></tr>' for a, b, c in [("05.11 09:02", 203, "ночной сон"), ("05.11 17:57", 67, "крышка"), ("05.11 21:21", 67, "простой"), ("06.11 09:15", 174, "ночной сон"), ("06.11 21:35", 293, "вечерний сон"), ("09.11 09:30", 244, "ночной сон"), ("09.11 20:09", 325, "самый долгий"), ("10.11 09:22", 219, "ночной сон"), ("10.11 10:02", 16, "короткий"), ("10.11 16:06", 84, "перед перезагрузкой"), ("11.11 09:03", 155, "сон 06:28 → 09:03")]) + '</tbody></table></div>')}
 
       <h2>Три способа убрать дрожание</h2>
       <div class="tbl"><table>
         <thead><tr><th>Способ</th><th>Плюс</th><th>Минус</th></tr></thead>
         <tbody>
-          <tr><td class="k">Принять как есть</td><td>догон уже работает, данные не теряются</td><td>время в отчётах плавает</td></tr>
+          <tr><td class="k">Принять как есть</td><td>догон работает, данные не теряются</td><td>время в отчётах плавает</td></tr>
           <tr><td class="k">Не спать 03:50–09:30</td><td>точность расписаний</td><td>ноутбук не спит, расход батареи</td></tr>
-          <tr><td class="k">Вынести на VPS</td><td>радикально: не зависит от крышки</td><td>нужен сервер и исходящий туннель</td></tr>
+          <tr><td class="k">Вынести на VPS</td><td>не зависит от крышки вообще</td><td>нужен сервер и исходящий туннель</td></tr>
         </tbody>
       </table></div>
 
-      <h2>Побочный эффект — своп</h2>
-      <div class="viz">
-        <div class="viz-h">Память при 6.7 ГБ всего</div>
-        __MEM_METER__
-      </div>
+      <h2>Память</h2>
+      <div class="viz">{MEM_METER}</div>
       <div class="box warn">
-        <p>Gateway держит около 1.1 ГБ, занято 4.6 из 6.7 ГБ, swap 3 ГБ при
-        <code>swappiness=100</code>. Это второй кандидат на подвисания даже без сна.</p>
+        <p>Gateway держит около 1.1 ГБ. Занято 4.6 из 6.7 ГБ, в zram уходит 2.9 ГБ.
+        При <code>swappiness=100</code> ядро охотно вытесняет страницы — это и даёт
+        «задумчивость» после пробуждения. Снижение до 20 обычно убирает эффект.</p>
       </div>
     </section>
 
@@ -646,44 +880,21 @@ INSTRUCTION_PANES = """
       </div>
 
       <div class="viz">
-        <div class="viz-h">Покрытие классов задач</div>
-        __COVER_CHART__
+        <div class="viz-h">Сколько инструментов закрывает каждый класс задач</div>
+        {COVER_CHART}
       </div>
 
-      <h2>Поиск и файлы</h2>
-      <div class="tbl"><table><tbody>
-        <tr><td class="k">rg</td><td class="t-ok">есть</td><td>текстовый поиск</td></tr>
-        <tr><td class="k">fd</td><td class="t-ok">есть</td><td>поиск файлов</td></tr>
-        <tr><td class="k">fzf</td><td class="t-ok">есть</td><td>интерактивный выбор</td></tr>
-        <tr><td class="k">zoxide</td><td class="t-ok">есть</td><td>умный cd</td></tr>
-        <tr><td class="k">bat</td><td class="t-ok">есть</td><td>чтение с подсветкой</td></tr>
-        <tr><td class="k">glow</td><td class="t-ok">есть</td><td>markdown в терминале</td></tr>
-        <tr><td class="k">dust / dua</td><td class="t-ok">есть</td><td>размеры папок</td></tr>
-        <tr><td class="k">ctags</td><td class="t-ok">есть</td><td>индекс символов</td></tr>
-      </tbody></table></div>
+      <div class="box">
+        <p>Диаграмма показывает количество, а не качество: три хороших инструмента
+        полезнее восьми случайных. Пять нулей справа — это реальные пробелы,
+        а не придирка.</p>
+      </div>
 
-      <h2>Данные и документы</h2>
-      <div class="tbl"><table><tbody>
-        <tr><td class="k">jq</td><td class="t-ok">есть</td><td>JSON</td></tr>
-        <tr><td class="k">sqlite3</td><td class="t-ok">есть</td><td>локальные БД, FTS5</td></tr>
-        <tr><td class="k">pandoc</td><td class="t-ok">есть</td><td>конвертация документов</td></tr>
-        <tr><td class="k">pdftotext</td><td class="t-ok">есть</td><td>PDF → текст</td></tr>
-        <tr><td class="k">tesseract</td><td class="t-ok">есть</td><td>OCR, когда зрение не тянет</td></tr>
-        <tr><td class="k">ffmpeg / yt-dlp</td><td class="t-ok">есть</td><td>медиа</td></tr>
-        <tr><td class="k">gh / lazygit</td><td class="t-ok">есть</td><td>GitHub и git</td></tr>
-      </tbody></table></div>
+      {details('Поиск и файлы — 8 инструментов', '<div class="tbl"><table><tbody><tr><td class="k">rg</td><td>текстовый поиск</td></tr><tr><td class="k">fd</td><td>поиск файлов</td></tr><tr><td class="k">fzf</td><td>интерактивный выбор</td></tr><tr><td class="k">zoxide</td><td>умный cd</td></tr><tr><td class="k">bat</td><td>чтение с подсветкой</td></tr><tr><td class="k">glow</td><td>markdown в терминале</td></tr><tr><td class="k">dust / dua</td><td>размеры папок</td></tr><tr><td class="k">ctags</td><td>индекс символов</td></tr></tbody></table></div>', 'ok')}
 
-      <h2>Среда</h2>
-      <div class="tbl"><table><tbody>
-        <tr><td class="k">tmux / zellij</td><td class="t-ok">есть</td><td>мультиплексоры</td></tr>
-        <tr><td class="k">nu / uv</td><td class="t-ok">есть</td><td>shell, Python</td></tr>
-        <tr><td class="k">direnv</td><td class="t-ok">есть</td><td>окружения по папкам</td></tr>
-        <tr><td class="k">btop</td><td class="t-ok">есть</td><td>мониторинг</td></tr>
-        <tr><td class="k">atuin</td><td class="t-ok">есть</td><td>история команд</td></tr>
-        <tr><td class="k">strace</td><td class="t-ok">есть</td><td>системные вызовы</td></tr>
-        <tr><td class="k">zramctl</td><td class="t-ok">есть</td><td>zram 5.4 ГБ zstd</td></tr>
-        <tr><td class="k">notify-send</td><td class="t-ok">есть</td><td>десктоп-уведомления</td></tr>
-      </tbody></table></div>
+      {details('Данные и документы — 7 инструментов', '<div class="tbl"><table><tbody><tr><td class="k">jq</td><td>JSON</td></tr><tr><td class="k">sqlite3</td><td>локальные БД, FTS5</td></tr><tr><td class="k">pandoc</td><td>конвертация документов</td></tr><tr><td class="k">pdftotext</td><td>PDF → текст</td></tr><tr><td class="k">tesseract</td><td>OCR</td></tr><tr><td class="k">ffmpeg / yt-dlp</td><td>медиа</td></tr><tr><td class="k">gh / lazygit</td><td>GitHub и git</td></tr></tbody></table></div>', 'ok')}
+
+      {details('Среда — 8 инструментов', '<div class="tbl"><table><tbody><tr><td class="k">tmux / zellij</td><td>мультиплексоры</td></tr><tr><td class="k">nu / uv</td><td>shell, Python</td></tr><tr><td class="k">direnv</td><td>окружения по папкам</td></tr><tr><td class="k">btop</td><td>мониторинг</td></tr><tr><td class="k">atuin</td><td>история команд</td></tr><tr><td class="k">strace</td><td>системные вызовы</td></tr><tr><td class="k">zramctl</td><td>zram</td></tr><tr><td class="k">notify-send</td><td>уведомления</td></tr></tbody></table></div>', 'ok')}
 
       <h2>Ловушка</h2>
       <div class="box err">
@@ -692,12 +903,6 @@ INSTRUCTION_PANES = """
         shadow-utils («switch group»). ast-grep тоже хочет имя <code>sg</code>.</p>
         <p>Получишь конфликт имён и непонятные ошибки. Вызывай бинарь
         <code>ast-grep</code> напрямую или задай алиас.</p>
-      </div>
-
-      <h2>Итог</h2>
-      <div class="box ok">
-        <p>База закрыта плотно: поиск, данные, документы, медиа, git, мониторинг.
-        Пробелы не в базе, а в слое «структурный код» и «устойчивость к нехватке памяти».</p>
       </div>
     </section>
 
@@ -710,52 +915,37 @@ INSTRUCTION_PANES = """
 
       <div class="viz">
         <div class="viz-h">Пакеты по приоритету</div>
-        __PRIO_CHART__
+        {PRIO_CHART}
       </div>
 
-      <h2>Высокий приоритет</h2>
-      <div class="tbl"><table>
-        <thead><tr><th>Пакет</th><th>Версия</th><th>Зачем агенту</th></tr></thead>
-        <tbody>
-          <tr><td class="k">ast-grep</td><td class="mono">0.51.0</td><td>Поиск и правка по <b>структуре кода</b>, а не по регулярке. Без него агент грепает текст и промахивается на переименованиях и вложенности.</td></tr>
-          <tr><td class="k">delta</td><td class="mono">0.20.1</td><td>Человекочитаемый diff. Когда агент правит файл, видно смысл правки, а не звёздочки.</td></tr>
-          <tr><td class="k">yq</td><td class="mono">3.4.3</td><td>YAML и JSON одной командой. NixOS-конфиги и compose — сплошь YAML.</td></tr>
-          <tr><td class="k">earlyoom</td><td class="mono">1.9.0</td><td>Убивает жирный процесс вместо зависания системы. Прямое лекарство от свопа на 6.7 ГБ.</td></tr>
-        </tbody>
-      </table></div>
+      {details('Высокий приоритет — 4 пакета', '''
+        <p><b>ast-grep 0.51.0.</b> Поиск и правка по структуре кода, а не по регулярке.
+        Без него агент грепает текст и промахивается на переименованиях и вложенности.</p>
+        <p><b>delta 0.20.1.</b> Человекочитаемый diff. Когда агент правит файл, видно смысл правки.</p>
+        <p><b>yq 3.4.3.</b> YAML и JSON одной командой. NixOS-конфиги и compose — сплошь YAML.</p>
+        <p><b>earlyoom 1.9.0.</b> Убивает жирный процесс вместо зависания системы.
+        Прямое лекарство от свопа на 6.7 ГБ.</p>
+      ''', 'err')}
 
-      <h2>Средний приоритет</h2>
-      <div class="tbl"><table>
-        <thead><tr><th>Пакет</th><th>Версия</th><th>Зачем агенту</th></tr></thead>
-        <tbody>
-          <tr><td class="k">difftastic</td><td class="mono">0.72.0</td><td>Структурный diff по AST. Ловит «изменилось одно, а сломалось другое».</td></tr>
-          <tr><td class="k">xh</td><td class="mono">0.26.3</td><td>HTTP-клиент с человеческим выводом. Быстрее, чем curl + jq вручную.</td></tr>
-          <tr><td class="k">bubblewrap</td><td class="mono">0.12.0</td><td>Песочница для недоверенного кода.</td></tr>
-          <tr><td class="k">just</td><td class="mono">1.59.0</td><td>Именованные команды в justfile вместо заучивания длинных строк.</td></tr>
-          <tr><td class="k">hyperfine</td><td class="mono">2.0.0</td><td>Замер «до/после» с прогревом и статистикой. Без него оптимизация — вера.</td></tr>
-        </tbody>
-      </table></div>
+      {details('Средний приоритет — 5 пакетов', '''
+        <p><b>difftastic 0.72.0.</b> Структурный diff по AST. Ловит «изменилось одно, сломалось другое».</p>
+        <p><b>xh 0.26.3.</b> HTTP-клиент с человеческим выводом. Быстрее, чем curl + jq вручную.</p>
+        <p><b>bubblewrap 0.12.0.</b> Песочница для недоверенного кода.</p>
+        <p><b>just 1.59.0.</b> Именованные команды в justfile вместо заучивания длинных строк.</p>
+        <p><b>hyperfine 2.0.0.</b> Замер «до/после» с прогревом и статистикой.</p>
+      ''', 'warn')}
 
-      <h2>Низкий приоритет</h2>
-      <div class="tbl"><table>
-        <thead><tr><th>Пакет</th><th>Версия</th><th>Зачем агенту</th></tr></thead>
-        <tbody>
-          <tr><td class="k">tokei</td><td class="mono">15.0.0</td><td>Быстрая статистика кода: языки, строки, комментарии.</td></tr>
-          <tr><td class="k">taplo</td><td class="mono">0.10.0</td><td>TOML: формат, линт, LSP. Cargo.toml и конфиги.</td></tr>
-          <tr><td class="k">csvlens</td><td class="mono">0.13.0</td><td>Просмотр CSV в терминале. Выгрузки, таблицы, отчёты.</td></tr>
-          <tr><td class="k">htmlq</td><td class="mono">0.4.0</td><td>CSS-селекторы по HTML, когда web_fetch отдал грязный текст.</td></tr>
-          <tr><td class="k">sd</td><td class="mono">1.1.0</td><td>Замена sed с предсказуемым синтаксисом.</td></tr>
-          <tr><td class="k">procs</td><td class="mono">0.14.12</td><td>Понятный ps: дерево, порты, CPU.</td></tr>
-          <tr><td class="k">semgrep</td><td class="mono">1.180.0</td><td>Правила безопасности по коду, когда нужен линт, а не поиск.</td></tr>
-          <tr><td class="k">bpftrace</td><td class="mono">0.27.1</td><td>Трассировка ядра одной строкой.</td></tr>
-        </tbody>
-      </table></div>
+      {details('Низкий приоритет — 8 пакетов', '''
+        <p><b>tokei 15.0.0</b> — статистика кода. <b>taplo 0.10.0</b> — TOML: формат, линт, LSP.
+        <b>csvlens 0.13.0</b> — просмотр CSV. <b>htmlq 0.4.0</b> — CSS-селекторы по HTML.</p>
+        <p><b>sd 1.1.0</b> — замена sed. <b>procs 0.14.12</b> — понятный ps.
+        <b>semgrep 1.180.0</b> — правила безопасности. <b>bpftrace 0.27.1</b> — трассировка ядра.</p>
+      ''')}
 
-      <h2>Минимальный набор</h2>
       <div class="box ok">
+        <h3>Минимальный набор</h3>
         <p><code>ast-grep</code> · <code>delta</code> · <code>yq</code> · <code>earlyoom</code> —
-        четыре пакета закрывают четыре разных класса проблем: структурный поиск,
-        читаемый diff, работа с YAML, устойчивость к OOM.</p>
+        четыре пакета закрывают четыре разных класса проблем.</p>
       </div>
     </section>
 
@@ -770,45 +960,45 @@ INSTRUCTION_PANES = """
       <div class="tbl"><table>
         <thead><tr><th>Подход</th><th>Что даёт</th><th>Цена</th></tr></thead>
         <tbody>
-          <tr><td class="k">tree-sitter индекс</td><td>Агент видит символы и связи, не читая файлы целиком. Экономия токенов кратная.</td><td>индекс устаревает при правках</td></tr>
-          <tr><td class="k">LSP-серверы</td><td>Переход к определению, все ссылки, типы. Чего не умеет ни grep, ни tree-sitter.</td><td>процесс на язык, память</td></tr>
-          <tr><td class="k">agent-lsp</td><td>Один процесс роутит .go/.ts/.py по нужному серверу; сжатые ответы — заявлено до 30–84% меньше токенов.</td><td>молодой проект, проверять самому</td></tr>
-          <tr><td class="k">serena / cclsp</td><td>Готовые MCP-обёртки над LSP: символы и рефакторинг.</td><td>зависит от сервера языка</td></tr>
+          <tr><td class="k">tree-sitter индекс</td><td>Агент видит символы и связи, не читая файлы целиком</td><td>индекс устаревает</td></tr>
+          <tr><td class="k">LSP-серверы</td><td>Переход к определению, все ссылки, типы</td><td>процесс на язык</td></tr>
+          <tr><td class="k">agent-lsp</td><td>Один процесс роутит языки; сжатые ответы</td><td>молодой проект</td></tr>
+          <tr><td class="k">serena / cclsp</td><td>MCP-обёртки над LSP: символы и рефакторинг</td><td>зависит от сервера</td></tr>
         </tbody>
       </table></div>
 
-      <div class="box warn">
-        <p>Важная граница: tree-sitter понимает <b>синтаксис</b>, но не разрешает реэкспорты,
-        алиасы и цепочки типов. Для «где реально объявлено» нужен LSP.
-        Они дополняют друг друга, а не заменяют.</p>
-      </div>
+      {details('Где граница между tree-sitter и LSP', '''
+        <p>tree-sitter понимает <b>синтаксис</b>: он видит, что здесь импорт, но не разрешает
+        реэкспорты, алиасы и цепочки типов. Для вопроса «где реально объявлено»
+        нужен LSP. Они дополняют друг друга, а не заменяют.</p>
+      ''', 'warn')}
 
       <h2>Экономия контекста</h2>
       <div class="split">
         <div class="box ok">
           <h3>Работает</h3>
           <ul>
-            <li><b>Индекс вместо чтения.</b> Сначала символы, потом точечный диапазон строк.</li>
-            <li><b>Сжатые ответы.</b> Табличный формат вместо раздутого JSON.</li>
-            <li><b>Дедуп в сессии.</b> Один файл не перечитывается дважды.</li>
-            <li><b>Лимит вывода.</b> <code>--max-count</code> на каждом поиске.</li>
+            <li><b>Индекс вместо чтения.</b> Сначала символы, потом точечный диапазон.</li>
+            <li><b>Сжатые ответы.</b> Таблица вместо JSON.</li>
+            <li><b>Дедуп в сессии.</b> Файл не перечитывается дважды.</li>
+            <li><b>Лимит вывода.</b> <code>--max-count</code> на поиске.</li>
           </ul>
         </div>
         <div class="box err">
-          <h3>Звучит красиво, но не стоит времени</h3>
+          <h3>Не стоит времени</h3>
           <ul>
             <li>«Граф знаний по репозиторию» — на малых проектах дороже пользы.</li>
             <li>Своя векторная БД, когда есть SQLite FTS5.</li>
-            <li>Ещё один агент-оркестратор поверх уже работающего.</li>
+            <li>Ещё один оркестратор поверх работающего.</li>
           </ul>
         </div>
       </div>
 
       <h2>Что стоит твоего времени</h2>
       <div class="tbl"><table><tbody>
-        <tr><td class="k">ast-grep</td><td>Закрывает реальный пробел сегодня, ставится за минуту.</td></tr>
-        <tr><td class="k">SQLite FTS5</td><td>Поиск по памяти вместо грепа по markdown. <code>sqlite3</code> уже есть, ставить нечего.</td></tr>
-        <tr><td class="k">LSP</td><td>Только для крупного проекта (PixelFM на Rust). Для скриптов и заметок избыточно.</td></tr>
+        <tr><td class="k">ast-grep</td><td>Закрывает реальный пробел сегодня.</td></tr>
+        <tr><td class="k">SQLite FTS5</td><td>Поиск по памяти вместо грепа. <code>sqlite3</code> уже есть.</td></tr>
+        <tr><td class="k">LSP</td><td>Только для крупного проекта (PixelFM на Rust).</td></tr>
       </tbody></table></div>
     </section>
 
@@ -819,59 +1009,43 @@ INSTRUCTION_PANES = """
         <span class="pill ok">наибольший выигрыш</span>
       </div>
 
-      <div class="viz">
-        <div class="viz-h">Светофор: что делать в первую очередь</div>
-        __LOW_CHART__
-      </div>
+      <div class="viz">{LOW_CHART}</div>
 
-      <h2>Память</h2>
-      <div class="tbl"><table>
-        <thead><tr><th>Мера</th><th>Эффект</th></tr></thead>
-        <tbody>
-          <tr><td class="k">earlyoom</td><td>Убивает жирный процесс вместо зависания системы</td></tr>
-          <tr><td class="k">MemoryMax на юните</td><td>Gateway не съест всю память: рестарт вместо свопа</td></tr>
-          <tr><td class="k">MemoryHigh</td><td>Мягкий порог: притормозить процесс до жёсткого убийства</td></tr>
-          <tr><td class="k">swappiness 10–20</td><td>Сейчас 100 при 3 ГБ занятого swap — убирает лаг после сна</td></tr>
-          <tr><td class="k">vm.vfs_cache_pressure</td><td>Меньше 100 — ядро охотнее держит кэш файлов</td></tr>
-          <tr><td class="k">OOMScoreAdjust</td><td>Пометить Gateway как «убить первым» или «не трогать»</td></tr>
-          <tr><td class="k">zram</td><td>Уже включён: 5.4 ГБ zstd. Ничего не делать</td></tr>
-        </tbody>
-      </table></div>
+      {details('Память — 7 мер', '''
+        <p><b>earlyoom</b> — убивает жирный процесс вместо зависания системы.</p>
+        <p><b>MemoryMax на юните</b> — Gateway не съест всю память: рестарт вместо свопа.</p>
+        <p><b>MemoryHigh</b> — мягкий порог: притормозить до жёсткого убийства.</p>
+        <p><b>swappiness 10–20</b> — сейчас 100 при 2.9 ГБ в zram.</p>
+        <p><b>vm.vfs_cache_pressure</b> — у тебя уже 50, это разумно.</p>
+        <p><b>OOMScoreAdjust</b> — пометить Gateway как «убить первым» или «не трогать».</p>
+        <p><b>zram</b> — уже есть: 5.4 ГБ zstd.</p>
+      ''')}
 
-      <h2>Расписания</h2>
-      <div class="tbl"><table>
-        <thead><tr><th>Мера</th><th>Зачем</th></tr></thead>
-        <tbody>
-          <tr><td class="k">Persistent=true</td><td>Догнать пропущенное после выключения. У restart-таймера этого нет</td></tr>
-          <tr><td class="k">systemd-inhibit</td><td>Не спать в окне 03:50–09:30, если нужна точность</td></tr>
-          <tr><td class="k">script-payload</td><td>Решение принимает скрипт — модель не нужна вовсе</td></tr>
-          <tr><td class="k">trigger</td><td>Проверка условия без модели, пробуждение только на срабатывание</td></tr>
-          <tr><td class="k">pacing</td><td>Адаптивный интервал: чаще при активности, реже в тишине</td></tr>
-          <tr><td class="k">timeoutSeconds</td><td>Жёсткий предел на прогон — зависание не блокирует очередь</td></tr>
-          <tr><td class="k">staggerMs</td><td>Разброс старта, чтобы задачи не били в одну секунду</td></tr>
-        </tbody>
-      </table></div>
+      {details('Расписания — 7 мер', '''
+        <p><b>Persistent=true</b> — догнать пропущенное после выключения.
+        У restart-таймера этого нет.</p>
+        <p><b>systemd-inhibit</b> — не спать в окне 03:50–09:30.</p>
+        <p><b>script-payload</b> — решение принимает скрипт, модель не нужна.</p>
+        <p><b>trigger</b> — проверка условия без модели.</p>
+        <p><b>pacing</b> — адаптивный интервал: чаще при активности.</p>
+        <p><b>timeoutSeconds</b> — жёсткий предел на прогон.</p>
+        <p><b>staggerMs</b> — разброс старта.</p>
+      ''')}
 
-      <h2>Изоляция и диагностика</h2>
-      <div class="tbl"><table>
-        <thead><tr><th>Инструмент</th><th>Применение</th></tr></thead>
-        <tbody>
-          <tr><td class="k">bubblewrap</td><td>Запуск чужого кода без доступа к <code>$HOME</code></td></tr>
-          <tr><td class="k">strace</td><td>Уже есть. «Почему процесс висит» — <code>strace -f -p PID</code></td></tr>
-          <tr><td class="k">bpftrace</td><td>Агрегаты по ядру без остановки процесса</td></tr>
-          <tr><td class="k">FTS5</td><td>Полнотекстовый поиск по памяти и логам вместо грепа</td></tr>
-          <tr><td class="k">systemd-run --scope</td><td>Разовый запуск в своей cgroup с лимитами</td></tr>
-          <tr><td class="k">journalctl -o json</td><td>Логи структурой, а не текстом — сразу в jq</td></tr>
-        </tbody>
-      </table></div>
+      {details('Изоляция и диагностика — 6 инструментов', '''
+        <p><b>bubblewrap</b> — запуск чужого кода без доступа к <code>$HOME</code>.</p>
+        <p><b>strace</b> — уже есть. «Почему висит» — <code>strace -f -p PID</code>.</p>
+        <p><b>bpftrace</b> — агрегаты по ядру без остановки процесса.</p>
+        <p><b>FTS5</b> — полнотекстовый поиск по памяти и логам.</p>
+        <p><b>systemd-run --scope</b> — разовый запуск в своей cgroup с лимитами.</p>
+        <p><b>journalctl -o json</b> — логи структурой, сразу в jq.</p>
+      ''')}
 
-      <h2>Порядок, если делать по одному</h2>
       <div class="box ok">
-        <p><b class="hl">1</b> <code>earlyoom</code> — снимает риск полного зависания ·
-        <b class="hl">2</b> <code>swappiness=20</code> — убирает лаг после сна ·
-        <b class="hl">3</b> <code>MemoryMax</code> на Gateway — страховка ·
-        <b class="hl">4</b> <code>Persistent=true</code> на restart-таймер — догон.</p>
-        <p>Остальное — тонкая настройка, без срочности.</p>
+        <h3>Порядок, если делать по одному</h3>
+        <p><b class="hl">1</b> <code>earlyoom</code> · <b class="hl">2</b> <code>swappiness=20</code> ·
+        <b class="hl">3</b> <code>MemoryMax</code> · <b class="hl">4</b> <code>Persistent=true</code>.
+        Остальное — без срочности.</p>
       </div>
     </section>
 
@@ -896,56 +1070,102 @@ INSTRUCTION_PANES = """
 
       <div class="box err">
         <h3>Главное правило</h3>
-        <p>Правки в <code>~/.local/state/opencode/</code> и в сам HTML бесполезны: там симлинки на
-        репозиторий <code>/etc/nixos</code>, а HTML пересобирается раз в 5 минут.
+        <p>Правки в <code>~/.local/state/opencode/</code> и в сам HTML бесполезны: там симлинки
+        на <code>/etc/nixos</code>, а HTML пересобирается раз в 5 минут.
         Менять надо источник, затем <code>ocreport --write</code>.</p>
       </div>
 
-      <h2>Порядок правки</h2>
-      <div class="tbl"><table><tbody>
-        <tr><td class="k">1</td><td>Бэкап рядом с файлом: <code>cp -a file file.bak-$(date +%Y%m%d-%H%M%S)</code></td></tr>
-        <tr><td class="k">2</td><td>Правка в <code>/etc/nixos/user/scripts/…</code></td></tr>
-        <tr><td class="k">3</td><td>Синтаксис: <code>python3 -c "import ast;ast.parse(open(f).read())"</code></td></tr>
-        <tr><td class="k">4</td><td>Пересборка: <code>ocreport --write</code></td></tr>
-        <tr><td class="k">5</td><td>Проверка: открыть <code>127.0.0.1:8089</code></td></tr>
-        <tr><td class="k">6</td><td>Коммит в <code>/etc/nixos</code>, иначе потеряется при rebuild</td></tr>
-      </tbody></table></div>
+      {details('Порядок правки — 6 шагов', '''
+        <p><b>1.</b> Бэкап рядом с файлом: <code>cp -a file file.bak-$(date +%Y%m%d-%H%M%S)</code></p>
+        <p><b>2.</b> Правка в <code>/etc/nixos/user/scripts/…</code></p>
+        <p><b>3.</b> Синтаксис: <code>python3 -c "import ast;ast.parse(open(f).read())"</code></p>
+        <p><b>4.</b> Пересборка: <code>ocreport --write</code></p>
+        <p><b>5.</b> Проверка: открыть <code>127.0.0.1:8089</code></p>
+        <p><b>6.</b> Коммит в <code>/etc/nixos</code>, иначе потеряется при rebuild</p>
+      ''')}
 
-      <h2>Что не делать</h2>
+      {details('Проверка, что всё живо', '''
+        <p><b>Задачи:</b> <code>openclaw automations list</code></p>
+        <p><b>История:</b> <code>openclaw automations runs &lt;jobId&gt;</code></p>
+        <p><b>Прогон сейчас:</b> <code>openclaw automations run &lt;jobId&gt; --force</code></p>
+        <p><b>Обслуживание:</b> <code>tail -30 ~/.local/state/opencode/openclaw-maintenance.log</code></p>
+        <p><b>Таймеры:</b> <code>systemctl --user list-timers --all</code></p>
+        <p><b>Панель:</b> <code>curl -s -o /dev/null -w '%{http_code}' 127.0.0.1:8089</code></p>
+      ''')}
+
       <div class="box warn">
+        <h3>Что не делать</h3>
         <ul>
           <li>Не перезапускать Gateway ради проверки — есть <code>automations run</code>.</li>
           <li>Не ставить <code>toolsAllow: ["*"]</code> новым задачам по инерции.</li>
-          <li>Не править <code>openclaw-maintenance-state.json</code> руками: там кэш.</li>
+          <li>Не править <code>openclaw-maintenance-state.json</code>: там кэш.</li>
           <li>Не плодить таймеры: один уже делает три работы.</li>
         </ul>
       </div>
-
-      <h2>Проверка, что всё живо</h2>
-      <div class="tbl"><table>
-        <thead><tr><th>Проверка</th><th>Команда</th></tr></thead>
-        <tbody>
-          <tr><td class="k">Задачи</td><td><code>openclaw automations list</code></td></tr>
-          <tr><td class="k">История</td><td><code>openclaw automations runs &lt;jobId&gt;</code></td></tr>
-          <tr><td class="k">Прогон сейчас</td><td><code>openclaw automations run &lt;jobId&gt; --force</code></td></tr>
-          <tr><td class="k">Обслуживание</td><td><code>tail -30 ~/.local/state/opencode/openclaw-maintenance.log</code></td></tr>
-          <tr><td class="k">Таймеры</td><td><code>systemctl --user list-timers --all</code></td></tr>
-          <tr><td class="k">Панель</td><td><code>curl -s -o /dev/null -w '%{http_code}' 127.0.0.1:8089</code></td></tr>
-        </tbody>
-      </table></div>
     </section>
-"""
+""" + FS_PANES
 
 
-PAGE_HEAD = PAGE_HEAD.replace("</style>", EXTRA_CSS + "</style>", 1)
+def render_html(data):
+    up = {"ok": "ok", "error": "err", "skipped": "idle"}
+    panes = "".join(_job_pane(j) for j in data["jobs"])
 
-INSTRUCTION_PANES = (INSTRUCTION_PANES
-                     .replace("__DUR_CHART__", DUR_CHART)
-                     .replace("__SLEEP_CHART__", SLEEP_CHART)
-                     .replace("__MEM_METER__", MEM_METER)
-                     .replace("__COVER_CHART__", COVER_CHART)
-                     .replace("__PRIO_CHART__", PRIO_CHART)
-                     .replace("__LOW_CHART__", LOW_CHART))
+    nav_jobs = "".join(
+        f'<a href="#j-{j["name"]}"><span class="nm">{html.escape(j["name"])}</span>'
+        f'<span class="dot {up.get(j["status"], "idle")}"></span></a>'
+        for j in data["jobs"])
+
+    tot_ok = sum(_stats(j).get("ok", 0) for j in data["jobs"])
+    tot_err = sum(_stats(j).get("err", 0) for j in data["jobs"])
+
+    return PAGE_HEAD + f"""
+<aside class="side">
+  <div class="brand">OpenClaw<span>панель состояния</span></div>
+  <div class="sstat">
+    <div><span>Шлюз</span><b>{data['gw']}</b></div>
+    <div><span>Диск</span><b>{data['free_gb']} ГБ</b></div>
+    <div><span>Прогоны</span><b>{tot_ok} / {tot_ok + tot_err}</b></div>
+  </div>
+  <nav>
+    <div class="navlabel">Результаты</div>
+    {nav_jobs}
+    <div class="navlabel">Диагностика</div>
+    <a href="#check"><span class="nm">Аудит автоматизаций</span></a>
+    <a href="#timeouts"><span class="nm">Зависания и время</span></a>
+    <div class="navlabel">Инструменты</div>
+    <a href="#tools-have"><span class="nm">Что уже стоит</span></a>
+    <a href="#tools-miss"><span class="nm">Что добавить</span><span class="cnt">17</span></a>
+    <a href="#tools-new"><span class="nm">Новые под агента</span></a>
+    <a href="#tools-low"><span class="nm">Низкий уровень</span></a>
+    <div class="navlabel">Система</div>
+    <a href="#fs"><span class="nm">Файловые системы</span></a>
+    <div class="navlabel">Правила</div>
+    <a href="#rules"><span class="nm">Как чинить</span></a>
+  </nav>
+  <div class="sfoot"><span>{data['now']}</span>автообновление 180 с</div>
+</aside>
+<main class="main"><div class="col">{panes}
+{INSTRUCTION_PANES}
+</div></main>
+<script>
+(function () {{
+  var panes = [].slice.call(document.querySelectorAll('.pane'));
+  var links = [].slice.call(document.querySelectorAll('nav a'));
+  if (!panes.length) return;
+  function show() {{
+    var h = location.hash.replace('#', '');
+    var f = panes.filter(function (p) {{ return p.id === h; }})[0] || panes[0];
+    panes.forEach(function (p) {{ p.classList.toggle('on', p === f); }});
+    links.forEach(function (a) {{
+      a.classList.toggle('on', a.getAttribute('href') === '#' + f.id);
+    }});
+    window.scrollTo(0, 0);
+  }}
+  window.addEventListener('hashchange', show);
+  show();
+}})();
+</script>
+</body></html>"""
 
 
 def main():

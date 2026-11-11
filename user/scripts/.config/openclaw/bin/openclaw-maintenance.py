@@ -262,6 +262,39 @@ def load_report_module():
     return mod
 
 
+def runs_stats(entries):
+    """Сводка по истории прогонов: успех/провал, длительности, типы ошибок."""
+    ok = [e for e in entries if e.get("status") == "ok"]
+    bad = [e for e in entries if e.get("status") != "ok"]
+    durs = [int(e.get("durationMs") or 0) for e in ok if e.get("durationMs")]
+    kinds = {}
+    for e in bad:
+        msg = e.get("error") or ""
+        if "interrupted by gateway restart" in msg:
+            k = "прерван рестартом"
+        elif "shutting down" in msg or "receipt authority" in msg:
+            k = "gateway недоступен"
+        elif "All models failed" in msg:
+            k = "модель недоступна"
+        elif "disabled by operator" in msg:
+            k = "отключена"
+        else:
+            k = "другое"
+        kinds[k] = kinds.get(k, 0) + 1
+    recent = [{"s": "ok" if e.get("status") == "ok" else "err",
+               "d": int(e.get("durationMs") or 0)} for e in entries[:14]]
+    return {
+        "runs": len(entries),
+        "ok": len(ok),
+        "err": len(bad),
+        "avg": int(sum(durs) / len(durs)) if durs else 0,
+        "max": max(durs) if durs else 0,
+        "min": min(durs) if durs else 0,
+        "kinds": kinds,
+        "recent": recent,
+    }
+
+
 def build_dashboard_data(cache, jobs):
     data = {
         "now": datetime.datetime.now().astimezone().strftime("%d.%m.%Y %H:%M %Z"),
@@ -291,6 +324,7 @@ def build_dashboard_data(cache, jobs):
             "summary_time": ts_fmt(cj.get("summary_ts")),
             "summary_note": cj.get("summary_note") or "",
             "file_time": mtime_fmt(meta["rel"]),
+            "stats": cj.get("stats") or {},
         })
     return data
 
@@ -390,6 +424,8 @@ def main():
                     cj["last_error_notify"] = now_ts
             else:
                 cj["last_error_notify"] = 0
+            if entries:
+                cj["stats"] = runs_stats(entries)
             cj.update({"last": last, "status": status, "summary": summary,
                        "summary_ts": summary_ts, "summary_note": note})
             cache["jobs"][name] = cj
