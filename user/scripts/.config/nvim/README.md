@@ -26,10 +26,10 @@ sources all `plugin/` files anyway. The no-op keeps plugin directories off
 `runtimepath` until `P.load` / `P.runtime` asks for one.
 
 Everything expensive is behind a trigger: first file (LSP), matching
-filetype (tree-sitter, autotag, SQL), first key (fzf, neo-tree, DAP, Spectre,
-Trouble, LazyGit, EasyAlign, surround), first notification (snacks), first
-save (conform), first scroll (neoscroll). `gitsigns` is skipped entirely for
-buffers outside a `.git` repository.
+filetype (tree-sitter, text objects, autotag, SQL), first key (fzf, neo-tree,
+DAP, Spectre, Trouble, LazyGit, EasyAlign, surround), first notification
+(snacks), first save (conform), first scroll (neoscroll). `gitsigns` is
+skipped entirely for buffers outside a `.git` repository.
 
 `:PackLoadAll` force-loads every configured plugin; it exists for tests and
 benchmarks, not for normal startup.
@@ -41,8 +41,9 @@ benchmarks, not for normal startup.
   Python probe alone cost ~100 ms on the first `.py` buffer.
 - `flat.cursor` no longer calls tree-sitter/LSP from the colorscheme; the
   cursor group is updated on the first cursor move instead.
-- LSP and tree-sitter runtime paths are added on the first file, not at
-  startup.
+- LSP's runtime files are added on the first file; the tree-sitter plugin is
+  loaded on the first matching filetype.  Text objects are set up with it,
+  once per session.
 
 ## Old LazyVim config
 
@@ -77,10 +78,10 @@ Median of 13 runs, milliseconds:
 
 | case | lazy.nvim | vim.pack | faster |
 |---|---:|---:|---:|
-| empty, no plugins | 60 | 33 | 1.83x |
-| Python file | 258 | 126 | 2.04x |
-| all plugins forced (`PackLoadAll`) | 127 | 128 | 0.99x |
-| all plugins + Python file | 330 | 241 | 1.37x |
+| empty, no plugins | 54 | 33 | 1.66x |
+| Python file | 241 | 126 | 1.92x |
+| all plugins forced (`PackLoadAll`) | 119 | 111 | 1.07x |
+| all plugins + Python file | 315 | 223 | 1.41x |
 
 The forced all-plugin case is bounded by third-party plugin code; `PackLoadAll`
 is a stress test, not the normal startup path.

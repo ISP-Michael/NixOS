@@ -3,15 +3,15 @@ local P = require('pack')
 P.register(
   'nvim-treesitter',
   function()
-    P.runtime('nvim-treesitter')
+    P.load('nvim-treesitter')
   end
 )
 
 require('core.treesitter')
 
--- Runtime files are enough for highlighting, so plugin/nvim-treesitter.lua is
--- not sourced at startup.  Parser management still needs its commands; load
--- the plugin on first :TS* use.
+-- The plugin itself is loaded on the first matching file.  Parser management
+-- still needs :TS* commands before any tree-sitter file is open; the wrappers
+-- load the plugin and then hand over to its real commands.
 local function ts_command(name)
   return function(args)
     P.load('nvim-treesitter')
