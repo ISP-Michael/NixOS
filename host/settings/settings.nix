@@ -38,7 +38,7 @@
     ];
     kernel = {
       sysctl = {
-        "vm.swappiness" = 10;
+        "vm.swappiness" = 100;
         "vm.page-cluster" = 3;
         "vm.dirty_background_ratio" = 5;
         "vm.dirty_ratio" = 10;

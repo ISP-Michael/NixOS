@@ -18,10 +18,13 @@ in
   # Клиент Throne 1.3.0-beta.2 (перестали собирать из nixpkgs-исходников 1.2.2).
   # -appdata обязателен: без него GUI молча выходит (как в nixpkgs-сборке).
   environment.systemPackages = [
+    # Throne 1.4.1 + bundled Qt 6.12 падает в stack overflow, если в сессии
+    # выставлен QT_STYLE_OVERRIDE=kvantum / QT_QPA_PLATFORMTHEME=qt5ct.
+    # Принудительно xcb и чистый стиль Fusion.
     (pkgs.writeShellScriptBin "throne"
-      "exec env NIX_LD_LIBRARY_PATH=/run/current-system/sw/share/nix-ld/lib ${optBinPath}/Throne -appdata \"$@\"")
+      "exec env -u QT_STYLE_OVERRIDE -u QT_QPA_PLATFORMTHEME QT_QPA_PLATFORM=xcb NIX_LD_LIBRARY_PATH=/run/current-system/sw/share/nix-ld/lib ${optBinPath}/Throne -appdata \"$@\"")
     (pkgs.writeShellScriptBin "Throne"
-      "exec env NIX_LD_LIBRARY_PATH=/run/current-system/sw/share/nix-ld/lib ${optBinPath}/Throne -appdata \"$@\"")
+      "exec env -u QT_STYLE_OVERRIDE -u QT_QPA_PLATFORMTHEME QT_QPA_PLATFORM=xcb NIX_LD_LIBRARY_PATH=/run/current-system/sw/share/nix-ld/lib ${optBinPath}/Throne -appdata \"$@\"")
     (pkgs.makeDesktopItem {
       name = "throne";
       desktopName = "Throne";

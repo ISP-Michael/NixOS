@@ -5,7 +5,7 @@
     ./flatpak.nix
     ./fprintd.nix
     ./fstrim.nix
-    ./happ.nix
+    ./happ-opt.nix
     ./keyd.nix
     ./logind.nix
     ./mihomo.nix
@@ -14,5 +14,7 @@
     ./qbittorrent.nix
     ./resolved.nix
     ./services.nix
+    ./warp.nix
+    ./zapret2.nix
   ];
 }

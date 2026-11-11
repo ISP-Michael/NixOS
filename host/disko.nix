@@ -65,7 +65,7 @@
                         mountpoint = "/.swapvol";
                         swap = {
                           swapfile = {
-                            size = "16G";
+                            size = "8G";
                           };
                         };
                       };
