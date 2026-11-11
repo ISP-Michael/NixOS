@@ -1,23 +1,28 @@
-return {
-  'ibhagwan/fzf-lua',
-  dependencies = {
-    'nvim-tree/nvim-web-devicons'
-  },
-  keys = {
-    {
-      '<leader>ff',
-      ':lua require("fzf-lua").files()<CR>'
-    },
-    {
-      '<leader>fo',
-      ':lua require("fzf-lua").oldfiles()<cr>'
-    },
-    {
-      '<leader>fb',
-      ':lua require("fzf-lua").buffers()<CR>'
-    },
-  },
-  config = function()
+local P = require('pack')
+local M = {}
+
+local function fzf()
+  P.use('fzf-lua')
+  return require('fzf-lua')
+end
+
+function M.files()
+  fzf().files()
+end
+
+function M.oldfiles()
+  fzf().oldfiles()
+end
+
+function M.buffers()
+  fzf().buffers()
+end
+
+P.register(
+  'fzf-lua',
+  function()
+    P.load('nvim-web-devicons')
+    P.load('fzf-lua')
     require('fzf-lua').setup(
       {
         winopts = {
@@ -61,4 +66,31 @@ return {
       }
     )
   end
-}
+)
+
+vim.keymap.set(
+  'n',
+  '<leader>ff',
+  M.files,
+  {
+    desc = 'Files (fzf)'
+  }
+)
+vim.keymap.set(
+  'n',
+  '<leader>fo',
+  M.oldfiles,
+  {
+    desc = 'Recent files (fzf)'
+  }
+)
+vim.keymap.set(
+  'n',
+  '<leader>fb',
+  M.buffers,
+  {
+    desc = 'Buffers (fzf)'
+  }
+)
+
+return M

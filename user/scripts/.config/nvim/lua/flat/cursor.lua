@@ -94,6 +94,11 @@ local function update()
     return
   end
 
+  -- Entering the empty startup buffer must not pull in tree-sitter/LSP.
+  if vim.api.nvim_buf_get_name(0) == '' then
+    return
+  end
+
   local fg, bg = token_at_cursor()
   if not fg or not bg then
     return
@@ -111,15 +116,27 @@ end
 function M.attach()
   local group = vim.api.nvim_create_augroup(augroup_name, { clear = true })
   vim.api.nvim_create_autocmd(
-    { 'CursorMoved', 'CursorMovedI', 'BufEnter', 'WinEnter', 'ModeChanged', 'ColorScheme' },
+    { 'CursorMoved', 'CursorMovedI', 'BufEnter', 'WinEnter', 'ModeChanged' },
     {
       group = group,
       callback = update,
     }
   )
+  vim.api.nvim_create_autocmd(
+    'ColorScheme',
+    {
+      group = group,
+      callback = function()
+        cache = {}
+        last = nil
+      end,
+    }
+  )
   cache = {}
   last = nil
-  update()
+  -- Do not call update() here: it would pull in tree-sitter and LSP while the
+  -- colourscheme is being applied during startup.  The first CursorMoved (or
+  -- BufEnter) does the same work once a buffer is actually on screen.
 end
 
 return M

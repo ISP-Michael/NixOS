@@ -49,8 +49,7 @@ set(
   'n',
   '<leader>dq',
   function()
-    require('dap').terminate()
-    require('dapui').close()
+    require('plugins.dap').terminate()
   end,
   {
     desc = 'Stop debugging and close UI'
@@ -61,7 +60,7 @@ set(
   'n',
   '<leader>bb',
   function()
-    require('fzf-lua').buffers()
+    require('plugins.fzf').buffers()
   end,
   {
     desc = 'Buffers (fzf)'

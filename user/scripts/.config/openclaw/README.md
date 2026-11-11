@@ -8,7 +8,7 @@ OpenClaw — живое приложение: пишет `~/.openclaw/openclaw.j
 ## Что лежит здесь
 
 ```
-openclaw.json.tmpl              # обезличенный шаблон для справки/чистой установки
+openclaw.json.tmpl              # обезличенный шаблон; install.sh создаёт из него конфиг
 systemd/user/                   # шаблоны user-units
 bin/                            # скрипты обслуживания
 ```
@@ -29,9 +29,14 @@ user/scripts/.config/apps/install.sh          # не перезаписывае�
 FORCE=1 user/scripts/.config/apps/install.sh  # перезаписать, сделав .bak
 ```
 
-Скрипт копирует конфиги OpenCode, user-units и скрипты в реальные места.
-Конфиг OpenClaw и `auth.json` он не трогает — это делает `restore.sh` из
-зашифрованного снимка или ты сам.
+Скрипт ставит симлинки на плагины/скрипты, рендерит `openclaw.json` из
+`openclaw.json.tmpl` (если файла ещё нет; токены = `REPLACE_ME`) и user-units
+с `@HOME@`/`@PYTHON@`. Существующие файлы не перезаписывает. `auth.json` и
+secret store не трогает.
+
+Сессии и память бэкапятся отдельно: `opencode-backup.timer` → `backup-data.sh`
+(restic, репозиторий в `secrets/opencode-restic`, пароль в
+`~/.local/state/opencode/restic.pass`). Восстановление — `restore-data.sh`.
 
 Включить один раз:
 

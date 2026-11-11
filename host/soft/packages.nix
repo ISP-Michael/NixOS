@@ -41,9 +41,11 @@
       pipewire
       pkg-config
       polkit
+      restic
       ryzenadj
       smartmontools
       socat
+      sqlite
       ssh-to-age
       tcpdump
       tlp

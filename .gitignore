@@ -20,3 +20,6 @@ host/services/mihomo.yaml
 __pycache__/
 *.pyc
 .DS_Store
+
+# OpenCode/OpenClaw restic data backup (not for git)
+secrets/opencode-restic/

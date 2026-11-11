@@ -1,0 +1,39 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "external_directory": "allow",
+    "read": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "list": "allow"
+  },
+  "plugins": [
+    "@HOME@/.config/opencode/plugins/memory-sync",
+    "@HOME@/.config/opencode/plugins/log-sanitizer",
+    "@HOME@/.config/opencode/plugins/searxng-search",
+    "@hueyexe/opencode-ensemble@0.20.0"
+  ],
+  "websearch": {
+    "provider": "searxng"
+  },
+  "mcp": {
+    "servers": {
+      "playwright": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@playwright/mcp@latest",
+          "--browser",
+          "chromium",
+          "--executable-path",
+          "@CHROMIUM@",
+          "--headless",
+          "--isolated",
+          "--no-sandbox"
+        ],
+        "timeout": 60000
+      }
+    }
+  }
+}

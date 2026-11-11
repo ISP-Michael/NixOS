@@ -1,64 +1,99 @@
-# Приложения: реальные директории + bootstrap, без Nix-симлинков
+# Приложения: bootstrap + симлинки
 
-Это сознательная смена подхода. OpenCode и OpenClaw — **живые приложения**:
-они пишут конфиги, создают новые файлы, обновляют токены, меняют сессии.
-Симлинки из Nix store (read-only) и sops-шаблоны, завязанные на `nh os switch`,
-для них плохо подходят: приложение не сможет писать, а смена ключа потребует
-пересборки.
+> Перенос на новую машину: [TRANSFER.md](TRANSFER.md)
+
+OpenCode и OpenClaw — живые приложения: они пишут конфиги, создают файлы,
+меняют токены и сессии. Поэтому здесь не Nix-модули, а bootstrap-скрипты.
 
 ## Принцип
 
-- **Живые файлы — настоящие**, в родных директориях:
-  `~/.openclaw/`, `~/.config/opencode/`, `~/.local/share/opencode/`,
-  `~/.local/state/opencode/`.
-- **Nix** управляет системой (пакеты, сервисы, железо), а не состоянием
-  приложений. Никаких `home.file`-симлинков на `openclaw.json`, `auth.json`,
-  сессии и т.п.
-- **Bootstrap-скрипты** копируют шаблоны/юниты/скрипты в реальные места.
-  Их можно запускать сколько угодно, без пересборки.
-- **Секреты** живут в реальных файлах с правами 0600. Это главный источник.
-  Опционально — зашифрованный снимок в `secrets/apps.yaml` (sops) для
-  переноса/восстановления; он не обязателен и не подключается к Nix.
+- **Статические конфиги/плагины/скрипты** — в этом каталоге, в git.
+  `install.sh` по умолчанию делает на них **симлинки**: правка в репозитории
+  применяется сразу, без пересборки.
+- **Шаблоны с путями** (`opencode.jsonc`, `openclaw.json`, systemd units)
+  рендерятся при установке: `@HOME@`, `@PYTHON@`, `@CHROMIUM@`, `@PROFILE@`.
+- **Живые файлы и секреты** (`openclaw.json` после ввода токенов, `auth.json`,
+  `service.json`, `*.db`, `node_modules`, сессии) не симлинкуются и не
+  перезаписываются.
+- **Сессии** — отдельный restic-бэкап, не git.
 
-## Скрипты
+## install.sh
 
 ```bash
-# скопировать конфиги/юниты/скрипты (существующие не трогает)
+# показать план, ничего не менять
+user/scripts/.config/apps/install.sh --dry-run
+
+# по умолчанию: симлинки + рендер шаблонов; существующее не трогает
 user/scripts/.config/apps/install.sh
 
-# перезаписать существующие, сделав .bak
-FORCE=1 user/scripts/.config/apps/install.sh
+# копии вместо симлинков
+user/scripts/.config/apps/install.sh --copy
 
-# снять зашифрованный снимок живых файлов (sops, /etc/nixos/secrets/apps.yaml)
-user/scripts/.config/apps/backup.sh
-
-# восстановить из снимка (по умолчанию только отсутствующие файлы)
-user/scripts/.config/apps/restore.sh
-FORCE=1 user/scripts/.config/apps/restore.sh   # перезаписать, сделав .bak
+# перезаписать существующее, сделав .bak
+user/scripts/.config/apps/install.sh --force
 ```
 
-## Смена ключа/подписки
+`openclaw.json` — исключение: он создаётся только если его нет. Даже
+`--force` не перезаписывает живой файл с токенами. Нужен шаблон заново —
+удали файл вручную (будет создан с `REPLACE_ME`).
 
-1. Меняешь ключ в живом файле (или через UI приложения):
-   `~/.openclaw/openclaw.json`, `auth.json`, `openclaw secrets store set ...`.
-2. Приложение сразу использует новый ключ — **без пересборки**.
-3. Если ведёшь зашифрованный снимок — запускаешь `backup.sh`, он обновит
-   `secrets/apps.yaml`.
-4. Старый снимок можно удалить/оставить; sops перезапишет.
+На уже настроенной машине скрипт печатает `skip` для всего, что существует.
+Секреты не переносятся: после первой установки вставь токены вместо
+`REPLACE_ME` в `~/.openclaw/openclaw.json`.
 
-## Перенос на другую машину
+## Перенос на новую машину
 
-1. Скопировать флейк/каталог `user/scripts/.config` и `secrets/` (если есть).
+1. Скопировать флейк/каталог `user/scripts/.config` на новую машину.
 2. Установить OpenCode/OpenClaw.
-3. `install.sh` — конфиги/юниты/скрипты.
-4. `restore.sh` — конфиг/авторизация из зашифрованного снимка (если есть).
-5. Добавить публичный ключ новой машины в `.sops.yaml` и перешифровать снимок
-   (`sops updatekeys`), иначе restore не расшифрует.
-6. Заполнить `telegram-bot-token` в снимке, если он был `REPLACE_ME`.
+3. `install.sh` — симлинки, шаблоны, units.
+4. Запустить `npm install` в `~/.config/opencode` (install.sh делает это сам,
+   если есть npm и нет `node_modules`).
+5. Вставить токены в `~/.openclaw/openclaw.json`.
+6. Включить таймеры:
+   ```bash
+   systemctl --user daemon-reload
+   systemctl --user enable --now openclaw-maintenance.timer
+   systemctl --user enable --now openclaw-gateway-restart.timer
+   systemctl --user enable --now opencode-backup.timer
+   ```
+
+## Сессии и память
+
+Restic-репозиторий по умолчанию: `/etc/nixos/secrets/opencode-restic/`
+(каталог в `.gitignore`, в git не попадает). Пароль:
+`~/.local/state/opencode/restic.pass` (0600, генерируется при первом запуске).
+
+```bash
+# бэкап вручную (таймер делает это ежедневно)
+~/.local/state/opencode/backup-data.sh
+
+# восстановить (сначала остановить OpenCode/OpenClaw)
+FORCE=1 ~/.local/state/opencode/restore-data.sh
+```
+
+На новую машину переносится каталог `secrets/opencode-restic` и файл
+`restic.pass`. Git хранит только конфиги, не сессии: БД и агенты — это
+гигабайты и приватные данные.
 
 ## Что не переносится
 
-- сессии/история (`~/.openclaw/agents/`, SQLite);
-- кэши, логи, `DASHBOARD.md`;
-- `~/.config/opencode/plugins/` и `node_modules` — их нужно поставить отдельно;
-- `service.json` целиком (там pid/url); в снимке только пароль.
+- сессии/история (`opencode.db`, `~/.openclaw/agents/`) — только restic;
+- кэши, логи, `browser`, `node_modules`;
+- `auth.json`, `service.json`, токены — вставляются вручную.
+
+## Зачем .sh, если есть симлинки
+
+Симлинк только **размещает** файл в нужном месте. Он не умеет:
+
+- создать `~/.openclaw/openclaw.json` из шаблона, если файла ещё нет;
+- подставить `@HOME@`/`@PYTHON@`/`@CHROMIUM@`/`@NODE@` под новую машину;
+- поставить systemd units, сделать `daemon-reload`, включить таймеры;
+- выполнить `npm install` и выставить права.
+
+Это делает `install.sh` — один раз при переносе или после изменения шаблонов.
+
+Остальные `.sh`/`.py` — не bootstrap, а **рабочие задачи**, которые вызывают
+systemd-юниты: `backup-data.sh` (restic), `restore-data.sh` (восстановление),
+`openclaw-gateway-restart.sh` (ежедневный рестарт), `openclaw-maintenance.py`
+(обслуживание). Симлинк на них означает: «запускай актуальную версию из
+репозитория», а не копию, которая устареет.
