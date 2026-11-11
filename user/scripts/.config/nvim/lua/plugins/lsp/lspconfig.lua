@@ -80,6 +80,26 @@ return {
         }
       }
     )
+    local function truncate(text, max)
+      if not text or text == '' then
+        return text
+      end
+      if vim.fn.strchars(text) <= max then
+        return text
+      end
+      return vim.fn.strcharpart(text, 0, max - 3) .. '...'
+    end
+
+    local function completion_convert(item)
+      local label = item.label or ''
+      local label_detail = vim.tbl_get(item, 'labelDetails', 'detail') or ''
+      local menu = vim.tbl_get(item, 'labelDetails', 'description') or item.detail or ''
+      return {
+        abbr = truncate(label .. label_detail, 55),
+        menu = truncate(menu, 35),
+      }
+    end
+
     local lsp_servers = {
       'ty',
       'ruff',
@@ -140,7 +160,15 @@ return {
           -- ruff has no completion (completionProvider = false); without this
           -- check it still gets the request and throws an error on screen
           if client:supports_method('textDocument/completion', ev.buf) then
-            vim.lsp.completion.enable(true, ev.data.client_id, ev.buf, { autotrigger = false })
+            vim.lsp.completion.enable(
+              true,
+              ev.data.client_id,
+              ev.buf,
+              {
+                autotrigger = false,
+                convert = completion_convert
+              }
+            )
           end
           if not client:supports_method('textDocument/signatureHelp', ev.buf) then
             return

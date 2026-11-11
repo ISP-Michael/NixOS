@@ -113,19 +113,19 @@ for i = 1, 10 do
   )
 end
 
-hl.bind(
-  M.alt .. ' + Tab',
-  hl.dsp.window.bring_to_top()
-)
-
-hl.bind(
-  M.alt .. ' + SHIFT + Tab',
-  hl.dsp.window.bring_to_top(
-    {
-      prev = true
-    }
-  )
-)
+-- Alt+Tab / Alt+Shift+Tab.
+--
+-- Раньше здесь стояло hl.dsp.window.bring_to_top() и
+-- bring_to_top({ prev = true }). Проверил исходник
+-- (LuaBindingsDispatchers.cpp:1030, 649): hlWindowBringToTop вообще
+-- игнорирует аргументы и всегда вызывает CA::alterZOrder("top") для
+-- активного окна. То есть обе строки делали ОДНО И ТО ЖЕ, а параметр
+-- prev не существует. Плюс alterZOrder меняет только z-порядок, а в
+-- monocle видно ровно одно окно — эффекта не было вообще.
+--
+-- Теперь Alt+Tab листает окна, как и положено Alt+Tab.
+hl.bind(M.alt .. ' + Tab', function() cycle(1) end)
+hl.bind(M.alt .. ' + SHIFT + Tab', function() cycle(-1) end)
 
 hl.bind(
   M.mainMod .. ' + S',
@@ -232,6 +232,11 @@ hl.bind(
   }
 )
 
+-- Ресайз с клавиатуры. Работает только на ПЛАВАЮЩИХ окнах: в monocle
+-- тайловое окно всегда занимает рабочую область, и layout перезаписывает
+-- любой размер при пересчёте. Проверял: 1856x1060 и до, и после
+-- resize(+40). Плавающих окон в конфиге хватает (Dolphin, диалоги файлов,
+-- CopyQ, matplotlib), для них бинды и нужны.
 hl.bind(
   M.mainMod .. ' + SHIFT + h',
   hl.dsp.window.resize(
@@ -315,14 +320,6 @@ hl.bind(
     }
   )
 )
-
--- ОТКЛЮЧЕНО: /etc/nixos/dependencies/scripts/obs_screenshot.sh не существует
--- (каталог dependencies/scripts был пустым). Чтобы вернуть — положи скрипт
--- по этому пути или удали эти строки.
--- hl.bind(
---   M.mainMod .. ' + SHIFT + P',
---   hl.dsp.exec_cmd('/etc/nixos/dependencies/scripts/obs_screenshot.sh')
--- )
 
 -- ------------------------------------------------------------------
 -- ЗУМ КУРСОРА — целиком на Lua, внешний скрипт zoom.sh удалён

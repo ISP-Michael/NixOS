@@ -1,7 +1,6 @@
 hl.on(
   'hyprland.start',
   function()
-    local home_dir = os.getenv('HOME')
     -- Импорт XDG_SESSION_ID юзер-менеджеру systemd: без него юнит Noctalia
     -- не видит logind-сессию (локскрин, блокировка при засыпании), а у агента
     -- авторизации polkit не выполнилось бы условие WAYLAND_DISPLAY.
@@ -27,9 +26,9 @@ hl.on(
         workspace = '3'
       }
     )
-    hl.exec_cmd(
-      home_dir .. '/Projects/tg-ws-proxy/start.sh'
-    )
+    -- Строка с ~/Projects/tg-ws-proxy/start.sh удалена: каталога нет,
+    -- в ~/Projects остался только cuphead-binds, скрипт не существует
+    -- нигде в домашнем каталоге. То есть команда падала при каждом входе.
     hl.exec_cmd(
       'obsidian',
       {

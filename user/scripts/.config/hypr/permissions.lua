@@ -1,28 +1,39 @@
--- Разрешения Hyprland 0.56.2 (новая система, ecosystem.enforce_permissions).
+-- Разрешения Hyprland 0.56.2 (ecosystem.enforce_permissions).
 --
--- Что происходит. В DynamicPermissionManager.cpp проверка выглядит так:
+-- Проверка в DynamicPermissionManager.cpp:
 --     static auto PPERM = CConfigValue<Config::INTEGER>("ecosystem:enforce_permissions");
 --     if (*PPERM == 0)
 --         return PERMISSION_RULE_ALLOW_MODE_ALLOW;
--- То есть при enforce_permissions = 0 (дефолт) разрешено ВСЁ и никаких
--- вопросов не бывает. Как только включаешь 1, для каждого клиента без
--- подходящего правила вызывается askForPermission() и возвращается
--- PENDING — всплывает диалог. Типов разрешений в исходнике пять:
--- SCREENCOPY (доступ к экрану), CURSOR_POS, INPUT_CAPTURE, PLUGIN
--- (загрузка плагинов) и KEYBOARD (новая виртуальная клавиатура).
+-- При 0 (дефолт) разрешено всё и вопросов не бывает. При 1 любой клиент
+-- без подходящего правила уходит в askForPermission() и возвращает
+-- PENDING — всплывает диалог. Типов в enum пять:
+-- SCREENCOPY, PLUGIN, KEYBOARD, CURSOR_POS, INPUT_CAPTURE.
 --
--- Правило hl.permission() получает РЕГУЛЯРКУ и проверяется через
--- RE2::FullMatch — то есть по ВСЕМУ пути целиком, а не по имени файла.
--- В примере из репозитория написано /usr/(bin|local/bin)/grim, но на
--- NixOS это бесполезно: бинарник лежит по пути в /nix/store, и его
--- полное имя содержит хеш сборки, который меняется при каждом
--- обновлении nixpkgs. Поэтому регекспы ниже заканчиваются на /bin/<имя>
--- и совпадают с любым хешем.
+-- ВАЖНО ПРО ПУТИ. hl.permission() получает регулярку и проверяет её через
+-- RE2::FullMatch по ВСЕМУ пути бинарника. Путь берётся так
+-- (MiscFunctions.cpp, binaryNameForPid):
+--     std::format("/proc/{}/exe", pid) -> std::filesystem::canonical(...)
+-- canonical разворачивает симлинки, поэтому правилом должен быть покрыт
+-- РЕАЛЬНЫЙ путь. А в Nix половина пакетов — обёртки: рядом с бинарником
+-- лежит .<имя>-wrapped, и /proc/exe указывает именно на него.
 --
--- ВАЖНО: и enforce_permissions, и hl.permission применяются только при
--- перезапуске Hyprland — на лету, специально из соображений безопасности,
--- они не подхватываются. hyprctl reload config-only тут не поможет,
--- нужен полный перезапуск сессии.
+-- Проверено на живой сессии:
+--   grim       -> .../bin/grim                        (без обёртки)
+--   hyprpicker -> .../bin/hyprpicker                  (без обёртки)
+--   hyprpm     -> .../bin/hyprpm                      (без обёртки)
+--   noctalia   -> .../bin/.noctalia-wrapped           (ОБЁРТКА)
+--   портал     -> .../libexec/.xdg-desktop-portal-hyprland-wrapped (ОБЁРТКА)
+--
+-- Поэтому ниже у этих двух путей стоят \.? и (-wrapped)? — иначе правило
+-- не совпадает НИКОГДА. Раньше так и было: старые записи без точки и без
+-- -wrapped не срабатывали, то есть screen share уходил в запрос.
+--
+-- Отдельно: `std::filesystem::canonical` ещё и разворачивает /etc/profiles,
+-- так что писать /etc/profiles/per-user/... тоже бесполезно — нужен путь
+-- в /nix/store с хешем, который меняется при обновлении. Отсюда [^/]*.
+--
+-- Применяется только при перезапуске Hyprland: на лету, специально из
+-- соображений безопасности, правила не подхватываются.
 
 hl.config(
   {
@@ -32,27 +43,24 @@ hl.config(
   }
 )
 
--- Скриншоты. Кто угодно пишущий в wlr-screencopy.
+-- Скриншоты и пипетка.
 hl.permission('/nix/store/[^/]*/bin/grim', 'screencopy', 'allow')
-hl.permission('/nix/store/[^/]*/bin/slurp', 'screencopy', 'allow')
-hl.permission('/nix/store/[^/]*/bin/hyprshot', 'screencopy', 'allow')
-hl.permission('/nix/store/[^/]*/bin/satty', 'screencopy', 'allow')
-hl.permission('/nix/store/[^/]*/bin/wl-copy', 'screencopy', 'allow')
-
--- Локскрин Noctalia снимает экран для фона за окном входа.
-hl.permission('/nix/store/[^/]*/bin/noctalia', 'screencopy', 'allow')
-
--- Пипетка (SUPER + P) — тоже ходит через wlr-screencopy.
 hl.permission('/nix/store/[^/]*/bin/hyprpicker', 'screencopy', 'allow')
 
+-- Локскрин Noctalia снимает экран для фона за окном входа.
+hl.permission('/nix/store/[^/]*/bin/\\.?noctalia(-wrapped)?', 'screencopy', 'allow')
+
 -- Портал Hyprland: через него OBS, Discord, Telegram и браузер делают
--- захват экрана и демонстрацию окна. Если это не разрешить, screen
--- share перестанет работать и начнёт спрашивать.
-hl.permission('/nix/store/[^/]*/bin/xdg-desktop-portal-hyprland', 'screencopy', 'allow')
-hl.permission('/nix/store/[^/]*/libexec/xdg-desktop-portal-hyprland', 'screencopy', 'allow')
+-- захват экрана и демонстрацию окна.
+hl.permission('/nix/store/[^/]*/libexec/\\.?xdg-desktop-portal-hyprland(-wrapped)?', 'screencopy', 'allow')
 
 -- Менеджер плагинов.
 hl.permission('/nix/store/[^/]*/bin/hyprpm', 'plugin', 'allow')
 
--- Откат, если что-то сломается: закомментируй enforce_permissions
--- выше (вернуть false) и перезапусти Hyprland.
+-- Убрано как мёртвое (проверено strings по zwlr_screencopy_manager_v1):
+--   slurp  — не снимает экран, только рисует рамку через layer-shell (0 упоминаний)
+--   wl-copy — не снимает (0), плюс у него обёртка .wl-copy-wrapped
+--   hyprshot, satty — в системе не установлены
+--
+-- Откат, если что-то сломается: поставить enforce_permissions = false
+-- и перезапустить Hyprland.

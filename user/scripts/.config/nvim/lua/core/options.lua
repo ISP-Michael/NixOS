@@ -21,7 +21,14 @@ option.undodir = undodir
 option.signcolumn = 'yes:1'
 option.smoothscroll = true
 option.fillchars = { eob = ' ' }
-option.completeopt = { 'menu', 'menuone', 'noinsert', 'fuzzy', 'popup' }
+-- Documentation is shown only in the explicit <C-k> window, never in the
+-- side popup next to the completion menu.
+option.completeopt = { 'menu', 'menuone', 'noinsert', 'fuzzy' }
+option.pumheight = 10
+option.pumwidth = 30
+option.pummaxwidth = 0
+option.pumborder = 'rounded'
+option.pumblend = 0
 option.showtabline = 0
 
 local function fix_float_normal()

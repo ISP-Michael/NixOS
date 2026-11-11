@@ -14,7 +14,6 @@ host/services/mihomo.yaml
 .zcompdump-*
 *.bak
 *.bak-*
-*~
 *.swp
 *.swo
 *.log
