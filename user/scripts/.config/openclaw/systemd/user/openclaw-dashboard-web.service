@@ -1,0 +1,13 @@
+[Unit]
+Description=Serve OpenClaw dashboard on 127.0.0.1:8089
+After=openclaw-dashboard.service
+Wants=openclaw-dashboard.service
+
+[Service]
+Type=simple
+ExecStart=@PYTHON@ -m http.server 8089 --bind 127.0.0.1 --directory %h/.openclaw/workspace
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=default.target

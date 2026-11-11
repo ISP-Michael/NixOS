@@ -1,0 +1,8 @@
+[Unit]
+Description=OpenClaw maintenance: catch-up, notifications, dashboard
+After=openclaw-gateway.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=@PYTHON@ %h/.local/state/opencode/openclaw-maintenance.py

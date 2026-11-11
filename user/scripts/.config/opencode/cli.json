@@ -1,0 +1,30 @@
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "diffs": {
+    "wrap": "none"
+  },
+  "session": {
+    "sidebar": "auto",
+    "scrollbar": true,
+    "thinking": "hide",
+    "grouping": "auto",
+    "verbosity": "low"
+  },
+  "scroll": {
+    "speed": 5,
+    "acceleration": false
+  },
+  "mouse": true,
+  "animations": true,
+  "theme": {
+    "name": "rosepine",
+    "mode": "system"
+  },
+  "keybinds": {
+    "session.toggle.exploration_grouping": "ctrl+g",
+    "session.toggle.scrollbar": "ctrl+b",
+    "session.verbosity.cycle": "<leader>v",
+    "input.undo": "ctrl+z,ctrl+-,super+z",
+    "terminal.suspend": "none"
+  }
+}

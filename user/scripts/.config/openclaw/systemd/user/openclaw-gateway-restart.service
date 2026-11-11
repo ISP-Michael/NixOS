@@ -1,0 +1,7 @@
+[Unit]
+Description=Daily OpenClaw gateway restart (memory + stuck runs)
+After=openclaw-gateway.service
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/state/opencode/openclaw-gateway-restart.sh

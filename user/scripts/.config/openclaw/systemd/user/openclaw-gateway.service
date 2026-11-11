@@ -1,0 +1,31 @@
+[Unit]
+Description=OpenClaw Gateway
+After=network-online.target
+Wants=network-online.target
+StartLimitBurst=10
+StartLimitIntervalSec=300
+
+[Service]
+ExecStart=%h/.local/node/v26.12.1/bin/node --max-old-space-size=2048 %h/.local/lib/node_modules/openclaw/dist/index.js gateway --port 18789
+Restart=always
+RestartSec=5
+RestartPreventExitStatus=78
+TimeoutStopSec=330
+TimeoutStartSec=30
+SuccessExitStatus=0 143
+OOMPolicy=continue
+KillMode=mixed
+Environment=OPENCLAW_SERVICE_MANAGED_ENV_KEYS=OPENCODE_API_KEY
+Environment=HOME=/home/Michael
+Environment=TMPDIR=/tmp
+Environment=PATH=/home/Michael/.local/node/v26.12.1/bin:/nix/store/vikpzb4mdbk1llwb47y1ihc1ng2dg4vi-nodejs-slim-22.23.1/bin:/usr/local/bin:/usr/bin:/bin:/home/Michael/.local/bin:/home/Michael/.npm-global/bin:/home/Michael/bin:/home/Michael/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:/home/Michael/.nix-profile/bin:/nix/profile/bin:/home/Michael/.local/state/nix/profile/bin:/etc/profiles/per-user/Michael/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin
+Environment=NODE_OPTIONS=
+Environment=OPENCLAW_GATEWAY_PORT=18789
+Environment=OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service
+Environment="OPENCLAW_WINDOWS_TASK_NAME=OpenClaw Gateway"
+Environment=OPENCLAW_WINDOWS_TASK_HIDDEN_LAUNCHER=1
+Environment=OPENCLAW_SERVICE_MARKER=openclaw
+Environment=OPENCLAW_SERVICE_KIND=gateway
+
+[Install]
+WantedBy=default.target

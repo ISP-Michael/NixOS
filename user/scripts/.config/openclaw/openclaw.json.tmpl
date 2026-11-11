@@ -1,0 +1,267 @@
+{
+  "gateway": {
+    "mode": "local",
+    "auth": {
+      "mode": "token",
+      "token": "REPLACE_ME"
+    }
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "/home/user/.openclaw/workspace",
+      "model": {
+        "primary": "opencode-go/deepseek-v4.1-flash",
+        "fallbacks": [
+          "opencode-go/glm-5.3-flash"
+        ]
+      },
+      "models": {
+        "opencode-go/deepseek-v4.1-flash": {},
+        "opencode-go/kimi-k3": {},
+        "opencode-go/glm-5.3-flash": {},
+        "opencode-go/deepseek-v4-flash": {}
+      },
+      "modelPolicy": {
+        "allow": [
+          "opencode-go/*"
+        ]
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 2,
+        "archiveAfterMinutes": 60
+      },
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "thinkingDefault": "off"
+    },
+    "entries": {
+      "main": {}
+    }
+  },
+  "env": {
+    "vars": {
+      "OPENCODE_API_KEY": "REPLACE_ME"
+    }
+  },
+  "tools": {
+    "web": {
+      "search": {
+        "enabled": true,
+        "provider": "searxng",
+        "maxResults": 5,
+        "timeoutSeconds": 15
+      }
+    }
+  },
+  "plugins": {
+    "allow": [
+      "searxng",
+      "opencode",
+      "opencode-go",
+      "web-readability",
+      "browser",
+      "memory-core",
+      "workboard"
+    ],
+    "entries": {
+      "searxng": {
+        "enabled": true,
+        "config": {
+          "webSearch": {
+            "baseUrl": "http://localhost:8888",
+            "categories": "general",
+            "language": "ru"
+          }
+        }
+      },
+      "opencode": {
+        "enabled": true
+      },
+      "opencode-go": {
+        "enabled": true
+      },
+      "web-readability": {
+        "enabled": true
+      },
+      "browser": {
+        "enabled": true
+      },
+      "memory-core": {
+        "enabled": true
+      },
+      "workboard": {
+        "enabled": true,
+        "config": {}
+      }
+    }
+  },
+  "meta": {
+    "migrations": {
+      "modelPolicyAllowlist": true,
+      "utilityModelSeparation": true
+    },
+    "lastTouchedVersion": "2026.10.6"
+  },
+  "wizard": {
+    "lastRunAt": "2026-10-24T18:52:47.943Z",
+    "lastRunVersion": "2026.10.6",
+    "lastRunCommand": "doctor",
+    "lastRunMode": "local"
+  },
+  "skills": {
+    "entries": {
+      "1password": {
+        "enabled": false
+      },
+      "blogwatcher": {
+        "enabled": false
+      },
+      "blucli": {
+        "enabled": false
+      },
+      "camsnap": {
+        "enabled": false
+      },
+      "coding-agent": {
+        "enabled": false
+      },
+      "eightctl": {
+        "enabled": false
+      },
+      "gemini": {
+        "enabled": false
+      },
+      "gifgrep": {
+        "enabled": false
+      },
+      "goplaces": {
+        "enabled": false
+      },
+      "mcporter": {
+        "enabled": false
+      },
+      "model-usage": {
+        "enabled": false
+      },
+      "openai-whisper": {
+        "enabled": false
+      },
+      "openai-whisper-api": {
+        "enabled": false
+      },
+      "openhue": {
+        "enabled": false
+      },
+      "oracle": {
+        "enabled": false
+      },
+      "ordercli": {
+        "enabled": false
+      },
+      "sag": {
+        "enabled": false
+      },
+      "sherpa-onnx-tts": {
+        "enabled": false
+      },
+      "songsee": {
+        "enabled": false
+      },
+      "sonoscli": {
+        "enabled": false
+      },
+      "spotify-player": {
+        "enabled": false
+      },
+      "summarize": {
+        "enabled": false
+      },
+      "trello": {
+        "enabled": false
+      },
+      "xurl": {
+        "enabled": false
+      }
+    }
+  },
+  "models": {
+    "providers": {
+      "opencode-go": {
+        "baseUrl": "https://opencode.ai/zen/go/v1",
+        "api": "openai-completions",
+        "auth": "api-key",
+        "apiKey": "REPLACE_ME",
+        "timeoutSeconds": 120,
+        "headers": {
+          "x-opencode-session": "openclaw-local"
+        },
+        "models": [
+          {
+            "id": "deepseek-v4.1-flash",
+            "name": "DeepSeek V4.1 Flash",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "contextWindow": 1000000,
+            "maxTokens": 32000
+          },
+          {
+            "id": "glm-5.3-flash",
+            "name": "GLM 5.3 Flash",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "contextWindow": 200000,
+            "maxTokens": 32000
+          },
+          {
+            "id": "deepseek-v4-pro",
+            "name": "DeepSeek V4 Pro",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "contextWindow": 200000,
+            "maxTokens": 32000
+          },
+          {
+            "id": "glm-5.3",
+            "name": "GLM 5.3",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "contextWindow": 200000,
+            "maxTokens": 32000
+          }
+        ]
+      }
+    }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "allowFrom": [
+        "REPLACE_ME"
+      ],
+      "dmPolicy": "allowlist",
+      "botToken": {
+        "source": "store",
+        "provider": "default",
+        "id": "REPLACE_ME"
+      },
+      "markdown": {
+        "tables": "bullets"
+      }
+    }
+  },
+  "commands": {
+    "ownerAllowFrom": [
+      "telegram:1531083606"
+    ]
+  }
+}
