@@ -20,16 +20,10 @@
     };
     users = {
       Michael = {
+        # Вся пользовательская конфигурация собрана в user/default.nix.
+        # Так точка входа одна и для хоста, и для чтения агентом.
         imports = [
-          "${self}/user/home.nix"
-          "${self}/user/mimeapps.nix"
-          "${self}/user/unciv.nix"
-          "${self}/user/packages.nix"
-          "${self}/user/programs"
-          "${self}/user/scripts"
-          "${self}/user/services"
-          "${self}/user/theme"
-          "${self}/user/xdg.nix"
+          "${self}/user"
         ];
       };
     };

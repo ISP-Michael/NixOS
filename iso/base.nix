@@ -5,21 +5,9 @@
   ...
 }:
 {
-  imports = [
-    ../host/console.nix
-    ../host/system/system.nix
-    ../host/time.nix
-    ../host/services/pipewire.nix
-    ../host/settings/experimental-features.nix
-    ../host/settings/cache.nix
-    ../host/soft/programs/appimage.nix
-    ../host/soft/programs/nix-ld.nix
-    ../host/soft/programs/dconf.nix
-    ../host/systemd.nix
-  ];
+  # ISO — не MagicBook: железные настройки хоста сюда не тащим, но
+  # общий слой (локаль, время, звук, Bluetooth, nix, программы) берём из common.
 
-  # ISO не должен тащить железные настройки MagicBook, но базовые
-  # вещи (локаль, время, звук, bluetooth, nix) берём из хостового конфига.
   system = {
     stateVersion = lib.mkForce "26.05";
   };
@@ -31,8 +19,8 @@
   };
 
   hardware = {
-    # installation-cd-base уже включает enableAllHardware, здесь это
-    # напоминание: ISO должен заводиться не только на MagicBook.
+    # installation-cd-minimal уже включает enableAllHardware; оставляем
+    # явно как напоминание, что ISO должен заводиться не только на MagicBook.
     enableAllHardware = true;
     graphics.enable = true;
   };
@@ -45,41 +33,25 @@
   };
 
   services = {
-    udisks2.enable = true;
-    gvfs.enable = true;
     tumbler.enable = true;
-    upower.enable = true;
-    power-profiles-daemon.enable = true;
-    blueman.enable = true;
   };
 
   security = {
     polkit.enable = true;
-    rtkit.enable = true;
-  };
-
-  programs = {
-    zsh = {
-      enable = true;
-      enableGlobalCompInit = false;
-    };
-  };
-
-  qt = {
-    enable = true;
-    platformTheme = "qt5ct";
-    style = "kvantum";
   };
 
   environment = {
-    etc."zshenv.local".text = ''
-      export ZDOTDIR="$HOME/.config/zsh"
-    '';
     sessionVariables = {
-      GTK_USE_PORTAL = "1";
       NIXOS_OZONE_WL = "1";
       MOZ_ENABLE_WAYLAND = "1";
     };
+  };
+
+  # Qt-приложения (Telegram и т.п.) должны видеть плагины. Конкретную
+  # KDE-тему не навязываем: на live нет Plasma, а qt5ct/kvantum в набор
+  # не входят.
+  qt = {
+    enable = true;
   };
 
   fonts = {

@@ -1,6 +1,6 @@
 {
   imports = [
-    ./Michael.nix
-    ./users.nix
+    ./groups.nix
+    ./michael.nix
   ];
 }

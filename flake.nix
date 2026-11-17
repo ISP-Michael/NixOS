@@ -2,7 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-flatpak.url = "github:gmodena/nix-flatpak";
-    hyprland.url = "github:hyprwm/Hyprland/2eb5180c6f258bb73c4b9b71a1361dede0e1453e";
     freesmlauncher.url = "github:FreesmTeam/FreesmLauncher/be4e50d06ad0fea34bf3dc0ff83e1fda4cad33eb";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     disko = {
@@ -37,14 +36,6 @@
         };
       };
     };
-    stylix = {
-      url = "github:danth/stylix";
-      inputs = {
-        nixpkgs = {
-          follows = "nixpkgs";
-        };
-      };
-    };
     zen-browser = {
       url = "github:youwen5/zen-browser-flake/afbbbef7c3c00f160f4a9dfdd8c6c6b8b089a33f";
       inputs = {
@@ -54,6 +45,7 @@
       };
     };
   };
+
   outputs = {
     disko,
     home-manager,
@@ -61,24 +53,25 @@
     nur,
     self,
     sops-nix,
-    freesmlauncher,
     nix-flatpak,
     ...
   }@inputs:
   let
     system = "x86_64-linux";
-    mkHost = extraModules: nixpkgs.lib.nixosSystem {
+    lib = nixpkgs.lib;
+
+    # Полная система MagicBook: host/ — единственная точка входа.
+    mkHost = extraModules: lib.nixosSystem {
       specialArgs = {
         inherit
           inputs
           self
           nur
           system
-          freesmlauncher
           ;
       };
       modules = [
-        ./host/configuration.nix
+        ./host
         disko.nixosModules.disko
         nix-flatpak.nixosModules.nix-flatpak
         home-manager.nixosModules.home-manager
@@ -102,7 +95,12 @@
         }
       ] ++ extraModules;
     };
-    mkIso = profile: nixpkgs.lib.nixosSystem {
+
+    # Live-ISO: общий слой common/ + профиль iso.profile.
+    # VPN-модуль подключается только там, где он есть в профиле.
+    profileData = import ./iso/profile-data.nix;
+
+    mkIso = profile: lib.nixosSystem {
       inherit system;
       specialArgs = {
         inherit
@@ -113,7 +111,7 @@
           ;
       };
       modules = [
-        ./iso/configuration.nix
+        ./iso
         "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
         home-manager.nixosModules.home-manager
         {
@@ -124,14 +122,15 @@
             };
           };
         }
-      ] ++ nixpkgs.lib.optionals (profile != "lite") [
+      ] ++ lib.optionals profileData.${profile}.vpn [
         ./iso/vpn.nix
       ];
     };
+
     configs = {
-      MagicBook = mkHost [];
+      MagicBook = mkHost [ ];
       MagicBookInstall = mkHost [
-        ./iso/install-overrides.nix
+        ./host/install.nix
       ];
       iso = mkIso "work";
       iso-lite = mkIso "lite";
@@ -139,15 +138,18 @@
       iso-full = mkIso "full";
       iso-custom = mkIso "custom";
     };
+
+    # Все iso-* конфигурации автоматически становятся пакетами:
+    # nix build .#iso-custom, .#iso-lite, ...
+    isoPackages = lib.mapAttrs' (
+      name: cfg: lib.nameValuePair name cfg.config.system.build.isoImage
+    ) (lib.filterAttrs (name: _: lib.hasPrefix "iso" name) configs);
   in
   {
     nixosConfigurations = configs;
-    packages.${system} = {
-      iso = configs.iso.config.system.build.isoImage;
-      iso-lite = configs.iso-lite.config.system.build.isoImage;
-      iso-media = configs.iso-media.config.system.build.isoImage;
-      iso-full = configs.iso-full.config.system.build.isoImage;
-      iso-custom = configs.iso-custom.config.system.build.isoImage;
-    };
+
+    packages.${system} = isoPackages;
+
+    formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
   };
 }

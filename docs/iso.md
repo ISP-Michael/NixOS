@@ -1,0 +1,128 @@
+# Live-ISO
+
+Live-система NixOS с Hyprland, собранная из этого же флейка. Это не
+«установщик в одну кнопку»: с неё можно работать, а репозиторий конфига
+лежит внутри.
+
+## Профили
+
+Профили задаются в `iso/profile-data.nix` (флаги) и `iso/profiles.nix`
+(пакеты). `flake.nix` создаёт конфигурации `iso-lite`, `iso` (work),
+`iso-custom`, `iso-media`, `iso-full`.
+
+| Конфигурация | Что внутри | Размер |
+|---|---|---|
+| `iso-lite` | Hyprland, Firefox, Thunar, mpv, zathura, CLI, portable runtime | точный — после сборки |
+| `iso` (work) | lite + LibreOffice, Telegram, KeePassXC, CopyQ, OpenCode, AmneziaVPN + Happ | точный — после сборки |
+| `iso-custom` | lite + LibreOffice, Telegram, KeePassXC, Pandoc, OpenCode, AmneziaVPN + Happ | **4.6 ГБ** (18.11.2026) |
+| `iso-media` | work + GIMP, OBS, VLC, Dolphin/Okular/Ark | точный — после сборки |
+| `iso-full` | + Python/Node/GCC/Go/Rust/.NET, Obsidian, Bitwarden, Thunderbird | точный — после сборки |
+
+`lite` не получает агентский runtime (OpenCode, Node, Python, Chromium,
+SearXNG) и VPN-модуль. `work`/`custom`/`media`/`full` получают.
+
+## Сборка
+
+```bash
+cd /etc/nixos
+nix build .#iso-custom -o result-iso-custom --max-jobs 1 --cores 1
+# или .#iso-lite / .#iso / .#iso-media / .#iso-full
+```
+
+На 6 ГБ ОЗУ не запускать две тяжёлые сборки одновременно. В `iso/base.nix`
+уже стоит `zstd -Xcompression-level 15`; `zstd 19` на 4-гигабайтном squashfs
+упирается в память.
+
+Результат:
+
+```bash
+ls -lh result-iso-custom/iso/*.iso
+```
+
+Запись на флешку:
+
+```bash
+sudo dd if=result-iso-custom/iso/*.iso of=/dev/sdX bs=4M status=progress oflag=sync
+```
+
+## Установка
+
+Обычный путь — с live-системы, репозиторий уже в `/etc/nixos`:
+
+```bash
+sudo disko --mode destroy,format,mount --flake /etc/nixos#MagicBook
+sudo nixos-install --flake /etc/nixos#MagicBook
+```
+
+Но `MagicBook` берёт пароль пользователя из sops. Без ключа, который может
+расшифровать `secrets/secrets.yaml`, установка упрётся в активацию. Варианты:
+
+1. добавить host-ключ новой машины в `.sops.yaml` и сделать `sops updatekeys`;
+2. держать admin age-ключ и передать его установщику;
+3. поставить `#MagicBookInstall` — без sops, с временным паролем `nixos`.
+
+Пример для варианта 3:
+
+```bash
+sudo disko --mode destroy,format,mount --flake /etc/nixos#MagicBookInstall
+sudo nixos-install --flake /etc/nixos#MagicBookInstall
+sudo cp -a /etc/nixos /mnt/etc/nixos
+```
+
+После загрузки добавить host-ключ, пересобрать `#MagicBook` и сменить пароль.
+`MagicBookInstall` не нужен для `nix build`/`nixos-rebuild build`; это только
+установочный профиль.
+
+`host/hardware/hardware-configuration.nix` и `host/hardware/disk.nix` —
+MagicBook (`/dev/nvme0n1`). Для другой машины нужен свой host и
+`nixos-generate-config`.
+
+## Что на live
+
+- Пользователь `Michael`, greetd-автологин в Hyprland, Noctalia + `user/theme`.
+- В меню только **Firefox**. Chromium — обёртка `chromium` для Playwright MCP
+  OpenCode, без desktop-файла.
+- В `work`/`custom`/`media`/`full`: OpenCode 2.3.0 (npm `@opencode/cli-linux-x64`),
+  AmneziaVPN 5.1.0.6 (`.run` распаковывается в `/opt` при активации),
+  Happ 4.7.2 (Nix-пакет, XWayland), Node 26, Python 3, restic, sqlite,
+  SearXNG на `127.0.0.1:8888`.
+- Throne, Steam, Blender, Docker, виртуалки не включены.
+- SSH выключен: у live-пользователя пустой пароль, открытый порт не нужен.
+- chrony включён через `common/system/time.nix`; NTS выключен намеренно.
+- Qt без `qt5ct`/`kvantum`: только `qt.enable = true`, чтобы Telegram и
+  другие Qt-приложения видели плагины.
+
+## Репозиторий внутри ISO
+
+`iso/repo.nix` копирует `self` в `/etc/nixos` при активации, если там ещё нет
+`flake.nix`. Исключаются `.git`, `result*`, `secrets/opencode-restic`,
+`secrets/apps.yaml`, `assets/videos`. После установки репозиторий можно
+скопировать на диск и пересобирать уже там.
+
+## Живые конфиги
+
+Hyprland на live использует `iso/config/hypr`, а остальные конфиги
+( kitty, nvim, tmux, zsh, yazi, fastfetch) — из `user/dotfiles/.config`
+через `iso/home.nix`. Это позволяет не тащить host-autostart с Zen,
+Telegram, Obsidian и Lutris.
+
+`submaps.lua` удалён; ISO не делает `require('submaps')`. Print-сабмап со
+скриншотами сейчас не подключён; вернуть можно из `dd6f314`.
+
+## Sops
+
+Подробно — [`secrets.md`](secrets.md). Коротко: сборка ключ не требует;
+активация/установка — требует. `.sops.yaml` и `secrets/secrets.yaml`
+синхронизированы 17.11.2026 (старый admin, текущий admin, host MagicBook).
+`MagicBookInstall` — только для установки без ключа.
+
+## Проверка перед записью
+
+```bash
+cd /etc/nixos
+nix eval --raw .#nixosConfigurations.iso-custom.config.system.build.toplevel.drvPath
+nix eval --raw .#packages.x86_64-linux.iso-custom.outPath
+file result-iso-custom/iso/*.iso
+```
+
+`file` должен сказать `ISO 9660 ... (bootable)`.

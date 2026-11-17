@@ -1,0 +1,64 @@
+# Решения и выключенные вещи
+
+Здесь — то, что удалено или выключено, и почему. Это не свалка кода:
+история есть в git, а причина должна быть видна агенту.
+
+## Удалено
+
+| Что | Когда | Причина |
+|---|---|---|
+| `user/stylix/` + input `stylix` | 17.11.2026 | Заменено на `user/theme`: GTK/KDE/Qt/Noctalia вручную, Stylix больше не импортировался. |
+| `user/services/mako.nix` | 17.11.2026 | Mako не установлен и не используется; уведомления — Noctalia. |
+| `user/overlays.nix` | 17.11.2026 | Пустой файл, нигде не импортировался. |
+| `host/services/kmscon.nix` | 17.11.2026 | Не импортировался, kmscon не активен. |
+| `host/services/mihomo.nix` | 17.11.2026 | `enable = false`; конфиг `mihomo.yaml` остался в `host/services/` (gitignored), модуль не нужен. |
+| `host/services/proxy.nix` | 17.11.2026 | Только `v2raya.enable = false`; не использовался. |
+| `host/services/warp.nix` | 17.11.2026 | WARP проверен и не работает в РФ (MASQUE/QUIC timeout). Не включать без повторной проверки. |
+| `host/services/zapret2.nix` | 17.11.2026 | Выключен с 14.11.2026: при поднятом AmneziaWG не нужен; `/opt/zapret2` остался для ручного запуска. |
+| `host/services/amnezia-escape.nix` | 17.11.2026 | Обходной watcher маршрутов; не импортировался. Если Amnezia снова зациклит трафик — вернуть из истории. |
+| `host/services/fstrim.nix` | 17.11.2026 | Слито в `host/hardware/disk.nix`: `services.fstrim.enable = false` (NixOS по умолчанию включает). |
+| `host/soft/programs/clash.nix` | 17.11.2026 | Не импортировался; активные клиенты — Happ/Throne/Amnezia. |
+| `host/soft/programs/amnezia-vpn.nix` | 17.11.2026 | Nix-модуль `programs.amnezia-vpn` выключен; используется `/opt` + `common/vpn/amnezia-vpn.nix`. |
+| `host/soft/programs/throne.nix` | 17.11.2026 | Nix-модуль `programs.throne` выключен; используется `/opt/Throne` + `host/programs/throne.nix`. |
+| `host/scripts/` | 17.11.2026 | Не scripts, а activation-линкер `/etc/keyd`. Keyd переведён на `environment.etc` в `host/hardware/keyd/`. |
+| `host/scripts/etc/openclaw/README.md` | 17.11.2026 | Пустой системный каталог; OpenClaw — пользовательский. |
+| `user/dotfiles/.config/hypr/README.md` | 17.11.2026 | Пустой файл. |
+| input `hyprland` | 17.11.2026 | Не использовался: пакет берётся из nixpkgs (`pkgs.hyprland`). |
+
+## Выключено намеренно
+
+- **`services.fstrim.enable = false`** — btrfs смонтирован с `discard=async`;
+  отдельный таймер не нужен и конкурирует за диск.
+- **chrony `enableNTS = false`** — пулы `*.nixos.pool.ntp.org` не держат
+  NTS-KE (TCP/4460); включение ломает синхронизацию.
+- **SSH на live-ISO выключен** — пользователь `Michael` с пустым паролем,
+  открытый 22-й порт не нужен. Включать вручную при необходимости.
+- **Qt на ISO без `qt5ct`/`kvantum`** — на live нет Plasma и готовой темы;
+  оставлен только `qt.enable = true` для плагинов. Пакеты `qt5ct`, `qt6ct`,
+  `kvantum` больше не тянутся.
+- **Flatpak** — модуль оставлен (`host/services/flatpak.nix`), пакетов нет.
+  Новые Flatpak-приложения не добавлять без явной просьбы.
+- **Happ на хосте** — ручной `/opt/happ` (`host/programs/happ.nix`), не
+  `vendor/happ/module.nix`. На ISO — наоборот, Nix-модуль.
+- **AmneziaVPN на хосте** — `/opt/AmneziaVPN` + `common/vpn/amnezia-vpn.nix`;
+  Nix-модуль `programs.amnezia-vpn` не используется.
+
+## Известные особенности
+
+- **`submaps.lua` удалён.** ISO больше не делает `require('submaps')`;
+  Print-сабмап со скриншотами не подключён. Вернуть файл можно из `dd6f314`.
+- **`xdg.desktopEntries` сломан** в текущем Home Manager: опция `extraConfig`
+  удалена, но модуль её выставляет. Для desktop-файлов используется
+  `xdg.dataFile."applications/<name>.desktop"` (пример — Unciv).
+- **`secrets/secrets.yaml` `lastmodified`** может оставаться старым:
+  `sops updatekeys` обновляет получателей, но не перешифровывает файл.
+  Получатели обновлены 17.11.2026; это важнее даты.
+- **`secrets/opencode-restic/`** — 700+ МБ, gitignored; в ISO не копируется
+  (`iso/repo.nix`).
+- **`assets/videos/`** — 73 МБ, gitignored; в ISO не копируется.
+- **`host/services/mihomo.yaml`** — остался на диске (0600, gitignored) после
+  удаления модуля. Если mihomo не нужен — удалить вручную.
+- **`vendor/happ`** — сторонний код GPL-3.0; upstream и локальные патчи
+  описаны в `vendor/happ/README.md`.
+- **`user/theme/kde.nix`** и Noctalia `post_hook` пишут `kdeglobals`:
+  это два вызова одного скрипта, не два разных владельца.

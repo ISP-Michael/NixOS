@@ -1,7 +1,9 @@
 {
   imports = [
-    # ./filesystems.nix
-    ./swap.nix
-    ./system.nix
+    ./documentation.nix
+    ./fonts.nix
+    ./journald.nix
+    ./power.nix
+    ./state.nix
   ];
 }

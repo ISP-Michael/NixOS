@@ -15,6 +15,10 @@ let
     rm -rf $out/.git
     rm -rf $out/result $out/result-*
     rm -rf $out/secrets/opencode-restic
+    # Зашифрованный снимок живых токенов и тяжёлые видео в live-системе
+    # не нужны; в git их может не быть, но подстраховка дешёвая.
+    rm -rf $out/secrets/apps.yaml
+    rm -rf $out/assets/videos
   '';
 in
 {

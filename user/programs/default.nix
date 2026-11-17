@@ -6,9 +6,8 @@
     ./helix.nix
     ./home-manager.nix
     ./lutris.nix
-    ./nh
-    ./noctalia.nix
-    # ./openclaw-module.nix
+    ./nh.nix
+    ./noctalia
     ./yazi.nix
   ];
 }

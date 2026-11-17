@@ -2,7 +2,7 @@ user/programs/openclaw-module.nix
 result
 result-*
 result-lib
-dependencies/videos/wallpapers/*.mp4
+assets/videos/wallpapers/*.mp4
 host/services/mihomo.yaml
 
 # Nix build state

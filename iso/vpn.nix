@@ -4,12 +4,12 @@
   ...
 }:
 let
-  amneziaRun = pkgs.callPackage ./amnezia-run.nix { };
+  amneziaRun = pkgs.callPackage ./packages/amnezia-vpn.nix { };
 in
 {
   imports = [
-    ../host/services/amnezia-vpn-service.nix
-    ../happ-nixos/happ-module.nix
+    ../common/vpn/amnezia-vpn.nix
+    ../vendor/happ/module.nix
   ];
 
   # Happ: настоящий Nix-пакет, без ручного /opt. На Hyprland его
@@ -20,7 +20,7 @@ in
   };
 
   # AmneziaVPN: официальный .run 5.1.0.6 распаковывается в /opt при
-  # активации. Сервис/обёртка — из host/services/amnezia-vpn-service.nix.
+  # активации. Сервис/обёртка — из common/vpn/amnezia-vpn.nix.
   system.activationScripts.amneziaInstall = lib.mkBefore ''
     if [ ! -x /opt/AmneziaVPN/bin/AmneziaVPN ]; then
       mkdir -p /opt/AmneziaVPN

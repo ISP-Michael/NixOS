@@ -1,8 +1,4 @@
 {
-  lib,
-  ...
-}:
-{
   networking = {
     hostName = "nixos-live";
     networkmanager = {
@@ -13,20 +9,10 @@
     };
     firewall = {
       enable = true;
-      allowedTCPPorts = [
-        22
-      ];
     };
   };
 
-  services = {
-    openssh = {
-      enable = true;
-      settings = {
-        # На live-ISO root без пароля — SSH снаружи должен быть закрыт.
-        PermitRootLogin = lib.mkForce "no";
-        PasswordAuthentication = true;
-      };
-    };
-  };
+  # SSH на live не включаем: пользователь Michael с пустым паролем,
+  # открытый 22-й порт — лишний риск. Если нужен доступ по сети,
+  # включай openssh вручную и задавай ключи/пароль.
 }
