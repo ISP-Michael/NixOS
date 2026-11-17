@@ -72,6 +72,26 @@ N=15 ./bench.sh
 
 `nvim-pack-lock.json` is the lockfile; commit it. Do not edit it by hand.
 
+## Neovide / project root
+
+- `~/.config/nvim` is shared by terminal Neovim and Neovide.
+- Neovide no longer sets `autochdir`; otherwise `fzf-lua` starts from the
+  directory of the current file.
+- `:ProjectRoot [dir]` and `<leader>pp` choose a project directory. In
+  Neovide the picker is `kdialog`; the choice is saved in
+  `stdpath('state')/project-root` and reused on the next launch.
+- On launch with a file, the root is the nearest `.git`, `flake.nix`,
+  `Cargo.toml`, `package.json`, `pyproject.toml`, `go.mod`, `Makefile`,
+  `CMakeLists.txt` or `compile_commands.json`; otherwise the file's directory.
+- `<leader>ff` and `<leader>fg` pass that root as `cwd` to `fzf-lua`, so a
+  file opened deep in the tree does not move the search root.
+- Terminal Neovim keeps the shell cwd; `fzf` still anchors at the nearest
+  project marker above it. Use `:ProjectRoot` to override the detection.
+
+Neovide app settings live in `~/.config/neovide/config.toml`; runtime visuals
+are in `lua/core/neovide.lua`. The custom nightly derivation installs the
+desktop entry and hicolor icons, so rofi sees it.
+
 ## Measured on this machine
 
 Median of 13 runs, milliseconds:

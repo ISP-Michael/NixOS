@@ -7,11 +7,23 @@ local function fzf()
 end
 
 function M.files()
-  fzf().files()
+  fzf().files(
+    {
+      cwd = require('core.project').root(),
+    }
+  )
 end
 
 function M.oldfiles()
   fzf().oldfiles()
+end
+
+function M.grep()
+  fzf().grep(
+    {
+      cwd = require('core.project').root(),
+    }
+  )
 end
 
 function M.buffers()
@@ -90,6 +102,14 @@ vim.keymap.set(
   M.buffers,
   {
     desc = 'Buffers (fzf)'
+  }
+)
+vim.keymap.set(
+  'n',
+  '<leader>fg',
+  M.grep,
+  {
+    desc = 'Grep project (fzf)'
   }
 )
 

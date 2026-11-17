@@ -21,4 +21,13 @@
       };
     };
   };
+  services = {
+    udev = {
+      # ntsync is created root-only; "uaccess" gives the logged-in user
+      # access to /dev/ntsync without a world-writable device.
+      extraRules = ''
+        KERNEL=="ntsync", TAG+="uaccess"
+      '';
+    };
+  };
 }

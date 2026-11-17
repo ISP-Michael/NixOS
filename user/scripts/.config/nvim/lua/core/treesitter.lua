@@ -3,6 +3,11 @@
 -- matching file, once per session.
 local P = require('pack')
 
+-- Nix: nvim-treesitter injects bash/python/... into indented strings, and
+-- queries/nix/injections.scm adds HM entryAfter/mkAfter.  A multi-line string
+-- should stay a string, so drop all Nix injections.
+vim.treesitter.query.set('nix', 'injections', '')
+
 local langs = {
   'bash',
   'c',

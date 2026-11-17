@@ -29,6 +29,19 @@ hl.bind(
   hl.dsp.exec_cmd(M.fileManager)
 )
 
+-- Выбор обоев: нативный Rust-пикер. run.sh открывает окно и повторным
+-- нажатием закрывает его через Unix-socket; nixpkgs при запуске не трогается.
+hl.bind(
+  M.mainMod .. ' + W',
+  hl.dsp.exec_cmd('/home/Michael/Data/Projects/WallpaperPicker/rs/run.sh')
+)
+
+-- Экстренное закрытие пикера, даже если он завис на применении обоев.
+hl.bind(
+  M.mainMod .. ' + SHIFT + W',
+  hl.dsp.exec_cmd('/home/Michael/Data/Projects/WallpaperPicker/rs/run.sh close')
+)
+
 -- Раньше на SUPER + P висело ДВА бинда сразу: hyprpicker и window.pseudo().
 -- Одно нажатие запускало пипетку и заодно включало pseudo-режим.
 hl.bind(

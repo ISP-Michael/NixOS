@@ -9,8 +9,8 @@
         ];
       };
       gtk.enable = true;
-      hyprland.enable = true;
       kde.enable = true;
+      noctalia.enable = true;
       qt.enable = true;
     };
   };

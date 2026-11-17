@@ -28,9 +28,8 @@
           "${self}/user/programs"
           "${self}/user/scripts"
           "${self}/user/services"
-          "${self}/user/stylix"
+          "${self}/user/theme"
           "${self}/user/xdg.nix"
-          inputs.stylix.homeModules.stylix
         ];
       };
     };

@@ -9,22 +9,34 @@
 #   - GUI бинарь запускается через writeShellScriptBin-обёртку с nix-ld
 #   - TUN/привилегии решаются через setcap на бинаре-ядра в /opt
 #   - desktop-файл для меню
-# Throne 1.3.0-beta.2 -> /opt/Throne (ThroneCore с cap_net_admin для TUN).
+# Throne (актуальная версия — topics/throne.md) -> /opt/Throne
+# (ThroneCore setuid root для TUN).
 # ─────────────────────────────────────────────────────────────
 let
   optBinPath = "/opt/Throne";
+  throneGuard = ''
+    if [ ! -x ${optBinPath}/Throne ]; then
+      echo "Throne не установлен: нет ${optBinPath}/Throne" >&2
+      exit 1
+    fi
+  '';
 in
 {
-  # Клиент Throne 1.3.0-beta.2 (перестали собирать из nixpkgs-исходников 1.2.2).
+  # Клиент Throne ставится из GitHub-релиза в /opt/Throne.
   # -appdata обязателен: без него GUI молча выходит (как в nixpkgs-сборке).
   environment.systemPackages = [
-    # Throne 1.4.1 + bundled Qt 6.12 падает в stack overflow, если в сессии
-    # выставлен QT_STYLE_OVERRIDE=kvantum / QT_QPA_PLATFORMTHEME=qt5ct.
-    # Принудительно xcb и чистый стиль Fusion.
-    (pkgs.writeShellScriptBin "throne"
-      "exec env -u QT_STYLE_OVERRIDE -u QT_QPA_PLATFORMTHEME QT_QPA_PLATFORM=xcb NIX_LD_LIBRARY_PATH=/run/current-system/sw/share/nix-ld/lib ${optBinPath}/Throne -appdata \"$@\"")
-    (pkgs.writeShellScriptBin "Throne"
-      "exec env -u QT_STYLE_OVERRIDE -u QT_QPA_PLATFORMTHEME QT_QPA_PLATFORM=xcb NIX_LD_LIBRARY_PATH=/run/current-system/sw/share/nix-ld/lib ${optBinPath}/Throne -appdata \"$@\"")
+    # Bundled Qt 6.12 может падать в stack overflow, если в сессии
+    # выставлен QT_STYLE_OVERRIDE=kvantum. Поэтому стиль не навязываем, но
+    # разрешаем встроенному GTK3-плагину взять палитру и шрифты из GTK
+    # (Stylix). Тема Throne должна быть "System" в configs.json.
+    (pkgs.writeShellScriptBin "throne" ''
+      ${throneGuard}
+      exec env -u QT_STYLE_OVERRIDE QT_QPA_PLATFORMTHEME=gtk3 QT_QPA_PLATFORM=xcb NIX_LD_LIBRARY_PATH=/run/current-system/sw/share/nix-ld/lib ${optBinPath}/Throne -appdata "$@"
+    '')
+    (pkgs.writeShellScriptBin "Throne" ''
+      ${throneGuard}
+      exec env -u QT_STYLE_OVERRIDE QT_QPA_PLATFORMTHEME=gtk3 QT_QPA_PLATFORM=xcb NIX_LD_LIBRARY_PATH=/run/current-system/sw/share/nix-ld/lib ${optBinPath}/Throne -appdata "$@"
+    '')
     (pkgs.makeDesktopItem {
       name = "throne";
       desktopName = "Throne";

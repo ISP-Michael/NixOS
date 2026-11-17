@@ -1,6 +1,5 @@
 {
   pkgs,
-  lib,
   ...
 }:
 {
@@ -23,7 +22,7 @@
   };
   xdg = {
     mime = {
-      sharedMimeInfoPackage = lib.hiPrio pkgs.shared-mime-info;
+      sharedMimeInfoPackage = pkgs.lib.hiPrio pkgs.shared-mime-info;
     };
   };
   dconf = {

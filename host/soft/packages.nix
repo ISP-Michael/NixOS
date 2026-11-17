@@ -5,6 +5,8 @@
 {
   environment = {
     systemPackages = with pkgs; [
+      age
+      android-tools
       ansible
       autologin
       bash-completion

@@ -16,6 +16,16 @@
     };
     firewall = {
       enable = true;
+      # LocalSend: TCP/UDP 53317 (передача и обнаружение).
+      # rquickshare: статический TCP 53318 + mDNS на UDP 5353.
+      allowedTCPPorts = [
+        53317
+        53318
+      ];
+      allowedUDPPorts = [
+        5353
+        53317
+      ];
       # WARP HTTP-прокси (usque) для SearXNG в Docker: контейнер ходит на
       # 172.17.0.1:8088, иначе NixOS-фаервол режет INPUT с docker0.
       extraInputRules = ''

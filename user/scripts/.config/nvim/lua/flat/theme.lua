@@ -745,6 +745,8 @@ function M.apply(name, p)
   else
     require('flat.cursor').attach()
   end
+
+  require('flat.strings').attach()
 end
 
 return M

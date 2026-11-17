@@ -31,4 +31,5 @@
     export ZDOTDIR="$HOME/.config/zsh"
   '';
   services.journald.settings.Journal.SystemMaxUse = "1G";
+  services.journald.settings.Journal.SyncIntervalSec = "5s";
 }

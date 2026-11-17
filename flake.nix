@@ -2,7 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-flatpak.url = "github:gmodena/nix-flatpak";
-    noctalia.url = "github:noctalia-dev/noctalia/1acdc7d229c49d9e337da10d4c536e5c5f38cd20";
     hyprland.url = "github:hyprwm/Hyprland/2eb5180c6f258bb73c4b9b71a1361dede0e1453e";
     freesmlauncher.url = "github:FreesmTeam/FreesmLauncher/be4e50d06ad0fea34bf3dc0ff83e1fda4cad33eb";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
@@ -62,16 +61,13 @@
     nur,
     self,
     sops-nix,
-    stylix,
     freesmlauncher,
     nix-flatpak,
     ...
   }@inputs:
   let
     system = "x86_64-linux";
-  in
-  {
-    nixosConfigurations.MagicBook = nixpkgs.lib.nixosSystem {
+    mkHost = extraModules: nixpkgs.lib.nixosSystem {
       specialArgs = {
         inherit
           inputs
@@ -104,27 +100,54 @@
             };
           };
         }
-      ];
+      ] ++ extraModules;
     };
-    nixosConfigurations.iso = nixpkgs.lib.nixosSystem {
+    mkIso = profile: nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
         inherit
           inputs
           self
+          nur
+          system
           ;
       };
       modules = [
         ./iso/configuration.nix
         "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+        home-manager.nixosModules.home-manager
         {
+          iso.profile = profile;
           nixpkgs = {
             config = {
               allowUnfree = true;
             };
           };
         }
+      ] ++ nixpkgs.lib.optionals (profile != "lite") [
+        ./iso/vpn.nix
       ];
+    };
+    configs = {
+      MagicBook = mkHost [];
+      MagicBookInstall = mkHost [
+        ./iso/install-overrides.nix
+      ];
+      iso = mkIso "work";
+      iso-lite = mkIso "lite";
+      iso-media = mkIso "media";
+      iso-full = mkIso "full";
+      iso-custom = mkIso "custom";
+    };
+  in
+  {
+    nixosConfigurations = configs;
+    packages.${system} = {
+      iso = configs.iso.config.system.build.isoImage;
+      iso-lite = configs.iso-lite.config.system.build.isoImage;
+      iso-media = configs.iso-media.config.system.build.isoImage;
+      iso-full = configs.iso-full.config.system.build.isoImage;
+      iso-custom = configs.iso-custom.config.system.build.isoImage;
     };
   };
 }

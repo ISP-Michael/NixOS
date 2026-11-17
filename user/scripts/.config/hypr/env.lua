@@ -10,3 +10,9 @@ hl.env('XCURSOR_THEME', 'Nordzy-cursors-white')
 hl.env('HYPRCURSOR_SIZE', '36')
 hl.env('HYPRCURSOR_THEME', 'Nordzy-hyprcursors-white')
 hl.env('AQ_NO_MODIFIERS', '1')
+
+-- Qt: KDE platform theme читает цвета/шрифты/иконки из kdeglobals, а Breeze
+-- даёт нативные контролы. Переменные дублируют NixOS programs.qt, чтобы
+-- текущая сессия Hyprland подхватила их после reload без перезахода.
+hl.env('QT_QPA_PLATFORMTHEME', 'kde')
+hl.env('QT_STYLE_OVERRIDE', 'breeze')

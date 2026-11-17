@@ -11,13 +11,26 @@
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
+        atk
+        ayatana-ido
         brotli.lib
+        cairo
         dbus.lib
         fontconfig.lib
         freetype
+        gdk-pixbuf
         glib
+        gtk3
+        harfbuzz
         krb5.lib
+        libayatana-appindicator
+        libayatana-indicator
+        libdbusmenu
+        libdbusmenu-gtk3
+        libdrm
+        libepoxy
         libfontenc
+        libgbm
         libxkbcommon
         libGL
         libice
@@ -51,7 +64,9 @@
         libxtst
         libxv
         libxxf86vm
+        pango
         stdenv.cc.cc.lib
+        wayland
       ];
     };
   };

@@ -6,10 +6,13 @@
   programs = {
     firefox = {
       enable  = true;
+      configPath = ".mozilla/firefox";
       profiles = {
         profile = {
           id = 0;
           name = "Michael";
+          path = "r0k4lu1c.default";
+          isDefault = true;
           extensions = {
             force = true;
             packages = with nur.legacyPackages."x86_64-linux".repos.rycee.firefox-addons; [

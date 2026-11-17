@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # winmenu.sh — переключатель окон tmux: окошко на весь экран, кроме строки статуса.
 # Запускается из tmux.conf через run-shell: сам считает размер и открывает себя в display-popup.
-# Нумерация снизу вверх с единицы. Цифры 1-9,0 — прыжок, / — поиск, Enter — выбрать, Esc/q — выход.
+# Список плоский, снизу вверх. Цифры 1-9,0 — прыжок, / — фильтр, Enter — выбрать.
+# x — убить окно, X — убить сессию, r/R — переименовать окно/сессию, Esc/q — выход.
 
 set -uo pipefail
 
@@ -23,17 +24,15 @@ if [[ ${WINMENU_INNER:-} != 1 ]]; then
         [[ ! $cw =~ ^[0-9]+$ ]] && cw=${_cw:-160}
         [[ ! $ch =~ ^[0-9]+$ ]] && ch=${_ch:-40}
     fi
-    mapfile -t lines < <(tmux "${T[@]}" list-windows -a -F $'#{session_name}\t#{window_name}' 2>/dev/null)
-    n=${#lines[@]}
-    (( n < 1 )) && exit 0
     # окошко на весь экран, кроме строки статуса — как нативный fzf
-    st=$(tmux "${T[@]}" show -gv status 2>/dev/null)
-    case $st in
+    st="" pos=""
+    { read -r st; read -r pos; } < <(tmux "${T[@]}" show -g status \; show -g status-position 2>/dev/null)
+    case ${st##* } in
         off) srows=0 ;;
         *[!0-9]*) srows=1 ;;
-        *) srows=$st ;;
+        *) srows=${st##* } ;;
     esac
-    [[ $(tmux "${T[@]}" show -gv status-position 2>/dev/null) == top ]] && srows=0
+    [[ ${pos##* } == top ]] && srows=0
     H=$(( ch - srows ))
     (( H < 3 )) && H=3
     (( H > ch )) && H=$ch
@@ -47,6 +46,9 @@ if [[ ${WINMENU_INNER:-} != 1 ]]; then
         "WINMENU_INNER=1 exec '$0' '$sock' '$client' '$cw' '$ch'"
 fi
 
+cleanup() { printf '\e[0m\e[?25h' 2>/dev/null || true; }
+trap cleanup EXIT
+
 # ---------- цвета (catppuccin mocha) ----------
 esc=$'\e'
 c_reset=$'\e[0m'
@@ -54,6 +56,7 @@ c_text=$'\e[38;2;205;214;244m'
 c_dim=$'\e[38;2;108;112;134m'
 c_sess=$'\e[38;2;147;153;178m'
 c_acc=$'\e[38;2;203;166;247m'
+c_warn=$'\e[38;2;249;226;175m'
 c_sel=$'\e[48;2;49;50;68m'
 
 # ---------- список окон ----------
@@ -61,22 +64,24 @@ c_sel=$'\e[48;2;49;50;68m'
 T=()
 [[ -n ${1:-} ]] && T=(-S "$1")
 client=${2:-}
-# текущее окно спрашиваем явно у клиента: его сессия + активное окно этой сессии.
-# (display-message «от себя» внутри popup возвращает текущее окно не той сессии)
-cur=""
-if [[ -n $client ]]; then
-    while IFS=$'\t' read -r cn cs; do
-        [[ $cn == "$client" ]] && { sess=$cs; break; }
-    done < <(tmux "${T[@]}" list-clients -F $'#{client_name}\t#{client_session}' 2>/dev/null)
-    [[ -n ${sess:-} ]] && cur="$sess:$(tmux "${T[@]}" display-message -p -t "$sess" '#{window_index}' 2>/dev/null)"
-fi
-[[ -z $cur ]] && cur=$(tmux "${T[@]}" display-message -p '#{session_name}:#{window_index}' 2>/dev/null || true)
-S=(); I=(); W=(); n=0; cur_pos=0
-while IFS=$'\t' read -r sess widx wname; do
-    n=$((n + 1))
-    S+=("$sess"); I+=("$widx"); W+=("$wname")
-    [[ "$sess:$widx" == "$cur" ]] && cur_pos=$n
-done < <(tmux "${T[@]}" list-windows -a -F $'#{session_name}\t#{window_index}\t#{window_name}')
+S=(); I=(); W=(); n=0; cur_pos=0; cur=""
+
+load_windows() {
+    S=(); I=(); W=(); n=0; cur_pos=0; cur=""
+    # текущее окно спрашиваем явно у клиента: его сессия + активное окно этой сессии.
+    # (display-message «от себя» внутри popup возвращает текущее окно не той сессии)
+    if [[ -n $client ]]; then
+        cur=$(tmux "${T[@]}" display-message -p -c "$client" '#{session_name}:#{window_index}' 2>/dev/null || true)
+    fi
+    [[ -z $cur ]] && cur=$(tmux "${T[@]}" display-message -p '#{session_name}:#{window_index}' 2>/dev/null || true)
+    while IFS=$'\t' read -r sess widx wname; do
+        n=$((n + 1))
+        S+=("$sess"); I+=("$widx"); W+=("$wname")
+        [[ "$sess:$widx" == "$cur" ]] && cur_pos=$n
+    done < <(tmux "${T[@]}" list-windows -a -F $'#{session_name}\t#{window_index}\t#{window_name}' 2>/dev/null)
+}
+
+load_windows
 
 # ---------- размеры и ширины столбцов ----------
 sz=$(stty size 2>/dev/null || true)
@@ -107,6 +112,12 @@ mode=normal
 query=""
 sel=$(( cur_pos > 0 ? cur_pos - 1 : 0 ))
 vis=()
+confirm_action=""
+confirm_idx=0
+confirm_count=0
+edit_ctx=""
+edit_idx=0
+edit_buf=""
 
 build_vis() {
     vis=()
@@ -135,6 +146,14 @@ build_vis() {
     fi
 }
 
+session_window_count() {
+    local sess=$1 i count=0
+    for (( i = 0; i < n; i++ )); do
+        [[ ${S[i]} == "$sess" ]] && count=$((count + 1))
+    done
+    printf '%s' "$count"
+}
+
 row() {
     local i=$1 s=$2 num sess name out="" p1 p2
     printf -v num '%-*d' "$wN" "$(( i + 1 ))"
@@ -161,8 +180,16 @@ row() {
     printf '%s' "$out"
 }
 
+truncate_line() {
+    local text=$1
+    if (( ${#text} > C - 1 )); then
+        text="${text:0:C - 2}…"
+    fi
+    printf '%s' "$text"
+}
+
 render() {
-    local out k r s idx start rows d fill box
+    local out k r s idx start rows d fill box hint msg disp cut
     out="$esc[0m$esc[?25l$esc[H$esc[J"
     rows=$(( L - 2 ))
     d=${#vis[@]}
@@ -183,22 +210,43 @@ render() {
     printf -v fill '%*s' "$C" ''
     fill=${fill// /$box}
     out+="$esc[$(( L - 1 ));1H$c_dim$fill$c_reset$esc[K"
-    if [[ $mode == search ]]; then
-        local disp=$query
-        # длинный запрос не должен переноситься: показываем хвост
-        if (( ${#disp} > C - 3 )); then
-            local cut=$(( ${#disp} - C + 3 ))
-            disp=${disp:cut}
-        fi
-        out+="$esc[$L;1H"
-        out+="${c_acc}/${c_reset}${c_text}${disp}${c_reset}"
-        out+="$esc[K$esc[?25h"
-        out+="$esc[$L;$(( 2 + ${#disp} ))H"
-    fi
+    case $mode in
+        confirm)
+            if [[ $confirm_action == session ]]; then
+                msg="kill session ${S[confirm_idx]} ($confirm_count windows)? [y/N]"
+            else
+                msg="kill window ${S[confirm_idx]}:${I[confirm_idx]} (${W[confirm_idx]})? [y/N]"
+            fi
+            msg=$(truncate_line "$msg")
+            out+="$esc[$L;1H${c_warn}${msg}${c_reset}$esc[K"
+            ;;
+        rename)
+            msg="rename ${edit_ctx}: ${edit_buf}"
+            disp=$(truncate_line "$msg")
+            out+="$esc[$L;1H${c_acc}${disp}${c_reset}$esc[K$esc[?25h"
+            out+="$esc[$L;$(( 1 + ${#disp} ))H"
+            ;;
+        search)
+            disp=$query
+            # длинный запрос не должен переноситься: показываем хвост
+            if (( ${#disp} > C - 3 )); then
+                cut=$(( ${#disp} - C + 3 ))
+                disp=${disp:cut}
+            fi
+            out+="$esc[$L;1H"
+            out+="${c_acc}/${c_reset}${c_text}${disp}${c_reset}"
+            out+="$esc[K$esc[?25h"
+            out+="$esc[$L;$(( 2 + ${#disp} ))H"
+            ;;
+        *)
+            hint=$(truncate_line "x kill win · X kill sess · r/R rename · / filter · esc exit")
+            out+="$esc[$L;1H${c_dim}${hint}${c_reset}$esc[K"
+            ;;
+    esac
     printf '%s' "$out"
 }
 
-# список пронумерован снизу вверх, поэтому «вверх» — к большим номерам
+# список пронумерован снизу вверх, поэтому «вверх» — к бо́льшим номерам
 move_up()   { (( sel < ${#vis[@]} - 1 )) && sel=$(( sel + 1 )); return 0; }
 move_down() { (( sel > 0 )) && sel=$(( sel - 1 )); return 0; }
 
@@ -215,11 +263,89 @@ accept() {
     go "${vis[sel]}"
 }
 
+start_confirm() {
+    (( ${#vis[@]} )) || return 0
+    confirm_action=$1
+    confirm_idx=${vis[sel]}
+    confirm_count=$(session_window_count "${S[confirm_idx]}")
+    mode=confirm
+}
+
+kill_selected() {
+    local idx=$confirm_idx sess widx count is_cur=0 last_window=0
+    (( idx >= 0 && idx < n )) || { mode=normal; return 0; }
+    sess=${S[idx]}
+    widx=${I[idx]}
+    count=$confirm_count
+    [[ $sess == "${cur%%:*}" ]] && is_cur=1
+    if [[ $confirm_action == session ]]; then
+        tmux "${T[@]}" kill-session -t "$sess" 2>/dev/null || true
+    else
+        tmux "${T[@]}" kill-window -t "$sess:$widx" 2>/dev/null || true
+        (( count == 1 )) && last_window=1
+    fi
+    if (( is_cur )); then
+        if [[ $confirm_action == session ]] || (( last_window )); then
+            exit 0
+        fi
+    fi
+    load_windows
+    mode=normal
+    build_vis
+}
+
+start_rename() {
+    (( ${#vis[@]} )) || return 0
+    edit_ctx=$1
+    edit_idx=${vis[sel]}
+    if [[ $edit_ctx == window ]]; then
+        edit_buf=${W[edit_idx]}
+    else
+        edit_buf=${S[edit_idx]}
+    fi
+    mode=rename
+}
+
+apply_rename() {
+    local idx=$edit_idx name=$edit_buf
+    if [[ -z $name ]]; then
+        mode=normal
+        return 0
+    fi
+    if [[ $edit_ctx == window ]]; then
+        tmux "${T[@]}" rename-window -t "${S[idx]}:${I[idx]}" "$name" 2>/dev/null || true
+    else
+        tmux "${T[@]}" rename-session -t "${S[idx]}" "$name" 2>/dev/null || true
+    fi
+    load_windows
+    mode=normal
+    build_vis
+}
+
 # ---------- основной цикл ----------
 while :; do
     build_vis
     render
     IFS= read -rsn1 -d '' key || exit 0
+    case $mode in
+        confirm)
+            case $key in
+                y|Y) kill_selected ;;
+                n|N|$'\e'|$'\r'|$'\n') mode=normal ;;
+            esac
+            continue
+            ;;
+        rename)
+            case $key in
+                $'\r'|$'\n') apply_rename ;;
+                $'\e') mode=normal ;;
+                $'\x7f'|$'\x08') [[ -n $edit_buf ]] && edit_buf=${edit_buf%?} ;;
+                $'\x15') edit_buf="" ;;
+                *) [[ $key =~ [[:print:]] ]] && edit_buf+=$key ;;
+            esac
+            continue
+            ;;
+    esac
     case $key in
         $'\e')
             if IFS= read -rsn1 -d '' -t 0.1 k2 && { [[ $k2 == '[' ]] || [[ $k2 == 'O' ]]; } && IFS= read -rsn1 -d '' -t 0.1 k3; then
@@ -260,6 +386,10 @@ while :; do
                     [1-9]) jump "$key" ;;
                     0)     jump 10 ;;
                     /)     mode=search; query="" ;;
+                    x)     start_confirm window ;;
+                    X)     start_confirm session ;;
+                    r)     start_rename window ;;
+                    R)     start_rename session ;;
                     j)     move_down ;;
                     k)     move_up ;;
                     q)     exit 0 ;;

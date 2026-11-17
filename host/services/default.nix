@@ -15,6 +15,6 @@
     ./resolved.nix
     ./services.nix
     ./warp.nix
-    ./zapret2.nix
+    # ./zapret2.nix  # выключен 14.11.2026: при поднятом AmneziaWG не нужен; /opt/zapret2 остался
   ];
 }

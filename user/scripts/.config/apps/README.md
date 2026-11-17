@@ -1,6 +1,7 @@
 # Приложения: bootstrap + симлинки
 
 > Перенос на новую машину: [TRANSFER.md](TRANSFER.md)
+> Ручные `/opt`-приложения (Throne/Amnezia/Happ) и OpenClaw: [MANUAL-APPS.md](MANUAL-APPS.md)
 
 OpenCode и OpenClaw — живые приложения: они пишут конфиги, создают файлы,
 меняют токены и сессии. Поэтому здесь не Nix-модули, а bootstrap-скрипты.

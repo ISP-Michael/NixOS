@@ -12,10 +12,6 @@ vim.g.loaded_node_provider = 1
 -- Bytecode cache for every Lua module required below (~/.cache/nvim/luac).
 vim.loader.enable()
 
-if vim.g.neovide ~= nil then
-  vim.opt.autochdir = true
-end
-
 require('vim._core.ui2').enable(
   {
 
@@ -30,6 +26,11 @@ require('core.keymap')
 require('core.diagnostic')
 require('core.completion')
 require('core.py')
+
+require('core.project').setup()
+if vim.g.neovide then
+  require('core.neovide').setup()
+end
 
 require('autocmds.python_template')
 require('autocmds.typescript_template')

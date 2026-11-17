@@ -59,11 +59,17 @@ FORCE=1 user/scripts/.config/apps/restore.sh  # перезаписать, сде
 
 - `sops` CLI использует твой admin age key (или host SSH key, если настроишь
   `SOPS_AGE_SSH_PRIVATE_KEY_FILE`).
+- На практике с sops 3.13.3 host-ключ удобнее брать не как SSH-файл, а как
+  age-identity, которую sops-nix генерирует при активации:
+  `/run/secrets-for-users.d/age-keys.txt` (root, 0600). Тогда:
+  `sudo SOPS_AGE_KEY_FILE=/run/secrets-for-users.d/age-keys.txt sops -d ...`.
 - `sops-nix` для системных секретов (`secrets/secrets.yaml`) расшифровывает
   host-ключом `/etc/ssh/ssh_host_ed25519_key` при активации; это отдельный
   механизм и к `apps.yaml` не применяется.
 - Явный `--config /etc/nixos/.sops.yaml` нужен потому, что автопоиск
   `.sops.yaml` от пути файла в этой среде не сработал.
+- Подробная инструкция по новым машинам, admin-ключу и Windows/macOS:
+  [`KEYS.md`](KEYS.md).
 
 ## Перенос на другую машину
 

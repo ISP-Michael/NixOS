@@ -31,17 +31,26 @@ TELEGRAM_ID = "1531083606"
 
 GRACE = 10 * 60
 BACKOFF = 15 * 60
-STUCK = 10 * 60
+STUCK = 60 * 60
 DASHBOARD_EVERY = 5 * 60
 MAX_TRIGGERS = 2
 
-JOBS = {
-    "memory-sync": {"rel": "USER.md, MEMORY.md", "default": (None, 4, 30)},
-    "ops-check": {"rel": "ops/status.md", "default": (None, 8, 0)},
-    "toolwatch": {"rel": "research/toolwatch.md", "default": (4, 9, 0)},
-    "vps-research": {"rel": "research/vps-foreign.md", "default": (0, 9, 0)},
-    "bypass-research": {"rel": "research/bypass-2026.md", "default": (2, 9, 0)},
-}
+REGISTRY = WORK / "automations.json"
+
+
+def load_jobs_meta():
+    try:
+        data = json.loads(REGISTRY.read_text(encoding="utf-8")).get("jobs", {})
+    except Exception:
+        data = {}
+    for meta in data.values():
+        meta.setdefault("default", (None, 0, 0))
+        meta.setdefault("catch_up", True)
+        meta.setdefault("notify", "error")
+    return data
+
+
+JOBS = load_jobs_meta()
 WEEKDAYS = ["пн", "вт", "ср", "чт", "пт", "сб", "вс"]
 
 
@@ -144,7 +153,8 @@ def parse_schedule(name, job):
                 return ((d - 1) % 7, int(h), int(mi))
         except ValueError:
             pass
-    return JOBS[name]["default"]
+    meta = JOBS.get(name) or {}
+    return meta.get("default") or (None, 0, 0)
 
 
 def describe_schedule(sched):
@@ -356,7 +366,7 @@ def main():
         return
 
     # застрявший run: runningAtMs старше 10 минут
-    for name in JOBS:
+    for name in jobs:
         j = jobs.get(name) or {}
         js = j.get("state") or {}
         started = js.get("runningAtMs") or 0
@@ -377,19 +387,22 @@ def main():
     initialized = bool(cache.get("initialized"))
     triggers = 0
     notified = 0
+    new_run_any = False
     net = network_ok()
     pstatus = None
 
-    for name, meta in JOBS.items():
-        j = jobs.get(name) or {}
+    for name, j in jobs.items():
         if not j.get("id"):
             continue
+        meta = JOBS.get(name) or {"catch_up": False, "notify": "none"}
         js = j.get("state") or {}
         last = js.get("lastRunAtMs") or 0
         status = js.get("lastRunStatus") or js.get("lastStatus") or "?"
         run_started = js.get("runningAtMs") or 0
         cj = dict(cache["jobs"].get(name) or {})
         new_run = bool(last and last > (cj.get("last") or 0))
+        if new_run:
+            new_run_any = True
 
         if last and (new_run or not cj.get("summary")):
             entries = []
@@ -430,7 +443,8 @@ def main():
                        "summary_ts": summary_ts, "summary_note": note})
             cache["jobs"][name] = cj
 
-            if new_run and initialized and not suppress:
+            if new_run and initialized and not suppress and status in ("error", "interrupted") \
+                    and meta.get("notify") != "none":
                 title = f"OpenClaw: {name} — {status}"
                 if status == "error":
                     body = entry.get("error") or js.get("lastError") or "Ошибка; смотри лог"
@@ -443,6 +457,8 @@ def main():
                 log(f"notified {name} status={status} telegram={res}")
 
         # catch-up
+        if not meta.get("catch_up", True):
+            continue
         sched = parse_schedule(name, j)
         exp = expected_last(now, *sched)
         exp_ms = int(exp.timestamp() * 1000)
@@ -477,12 +493,12 @@ def main():
 
     cache["initialized"] = True
 
+    if new_run_any:
+        cache["last_dashboard"] = 0
     if not cache.get("last_dashboard") or now_ts - cache["last_dashboard"] >= DASHBOARD_EVERY:
         try:
-            mod = load_report_module()
-            data = build_dashboard_data(cache, jobs)
-            (WORK / "DASHBOARD.md").write_text(mod.render_md(data), encoding="utf-8")
-            (WORK / "DASHBOARD.html").write_text(mod.render_html(data), encoding="utf-8")
+            subprocess.run([sys.executable, str(BASE / "openclaw-report.py"), "--write"],
+                           capture_output=True, timeout=60)
             cache["last_dashboard"] = now_ts
             log("dashboard updated")
         except Exception as e:

@@ -11,19 +11,24 @@ hl.on(
     hl.exec_cmd(
       'copyq'
     )
+    -- Нативный Rust-пикер: стартует скрытым, SUPER+W только переключает
+    -- видимость через IPC. Так открытие мгновенное и без Qt.
+    hl.exec_cmd(
+      '/home/Michael/Data/Projects/WallpaperPicker/rs/run.sh daemon'
+    )
     hl.exec_cmd(
       'openclaw gateway run'
     )
     hl.exec_cmd(
       'zen',
       {
-        workspace = '2'
+        workspace = '2 silent'
       }
     )
     hl.exec_cmd(
       'Telegram',
       {
-        workspace = '3'
+        workspace = '3 silent'
       }
     )
     -- Строка с ~/Projects/tg-ws-proxy/start.sh удалена: каталога нет,
@@ -32,31 +37,31 @@ hl.on(
     hl.exec_cmd(
       'obsidian',
       {
-        workspace = '4'
+        workspace = '4 silent'
       }
     )
     hl.exec_cmd(
       'lutris',
       {
-        workspace = '5'
+        workspace = '5 silent'
       }
     )
     hl.exec_cmd(
       'Throne',
       {
-        workspace = '9'
+        workspace = '9 silent'
       }
     )
     hl.exec_cmd(
       'amnezia-vpn',
       {
-        workspace = '9'
+        workspace = '9 silent'
       }
     )
     hl.exec_cmd(
       'kitty',
       {
-        workspace = 'special:magic'
+        workspace = 'special:magic silent'
       }
     )
   end

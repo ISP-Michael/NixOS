@@ -890,3 +890,7 @@ exts = [
 	{ name = "graphql", text = "", fg = "#e78284" },
 	{ name = "cmake", text = "", fg = "#cdd6f4" },
 ]
+
+[flavor]
+dark = "noctalia"
+light = "noctalia"

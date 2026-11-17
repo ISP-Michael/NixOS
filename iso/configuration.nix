@@ -1,9 +1,13 @@
 {
   imports = [
-    ./dotfiles.nix
+    ./base.nix
     ./features.nix
-    ./hyprland.nix
     ./networking.nix
+    ./users.nix
+    ./hyprland.nix
     ./packages.nix
+    ./portable.nix
+    ./dotfiles.nix
+    ./repo.nix
   ];
 }

@@ -5,7 +5,6 @@
   ...
 }:
 let
-  noctalia-shell = import ./noctalia-patched.nix { inherit pkgs; };
   zen = inputs.zen-browser.packages.${system}.default;
   freesmlauncher = inputs.freesmlauncher.packages.${system}.freesmlauncher;
   # nixpkgs 26.11.20261020: pywal16 задаёт makeWrapperArgs одной строкой, а новый
@@ -25,13 +24,13 @@ let
       ];
     }
   );
-  # Telegram: файловый диалог через портал (KDE), а не встроенный Qt из-за сессионного qt5ct
-  telegram-portal = pkgs.runCommand "telegram-desktop-portal" {
+  # Telegram: KDE platform theme даёт и цвета, и нативный файловый диалог.
+  telegram-portal = pkgs.runCommand "telegram-desktop-kde" {
     nativeBuildInputs = [ pkgs.makeWrapper ];
   } ''
     mkdir -p $out/bin $out/share
     makeWrapper ${pkgs.telegram-desktop}/bin/Telegram $out/bin/Telegram \
-      --set QT_QPA_PLATFORMTHEME xdgdesktopportal
+      --set QT_QPA_PLATFORMTHEME kde
     for d in applications icons metainfo; do
       ln -s ${pkgs.telegram-desktop}/share/$d $out/share/$d
     done
@@ -49,23 +48,22 @@ let
   neovide-nightly = pkgs.stdenvNoCC.mkDerivation {
     pname = "neovide";
     version = "nightly-g19c7053";
-
     src = pkgs.fetchurl {
       url = "https://github.com/neovide/neovide/releases/download/nightly/neovide-linux-x86_64.tar.gz";
       hash = "sha256-FQhFmrYxGChq1MXU50KviSoMr5D/MlBEQ630A2FEu4U=";
     };
-
     nativeBuildInputs = [ pkgs.autoPatchelfHook pkgs.makeWrapper ];
     buildInputs = [ pkgs.stdenv.cc.cc.lib pkgs.fontconfig ];
-
     sourceRoot = ".";
     dontConfigure = true;
     dontBuild = true;
-
     installPhase = ''
       install -Dm755 neovide $out/bin/neovide
+      install -Dm644 ${pkgs.neovide}/share/applications/neovide.desktop \
+        $out/share/applications/neovide.desktop
+      mkdir -p $out/share/icons/hicolor
+      cp -a ${pkgs.neovide}/share/icons/hicolor/. $out/share/icons/hicolor/
     '';
-
     postFixup = ''
       wrapProgram $out/bin/neovide \
         --prefix LD_LIBRARY_PATH : ${pkgs.lib.makeLibraryPath [
@@ -79,7 +77,6 @@ let
           pkgs.wayland
         ]}
     '';
-
     meta.mainProgram = "neovide";
   };
   python13Env = pkgs.python313.withPackages (
@@ -103,6 +100,16 @@ let
         rich
       ]
   );
+  python314Env = pkgs.python314.withPackages (
+    ps:
+      with ps; [
+        fastembed
+        numpy
+      ]
+  );
+  sessionSemantic = pkgs.writeShellScriptBin "session-semantic" ''
+    exec ${python314Env}/bin/python3.14 /home/Michael/.openclaw/workspace/scripts/session-semantic.py "$@"
+  '';
 in
 {
   home = {
@@ -247,7 +254,6 @@ in
         nixd
         nixdoc
         nnn
-        noctalia-shell
         nodejs_latest
         nurl
         nushell
@@ -271,12 +277,15 @@ in
         prettier
         pv
         python13Env
+        sessionSemantic
         pywal16
         qt5.qtgraphicaleffects
         qrencode
+        quickshell
         (lib.hiPrio rar)
         ripdrag
         ripgrep
+        rquickshare
         rofi
         roslyn-ls
         ruff

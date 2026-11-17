@@ -9,10 +9,15 @@
       Michael = {
         isNormalUser = true;
         shell = pkgs.zsh;
-        hashedPasswordFile = config.sops.secrets."user-password".path;
+        hashedPasswordFile =
+          if config.sops.secrets ? "user-password" then
+            config.sops.secrets."user-password".path
+          else
+            null;
         extraGroups = [
           "docker"
           "dockerd"
+          "gamemode"
           "input"
           "networkmanager"
           "wheel"

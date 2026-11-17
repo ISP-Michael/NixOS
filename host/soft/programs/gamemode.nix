@@ -6,7 +6,11 @@
   programs = {
     gamemode = {
       enable = true;
-      settings.general.renice = 10;
+      settings = {
+        general = {
+          renice = 10;
+        };
+      };
     };
   };
 

@@ -1,4 +1,4 @@
--- Правила окон для Hyprland 0.56.2.
+-- Правила окон для Hyprland 0.57.1.
 --
 -- Справка по match-свойствам (src/desktop/rule/Rule.cpp, MATCH_PROP_STRINGS):
 --   class, title, initial_class, initial_title, float, tag, xwayland,
@@ -10,13 +10,15 @@
 -- (RegexMatchEngine.cpp) — то есть регулярка должна покрыть строку ЦЕЛИКОМ,
 -- `^...$` не обязательны, но и не мешают.
 --
--- Полезное в 0.56.2: у регулярки есть префикс `negative:` —
---   match = { class = 'negative:^(firefox)$' }
--- совпадёт со всеми окнами, КРОМЕ firefox. Проверено на живой сессии.
+-- Полезное:
+--  * префикс `negative:` у регулярки —
+--      match = { class = 'negative:^(firefox)$' }
+--    совпадёт со всеми окнами, КРОМЕ firefox. Проверено на живой сессии.
 
 -- ============================================================
 -- ГЛОБАЛЬНЫЕ
 -- ============================================================
+
 
 -- Глушит запросы maximize у всех окон. F11 (fullscreen) не затронут.
 hl.window_rule(
@@ -55,12 +57,9 @@ hl.window_rule(
 )
 
 -- copyq: единственное его окно — это и есть настройки.
--- Положение пересчитано: рабочая область начинается с x=10 и кончается
--- на x=1866 (1920 минус левый gap 10, правый gap 10 и 34 px бара),
--- по вертикали 10..1070. Старое move {1420, 578} при size 500x500 давало
--- правый край 1920 и нижний 1078 — то есть окно залезало под бар на
--- 54 px и выходило за рабочую область снизу на 8. Теперь 1366 + 500 =
--- 1866 и 570 + 500 = 1070, ровно впритык к бару.
+-- Положение: рабочая область начинается с x=10 и кончается на x=1866
+-- (1920 минус gaps по 10 и 34 px бара), по вертикали 10..1070.
+-- 1366 + 500 = 1866, 570 + 500 = 1070 — впритык к бару.
 hl.window_rule(
   {
     name = 'copyq-settings',
@@ -189,6 +188,25 @@ hl.window_rule(
     name = 'file-dialog-native',
     match = {
       title = titles_regex(NATIVE_TITLES)
+    },
+    float = true,
+    size = {
+      FILE_DIALOG_W,
+      FILE_DIALOG_H
+    },
+    center = true,
+  }
+)
+
+-- kdialog is a native KDE dialog, not the portal and not an application
+-- file chooser.  Neovide calls it directly for the project folder, so its
+-- class is org.kde.kdialog and the rules above do not match.  Without this
+-- it is tiled like a normal window and drags Neovide into a relayout.
+hl.window_rule(
+  {
+    name = 'kdialog-picker',
+    match = {
+      class = '^(org\\.kde\\.kdialog)$'
     },
     float = true,
     size = {

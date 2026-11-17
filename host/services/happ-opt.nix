@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 {
   # Happ 4.7.2 установлен вручную в /opt/happ (официальный .deb, repack).
   # Модуль happ-nixos больше не импортируется: NixOS не управляет /opt/happ и не
@@ -8,6 +11,10 @@
     pkgs.net-tools
     pkgs.lsb-release
     (pkgs.writeShellScriptBin "happ" ''
+      if [ ! -x /opt/happ/bin/Happ ]; then
+        echo "Happ не установлен: нет /opt/happ/bin/Happ" >&2
+        exit 1
+      fi
       exec /opt/happ/bin/Happ "$@"
     '')
     (pkgs.makeDesktopItem {
@@ -34,6 +41,10 @@
     description = "Happ Process Control Daemon (manual /opt/happ)";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
+    # Конфиг может собираться на машине без /opt/happ.
+    unitConfig = {
+      ConditionPathExists = "/opt/happ/bin/happd";
+    };
     path = with pkgs; [ iproute2 iptables procps net-tools ];
     serviceConfig = {
       Type = "simple";
