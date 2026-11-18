@@ -124,6 +124,10 @@ Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обнов�
   OpenClaw: полный `nix eval` уходит в swap и может задушить композитор.
   Для правок Hyprland достаточно `make hypr-check`; `ci.sh` дополнительно
   ограничивает `nix eval` cgroup-лимитом `MemoryMax=3G`.
+- `nix-daemon` ограничен `CPUWeight=20`, `IOWeight=50`, `MemoryHigh=3G`
+  (`host/nix/daemon.nix`), чтобы сборки не вытесняли композитор в своп.
+  `make switch`/`build` больше не запускают полный `ci.sh` — только чистое
+  дерево и `git diff --check`; полный eval остаётся в `make ci`/`make push`.
 - `submaps.lua` удалён; ISO больше не делает `require('submaps')`. Print-
   сабмап со скриншотами сейчас не подключён. Вернуть можно из `dd6f314`.
 - `user/dotfiles/default.nix` — живые симлинки. После переименования каталога
