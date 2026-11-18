@@ -136,6 +136,12 @@ Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обнов�
   Это не исходники, а рендер палитры обоев (community-шаблоны `yazi` и `tmux`),
   они в `.gitignore`; после смены обоев их не коммитить. `yazi/theme.toml` —
   наоборот, ручная база, её правит только post-hook (`[flavor]`), она в git.
+- tmux: `tmux.conf` — только `source-file`-hub; листья в `conf/`, скрипты в
+  `scripts/`, fallback-тема в `themes/mocha.conf`. `vendor/` — симлинк на
+  `vendor/tmux` (resurrect/continuum); TPM/catppuccin/tmux-yank удалены как
+  неиспользуемые. `prefix r` аддитивен — для проверки refactor'а поднимать
+  свежий сервер `tmux -L test`. `~/.config/systemd/user/tmux.service`
+  генерирует continuum; при переносе vendor путь `ExecStop` надо обновить.
 - `/etc/nixos` — путь по умолчанию в `host/identity.nix`; HM получает
   `identity.repoPath`. Live-путь `/etc/nixos` жёстко зашит в
   `iso/config/hypr/hyprland.lua`, потому что ISO всегда копируется туда.

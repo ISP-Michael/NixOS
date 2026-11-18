@@ -205,6 +205,15 @@ HM-модуль с `settings` — они будут писать в один и 
 через `package.path`). Правила, клавиши и опции разложены по `rules/`,
 `binds/` и `settings/`; подробности — в [`hyprland.md`](hyprland.md).
 
+### tmux
+
+`user/dotfiles/.config/tmux/tmux.conf` — только hub из `source-file`:
+`conf/options.conf`, `themes/mocha.conf`, `conf/statusline.conf`,
+`conf/keys/*.conf`, `conf/session.conf`. Скрипты — `scripts/`, тема —
+`themes/`; `themes/noctalia.conf` генерируется Noctalia и не коммитится.
+Сторонние `tmux-resurrect` и `tmux-continuum` лежат в `vendor/tmux/`,
+а `~/.config/tmux/vendor` — симлинк на него.
+
 ## Секреты и крупные файлы
 
 - `secrets/secrets.yaml` — зашифрован, можно коммитить.

@@ -111,7 +111,8 @@ Hyprland на live использует `iso/config/hypr`: собственны�
 свой каталог первым в `package.path`, поэтому host-профиль и host-автостарт
 с Zen, Telegram, Obsidian и Lutris не подхватываются. Остальные конфиги
 (kitty, nvim, tmux, zsh, yazi, fastfetch) — из `user/dotfiles/.config` через
-`iso/home.nix`.
+`iso/home.nix`. tmux стартует с tracked fallback-темой `themes/mocha.conf`;
+`themes/noctalia.conf` появится только после первого рендера Noctalia.
 
 `submaps.lua` удалён; ISO не делает `require('submaps')`. Print-сабмап со
 скриншотами сейчас не подключён; вернуть можно из `dd6f314`.

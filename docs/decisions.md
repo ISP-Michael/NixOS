@@ -23,6 +23,7 @@
 | `host/scripts/` | 17.11.2026 | Не scripts, а activation-линкер `/etc/keyd`. Keyd переведён на `environment.etc` в `host/hardware/keyd/`. |
 | `host/scripts/etc/openclaw/README.md` | 17.11.2026 | Пустой системный каталог; OpenClaw — пользовательский. |
 | `config.lua`, `variables.lua`, `binds.lua`, `windowrules.lua` | 18.11.2026 | Плоский Hyprland-конфиг разложен по `settings/`, `binds/`, `rules/`, `profile.lua`; см. `docs/hyprland.md`. |
+| `tmux` plugins `catppuccin/tmux`, `tmux-yank`, TPM | 18.11.2026 | Ни один не загружался: тема была inline, копирование — native OSC52, TPM не использовался. |
 | input `hyprland` | 17.11.2026 | Не использовался: пакет берётся из nixpkgs (`pkgs.hyprland`). |
 
 ## Выключено намеренно
@@ -45,6 +46,16 @@
 
 ## Известные особенности
 
+- **tmux-тема разделена.** `themes/mocha.conf` — tracked fallback;
+  `themes/noctalia.conf` генерирует Noctalia, он в `.gitignore` и грузится
+  последним. Noctalia перекрывает фоны/popup/menu/borders, но не
+  `status-left/right` и форматы вкладок — это осознанная смесь, пока тема не
+  станет полной.
+- **tmux plugins** — `tmux-resurrect` и `tmux-continuum` лежат в
+  `vendor/tmux/`, `~/.config/tmux/vendor` — симлинк. `tmux.service`
+  генерирует continuum; его `ExecStop` обновлён на vendor-путь.
+- **tmux backups** — 14 старых `.bak-*` перенесены в
+  `~/.local/share/opencode/backups/tmux-2026-11-18`, не удалены.
 - **`submaps.lua` удалён.** ISO больше не делает `require('submaps')`;
   Print-сабмап со скриншотами не подключён. Вернуть файл можно из `dd6f314`.
   Вместе с ним из Hyprland-профиля удалён неиспользуемый `shotDir`.
