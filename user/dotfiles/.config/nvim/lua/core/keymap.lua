@@ -72,11 +72,28 @@ set(
   '<leader>bd',
   function()
     local current = vim.api.nvim_get_current_buf()
-    vim.cmd('bprevious')
-    vim.cmd('bdelete ' .. current)
+    -- Move to the next buffer before deleting the current one.  `:bdelete`
+    -- alone selects the alternate buffer, which is not always the next one.
+    if not pcall(vim.cmd, 'bnext') then
+      vim.cmd('enew')
+    end
+    local ok, err = pcall(
+      vim.api.nvim_buf_delete,
+      current,
+      {
+        force = false,
+      }
+    )
+    if not ok then
+      pcall(vim.api.nvim_set_current_buf, current)
+      vim.notify(
+        tostring(err),
+        vim.log.levels.WARN
+      )
+    end
   end,
   {
-    desc = 'Close current buffer'
+    desc = 'Close current buffer and go next'
   }
 )
 
