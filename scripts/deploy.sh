@@ -5,7 +5,16 @@ cd "$(dirname "$0")/.."
 
 HOST="${HOST:-MagicBook}"
 MODE="${1:-switch}"
-./scripts/ci.sh
+
+# Быстрый предполётный контроль. Полный ci.sh (eval всех 7 конфигураций и
+# 5 ISO) на 6 ГБ уходит в своп и дублирует eval, который nixos-rebuild
+# всё равно делает сам. Полная проверка — `make ci` перед пушем.
+if [ "${ALLOW_DIRTY:-0}" != "1" ] && [ -n "$(git status --porcelain)" ]; then
+  echo "dirty tree: commit changes or set ALLOW_DIRTY=1" >&2
+  git status --short >&2
+  exit 1
+fi
+git diff --check
 
 case "$MODE" in
   build)

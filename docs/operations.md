@@ -16,7 +16,14 @@ make backup-configs # tar app-конфигов в ~/Backups (0600)
 ```
 
 `make check` разрешает грязное дерево (`ALLOW_DIRTY=1`), `make ci` — нет.
-`make build`/`switch`/`push` всегда сначала запускают строгий `scripts/ci.sh`.
+`make build`/`switch` делают только быстрый предполётный контроль (чистое
+дерево и `git diff --check`), потому что полный eval всех конфигов и ISO
+дублирует работу `nixos-rebuild` и на 6 ГБ уходит в своп. Полная проверка —
+`make ci`, она же запускается в `make push`.
+
+Сборки идут через `nix-daemon` с `CPUWeight=20`, `IOWeight=50` и
+`MemoryHigh=3G` (`host/nix/daemon.nix`): при конкуренции приоритет у
+десктопа, память сборки не вытесняет композитор в своп.
 
 ## Что проверяет CI
 
