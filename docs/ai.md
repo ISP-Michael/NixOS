@@ -142,6 +142,11 @@ Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обнов�
   неиспользуемые. `prefix r` аддитивен — для проверки refactor'а поднимать
   свежий сервер `tmux -L test`. `~/.config/systemd/user/tmux.service`
   генерирует continuum; при переносе vendor путь `ExecStop` надо обновить.
+- zsh: `ZDOTDIR=~/.config/zsh`, `.zshrc` -> `manifest.zsh` -> `rc/*.zsh`;
+  плагины — `plugins/{completions,main,lazy}.txt`, antidote в `vendor/zsh`
+  через симлинк. `compinit` пишет в `~/.local/state/zsh/zcompdump`, static
+  бандлы — в `~/.cache/antidote/static`; сгенерированное в git не держать.
+  Проверка: `make zsh-check`. `starship.toml` генерирует Noctalia.
 - `/etc/nixos` — путь по умолчанию в `host/identity.nix`; HM получает
   `identity.repoPath`. Live-путь `/etc/nixos` жёстко зашит в
   `iso/config/hypr/hyprland.lua`, потому что ISO всегда копируется туда.

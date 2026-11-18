@@ -1,0 +1,3 @@
+# Loaded before compinit: its plugin file adds the completion directory to
+# fpath, so compinit must run after it.
+zsh-users/zsh-completions

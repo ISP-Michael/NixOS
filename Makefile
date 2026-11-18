@@ -1,4 +1,4 @@
-.PHONY: check ci hypr-check fmt build-iso build-noctalia-slow switch build push status host-age sops-check backup-configs
+.PHONY: check ci hypr-check zsh-check fmt build-iso build-noctalia-slow switch build push status host-age sops-check backup-configs
 
 check:
 	ALLOW_DIRTY=1 ./scripts/ci.sh
@@ -8,6 +8,9 @@ ci:
 
 hypr-check:
 	./scripts/hypr-check.sh
+
+zsh-check:
+	./scripts/zsh-check.sh
 
 fmt:
 	nix fmt

@@ -1,0 +1,12 @@
+# Loaded after compinit. Order is part of the contract:
+# - fzf-tab must load after compinit, before autosuggestions;
+# - zsh-syntax-highlighting must be last.
+jeffreytse/zsh-vi-mode
+Aloxaf/fzf-tab
+zsh-users/zsh-autosuggestions
+hlissner/zsh-autopair
+zsh-users/zsh-history-substring-search
+MichaelAquilina/zsh-you-should-use
+kutsan/zsh-system-clipboard
+MichaelAquilina/zsh-auto-notify
+zsh-users/zsh-syntax-highlighting

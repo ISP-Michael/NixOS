@@ -1,4 +1,0 @@
-olets/zsh-abbr
-urbainvaes/fzf-marks
-Tarrasch/zsh-bd
-wfxr/forgit

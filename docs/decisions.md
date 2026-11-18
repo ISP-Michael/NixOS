@@ -24,6 +24,7 @@
 | `host/scripts/etc/openclaw/README.md` | 17.11.2026 | Пустой системный каталог; OpenClaw — пользовательский. |
 | `config.lua`, `variables.lua`, `binds.lua`, `windowrules.lua` | 18.11.2026 | Плоский Hyprland-конфиг разложен по `settings/`, `binds/`, `rules/`, `profile.lua`; см. `docs/hyprland.md`. |
 | `tmux` plugins `catppuccin/tmux`, `tmux-yank`, TPM | 18.11.2026 | Ни один не загружался: тема была inline, копирование — native OSC52, TPM не использовался. |
+| zsh `.zcompdump`, `.zshrc.bak-*`, tracked `plugins*.zsh` | 18.11.2026 | Сгенерированное/устаревшее; compdump и история переехали в XDG state, static-бандлы antidote — в XDG cache. |
 | input `hyprland` | 17.11.2026 | Не использовался: пакет берётся из nixpkgs (`pkgs.hyprland`). |
 
 ## Выключено намеренно
@@ -56,6 +57,15 @@
   генерирует continuum; его `ExecStop` обновлён на vendor-путь.
 - **tmux backups** — 14 старых `.bak-*` перенесены в
   `~/.local/share/opencode/backups/tmux-2026-11-18`, не удалены.
+- **zsh-конфиг разложен** — `.zshrc` только вход, `manifest.zsh` и `rc/`
+  держат ответственности. `compinit` использует
+  `~/.local/state/zsh/zcompdump`; zsh-completions грузится до compinit,
+  fzf-tab — после compinit и до autosuggestions, syntax-highlighting
+  последний. Antidote — в `vendor/zsh`; static-бандлы в
+  `~/.cache/antidote/static`.
+- **zsh-бэкапы и старые кэши** — `.zcompdump`, `.zshrc.bak-2026-11-16`,
+  `~/.local/share/fzf-marks`, старые `compdump`/`starship-init.zsh`
+  перенесены в `~/.local/share/opencode/backups/zsh-2026-11-18`.
 - **`submaps.lua` удалён.** ISO больше не делает `require('submaps')`;
   Print-сабмап со скриншотами не подключён. Вернуть файл можно из `dd6f314`.
   Вместе с ним из Hyprland-профиля удалён неиспользуемый `shotDir`.

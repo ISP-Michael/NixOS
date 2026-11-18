@@ -131,7 +131,10 @@ sops-ключа хоста или конкретного пользовател�
 │   ├── programs/             # HM-модули
 │   ├── theme/                # gtk/fonts/cursor + KDE-скрипт
 │   └── dotfiles/             # живые конфиги → ~/.config
-├── vendor/happ/              # сторонний Happ: module.nix + package.nix
+├── vendor/
+│   ├── happ/                 # сторонний Happ: module.nix + package.nix
+│   ├── tmux/                 # resurrect + continuum
+│   └── zsh/                  # antidote
 ├── secrets/                  # secrets.yaml, пример; restic — в ~/Backups
 ├── assets/                   # картинки/обои; видео ignored
 ├── scripts/                  # ci.sh, deploy.sh, push.sh, status.sh
@@ -213,6 +216,14 @@ HM-модуль с `settings` — они будут писать в один и 
 `themes/`; `themes/noctalia.conf` генерируется Noctalia и не коммитится.
 Сторонние `tmux-resurrect` и `tmux-continuum` лежат в `vendor/tmux/`,
 а `~/.config/tmux/vendor` — симлинк на него.
+
+### zsh
+
+`user/dotfiles/.config/zsh/.zshrc` — короткий вход; `manifest.zsh` грузит
+`rc/{state,history,completion,plugins,integrations,keys,prompt,python}.zsh`.
+Списки плагинов — `plugins/{completions,main,lazy}.txt`; antidote лежит в
+`vendor/zsh/`, `~/.config/zsh/vendor` — симлинк. Сгенерированные compdump,
+история и static-бандлы живут в XDG state/cache, не в репозитории.
 
 ## Секреты и крупные файлы
 

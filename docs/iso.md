@@ -113,6 +113,10 @@ Hyprland на live использует `iso/config/hypr`: собственны�
 (kitty, nvim, tmux, zsh, yazi, fastfetch) — из `user/dotfiles/.config` через
 `iso/home.nix`. tmux стартует с tracked fallback-темой `themes/mocha.conf`;
 `themes/noctalia.conf` появится только после первого рендера Noctalia.
+zsh на первом входе генерирует static-бандлы antidote в
+`~/.cache/antidote/static`; если кэш пуст, нужен интернет для клонирования
+плагинов. `starship.toml` также появится только после рендера Noctalia, до
+этого работает plain-prompt.
 
 `submaps.lua` удалён; ISO не делает `require('submaps')`. Print-сабмап со
 скриншотами сейчас не подключён; вернуть можно из `dd6f314`.

@@ -15,11 +15,12 @@ _opencode() {
   local -a commands
   commands=(
     'upgrade:Upgrade OpenCode to the latest or a specific version'
-    'uninstall:Uninstall OpenCode and remove all related files'
+    'update:Upgrade OpenCode to the latest or a specific version'
+    'uninstall:Uninstall OpenCode, keeping session data, configuration, and state'
     'acp:Start an Agent Client Protocol server'
     'api:Make a request to the running server'
     'debug:Debugging and troubleshooting tools'
-    'auth:manage AI providers and credentials'
+    'auth:manage integrations and credentials'
     'mcp:Manage MCP (Model Context Protocol) servers'
     'plugin:Manage plugins'
     'models:List all available models'
@@ -29,7 +30,7 @@ _opencode() {
     'session:Manage sessions'
     'service:Manage the background server'
     'reload:Reload configuration'
-    'pair:Show server pairing information'
+    'pair:Print one-time links to connect a browser or app'
     'serve:Start the v2 API and web server'
   )
 
@@ -43,8 +44,8 @@ _opencode() {
     '(--continue -c --no-continue)--continue[Continue the last session]'
     '(--continue -c --no-continue)-c[Continue the last session]'
     '(--continue -c --no-continue)--no-continue[Disable continue]'
-    '(--session -s)--session[Session ID to continue]:value:'
-    '(--session -s)-s[Session ID to continue]:value:'
+    '(--session -s)--session[Session ID to continue, or to create if it does not exist]:value:'
+    '(--session -s)-s[Session ID to continue, or to create if it does not exist]:value:'
     '(--prompt)--prompt[Prompt to use]:value:'
     -
     parent-arguments
@@ -65,6 +66,9 @@ _opencode() {
       case "$words[1]" in
         upgrade)
           _opencode_upgrade
+          ;;
+        update)
+          _opencode_update
           ;;
         uninstall)
           _opencode_uninstall
@@ -122,8 +126,18 @@ _opencode() {
 _opencode_upgrade() {
   local -a specs
   specs=(
-    '(--method -m)--method[Installation method to use]:value:(curl npm pnpm bun yarn vp brew)'
-    '(--method -m)-m[Installation method to use]:value:(curl npm pnpm bun yarn vp brew)'
+    '(--method -m)--method[Installation method to use]:value:(curl npm pnpm bun yarn vp brew winget)'
+    '(--method -m)-m[Installation method to use]:value:(curl npm pnpm bun yarn vp brew winget)'
+    ':Version to upgrade to (with or without a leading v):'
+  )
+  _arguments "${specs[@]}"
+}
+
+_opencode_update() {
+  local -a specs
+  specs=(
+    '(--method -m)--method[Installation method to use]:value:(curl npm pnpm bun yarn vp brew winget)'
+    '(--method -m)-m[Installation method to use]:value:(curl npm pnpm bun yarn vp brew winget)'
     ':Version to upgrade to (with or without a leading v):'
   )
   _arguments "${specs[@]}"
@@ -132,12 +146,6 @@ _opencode_upgrade() {
 _opencode_uninstall() {
   local -a specs
   specs=(
-    '(--keep-config -c --no-keep-config)--keep-config[Keep configuration files]'
-    '(--keep-config -c --no-keep-config)-c[Keep configuration files]'
-    '(--keep-config -c --no-keep-config)--no-keep-config[Disable keep-config]'
-    '(--keep-data -d --no-keep-data)--keep-data[Keep session data and snapshots]'
-    '(--keep-data -d --no-keep-data)-d[Keep session data and snapshots]'
-    '(--keep-data -d --no-keep-data)--no-keep-data[Disable keep-data]'
     '(--dry-run --no-dry-run)--dry-run[Show what would be removed without removing]'
     '(--dry-run --no-dry-run)--no-dry-run[Disable dry-run]'
     '(--force -f --no-force)--force[Skip confirmation prompts]'
@@ -148,14 +156,17 @@ _opencode_uninstall() {
 }
 
 _opencode_acp() {
+  local -a specs
+  specs=(
+    '(--login --no-login)--login[Run auth login instead of starting the server]'
+    '(--login --no-login)--no-login[Disable login]'
+  )
+  _arguments "${specs[@]}"
 }
 
 _opencode_api() {
   local -a specs
   specs=(
-    '(--standalone --no-standalone)--standalone[Run with a private server instead of the background service]'
-    '(--standalone --no-standalone)--no-standalone[Disable standalone]'
-    '(--server)--server[Connect to a server URL instead of the background service]:value:'
     '(--data -d)--data[Request body]:value:'
     '(--data -d)-d[Request body]:value:'
     '(--header -H)--header[Request header in name\:value form]:value:'
@@ -174,6 +185,7 @@ _opencode_debug() {
   commands=(
     'agents:List all agents'
     'config:List configuration sources'
+    'heap-dump:Write a heap snapshot of the running server and print its path'
     'paths:Show global paths (data, config, cache, state)'
   )
 
@@ -197,6 +209,9 @@ _opencode_debug() {
         config)
           _opencode_debug_config
           ;;
+        heap-dump)
+          _opencode_debug_heap_dump
+          ;;
         paths)
           _opencode_debug_paths
           ;;
@@ -209,6 +224,14 @@ _opencode_debug_agents() {
 }
 
 _opencode_debug_config() {
+}
+
+_opencode_debug_heap_dump() {
+  local -a specs
+  specs=(
+    '(--directory)--directory[Directory to write the snapshot into instead of the server'\''s log directory]:value:'
+  )
+  _arguments "${specs[@]}"
 }
 
 _opencode_debug_paths() {
@@ -225,9 +248,11 @@ _opencode_auth() {
 
   local -a commands
   commands=(
-    'list:list providers and credentials'
-    'login:log in to a provider'
+    'list:list integrations and credentials'
+    'login:connect an integration'
     'logout:log out of a saved account'
+    'export:print stored credentials, including secrets, as JSON'
+    'import:import credentials exported by auth export'
     'switch:switch the active account for an integration'
   )
 
@@ -254,6 +279,12 @@ _opencode_auth() {
         logout)
           _opencode_auth_logout
           ;;
+        export)
+          _opencode_auth_export
+          ;;
+        import)
+          _opencode_auth_import
+          ;;
         switch)
           _opencode_auth_switch
           ;;
@@ -265,9 +296,6 @@ _opencode_auth() {
 _opencode_auth_list() {
   local -a specs
   specs=(
-    '(--standalone --no-standalone)--standalone[Run with a private server instead of the background service]'
-    '(--standalone --no-standalone)--no-standalone[Disable standalone]'
-    '(--server)--server[Connect to a server URL instead of the background service]:value:'
     '(--format)--format[Output format]:value:(default json)'
   )
   _arguments "${specs[@]}"
@@ -276,9 +304,6 @@ _opencode_auth_list() {
 _opencode_auth_login() {
   local -a specs
   specs=(
-    '(--standalone --no-standalone)--standalone[Run with a private server instead of the background service]'
-    '(--standalone --no-standalone)--no-standalone[Disable standalone]'
-    '(--server)--server[Connect to a server URL instead of the background service]:value:'
     '(--method)--method[Authentication method ID]:value:'
     '(--answer)--answer[Provider form answer (key=value; repeat for multiple fields)]:value:'
     ':Integration ID, name, or well-known provider URL:'
@@ -289,11 +314,24 @@ _opencode_auth_login() {
 _opencode_auth_logout() {
   local -a specs
   specs=(
-    '(--standalone --no-standalone)--standalone[Run with a private server instead of the background service]'
-    '(--standalone --no-standalone)--no-standalone[Disable standalone]'
-    '(--server)--server[Connect to a server URL instead of the background service]:value:'
     ':Integration ID or name:'
     ':Credential ID or label (opens an account picker when omitted):'
+  )
+  _arguments "${specs[@]}"
+}
+
+_opencode_auth_export() {
+  local -a specs
+  specs=(
+    ':Integration ID or name (exports every integration when omitted):'
+  )
+  _arguments "${specs[@]}"
+}
+
+_opencode_auth_import() {
+  local -a specs
+  specs=(
+    ':JSON file to import (reads stdin when omitted):'
   )
   _arguments "${specs[@]}"
 }
@@ -301,9 +339,6 @@ _opencode_auth_logout() {
 _opencode_auth_switch() {
   local -a specs
   specs=(
-    '(--standalone --no-standalone)--standalone[Run with a private server instead of the background service]'
-    '(--standalone --no-standalone)--no-standalone[Disable standalone]'
-    '(--server)--server[Connect to a server URL instead of the background service]:value:'
     ':Integration ID or name:'
     ':Credential ID or label (opens an account picker when omitted):'
   )
@@ -475,21 +510,11 @@ _opencode_plugin_remove() {
 }
 
 _opencode_models() {
-  local -a specs
-  specs=(
-    '(--standalone --no-standalone)--standalone[Run with a private server instead of the background service]'
-    '(--standalone --no-standalone)--no-standalone[Disable standalone]'
-    '(--server)--server[Connect to a server URL instead of the background service]:value:'
-  )
-  _arguments "${specs[@]}"
 }
 
 _opencode_stats() {
   local -a specs
   specs=(
-    '(--standalone --no-standalone)--standalone[Run with a private server instead of the background service]'
-    '(--standalone --no-standalone)--no-standalone[Disable standalone]'
-    '(--server)--server[Connect to a server URL instead of the background service]:value:'
     '(--days)--days[Show the last N days; 0 means today]:integer:'
     '(--year)--year[Show a calendar year]:integer:'
     '(--all --no-all)--all[Show lifetime statistics]'
@@ -513,14 +538,11 @@ _opencode_stats() {
 _opencode_mini() {
   local -a specs
   specs=(
-    '(--standalone --no-standalone)--standalone[Run with a private server instead of the background service]'
-    '(--standalone --no-standalone)--no-standalone[Disable standalone]'
-    '(--server)--server[Connect to a server URL instead of the background service]:value:'
     '(--continue -c --no-continue)--continue[Continue the last session]'
     '(--continue -c --no-continue)-c[Continue the last session]'
     '(--continue -c --no-continue)--no-continue[Disable continue]'
-    '(--session -s)--session[Session ID to continue]:value:'
-    '(--session -s)-s[Session ID to continue]:value:'
+    '(--session -s)--session[Session ID to continue, or to create if it does not exist]:value:'
+    '(--session -s)-s[Session ID to continue, or to create if it does not exist]:value:'
     '(--fork --no-fork)--fork[Fork the session when continuing]'
     '(--fork --no-fork)--no-fork[Disable fork]'
     '(--replay --no-replay)--replay[Restore session history on resume and resize (disable with --no-replay)]'
@@ -537,16 +559,15 @@ _opencode_mini() {
 _opencode_run() {
   local -a specs
   specs=(
-    '(--standalone --no-standalone)--standalone[Run with a private server instead of the background service]'
-    '(--standalone --no-standalone)--no-standalone[Disable standalone]'
-    '(--server)--server[Connect to a server URL instead of the background service]:value:'
     '(--continue -c --no-continue)--continue[Continue the last session]'
     '(--continue -c --no-continue)-c[Continue the last session]'
     '(--continue -c --no-continue)--no-continue[Disable continue]'
-    '(--session -s)--session[Session ID to continue]:value:'
-    '(--session -s)-s[Session ID to continue]:value:'
+    '(--session -s)--session[Session ID to continue, or to create if it does not exist]:value:'
+    '(--session -s)-s[Session ID to continue, or to create if it does not exist]:value:'
     '(--fork --no-fork)--fork[Fork the session before continuing]'
     '(--fork --no-fork)--no-fork[Disable fork]'
+    '(--worktree -w)--worktree=-[Start a new session in a new git worktree, optionally with this name]::value:'
+    '(--worktree -w)-w=-[Start a new session in a new git worktree, optionally with this name]::value:'
     '(--model -m)--model[Model to use in the format provider/model#variant]:value:'
     '(--model -m)-m[Model to use in the format provider/model#variant]:value:'
     '(--agent)--agent[Agent to use]:value:'
@@ -554,6 +575,8 @@ _opencode_run() {
     '(--file -f)--file[File to attach to the message]:value:'
     '(--file -f)-f[File to attach to the message]:value:'
     '(--title)--title[Session title]:value:'
+    '(--archived --no-archived)--archived[Create the session archived so it stays out of session lists (useful for scripted or CI runs)]'
+    '(--archived --no-archived)--no-archived[Disable archived]'
     '(--thinking --no-thinking)--thinking[Show thinking blocks]'
     '(--thinking --no-thinking)--no-thinking[Disable thinking]'
     '(--auto --no-auto)--auto[Auto-approve permissions that are not explicitly denied]'
@@ -609,9 +632,6 @@ _opencode_session() {
 _opencode_session_list() {
   local -a specs
   specs=(
-    '(--standalone --no-standalone)--standalone[Run with a private server instead of the background service]'
-    '(--standalone --no-standalone)--no-standalone[Disable standalone]'
-    '(--server)--server[Connect to a server URL instead of the background service]:value:'
     '(--max-count -n)--max-count[Limit to N most recent sessions (default\: 100)]:integer:'
     '(--max-count -n)-n[Limit to N most recent sessions (default\: 100)]:integer:'
     '(--format)--format[Output format]:value:(table json)'
@@ -622,9 +642,6 @@ _opencode_session_list() {
 _opencode_session_delete() {
   local -a specs
   specs=(
-    '(--standalone --no-standalone)--standalone[Run with a private server instead of the background service]'
-    '(--standalone --no-standalone)--no-standalone[Disable standalone]'
-    '(--server)--server[Connect to a server URL instead of the background service]:value:'
     ':Session ID to delete:'
   )
   _arguments "${specs[@]}"
@@ -633,9 +650,6 @@ _opencode_session_delete() {
 _opencode_session_export() {
   local -a specs
   specs=(
-    '(--standalone --no-standalone)--standalone[Run with a private server instead of the background service]'
-    '(--standalone --no-standalone)--no-standalone[Disable standalone]'
-    '(--server)--server[Connect to a server URL instead of the background service]:value:'
     '(--sanitize --no-sanitize)--sanitize[Redact sensitive transcript and file data]'
     '(--sanitize --no-sanitize)--no-sanitize[Disable sanitize]'
     ':Session ID to export:'
@@ -646,9 +660,6 @@ _opencode_session_export() {
 _opencode_session_import() {
   local -a specs
   specs=(
-    '(--standalone --no-standalone)--standalone[Run with a private server instead of the background service]'
-    '(--standalone --no-standalone)--no-standalone[Disable standalone]'
-    '(--server)--server[Connect to a server URL instead of the background service]:value:'
     '(--directory)--directory[Directory in which to import the session]:value:'
     ':JSON file or URL to import:'
   )
@@ -751,19 +762,17 @@ _opencode_service_unset() {
 }
 
 _opencode_reload() {
-  local -a specs
-  specs=(
-    '(--standalone --no-standalone)--standalone[Run with a private server instead of the background service]'
-    '(--standalone --no-standalone)--no-standalone[Disable standalone]'
-    '(--server)--server[Connect to a server URL instead of the background service]:value:'
-  )
-  _arguments "${specs[@]}"
 }
 
 _opencode_pair() {
   local -a specs
   specs=(
-    '(--url)--url[Advertise an external HTTP(S) server URL in the pairing QR code]:value:'
+    '(--url)--url[Use an external HTTP(S) server URL in pairing links]:value:'
+    '(--remote --no-remote)--remote[Pair through the OpenTunnel remote address, enabling remote access if needed (exposes the server to the internet)]'
+    '(--remote --no-remote)--no-remote[Disable remote]'
+    '(--yes -y --no-yes)--yes[Accept exposing the server to the internet when --remote enables remote access for the first time (required without an interactive terminal)]'
+    '(--yes -y --no-yes)-y[Accept exposing the server to the internet when --remote enables remote access for the first time (required without an interactive terminal)]'
+    '(--yes -y --no-yes)--no-yes[Disable yes]'
   )
   _arguments "${specs[@]}"
 }
