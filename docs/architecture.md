@@ -223,7 +223,7 @@ HM-модуль с `settings` — они будут писать в один и 
 `conf/keys/*.conf`, `conf/session.conf`. Скрипты — `scripts/`, тема —
 `themes/`; `themes/noctalia.conf` генерируется Noctalia и не коммитится.
 Сторонние `tmux-resurrect` и `tmux-continuum` лежат в `vendor/tmux/`,
-а `~/.config/tmux/vendor` — симлинк на него.
+а `~/.config/tmux/vendor` — симлинк на него. Подробности — [`tmux.md`](tmux.md).
 
 ### zsh
 
