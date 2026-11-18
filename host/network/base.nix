@@ -1,6 +1,10 @@
 {
+  config,
+  ...
+}:
+{
   networking = {
-    hostName = "MagicBook";
+    hostName = config.host.hostName;
     enableIPv6 = true;
     # DNS задаётся в network/resolved.nix; второй список здесь только
     # сбивал бы с толку.

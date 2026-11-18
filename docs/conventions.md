@@ -40,6 +40,8 @@
 - `common/` — переносимое; без `Michael`, `/home/Michael`, `/dev/nvme0n1`,
   sops-путей.
 - `host/` — MagicBook; можно всё, что зависит от железа/пользователя.
+- `host/identity.nix` — user/home/repoPath/hostName/diskDevice; для другой
+  машины см. `docs/new-machine.md`.
 - `iso/` — live; использует `common/` и `vendor/`, не тянет `host/`.
 - `user/` — Home Manager; не знает, хост это или ISO.
 - `host/home-manager.nix` — единственное место, где хост импортирует `user/`.

@@ -1,0 +1,8 @@
+[Unit]
+Description=Update OpenCode TUI to latest v2
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/opencode-update
+Nice=10
+IOSchedulingClass=idle

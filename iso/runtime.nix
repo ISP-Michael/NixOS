@@ -41,6 +41,7 @@
   # OpenCode/OpenClaw ходят в SearXNG на localhost:8888.
   services.searx = lib.mkIf config.iso.agent.enable {
     enable = true;
+    package = import ../apps/searxng/package.nix { inherit pkgs; };
     settings = {
       server = {
         bind_address = "127.0.0.1";

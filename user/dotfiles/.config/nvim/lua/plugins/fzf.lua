@@ -60,10 +60,20 @@ P.register(
           sort_lastused = true,
           ignore_current_buffer = false,
           _headers = {},
+          header = ' tab/shift-tab select · ctrl-a all · ctrl-d none · ctrl-x delete ',
+          keymap = {
+            fzf = {
+              ['ctrl-a'] = 'select-all',
+              ['ctrl-d'] = 'deselect-all',
+              ['ctrl-space'] = 'toggle+down',
+            },
+          },
+          -- Delete selected buffers and reload the list in place, so the
+          -- picker stays open for more deletions and navigation.
           actions = {
             ['ctrl-x'] = {
-              require('fzf-lua').actions.buf_del,
-              require('fzf-lua').actions.resume,
+              fn = require('fzf-lua').actions.buf_del,
+              reload = true,
             },
           },
         },

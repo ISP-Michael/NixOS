@@ -1,10 +1,14 @@
 {
+  config,
+  ...
+}:
+{
   disko = {
     devices = {
       disk = {
         main = {
           type = "disk";
-          device = "/dev/nvme0n1";
+          device = config.host.diskDevice;
           content = {
             type = "gpt";
             partitions = {

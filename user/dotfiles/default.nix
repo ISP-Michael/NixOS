@@ -1,9 +1,10 @@
 {
+  identity,
   lib,
   ...
 }:
 let
-  configDir = "/etc/nixos/user/dotfiles/.config";
+  configDir = "${identity.repoPath}/user/dotfiles/.config";
   apps = [
     "hypr"
     "nvim"

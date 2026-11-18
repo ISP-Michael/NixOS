@@ -16,7 +16,8 @@
 │   ├── cli.json                          # статика → симлинк
 │   ├── package.json                      # статика → симлинк
 │   ├── plugins/                          # код плагинов → симлинк
-│   └── systemd/user/opencode-backup.*    # шаблоны units
+│   ├── bin/opencode-update               # обновление host-бинарника
+│   └── systemd/user/opencode-*.service   # backup + update units
 ├── openclaw/
 │   ├── openclaw.json.tmpl                # шаблон, токены REPLACE_ME
 │   ├── bin/*.py, *.sh                    # рабочие скрипты → симлинки
@@ -52,13 +53,13 @@
 
 ```text
 /etc/nixos/user/dotfiles/.config/          # конфиги и скрипты
-/etc/nixos/secrets/opencode-restic/       # restic-репозиторий (gitignored)
+~/Backups/opencode-restic/       # restic-репозиторий (вне git)
 ~/.local/state/opencode/restic.pass       # пароль restic (0600)
 ```
 
 Опционально: `/etc/nixos/secrets/apps.yaml` (sops-снимок конфигов/авторизации).
 
-Если клонируешь git, помни: `secrets/opencode-restic/` в git нет — копируй
+Если клонируешь git, помни: `~/Backups/opencode-restic/` в git нет — копируй
 каталог отдельно. Если копируешь `/etc/nixos` целиком, он приедет.
 
 ## 1. Зависимости
@@ -131,6 +132,7 @@ systemctl --user restart openclaw-gateway
 systemctl --user enable --now openclaw-maintenance.timer
 systemctl --user enable --now openclaw-gateway-restart.timer
 systemctl --user enable --now opencode-backup.timer
+systemctl --user enable --now opencode-update.timer
 ```
 
 Проверка:
@@ -138,7 +140,7 @@ systemctl --user enable --now opencode-backup.timer
 ```bash
 opencode --version
 openclaw infer web search --query "test"
-systemctl --user is-active openclaw-gateway opencode-backup.timer
+systemctl --user is-active openclaw-gateway opencode-backup.timer opencode-update.timer
 ```
 
 ## 5. Сессии
@@ -146,7 +148,7 @@ systemctl --user is-active openclaw-gateway opencode-backup.timer
 Restic-репозиторий и пароль — те, что скопированы в шаге 0. По умолчанию:
 
 ```text
-RESTIC_REPOSITORY=/etc/nixos/secrets/opencode-restic
+RESTIC_REPOSITORY=~/Backups/opencode-restic
 RESTIC_PASSWORD_FILE=~/.local/state/opencode/restic.pass
 ```
 
@@ -200,5 +202,5 @@ FORCE=1 ~/.local/state/opencode/restore-data.sh
 6. Попросить пользователя заполнить `REPLACE_ME` и Telegram-токен.
 7. Включить таймеры, проверить `openclaw infer web search`.
 8. Восстановить сессии только по явной команде; сначала `DRY_RUN=1`.
-9. Не коммитить `secrets/opencode-restic/`, `restic.pass`, `auth.json`,
+9. Не коммитить `~/Backups/opencode-restic/`, `restic.pass`, `auth.json`,
    `service.json`, `*.db`, `node_modules`.

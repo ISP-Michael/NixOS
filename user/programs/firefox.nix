@@ -1,5 +1,7 @@
 {
+  identity,
   nur,
+  pkgs,
   ...
 }:
 {
@@ -10,12 +12,12 @@
       profiles = {
         profile = {
           id = 0;
-          name = "Michael";
+          name = identity.user;
           path = "r0k4lu1c.default";
           isDefault = true;
           extensions = {
             force = true;
-            packages = with nur.legacyPackages."x86_64-linux".repos.rycee.firefox-addons; [
+            packages = with nur.legacyPackages.${pkgs.stdenv.hostPlatform.system}.repos.rycee.firefox-addons; [
               vimium
               translate-web-pages
             ];

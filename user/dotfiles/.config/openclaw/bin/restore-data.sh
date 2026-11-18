@@ -4,7 +4,7 @@
 set -euo pipefail
 
 HOME="${HOME:?}"
-REPO="${RESTIC_REPOSITORY:-/etc/nixos/secrets/opencode-restic}"
+REPO="${RESTIC_REPOSITORY:-$HOME/Backups/opencode-restic}"
 PASS="${RESTIC_PASSWORD_FILE:-$HOME/.local/state/opencode/restic.pass}"
 FORCE="${FORCE:-0}"
 DRY_RUN="${DRY_RUN:-0}"

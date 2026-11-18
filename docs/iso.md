@@ -20,6 +20,8 @@ Live-система NixOS с Hyprland, собранная из этого же �
 
 `lite` не получает агентский runtime (OpenCode, Node, Python, Chromium,
 SearXNG) и VPN-модуль. `work`/`custom`/`media`/`full` получают.
+Размер 4.6 ГБ — предыдущая сборка; после перехода на `apps/`, SearXNG master
+и текущую Noctalia ISO нужно пересобрать.
 
 ## Сборка
 
@@ -79,13 +81,14 @@ MagicBook (`/dev/nvme0n1`). Для другой машины нужен свой
 
 ## Что на live
 
-- Пользователь `Michael`, greetd-автологин в Hyprland, Noctalia + `user/theme`.
+- Пользователь `Michael` (`iso.user`), greetd-автологин в Hyprland, Noctalia 5.4.1 (патч fingerprint) + `user/theme`.
+- Имя live-системы — `iso.hostName` (по умолчанию `nixos-live`).
 - В меню только **Firefox**. Chromium — обёртка `chromium` для Playwright MCP
   OpenCode, без desktop-файла.
-- В `work`/`custom`/`media`/`full`: OpenCode 2.3.0 (npm `@opencode/cli-linux-x64`),
-  AmneziaVPN 5.1.0.6 (`.run` распаковывается в `/opt` при активации),
-  Happ 4.7.2 (Nix-пакет, XWayland), Node 26, Python 3, restic, sqlite,
-  SearXNG на `127.0.0.1:8888`.
+- В `work`/`custom`/`media`/`full`: OpenCode 2.3.0 (`apps/opencode/package.nix`),
+  AmneziaVPN 5.1.0.6 (`apps/amnezia/package.nix`, `.run` распаковывается в `/opt`),
+  Happ 4.7.2 (`vendor/happ`), Node 26, Python 3, restic, sqlite,
+  SearXNG из `apps/searxng/package.nix` (upstream master pinned) на `127.0.0.1:8888`.
 - Throne, Steam, Blender, Docker, виртуалки не включены.
 - SSH выключен: у live-пользователя пустой пароль, открытый порт не нужен.
 - chrony включён через `common/system/time.nix`; NTS выключен намеренно.
@@ -95,8 +98,8 @@ MagicBook (`/dev/nvme0n1`). Для другой машины нужен свой
 ## Репозиторий внутри ISO
 
 `iso/repo.nix` копирует `self` в `/etc/nixos` при активации, если там ещё нет
-`flake.nix`. Исключаются `.git`, `result*`, `secrets/opencode-restic`,
-`secrets/apps.yaml`, `assets/videos`. После установки репозиторий можно
+`flake.nix`. Исключаются `.git`, `result*`, `secrets/opencode-restic`
+(старый путь-страховка), `secrets/apps.yaml`, `assets/videos`. После установки репозиторий можно
 скопировать на диск и пересобирать уже там.
 
 ## Живые конфиги

@@ -1,16 +1,21 @@
 {
   pkgs,
-  lib,
   ...
 }:
 let
-  amneziaRun = pkgs.callPackage ./packages/amnezia-vpn.nix { };
+  amneziaPackage = pkgs.callPackage ../apps/amnezia/package.nix { };
 in
 {
   imports = [
-    ../common/vpn/amnezia-vpn.nix
+    ../apps/amnezia/module.nix
     ../vendor/happ/module.nix
   ];
+
+  services.amnezia-vpn = {
+    enable = true;
+    package = amneziaPackage;
+    installToOpt = true;
+  };
 
   # Happ: настоящий Nix-пакет, без ручного /opt. На Hyprland его
   # встроенный Qt-Wayland падает, поэтому принудительно XWayland.
@@ -18,36 +23,4 @@ in
     enable = true;
     forceXwayland = true;
   };
-
-  # AmneziaVPN: официальный .run 5.1.0.6 распаковывается в /opt при
-  # активации. Сервис/обёртка — из common/vpn/amnezia-vpn.nix.
-  system.activationScripts.amneziaInstall = lib.mkBefore ''
-    if [ ! -x /opt/AmneziaVPN/bin/AmneziaVPN ]; then
-      mkdir -p /opt/AmneziaVPN
-      QT_QPA_PLATFORM=offscreen HOME=/root \
-        PATH=/run/current-system/sw/bin:/run/current-system/sw/sbin:/usr/bin:/bin \
-        ${amneziaRun}/share/amnezia-vpn/AmneziaVPN.run \
-        --root /opt/AmneziaVPN \
-        --accept-licenses \
-        --default-answer \
-        --confirm-command install || true
-      chmod -R a-w /opt/AmneziaVPN 2>/dev/null || true
-    fi
-  '';
-
-  environment.systemPackages = [
-    (pkgs.makeDesktopItem {
-      name = "AmneziaVPN";
-      desktopName = "AmneziaVPN";
-      exec = "amnezia-vpn";
-      icon = "/opt/AmneziaVPN/AmneziaVPN.png";
-      comment = "AmneziaVPN client";
-      terminal = false;
-      categories = [ "Network" ];
-    })
-  ];
-
-  networking.firewall.trustedInterfaces = [
-    "amn0"
-  ];
 }

@@ -18,8 +18,8 @@
 | `host/services/amnezia-escape.nix` | 17.11.2026 | Обходной watcher маршрутов; не импортировался. Если Amnezia снова зациклит трафик — вернуть из истории. |
 | `host/services/fstrim.nix` | 17.11.2026 | Слито в `host/hardware/disk.nix`: `services.fstrim.enable = false` (NixOS по умолчанию включает). |
 | `host/soft/programs/clash.nix` | 17.11.2026 | Не импортировался; активные клиенты — Happ/Throne/Amnezia. |
-| `host/soft/programs/amnezia-vpn.nix` | 17.11.2026 | Nix-модуль `programs.amnezia-vpn` выключен; используется `/opt` + `common/vpn/amnezia-vpn.nix`. |
-| `host/soft/programs/throne.nix` | 17.11.2026 | Nix-модуль `programs.throne` выключен; используется `/opt/Throne` + `host/programs/throne.nix`. |
+| `host/soft/programs/amnezia-vpn.nix` | 17.11.2026 | Nix-модуль `programs.amnezia-vpn` выключен; используется `/opt` + `apps/amnezia/module.nix`. |
+| `host/soft/programs/throne.nix` | 17.11.2026 | Nix-модуль `programs.throne` выключен; используется `/opt/Throne` + `apps/throne/module.nix`. |
 | `host/scripts/` | 17.11.2026 | Не scripts, а activation-линкер `/etc/keyd`. Keyd переведён на `environment.etc` в `host/hardware/keyd/`. |
 | `host/scripts/etc/openclaw/README.md` | 17.11.2026 | Пустой системный каталог; OpenClaw — пользовательский. |
 | `user/dotfiles/.config/hypr/README.md` | 17.11.2026 | Пустой файл. |
@@ -38,9 +38,9 @@
   `kvantum` больше не тянутся.
 - **Flatpak** — модуль оставлен (`host/services/flatpak.nix`), пакетов нет.
   Новые Flatpak-приложения не добавлять без явной просьбы.
-- **Happ на хосте** — ручной `/opt/happ` (`host/programs/happ.nix`), не
+- **Happ на хосте** — ручной `/opt/happ` (`apps/happ/module.nix`), не
   `vendor/happ/module.nix`. На ISO — наоборот, Nix-модуль.
-- **AmneziaVPN на хосте** — `/opt/AmneziaVPN` + `common/vpn/amnezia-vpn.nix`;
+- **AmneziaVPN на хосте** — `/opt/AmneziaVPN` + `apps/amnezia/module.nix`;
   Nix-модуль `programs.amnezia-vpn` не используется.
 
 ## Известные особенности
@@ -53,11 +53,28 @@
 - **`secrets/secrets.yaml` `lastmodified`** может оставаться старым:
   `sops updatekeys` обновляет получателей, но не перешифровывает файл.
   Получатели обновлены 17.11.2026; это важнее даты.
-- **`secrets/opencode-restic/`** — 700+ МБ, gitignored; в ISO не копируется
-  (`iso/repo.nix`).
+- **`~/Backups/opencode-restic/`** — 794 МБ; 18.11.2026 перенесён в
+  `~/Backups/opencode-restic` и больше не лежит в репозитории.
 - **`assets/videos/`** — 73 МБ, gitignored; в ISO не копируется.
-- **`host/services/mihomo.yaml`** — остался на диске (0600, gitignored) после
-  удаления модуля. Если mihomo не нужен — удалить вручную.
+- **`host/services/mihomo.yaml`** — 18.11.2026 перенесён в
+  `~/Backups/removed-mihomo-2026-11-18/mihomo.yaml`; mihomo не используется.
+- **`usque`** — 18.11.2026 остановлен и удалён из `/opt/usque` и
+  `~/.config/systemd/user`; backup — `~/Backups/removed-usque-2026-11-18`.
+  SearXNG работает без него, `extraInputRules 8088` удалено.
+- **Noctalia** — 5.4.1 + fingerprint-патч, уже собрана и лежит в store
+  (`xinyrzy...`/`j9c0...`). 5.5.0 отложена: upstream всё ещё требует патч,
+  а с патчем cache.nixos.org не отдаёт готовую сборку. Вернуться к 5.5.0
+  можно, когда патч будет upstream или появится свой бинарный кэш.
+- **SearXNG на ISO** — upstream master pinned в `apps/searxng/package.nix`,
+  не nixpkgs-снапшот. Host — Docker `searxng/searxng:latest`.
+- **Дубли пакетов** — 18.11.2026 из `host/packages` убраны `flatpak`,
+  `gpu-screen-recorder`, `pipewire`, `wireplumber`, `xdg-desktop-portal`
+  (их добавляют модули), а также неиспользуемые `tlp` и `libfprint-tod`.
+  Flatpak как сервис оставлен.
+- **`opencode-update`** — юнит и скрипт перенесены в
+  `user/dotfiles/.config/opencode/`; раньше жили только в `~/.local`.
+- **Идентичность** — `host/identity.nix`: user/home/repoPath/hostName/diskDevice;
+  HM получает `identity` через `extraSpecialArgs`. ISO — `iso.user`/`iso.hostName`.
 - **`vendor/happ`** — сторонний код GPL-3.0; upstream и локальные патчи
   описаны в `vendor/happ/README.md`.
 - **`user/theme/kde.nix`** и Noctalia `post_hook` пишут `kdeglobals`:

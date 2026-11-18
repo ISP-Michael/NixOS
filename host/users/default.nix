@@ -1,6 +1,6 @@
 {
   imports = [
     ./groups.nix
-    ./michael.nix
+    ./primary.nix
   ];
 }

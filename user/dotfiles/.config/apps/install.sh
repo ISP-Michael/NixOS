@@ -202,6 +202,12 @@ else
   link_dir "$SRC/opencode/plugins" "$HOME/.config/opencode/plugins"
 fi
 
+if [ "$MODE" = "copy" ]; then
+  copy_file "$SRC/opencode/bin/opencode-update" "$HOME/.local/bin/opencode-update" 755
+else
+  link_file "$SRC/opencode/bin/opencode-update" "$HOME/.local/bin/opencode-update"
+fi
+
 echo "== OpenClaw =="
 create_file "$SRC/openclaw/openclaw.json.tmpl" "$HOME/.openclaw/openclaw.json" 600
 if [ "$MODE" = "copy" ]; then
@@ -230,6 +236,7 @@ if [ "$DRY_RUN" != "1" ]; then
   chmod +x "$HOME/.local/state/opencode/openclaw-seed-telegram.sh" 2>/dev/null || true
   chmod +x "$HOME/.local/state/opencode/backup-data.sh" 2>/dev/null || true
   chmod +x "$HOME/.local/state/opencode/restore-data.sh" 2>/dev/null || true
+  chmod +x "$HOME/.local/bin/opencode-update" 2>/dev/null || true
 fi
 
 if [ "${SKIP_NPM:-0}" != "1" ] && [ ! -d "$HOME/.config/opencode/node_modules" ]; then
@@ -253,6 +260,7 @@ cat <<'EOF'
   systemctl --user enable --now openclaw-maintenance.timer
   systemctl --user enable --now openclaw-gateway-restart.timer
   systemctl --user enable --now opencode-backup.timer
+  systemctl --user enable --now opencode-update.timer
 
 Секреты не переносятся. Если ~/.openclaw/openclaw.json только что создан,
 вставь токены вместо REPLACE_ME. Живые auth.json/service.json/БД не тронуты.

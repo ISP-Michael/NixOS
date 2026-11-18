@@ -6,7 +6,7 @@
 
 - `secrets/secrets.yaml` — зашифрованный системный секрет `user-password`;
 - `secrets/apps.yaml` — необязательный зашифрованный снимок OpenCode/OpenClaw;
-- `secrets/opencode-restic/` — restic-репозиторий сессий, gitignored;
+- `~/Backups/opencode-restic/` — restic-репозиторий сессий, вне git;
 - приватные ключи, `auth.json`, `service.json`, `openclaw.json`, `*.db` —
   в git не попадают.
 

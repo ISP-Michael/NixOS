@@ -43,12 +43,10 @@
         };
         initial_session = {
           command = "${config.programs.hyprland.package}/bin/Hyprland";
-          user = "Michael";
+          user = config.iso.user;
         };
       };
     };
-    upower.enable = true;
-    power-profiles-daemon.enable = true;
   };
 
   environment = {

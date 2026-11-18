@@ -1,41 +1,49 @@
 {
+  config,
   lib,
   pkgs,
   ...
 }:
 {
-  users = {
+  options.iso.user = lib.mkOption {
+    type = lib.types.str;
+    default = "Michael";
+    description = "Пользователь live-системы.";
+  };
+
+  config = {
     users = {
-      # Live-пользователь совпадает с хостовым: тогда пути в dotfiles
-      # (/home/Michael) и home-manager-конфиг работают без переделок.
-      Michael = {
-        isNormalUser = true;
-        shell = pkgs.zsh;
-        initialHashedPassword = "";
-        extraGroups = [
-          "wheel"
-          "networkmanager"
-          "video"
-          "audio"
-          "input"
-          "render"
-          "bluetooth"
-        ];
+      users = {
+        ${config.iso.user} = {
+          isNormalUser = true;
+          home = "/home/${config.iso.user}";
+          shell = pkgs.zsh;
+          initialHashedPassword = "";
+          extraGroups = [
+            "wheel"
+            "networkmanager"
+            "video"
+            "audio"
+            "input"
+            "render"
+            "bluetooth"
+          ];
+        };
       };
     };
-  };
 
-  security = {
-    sudo = {
-      wheelNeedsPassword = lib.mkForce false;
+    security = {
+      sudo = {
+        wheelNeedsPassword = lib.mkForce false;
+      };
     };
-  };
 
-  services = {
-    getty = {
-      # greetd сам стартует Hyprland, getty на tty1 только мешает.
-      autologinUser = lib.mkForce null;
-      helpLine = lib.mkForce "";
+    services = {
+      getty = {
+        # greetd сам стартует Hyprland, getty на tty1 только мешает.
+        autologinUser = lib.mkForce null;
+        helpLine = lib.mkForce "";
+      };
     };
   };
 }

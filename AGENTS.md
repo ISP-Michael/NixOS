@@ -13,7 +13,8 @@
 - `iso-*` — live-ISO.
 
 `common/` — переносимое, `host/` — только этот ноутбук, `iso/` — live,
-`user/` — Home Manager, `vendor/` — стороннее.
+`user/` — Home Manager, `apps/` — ручные/`/opt`-приложения, `vendor/` — стороннее.
+Идентичность и пути — `host/identity.nix` + `iso.user`/`iso.hostName`.
 
 ## Перед работой
 
@@ -29,17 +30,20 @@ git log --oneline -3
 ## Команды
 
 ```bash
-# проверить все конфигурации
-for c in MagicBook MagicBookInstall iso-lite iso iso-custom iso-media iso-full; do
-  nix eval --raw ".#nixosConfigurations.$c.config.system.build.toplevel.drvPath" >/dev/null \
-    && echo "OK $c" || echo "FAIL $c"
-done
+# проверить всё
+make check
+
+# строгая проверка (чистое дерево)
+make ci
 
 # ISO
-nix build .#iso-custom -o result-iso-custom --max-jobs 1 --cores 1
+make build-iso
 
 # хост (только по просьбе)
-nixos-rebuild switch --flake .#MagicBook --sudo
+make switch
+
+# здоровье manual-частей
+make status
 
 # формат (по желанию; может затронуть legacy-файлы)
 nix fmt
@@ -61,6 +65,11 @@ nix fmt
 - Не открывать GUI на активном столе; использовать пустой стол и
   `workspace = "N silent"`.
 - Не тащить в ISO Steam, Blender, Docker, виртуалки.
+- `/opt`-приложения обновлять через `apps/<name>/update.sh`, а не заменой
+  каталога наугад: скрипты делают backup и откат.
+- `~/Backups/opencode-restic` — данные, не git; не копировать в ISO.
+- Noctalia 5.5.0 патчится под fingerprint; не убирать патч без проверки
+  локскрина и `fprintd`.
 
 ## Стиль
 

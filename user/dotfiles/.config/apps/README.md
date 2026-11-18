@@ -1,7 +1,7 @@
 # Приложения: bootstrap + симлинки
 
-> Перенос на новую машину: [TRANSFER.md](TRANSFER.md)
-> Ручные `/opt`-приложения (Throne/Amnezia/Happ) и OpenClaw: [MANUAL-APPS.md](MANUAL-APPS.md)
+> Перенос на новую машину: `docs/transfer.md`.
+> Ручные `/opt`-приложения: `docs/manual-apps.md` и `apps/`.
 
 OpenCode и OpenClaw — живые приложения: они пишут конфиги, создают файлы,
 меняют токены и сессии. Поэтому здесь не Nix-модули, а bootstrap-скрипты.
@@ -56,12 +56,13 @@ user/dotfiles/.config/apps/install.sh --force
    systemctl --user enable --now openclaw-maintenance.timer
    systemctl --user enable --now openclaw-gateway-restart.timer
    systemctl --user enable --now opencode-backup.timer
+   systemctl --user enable --now opencode-update.timer
    ```
 
 ## Сессии и память
 
-Restic-репозиторий по умолчанию: `/etc/nixos/secrets/opencode-restic/`
-(каталог в `.gitignore`, в git не попадает). Пароль:
+Restic-репозиторий по умолчанию: `~/Backups/opencode-restic/`
+(вне git, в репозиторий не попадает). Пароль:
 `~/.local/state/opencode/restic.pass` (0600, генерируется при первом запуске).
 
 ```bash
@@ -72,7 +73,7 @@ Restic-репозиторий по умолчанию: `/etc/nixos/secrets/openc
 FORCE=1 ~/.local/state/opencode/restore-data.sh
 ```
 
-На новую машину переносится каталог `secrets/opencode-restic` и файл
+На новую машину переносится каталог `~/Backups/opencode-restic` и файл
 `restic.pass`. Git хранит только конфиги, не сессии: БД и агенты — это
 гигабайты и приватные данные.
 

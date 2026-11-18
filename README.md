@@ -10,29 +10,32 @@
 ```bash
 cd /etc/nixos
 
-# пересобрать хост
-nixos-rebuild switch --flake .#MagicBook --sudo
+# проверить всё
+make check
 
-# собрать live-ISO (рекомендуемый профиль)
-nix build .#iso-custom -o result-iso-custom
+# пересобрать хост (спросит sudo)
+make switch
 
-# проверить все конфигурации без сборки
-for c in MagicBook MagicBookInstall iso-lite iso iso-custom iso-media iso-full; do
-  nix eval --raw ".#nixosConfigurations.$c.config.system.build.toplevel.drvPath" >/dev/null || echo "FAIL $c"
-done
+# собрать live-ISO
+make build-iso
+
+# здоровье manual-частей
+make status
 ```
 
 ## Структура
 
 | Каталог | Что внутри |
 |---|---|
-| `common/` | Переносимый системный слой: локаль, время, PipeWire, nix, appimage, nix-ld, zsh, bluetooth, MTP, AmneziaVPN-сервис. Используется и хостом, и ISO. |
-| `host/` | Только MagicBook: железо, диск, сеть, безопасность, сервисы, пользователи, Home Manager. Точка входа — `host/default.nix`. |
+| `apps/` | Ручные/`/opt`-приложения: Amnezia, Happ, Throne, OpenCode, SearXNG. Host — официальные версии, ISO — pinned. |
+| `common/` | Переносимый системный слой: локаль, время, PipeWire, nix, appimage, nix-ld, zsh, bluetooth, MTP. Используется и хостом, и ISO. |
+| `host/` | Только MagicBook: identity, железо, диск, сеть, безопасность, сервисы, пользователи, Home Manager. Точка входа — `host/default.nix`. |
 | `iso/` | Live-система: профили, Hyprland, копия репозитория в `/etc/nixos`, установочные overrides. Точка входа — `iso/default.nix`. |
 | `user/` | Home Manager: `default.nix` → база, XDG, пакеты, программы, тема, dotfiles. |
 | `vendor/` | Сторонний код с собственной лицензией (`vendor/happ`). |
 | `secrets/` | Зашифрованные sops-секреты и пример снимка. Приватные ключи сюда не кладутся. |
-| `docs/` | Архитектура, правила, ISO, секреты, ручные приложения, перенос. |
+| `scripts/` | `ci.sh`, `deploy.sh`, `push.sh`, `status.sh`. |
+| `docs/` | Архитектура, правила, ISO, секреты, ручные приложения, перенос, операции. |
 | `assets/` | Картинки и обои; видео игнорируются git. |
 
 ## Документация
@@ -45,6 +48,8 @@ done
 - [`docs/secrets.md`](docs/secrets.md) — sops, ключи, новые машины.
 - [`docs/manual-apps.md`](docs/manual-apps.md) — `/opt`-приложения и их проверка.
 - [`docs/transfer.md`](docs/transfer.md) — перенос OpenCode/OpenClaw на другую машину.
+- [`docs/operations.md`](docs/operations.md) — проверки, деплой, пуш, git.
+- [`docs/new-machine.md`](docs/new-machine.md) — новая машина, железо, sops.
 
 ## Что важно
 

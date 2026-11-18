@@ -1,9 +1,13 @@
 {
+  config,
+  ...
+}:
+{
   users = {
     groups = {
       libvirtd = {
         members = [
-          "Michael"
+          config.host.user
         ];
       };
       media = {

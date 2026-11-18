@@ -18,18 +18,17 @@
       dig
       disko
       dmidecode
+      dpkg
       docker-compose
       evtest
       exfatprogs
-      flatpak
       glibc
       glibcLocales
       gnupg
-      gpu-screen-recorder
       iotop
+      jq
       keyd
       killall
-      libfprint-tod
       libffi
       libusb1
       lm_sensors
@@ -40,9 +39,9 @@
       nixos-rebuild-ng
       ntfsprogs-plus
       openssl
-      pipewire
       pkg-config
       polkit
+      python3
       restic
       ryzenadj
       smartmontools
@@ -50,13 +49,11 @@
       sqlite
       ssh-to-age
       tcpdump
-      tlp
       tshark
+      unzip
       udisks
       usbutils
       wireshark
-      wireplumber
-      xdg-desktop-portal
       zlib
       zellij
       zsh

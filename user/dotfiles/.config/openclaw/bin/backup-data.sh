@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Incremental restic backup of OpenCode/OpenClaw data (sessions, memory).
 # Repo and password are outside git:
-#   /etc/nixos/secrets/opencode-restic/   (gitignored)
+#   ~/Backups/opencode-restic/            (вне репозитория)
 #   ~/.local/state/opencode/restic.pass   (0600)
 set -euo pipefail
 
 HOME="${HOME:?}"
-REPO="${RESTIC_REPOSITORY:-/etc/nixos/secrets/opencode-restic}"
+REPO="${RESTIC_REPOSITORY:-$HOME/Backups/opencode-restic}"
 PASS="${RESTIC_PASSWORD_FILE:-$HOME/.local/state/opencode/restic.pass}"
 HOST="$(hostname -s)"
 TMPD="$(mktemp -d)"

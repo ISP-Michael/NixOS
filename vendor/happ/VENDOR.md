@@ -7,6 +7,6 @@
   версия и hash; подробности — в комментариях `package.nix`.
 - Лицензия: GPL-3.0 (`LICENSE`), отличается от Unlicense корневого репозитория.
 - Где используется: только ISO (`iso/vpn.nix`). На хосте — ручной `/opt/happ`
-  (`host/programs/happ.nix`).
+  (`apps/happ/module.nix` + `apps/happ/update.sh`).
 - Обновление: менять версию/URL/hash в `package.nix`, затем собрать ISO.
   Не запускать два TUN-клиента одновременно.

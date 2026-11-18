@@ -2,8 +2,8 @@
   imports = [
     ./defaults.nix
     ./gamemode.nix
-    ./happ.nix
     ./npm.nix
-    ./throne.nix
+    ../../apps/happ/module.nix
+    ../../apps/throne/module.nix
   ];
 }

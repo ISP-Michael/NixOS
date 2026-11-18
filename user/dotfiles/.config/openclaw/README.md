@@ -35,7 +35,7 @@ FORCE=1 user/dotfiles/.config/apps/install.sh  # перезаписать, сд�
 secret store не трогает.
 
 Сессии и память бэкапятся отдельно: `opencode-backup.timer` → `backup-data.sh`
-(restic, репозиторий в `secrets/opencode-restic`, пароль в
+(restic, репозиторий в `~/Backups/opencode-restic`, пароль в
 `~/.local/state/opencode/restic.pass`). Восстановление — `restore-data.sh`.
 
 Включить один раз:

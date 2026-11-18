@@ -8,7 +8,7 @@ let
   profileData = import ./profile-data.nix;
 
   # OpenCode 2.3.0: официальный релиз, а не сломанный nixpkgs-пакет.
-  opencodePackage = import ./packages/opencode.nix { inherit pkgs; };
+  opencodePackage = import ../apps/opencode/package.nix { inherit pkgs; };
 
   # Chromium нужен только Playwright MCP OpenCode. В системный PATH
   # кладём обёртку без desktop-файла, чтобы в меню остался только Firefox.

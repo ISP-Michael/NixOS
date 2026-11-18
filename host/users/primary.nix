@@ -6,8 +6,9 @@
 {
   users = {
     users = {
-      Michael = {
+      ${config.host.user} = {
         isNormalUser = true;
+        home = config.host.home;
         shell = pkgs.zsh;
         hashedPasswordFile =
           if config.sops.secrets ? "user-password" then

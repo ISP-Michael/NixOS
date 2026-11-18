@@ -1,5 +1,6 @@
 {
   imports = [
+    ./identity.nix
     ../common
     ./desktop
     ./hardware

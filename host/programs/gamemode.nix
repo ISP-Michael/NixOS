@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   ...
 }:
@@ -19,7 +20,7 @@
   # Allow only the GameMode helper actions for this user.
   security.polkit.extraConfig = lib.mkAfter ''
     polkit.addRule(function(action, subject) {
-      if (subject.user == "Michael" &&
+      if (subject.user == "${config.host.user}" &&
           action.id.indexOf("com.feralinteractive.GameMode.") === 0) {
         return polkit.Result.YES;
       }

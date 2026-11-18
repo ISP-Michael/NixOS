@@ -28,6 +28,14 @@ sops-ключа хоста или конкретного пользовател�
 ```text
 .
 ├── flake.nix                 # inputs, mkHost, mkIso, configs, packages
+├── Makefile                  # check, ci, build-iso, switch, push, status
+├── apps/
+│   ├── README.md             # manual host vs pinned ISO
+│   ├── amnezia/              # module.nix, package.nix, update.sh
+│   ├── happ/                 # module.nix, update.sh
+│   ├── opencode/             # package.nix, update.sh
+│   ├── searxng/              # package.nix (upstream master)
+│   └── throne/               # module.nix, update.sh
 ├── common/
 │   ├── default.nix           # hub: только imports
 │   ├── audio/pipewire.nix
@@ -44,13 +52,13 @@ sops-ключа хоста или конкретного пользовател�
 │   │   ├── nix-ld.nix
 │   │   └── zsh.nix
 │   ├── services/base.nix     # blueman, libinput, udisks2, gvfs, upower, PPD
-│   ├── system/
-│   │   ├── environment.nix   # GTK_USE_PORTAL, zshenv.local
-│   │   ├── locale.nix
-│   │   └── time.nix          # timezone + chrony (NTS off)
-│   └── vpn/amnezia-vpn.nix   # юнит и обёртка /opt/AmneziaVPN
+│   └── system/
+│       ├── environment.nix   # GTK_USE_PORTAL, zshenv.local
+│       ├── locale.nix
+│       └── time.nix          # timezone + chrony (NTS off)
 ├── host/
 │   ├── default.nix           # hub: common + домены
+│   ├── identity.nix          # user, home, repoPath, hostName, diskDevice
 │   ├── home-manager.nix      # HM-обвязка, импортирует user/
 │   ├── install.nix           # только для MagicBookInstall
 │   ├── hardware/
@@ -78,9 +86,8 @@ sops-ключа хоста или конкретного пользовател�
 │   ├── programs/
 │   │   ├── defaults.nix      # direnv, steam, virt-manager, ydotool
 │   │   ├── gamemode.nix
-│   │   ├── happ.nix          # ручной /opt/happ
 │   │   ├── npm.nix
-│   │   └── throne.nix        # /opt/Throne + polkit
+│   │   └── ../../apps/{happ,throne}/module.nix
 │   ├── security/
 │   │   ├── sops.nix
 │   │   └── ssh.nix
@@ -98,7 +105,7 @@ sops-ключа хоста или конкретного пользовател�
 │   │   └── state.nix         # stateVersion
 │   └── users/
 │       ├── groups.nix
-│       └── michael.nix
+│       └── primary.nix       # имя пользователя из host.identity
 ├── iso/
 │   ├── default.nix           # hub: common + ISO-модули
 │   ├── base.nix              # stateVersion, zram, ISO-настройки
@@ -106,17 +113,16 @@ sops-ключа хоста или конкретного пользовател�
 │   ├── home.nix              # Home Manager для live
 │   ├── networking.nix        # NM, без SSH
 │   ├── nix.nix               # trusted-users, allowUnfree
-│   ├── packages/             # opencode.nix, amnezia-vpn.nix
 │   ├── profile-data.nix      # чистые флаги профилей
 │   ├── profiles.nix          # пакеты профилей + option iso.profile
 │   ├── repo.nix              # копия репо в /etc/nixos
-│   ├── runtime.nix           # tun, npm, SearXNG
-│   ├── users.nix             # live-пользователь Michael
+│   ├── runtime.nix           # tun, npm, SearXNG из apps/
+│   ├── users.nix             # live-пользователь (iso.user)
 │   ├── vpn.nix               # AmneziaVPN + Happ (только не-lite)
 │   └── config/hypr/          # live-конфиг Hyprland
 ├── user/
 │   ├── default.nix           # hub: base, dotfiles, packages, programs, theme, xdg
-│   ├── base.nix              # имя, stateVersion, session vars, dconf
+│   ├── base.nix              # identity, session vars, dconf
 │   ├── xdg.nix               # XDG, mimeApps, userDirs, unciv.desktop
 │   ├── packages/
 │   │   ├── default.nix       # основной список
@@ -126,8 +132,11 @@ sops-ключа хоста или конкретного пользовател�
 │   ├── theme/                # gtk/fonts/cursor + KDE-скрипт
 │   └── dotfiles/             # живые конфиги → ~/.config
 ├── vendor/happ/              # сторонний Happ: module.nix + package.nix
-├── secrets/                  # secrets.yaml, пример, restic (ignored)
+├── secrets/                  # secrets.yaml, пример; restic — в ~/Backups
 ├── assets/                   # картинки/обои; видео ignored
+├── scripts/                  # ci.sh, deploy.sh, push.sh, status.sh
+├── Makefile                  # удобные цели
+├── AGENTS.md                 # правила для агента
 └── docs/
 ```
 
@@ -147,15 +156,17 @@ flake.nix
       → ../common/default.nix
       → iso/{base,nix,networking,users,profiles,desktop,runtime,home,repo}
       → iso/vpn.nix (если profile-data.vpn = true)
-          → ../common/vpn/amnezia-vpn.nix
+          → ../apps/amnezia/module.nix
           → ../vendor/happ/module.nix
 ```
 
 ## Границы
 
 - `common/` — можно использовать и хосту, и ISO. Никаких `Michael`, `/home/Michael`, `/dev/nvme0n1`, sops-путей.
+- `host/hardware/hardware-configuration.nix`, `boot.nix` и `kernel.nix` —
+  MagicBook/AMD; для другой машины заменить их и `host.diskDevice`.
 - `host/` — можно всё, что относится к MagicBook. `home-manager.nix` — единственное место, где хост подключает `user/`.
-- `iso/` — можно использовать `common/` и `vendor/`. Нельзя тянуть `host/`, кроме `common/vpn/amnezia-vpn.nix` (он уже в common).
+- `iso/` — можно использовать `common/`, `vendor/` и `apps/`. Нельзя тянуть `host/`.
 - `user/` — Home Manager. Не знает, хост это или ISO; отличия задаются точкой входа (`host/home-manager.nix` или `iso/home.nix`).
 - `vendor/` — не править без причины; локальные изменения фиксировать в `vendor/happ/README.md` или `docs/decisions.md`.
 
@@ -170,6 +181,8 @@ flake.nix
 | Новый пакет в ISO-профиль | `iso/profiles.nix` (списки `common/work/agent/...`) |
 | Новый профиль ISO | `iso/profile-data.nix` + `iso/profiles.nix` + таблица в `docs/iso.md` |
 | Новый общий модуль | `common/<домен>/<name>.nix` + импорт в `common/default.nix` |
+| Новое ручное/`/opt`-приложение | `apps/<name>/` + `module.nix`, `update.sh`, `README.md` |
+| Новая машина/пользователь | `host/identity.nix`; hardware — свой `host/hardware` |
 | Новая тема/цвета | `user/theme/` |
 | Новый dotfile | `user/dotfiles/.config/<app>` + список в `user/dotfiles/default.nix` |
 | Новый секрет | `secrets/secrets.yaml` + `host/security/sops.nix` |
@@ -188,7 +201,7 @@ HM-модуль с `settings` — они будут писать в один и 
 
 - `secrets/secrets.yaml` — зашифрован, можно коммитить.
 - `secrets/apps.yaml` — необязательный зашифрованный снимок; в ISO не копируется.
-- `secrets/opencode-restic/` — restic-репозиторий, gitignored, в ISO не копируется.
+- `~/Backups/opencode-restic/` — restic-репозиторий, вне git и вне ISO.
 - `assets/videos/` — gitignored; в ISO не копируется.
 - Приватные ключи, `auth.json`, `service.json`, `openclaw.json`, `*.db` — никогда в git.
 
@@ -197,17 +210,14 @@ HM-модуль с `settings` — они будут писать в один и 
 ```bash
 cd /etc/nixos
 
-# все конфигурации
-for c in MagicBook MagicBookInstall iso-lite iso iso-custom iso-media iso-full; do
-  nix eval --raw ".#nixosConfigurations.$c.config.system.build.toplevel.drvPath" >/dev/null \
-    && echo "OK $c" || echo "FAIL $c"
-done
+# все конфигурации + пакеты
+make check
 
-# пакеты ISO
-nix eval --raw .#packages.x86_64-linux.iso-custom.outPath >/dev/null && echo OK
+# строгая проверка (чистое дерево)
+make ci
 
-# формат
-nix fmt
+# здоровье manual-частей
+make status
 ```
 
 Сборка ISO на 6 ГБ ОЗУ: `--max-jobs 1 --cores 1`, zstd 15 (уже в `iso/base.nix`).

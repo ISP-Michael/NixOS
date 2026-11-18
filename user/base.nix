@@ -1,12 +1,13 @@
 {
   pkgs,
+  identity,
   ...
 }:
 {
   home = {
-    username = "Michael";
+    username = identity.user;
     stateVersion = "26.05";
-    homeDirectory = "/home/Michael";
+    homeDirectory = identity.home;
     sessionVariables = {
       BROWSER = "zen";
       EDITOR = "nvim";

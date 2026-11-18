@@ -9,8 +9,8 @@
 #   - GUI бинарь запускается через writeShellScriptBin-обёртку с nix-ld
 #   - TUN/привилегии решаются через setcap на бинаре-ядра в /opt
 #   - desktop-файл для меню
-# Throne (версия — docs/manual-apps.md) -> /opt/Throne
-# (ThroneCore setuid root для TUN).
+# Throne: host manual /opt/Throne; обновление — apps/throne/update.sh.
+# ISO не включает Throne (там Happ).
 # ─────────────────────────────────────────────────────────────
 let
   optBinPath = "/opt/Throne";

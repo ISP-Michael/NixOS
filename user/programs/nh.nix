@@ -1,8 +1,12 @@
 {
+  identity,
+  ...
+}:
+{
   programs = {
     nh = {
       enable = true;
-      flake = /etc/nixos;
+      flake = identity.repoPath;
       clean = {
         enable = true;
         dates = "daily";

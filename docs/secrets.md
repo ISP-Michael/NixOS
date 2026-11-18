@@ -1,6 +1,6 @@
 # Ключи sops: сборка, перенос, новые машины
 
-Проверено 15.11.2026. Это **не** хранилище ключей, а инструкция. Приватные
+Проверено 18.11.2026. Это **не** хранилище ключей, а инструкция. Приватные
 ключи сюда не писать.
 
 ## TL;DR
@@ -16,6 +16,53 @@
 - Для Windows/macOS ключ — обычный файл age; NixOS собирается только на
   Linux (на Windows — WSL2, на macOS — Linux-builder/VM).
 
+## Как это работает
+
+1. `.sops.yaml` — это **политика**, не секрет. В нём перечислены публичные
+   age-получатели (admin, host MagicBook, host новой машины).
+2. `sops` генерирует случайный data key, шифрует им значения в
+   `secrets/secrets.yaml`, а сам data key шифрует отдельно для каждого
+   получателя. Поэтому файл может расшифровать любой, у кого есть
+   соответствующий приватный ключ.
+3. Приватные ключи в git не попадают:
+   - **host-ключ** — `/etc/ssh/ssh_host_ed25519_key` на самой машине;
+   - **admin-ключ** — отдельный age-ключ, который хранится вне машины
+     (парольный менеджер/флешка). Он нужен для `sops updatekeys` и восстановления.
+4. `nix build`/`nixos-rebuild build` только собирают; sops-nix расшифровывает
+   секреты при **активации**. Поэтому сборка работает без ключа, а
+   `switch`/`nixos-install` — нет.
+5. На MagicBook sops-nix берёт host-ключ из
+   `/etc/ssh/ssh_host_ed25519_key` и складывает age-identity в
+   `/run/secrets-for-users.d/age-keys.txt` (root, 0600).
+
+### Установка с любой машины: два рабочих пути
+
+**Путь A — с admin-ключом (самый быстрый, если ключ под рукой).**
+
+1. На новой машине заранее сгенерировать host-ключ (или взять уже
+   сгенерированный установщиком).
+2. Получить его публичный age:
+   `ssh-to-age -i /etc/ssh/ssh_host_ed25519_key.pub`.
+3. На любой машине с admin-ключом добавить этот age в `.sops.yaml` и выполнить
+   `SOPS_AGE_KEY_FILE=/path/to/admin.age sops updatekeys secrets/secrets.yaml`.
+4. Установить `#MagicBook` — host-ключ уже есть и может расшифровать пароль.
+
+**Путь B — без admin-ключа, через `MagicBookInstall`.**
+
+1. Поставить `#MagicBookInstall` (sops выключен, пароль `nixos`).
+2. Загрузиться, сгенерировать host-ключ, получить его age.
+3. На машине, где есть admin-ключ (или на старом MagicBook), добавить новый
+   age в `.sops.yaml` и сделать `updatekeys`.
+4. Скопировать обновлённый `secrets/secrets.yaml` на новую машину и
+   пересобрать `#MagicBook`. Пароль снова берётся из sops.
+
+Если admin-ключа нет вообще, а host-ключ старой машины потерян — секреты
+криптографически не восстановить. Тогда создаётся новый `secrets.yaml` с
+новыми получателями; старые значения придётся ввести заново.
+
+**Приватный host-ключ никогда не копировать на другую машину.** Переносится
+только публичный age-получатель.
+
 ## Что где лежит
 
 | Файл | Назначение | Нужен при сборке? |
@@ -23,7 +70,7 @@
 | `secrets/secrets.yaml` | системный секрет `user-password` | нет, только при активации |
 | `secrets/apps.yaml` | необязательный снимок OpenCode/OpenClaw | нет |
 | `.sops.yaml` | политика: кому можно расшифровывать | нет |
-| `secrets/opencode-restic/` | restic-репозиторий сессий, не sops | нет |
+| `~/Backups/opencode-restic/` | restic-репозиторий сессий, не sops | нет |
 | `~/.local/state/opencode/restic.pass` | пароль restic | нет |
 
 ## Текущее состояние (после 17.11.2026)
@@ -41,6 +88,13 @@
 работает через сгенерированный sops-nix `/run/secrets-for-users.d/age-keys.txt`.
 
 Проверка без вывода секрета:
+
+```bash
+make host-age
+make sops-check
+```
+
+Или вручную:
 
 ```bash
 sudo SOPS_AGE_KEY_FILE=/run/secrets-for-users.d/age-keys.txt \
@@ -152,7 +206,7 @@ sudo nixos-rebuild switch --flake /etc/nixos#MagicBook
 - `~/.local/state/opencode/service.json`.
 
 Снимок: `user/dotfiles/.config/apps/backup.sh` → `secrets/apps.yaml`
-(если создан). Сессии: `secrets/opencode-restic` + `restic.pass`.
+(если создан). Сессии: `~/Backups/opencode-restic` + `restic.pass`.
 После добавления новых получателей не забудь `sops updatekeys` и для
 `apps.yaml`.
 
@@ -182,5 +236,5 @@ sudo SOPS_AGE_KEY_FILE=/run/secrets-for-users.d/age-keys.txt \
   `.pub` оставлены 0644.
 - Не копировать host-ключ на другие машины: используй его публичный
   age-recipient.
-- Не коммитить `secrets/opencode-restic`, `restic.pass`, `auth.json`,
+- Не коммитить `~/Backups/opencode-restic`, `restic.pass`, `auth.json`,
   `service.json`, `openclaw.json`, `*.db`.

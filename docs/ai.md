@@ -23,12 +23,15 @@
 | Вход Home Manager | `user/default.nix` |
 | Профили ISO | `iso/profiles.nix` + `iso/profile-data.nix` |
 | Пакеты ISO | `iso/profiles.nix` |
-| OpenCode 2.3.0 | `iso/packages/opencode.nix` |
-| AmneziaVPN `.run` | `iso/packages/amnezia-vpn.nix` |
-| Happ | `vendor/happ/` |
+| OpenCode 2.3.0 (ISO) | `apps/opencode/package.nix` |
+| AmneziaVPN `.run` | `apps/amnezia/package.nix` + `apps/amnezia/module.nix` |
+| Happ | `apps/happ/module.nix` (host), `vendor/happ/` (ISO) |
+| Прокси/ручные apps | `apps/*/update.sh` + `README.md` |
 | Живые dotfiles | `user/dotfiles/.config/` |
 | Секреты | `secrets/secrets.yaml` |
 | Документация | `docs/` |
+| CI/деплой | `scripts/ci.sh`, `scripts/deploy.sh`, `scripts/push.sh`, `Makefile` |
+| Идентичность | `host/identity.nix` |
 
 ## Команды
 
@@ -36,16 +39,19 @@
 cd /etc/nixos
 
 # проверить всё (быстро, без сборки)
-for c in MagicBook MagicBookInstall iso-lite iso iso-custom iso-media iso-full; do
-  nix eval --raw ".#nixosConfigurations.$c.config.system.build.toplevel.drvPath" >/dev/null \
-    && echo "OK $c" || echo "FAIL $c"
-done
+make check
+
+# строгая проверка (нужно чистое дерево)
+make ci
 
 # собрать ISO
-nix build .#iso-custom -o result-iso-custom --max-jobs 1 --cores 1
+make build-iso
 
 # пересобрать хост (только по просьбе)
-nixos-rebuild switch --flake .#MagicBook --sudo
+make switch
+
+# здоровье manual-частей
+make status
 
 # формат (по желанию; может затронуть legacy-файлы)
 nix fmt
@@ -96,8 +102,9 @@ nix fmt
 
 ### Обновить OpenCode
 
-`iso/packages/opencode.nix`: версия, URL npm-пакета, hash. Проверить
-`opencode --version` (у npm-пакета может быть старый `--version`, это известно).
+ISO: `apps/opencode/package.nix` — версия, URL npm-пакета, hash.
+Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обновляет
+`~/.opencode/bin/opencode`. Проверить `opencode --version`.
 
 ### Обновить Happ
 
@@ -112,14 +119,20 @@ nix fmt
   сабмап со скриншотами сейчас не подключён. Вернуть можно из `dd6f314`.
 - `user/dotfiles/default.nix` — живые симлинки. После переименования каталога
   старые ссылки становятся dangling; чинить `ln -sfn` на новый путь.
-- `/etc/nixos` — жёстко зашитый путь в `user/dotfiles`, `iso/home.nix`,
-  `iso/config/hypr`, `user/programs/nh.nix`, `user/programs/git.nix`,
-  `user/dotfiles/.config/apps/*.sh`. Это ожидаемо для этой машины.
+- `/etc/nixos` — путь по умолчанию в `host/identity.nix`; HM получает
+  `identity.repoPath`. Live-путь `/etc/nixos` жёстко зашит в
+  `iso/config/hypr/hyprland.lua`, потому что ISO всегда копируется туда.
 - ISO на 6 ГБ: zstd 15, `--max-jobs 1 --cores 1`; две сборки одновременно
   могут убить mksquashfs по памяти.
 - `nix flake check` может быть тяжёлым; для быстрой проверки достаточно
-  `nix eval` всех конфигураций.
-- `secrets/opencode-restic/` — 700+ МБ, gitignored; не копировать в ISO.
+  `make check`.
+- `~/Backups/opencode-restic/` — 700+ МБ, вне git; не копировать в ISO.
+- `usque` удалён 18.11.2026: не использовался, SearXNG работает без прокси.
+- `opencode-update.timer` теперь в репозитории:
+  `user/dotfiles/.config/opencode/systemd/user/`.
+- `Noctalia 5.4.1` патчится под fingerprint и собирается из исходников
+  (кэш невозможен из-за патча); после первой сборки локальный store
+  переиспользуется.
 
 ## После большой правки
 

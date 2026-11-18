@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   self,
   nur,
@@ -17,11 +18,19 @@
         nur
         system
         ;
+      identity = {
+        inherit (config.host)
+          user
+          home
+          repoPath
+          gitName
+          gitEmail
+          ;
+      };
     };
     users = {
-      Michael = {
+      ${config.host.user} = {
         # Вся пользовательская конфигурация собрана в user/default.nix.
-        # Так точка входа одна и для хоста, и для чтения агентом.
         imports = [
           "${self}/user"
         ];

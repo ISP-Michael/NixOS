@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   ...
 }:
@@ -15,7 +16,7 @@
 
   users = {
     users = {
-      Michael = {
+      ${config.host.user} = {
         hashedPasswordFile = lib.mkForce null;
         initialPassword = lib.mkForce "nixos";
       };

@@ -1,0 +1,20 @@
+#!/bin/sh
+# Update the manually installed OpenCode host binary to the latest v2 tag.
+# Kept in the repo so a new machine gets the same automation.
+set -eu
+LOG="$HOME/.local/state/opencode/update.log"
+mkdir -p "$(dirname "$LOG")"
+exec >>"$LOG" 2>&1
+echo "=== $(date -Is)"
+
+CURRENT="$("$HOME/.opencode/bin/opencode" --version | awk '{print $2}' | sed 's/^v//')"
+LATEST="$(curl -fsSL --max-time 20 'https://api.github.com/repos/anomalyco/opencode/tags?per_page=100' \
+  | python3 -c 'import json,sys; t=[x["name"] for x in json.load(sys.stdin) if x["name"].startswith("v2.")]; print(t[0][1:] if t else "")' \
+  2>/dev/null || true)"
+
+echo "current=$CURRENT latest=$LATEST"
+[ -n "$LATEST" ] || { echo "latest tag not found"; exit 0; }
+[ "$CURRENT" = "$LATEST" ] && { echo "already up to date"; exit 0; }
+
+"$HOME/.opencode/bin/opencode" upgrade "$LATEST" --method curl
+echo "done: $("$HOME/.opencode/bin/opencode" --version)"

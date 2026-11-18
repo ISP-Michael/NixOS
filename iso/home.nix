@@ -1,14 +1,11 @@
 {
+  config,
   inputs,
   lib,
   nur,
   self,
   ...
 }:
-let
-  # Копия репозитория, которую activation-скрипт кладёт в /etc/nixos.
-  repo = "/etc/nixos";
-in
 {
   home-manager = {
     useGlobalPkgs = true;
@@ -20,9 +17,16 @@ in
         nur
         self
         ;
+      identity = {
+        user = config.iso.user;
+        home = "/home/${config.iso.user}";
+        repoPath = "/etc/nixos";
+        gitName = config.iso.user;
+        gitEmail = "mtr.mikhail090905@gmail.com";
+      };
     };
-    users.Michael =
-      { config, pkgs, ... }:
+    users.${config.iso.user} =
+      { config, pkgs, identity, ... }:
       let
         link = path: config.lib.file.mkOutOfStoreSymlink path;
       in
@@ -44,13 +48,13 @@ in
           file = {
             "Data/Pictures/Wallpapers/default.png".source = "${pkgs.hyprland}/share/hypr/wall1.png";
             "Pictures/screenshots/.keep".text = "";
-            ".config/fastfetch".source = link "${repo}/user/dotfiles/.config/fastfetch";
-            ".config/hypr".source = link "${repo}/iso/config/hypr";
-            ".config/kitty".source = link "${repo}/user/dotfiles/.config/kitty";
-            ".config/nvim".source = link "${repo}/user/dotfiles/.config/nvim";
-            ".config/tmux".source = link "${repo}/user/dotfiles/.config/tmux";
-            ".config/yazi".source = link "${repo}/user/dotfiles/.config/yazi";
-            ".config/zsh".source = link "${repo}/user/dotfiles/.config/zsh";
+            ".config/fastfetch".source = link "${identity.repoPath}/user/dotfiles/.config/fastfetch";
+            ".config/hypr".source = link "${identity.repoPath}/iso/config/hypr";
+            ".config/kitty".source = link "${identity.repoPath}/user/dotfiles/.config/kitty";
+            ".config/nvim".source = link "${identity.repoPath}/user/dotfiles/.config/nvim";
+            ".config/tmux".source = link "${identity.repoPath}/user/dotfiles/.config/tmux";
+            ".config/yazi".source = link "${identity.repoPath}/user/dotfiles/.config/yazi";
+            ".config/zsh".source = link "${identity.repoPath}/user/dotfiles/.config/zsh";
           };
         };
 

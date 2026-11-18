@@ -3,10 +3,9 @@
   ...
 }:
 {
-  # Happ 4.7.2 установлен вручную в /opt/happ (официальный .deb, repack).
-  # Nix-модуль vendor/happ/module.nix на хосте не импортируется: NixOS
-  # не управляет /opt/happ и не перезаписывает его при activation/reboot.
-  # Обновление — заменить /opt/happ и `sudo systemctl restart happd`.
+  # Host: Happ 4.7.2+ установлен вручную в /opt/happ (официальный .deb).
+  # ISO использует vendor/happ/module.nix с pinned-пакетом.
+  # Обновление — apps/happ/update.sh (backup + restart happd).
   environment.systemPackages = [
     pkgs.net-tools
     pkgs.lsb-release
