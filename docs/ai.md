@@ -119,6 +119,11 @@ Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обнов�
   сабмап со скриншотами сейчас не подключён. Вернуть можно из `dd6f314`.
 - `user/dotfiles/default.nix` — живые симлинки. После переименования каталога
   старые ссылки становятся dangling; чинить `ln -sfn` на новый путь.
+- `~/.config/{yazi,tmux}` — симлинки в репозиторий, поэтому Noctalia пишет туда
+  свои выходы: `yazi/flavors/noctalia.yazi/*` и `tmux/themes/noctalia.conf`.
+  Это не исходники, а рендер палитры обоев (community-шаблоны `yazi` и `tmux`),
+  они в `.gitignore`; после смены обоев их не коммитить. `yazi/theme.toml` —
+  наоборот, ручная база, её правит только post-hook (`[flavor]`), она в git.
 - `/etc/nixos` — путь по умолчанию в `host/identity.nix`; HM получает
   `identity.repoPath`. Live-путь `/etc/nixos` жёстко зашит в
   `iso/config/hypr/hyprland.lua`, потому что ISO всегда копируется туда.
