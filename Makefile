@@ -1,10 +1,13 @@
-.PHONY: check ci fmt build-iso switch build push status
+.PHONY: check ci hypr-check fmt build-iso switch build push status
 
 check:
 	ALLOW_DIRTY=1 ./scripts/ci.sh
 
 ci:
 	./scripts/ci.sh
+
+hypr-check:
+	./scripts/hypr-check.sh
 
 fmt:
 	nix fmt

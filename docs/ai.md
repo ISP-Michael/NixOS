@@ -115,6 +115,11 @@ Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обнов�
 
 - `xdg.desktopEntries` в текущем Home Manager сломан (`extraConfig` удалён).
   Для desktop-файлов использовать `xdg.dataFile."applications/<name>.desktop"`.
+- Hyprland: общие модули перечислены в
+  `user/dotfiles/.config/hypr/manifest.lua`; системные отличия — в
+  `profile.lua` (ISO перекрывает его через `package.path`). Новый общий
+  файл добавлять в manifest, хостовые пути — только в `profile.lua`.
+  Проверка: `make hypr-check` или `Hyprland --verify-config -c ...`.
 - `submaps.lua` удалён; ISO больше не делает `require('submaps')`. Print-
   сабмап со скриншотами сейчас не подключён. Вернуть можно из `dd6f314`.
 - `user/dotfiles/default.nix` — живые симлинки. После переименования каталога

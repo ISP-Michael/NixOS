@@ -105,10 +105,13 @@ MagicBook (`/dev/nvme0n1`). Для другой машины нужен свой
 
 ## Живые конфиги
 
-Hyprland на live использует `iso/config/hypr`, а остальные конфиги
-( kitty, nvim, tmux, zsh, yazi, fastfetch) — из `user/dotfiles/.config`
-через `iso/home.nix`. Это позволяет не тащить host-autostart с Zen,
-Telegram, Obsidian и Lutris.
+Hyprland на live использует `iso/config/hypr`: собственный вход,
+`profile.lua` и `autostart.lua`. Общие модули (`manifest.lua`, `settings/`,
+`binds/`, `rules/`) берутся из `user/dotfiles/.config/hypr`; ISO-вход ставит
+свой каталог первым в `package.path`, поэтому host-профиль и host-автостарт
+с Zen, Telegram, Obsidian и Lutris не подхватываются. Остальные конфиги
+(kitty, nvim, tmux, zsh, yazi, fastfetch) — из `user/dotfiles/.config` через
+`iso/home.nix`.
 
 `submaps.lua` удалён; ISO не делает `require('submaps')`. Print-сабмап со
 скриншотами сейчас не подключён; вернуть можно из `dd6f314`.

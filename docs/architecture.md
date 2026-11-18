@@ -197,6 +197,14 @@ flake.nix
 Правило: если приложение управляется через `dotfiles`, не включай для него
 HM-модуль с `settings` — они будут писать в один и тот же каталог.
 
+### Hyprland
+
+`user/dotfiles/.config/hypr/` — вход хоста и общие модули; `iso/config/hypr/`
+— вход live-ISO, live-профиль и live-автостарт. Общая композиция — в
+`manifest.lua`, системные отличия — в `profile.lua` (ISO перекрывает его
+через `package.path`). Правила, клавиши и опции разложены по `rules/`,
+`binds/` и `settings/`; подробности — в [`hyprland.md`](hyprland.md).
+
 ## Секреты и крупные файлы
 
 - `secrets/secrets.yaml` — зашифрован, можно коммитить.

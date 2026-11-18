@@ -22,7 +22,7 @@
 | `host/soft/programs/throne.nix` | 17.11.2026 | Nix-модуль `programs.throne` выключен; используется `/opt/Throne` + `apps/throne/module.nix`. |
 | `host/scripts/` | 17.11.2026 | Не scripts, а activation-линкер `/etc/keyd`. Keyd переведён на `environment.etc` в `host/hardware/keyd/`. |
 | `host/scripts/etc/openclaw/README.md` | 17.11.2026 | Пустой системный каталог; OpenClaw — пользовательский. |
-| `user/dotfiles/.config/hypr/README.md` | 17.11.2026 | Пустой файл. |
+| `config.lua`, `variables.lua`, `binds.lua`, `windowrules.lua` | 18.11.2026 | Плоский Hyprland-конфиг разложен по `settings/`, `binds/`, `rules/`, `profile.lua`; см. `docs/hyprland.md`. |
 | input `hyprland` | 17.11.2026 | Не использовался: пакет берётся из nixpkgs (`pkgs.hyprland`). |
 
 ## Выключено намеренно
@@ -47,6 +47,7 @@
 
 - **`submaps.lua` удалён.** ISO больше не делает `require('submaps')`;
   Print-сабмап со скриншотами не подключён. Вернуть файл можно из `dd6f314`.
+  Вместе с ним из Hyprland-профиля удалён неиспользуемый `shotDir`.
 - **`xdg.desktopEntries` сломан** в текущем Home Manager: опция `extraConfig`
   удалена, но модуль её выставляет. Для desktop-файлов используется
   `xdg.dataFile."applications/<name>.desktop"` (пример — Unciv).

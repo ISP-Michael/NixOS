@@ -49,4 +49,7 @@ builtins.deepSeq configDrvs (builtins.deepSeq packageOuts {
 OUT="$(nix eval --impure --json --expr "$NIX_EXPR")"
 echo "$OUT" | jq -r '.configs[] | "OK config \(.)"'
 echo "$OUT" | jq -r '.packages[] | "OK package \(.)"'
+
+./scripts/hypr-check.sh
+
 echo "all checks passed"

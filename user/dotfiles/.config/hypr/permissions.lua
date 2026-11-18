@@ -1,40 +1,17 @@
--- Разрешения Hyprland 0.56.2 (ecosystem.enforce_permissions).
+-- Permission rules for Hyprland 0.57.1 (ecosystem.enforce_permissions).
 --
--- Проверка в DynamicPermissionManager.cpp:
---     static auto PPERM = CConfigValue<Config::INTEGER>("ecosystem:enforce_permissions");
---     if (*PPERM == 0)
---         return PERMISSION_RULE_ALLOW_MODE_ALLOW;
--- При 0 (дефолт) разрешено всё и вопросов не бывает. При 1 любой клиент
--- без подходящего правила уходит в askForPermission() и возвращает
--- PENDING — всплывает диалог. Типов в enum пять:
--- SCREENCOPY, PLUGIN, KEYBOARD, CURSOR_POS, INPUT_CAPTURE.
+-- With enforce_permissions = 0 everything is allowed and no prompts appear.
+-- With 1 every client without a matching rule goes through the ask dialog.
+-- The five permission types are screencopy, plugin, keyboard, cursor_pos and
+-- input_capture.
 --
--- ВАЖНО ПРО ПУТИ. hl.permission() получает регулярку и проверяет её через
--- RE2::FullMatch по ВСЕМУ пути бинарника. Путь берётся так
--- (MiscFunctions.cpp, binaryNameForPid):
---     std::format("/proc/{}/exe", pid) -> std::filesystem::canonical(...)
--- canonical разворачивает симлинки, поэтому правилом должен быть покрыт
--- РЕАЛЬНЫЙ путь. А в Nix половина пакетов — обёртки: рядом с бинарником
--- лежит .<имя>-wrapped, и /proc/exe указывает именно на него.
+-- hl.permission() matches a regex against the canonical /proc/<pid>/exe path
+-- with RE2::FullMatch over the whole path. In Nix, many packages are wrappers:
+-- the real binary is .<name>-wrapped, and /etc/profiles symlinks resolve to
+-- /nix/store/<hash>-<name>. Rules therefore need the store path with a hash
+-- wildcard and an optional dot/wrapper suffix.
 --
--- Проверено на живой сессии:
---   grim       -> .../bin/grim                        (без обёртки)
---   hyprpicker -> .../bin/hyprpicker                  (без обёртки)
---   hyprpm     -> .../bin/hyprpm                      (без обёртки)
---   noctalia   -> .../bin/.noctalia-wrapped           (ОБЁРТКА)
---   портал     -> .../libexec/.xdg-desktop-portal-hyprland-wrapped (ОБЁРТКА)
---
--- Поэтому ниже у этих двух путей стоят \.? и (-wrapped)? — иначе правило
--- не совпадает НИКОГДА. Раньше так и было: старые записи без точки и без
--- -wrapped не срабатывали, то есть screen share уходил в запрос.
---
--- Отдельно: `std::filesystem::canonical` ещё и разворачивает /etc/profiles,
--- так что писать /etc/profiles/per-user/... тоже бесполезно — нужен путь
--- в /nix/store с хешем, который меняется при обновлении. Отсюда [^/]*.
---
--- Применяется только при перезапуске Hyprland: на лету, специально из
--- соображений безопасности, правила не подхватываются.
-
+-- Rules apply on Hyprland restart, not on reload.
 hl.config(
   {
     ecosystem = {
@@ -43,24 +20,17 @@ hl.config(
   }
 )
 
--- Скриншоты и пипетка.
+-- Screenshots and colour picker.
 hl.permission('/nix/store/[^/]*/bin/grim', 'screencopy', 'allow')
 hl.permission('/nix/store/[^/]*/bin/hyprpicker', 'screencopy', 'allow')
 
--- Локскрин Noctalia снимает экран для фона за окном входа.
+-- Noctalia's lock screen captures the screen for its background.
 hl.permission('/nix/store/[^/]*/bin/\\.?noctalia(-wrapped)?', 'screencopy', 'allow')
 
--- Портал Hyprland: через него OBS, Discord, Telegram и браузер делают
--- захват экрана и демонстрацию окна.
+-- xdg-desktop-portal-hyprland serves OBS, Discord, Telegram and browsers.
 hl.permission('/nix/store/[^/]*/libexec/\\.?xdg-desktop-portal-hyprland(-wrapped)?', 'screencopy', 'allow')
 
--- Менеджер плагинов.
+-- Plugin manager.
 hl.permission('/nix/store/[^/]*/bin/hyprpm', 'plugin', 'allow')
 
--- Убрано как мёртвое (проверено strings по zwlr_screencopy_manager_v1):
---   slurp  — не снимает экран, только рисует рамку через layer-shell (0 упоминаний)
---   wl-copy — не снимает (0), плюс у него обёртка .wl-copy-wrapped
---   hyprshot, satty — в системе не установлены
---
--- Откат, если что-то сломается: поставить enforce_permissions = false
--- и перезапустить Hyprland.
+-- Rollback: set enforce_permissions = false and restart Hyprland.
