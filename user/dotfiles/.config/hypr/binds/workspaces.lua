@@ -27,7 +27,9 @@ end
 -- "magic" holds the scratch terminal started by autostart.lua.
 hl.bind(
   P.mainMod .. ' + S',
-  hl.dsp.workspace.toggle_special('magic')
+  hl.dsp.workspace.toggle_special(
+    'magic'
+  )
 )
 
 hl.bind(

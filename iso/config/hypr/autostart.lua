@@ -6,6 +6,11 @@ hl.on(
     startSession()
 
     -- Scratch terminal; the live config has no host applications.
-    hl.exec_cmd('kitty', { workspace = 'special:magic' })
+    hl.exec_cmd(
+      'kitty',
+      {
+        workspace = 'special:magic',
+      }
+    )
   end
 )

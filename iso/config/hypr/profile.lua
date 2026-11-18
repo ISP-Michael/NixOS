@@ -12,13 +12,19 @@ P.fileManager = 'thunar'
 -- CopyQ exists only in the work/media/full profiles. Centre it instead of
 -- assuming the host's 1920x1080 work area.
 P.rules.copyq = {
-  size = { 500, 500 },
+  size = {
+    500,
+    500,
+  },
   center = true,
 }
 
 -- Dolphin appears in the media profile; keep the same floating size as host.
 P.rules.dolphin = {
-  size = { 1400, 800 },
+  size = {
+    1400,
+    800,
+  },
 }
 
 return P

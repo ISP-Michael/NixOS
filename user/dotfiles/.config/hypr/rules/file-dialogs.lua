@@ -18,7 +18,10 @@ hl.window_rule(
       class = PORTAL_CLASS,
     },
     float = true,
-    size = { WIDTH, HEIGHT },
+    size = {
+      WIDTH,
+      HEIGHT,
+    },
     center = true,
   }
 )
@@ -27,15 +30,24 @@ hl.window_rule(
 -- only reliable match is the title. The list is English because the session
 -- locale is en_US.UTF-8; add localized titles if LANG changes.
 local NATIVE_TITLES = {
-  'Open File', 'Open Files',
-  'Open Folder', 'Open Directory',
-  'Save File', 'Save Files',
-  'Select File', 'Select Files',
-  'Select Folder', 'Select Folders',
-  'Choose File', 'Choose Files',
-  'Upload File', 'Upload Files',
-  'Add File', 'Add Files',
-  'Import File', 'Import Files',
+  'Open File',
+  'Open Files',
+  'Open Folder',
+  'Open Directory',
+  'Save File',
+  'Save Files',
+  'Select File',
+  'Select Files',
+  'Select Folder',
+  'Select Folders',
+  'Choose File',
+  'Choose Files',
+  'Upload File',
+  'Upload Files',
+  'Add File',
+  'Add Files',
+  'Import File',
+  'Import Files',
   'Select one or more files to open',
   'Blender File View',
 }
@@ -61,7 +73,10 @@ hl.window_rule(
       title = titles_regex(NATIVE_TITLES),
     },
     float = true,
-    size = { WIDTH, HEIGHT },
+    size = {
+      WIDTH,
+      HEIGHT,
+    },
     center = true,
   }
 )
@@ -75,7 +90,10 @@ hl.window_rule(
       class = '^(org\\.kde\\.kdialog)$',
     },
     float = true,
-    size = { WIDTH, HEIGHT },
+    size = {
+      WIDTH,
+      HEIGHT,
+    },
     center = true,
   }
 )

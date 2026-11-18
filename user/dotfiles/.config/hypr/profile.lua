@@ -11,13 +11,22 @@ P.commands.wallpaper = '/home/Michael/Data/Projects/WallpaperPicker/rs/run.sh'
 -- CopyQ's settings window sits in the bottom-right corner of the work area,
 -- next to the bar.
 P.rules.copyq = {
-  size = { 500, 500 },
-  move = { 1366, 570 },
+  size = {
+    500,
+    500,
+  },
+  move = {
+    1366,
+    570,
+  },
 }
 
 -- Dolphin is a file manager, not a tiled editor; keep it floating.
 P.rules.dolphin = {
-  size = { 1400, 800 },
+  size = {
+    1400,
+    800,
+  },
 }
 
 return P

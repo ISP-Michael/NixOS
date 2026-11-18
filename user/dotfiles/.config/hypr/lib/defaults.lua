@@ -11,7 +11,14 @@ return function()
     fileManager = 'dolphin',
 
     -- Cursor zoom stops. The active index is kept by binds/zoom.lua.
-    zoomSteps = { 1.0, 1.25, 1.5, 2.0, 2.5, 3.0 },
+    zoomSteps = {
+      1.0,
+      1.25,
+      1.5,
+      2.0,
+      2.5,
+      3.0,
+    },
 
     commands = {
       menu = 'rofi -show drun',

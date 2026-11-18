@@ -1,20 +1,56 @@
 -- Hardware keys. locked = true keeps them working on the lock screen;
 -- repeating = true makes holding the key repeat.
-local actions = {
-  { key = 'XF86MonBrightnessUp', command = 'brightnessctl s +1%' },
-  { key = 'XF86MonBrightnessDown', command = 'brightnessctl s 1%-' },
-  { key = 'XF86AudioRaiseVolume', command = 'pamixer -i 5' },
-  { key = 'XF86AudioLowerVolume', command = 'pamixer -d 5' },
-  { key = 'XF86AudioMute', command = 'pamixer -t' },
-}
+hl.bind(
+  'XF86MonBrightnessUp',
+  hl.dsp.exec_cmd(
+    'brightnessctl s +1%'
+  ),
+  {
+    locked = true,
+    repeating = true,
+  }
+)
 
-for _, action in ipairs(actions) do
-  hl.bind(
-    action.key,
-    hl.dsp.exec_cmd(action.command),
-    {
-      locked = true,
-      repeating = true,
-    }
-  )
-end
+hl.bind(
+  'XF86MonBrightnessDown',
+  hl.dsp.exec_cmd(
+    'brightnessctl s 1%-'
+  ),
+  {
+    locked = true,
+    repeating = true,
+  }
+)
+
+hl.bind(
+  'XF86AudioRaiseVolume',
+  hl.dsp.exec_cmd(
+    'pamixer -i 5'
+  ),
+  {
+    locked = true,
+    repeating = true,
+  }
+)
+
+hl.bind(
+  'XF86AudioLowerVolume',
+  hl.dsp.exec_cmd(
+    'pamixer -d 5'
+  ),
+  {
+    locked = true,
+    repeating = true,
+  }
+)
+
+hl.bind(
+  'XF86AudioMute',
+  hl.dsp.exec_cmd(
+    'pamixer -t'
+  ),
+  {
+    locked = true,
+    repeating = true,
+  }
+)

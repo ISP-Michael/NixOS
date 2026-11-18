@@ -70,29 +70,61 @@ hl.bind(
 
 -- Keyboard resize works only on floating windows: monocle overwrites a tiled
 -- window's size on every relayout.
-local resizeStep = 20
-local resizeKeys = {
-  { 'h', -resizeStep, 0 },
-  { 'l', resizeStep, 0 },
-  { 'k', 0, -resizeStep },
-  { 'j', 0, resizeStep },
-}
-
-for _, resize in ipairs(resizeKeys) do
-  hl.bind(
-    P.mainMod .. ' + SHIFT + ' .. resize[1],
-    hl.dsp.window.resize(
-      {
-        x = resize[2],
-        y = resize[3],
-        relative = true,
-      }
-    ),
+hl.bind(
+  P.mainMod .. ' + SHIFT + h',
+  hl.dsp.window.resize(
     {
-      repeating = true,
+      x = -20,
+      y = 0,
+      relative = true,
     }
-  )
-end
+  ),
+  {
+    repeating = true,
+  }
+)
+
+hl.bind(
+  P.mainMod .. ' + SHIFT + l',
+  hl.dsp.window.resize(
+    {
+      x = 20,
+      y = 0,
+      relative = true,
+    }
+  ),
+  {
+    repeating = true,
+  }
+)
+
+hl.bind(
+  P.mainMod .. ' + SHIFT + k',
+  hl.dsp.window.resize(
+    {
+      x = 0,
+      y = -20,
+      relative = true,
+    }
+  ),
+  {
+    repeating = true,
+  }
+)
+
+hl.bind(
+  P.mainMod .. ' + SHIFT + j',
+  hl.dsp.window.resize(
+    {
+      x = 0,
+      y = 20,
+      relative = true,
+    }
+  ),
+  {
+    repeating = true,
+  }
+)
 
 -- Mouse drag/resize.
 hl.bind(
