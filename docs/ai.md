@@ -122,8 +122,7 @@ Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обнов�
   Проверка: `make hypr-check` или `Hyprland --verify-config -c ...`.
 - На 6 ГБ `make check`/`make ci` — только при закрытых Firefox/Electron/
   OpenClaw: полный `nix eval` уходит в swap и может задушить композитор.
-  Для правок Hyprland достаточно `make hypr-check`; `ci.sh` дополнительно
-  ограничивает `nix eval` cgroup-лимитом `MemoryMax=3G`.
+  Для правок Hyprland достаточно `make hypr-check`.
 - `nix-daemon` ограничен `CPUWeight=20`, `IOWeight=50`, `MemoryHigh=3G`
   (`host/nix/daemon.nix`), чтобы сборки не вытесняли композитор в своп.
   `make switch`/`build` больше не запускают полный `ci.sh` — только чистое

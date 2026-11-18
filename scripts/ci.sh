@@ -46,25 +46,7 @@ builtins.deepSeq configDrvs (builtins.deepSeq packageOuts {
 })
 '
 
-# On the 6 GB laptop a full flake eval can push the GUI into swap and stall
-# Hyprland. Run it in a user scope with a hard memory cap when systemd is
-# available; fall back to a plain eval in CI or minimal environments.
-run_nix_eval() {
-  if command -v systemd-run >/dev/null 2>&1 && systemctl --user show-environment >/dev/null 2>&1; then
-    systemd-run --user --scope --quiet \
-      -p MemoryHigh=2G \
-      -p MemoryMax=3G \
-      -- nix eval --impure --json --expr "$NIX_EXPR"
-  else
-    nix eval --impure --json --expr "$NIX_EXPR"
-  fi
-}
-
-if ! OUT="$(run_nix_eval)"; then
-  echo "nix eval failed; if it hit the 3G cgroup limit, close heavy GUI apps or use 'make hypr-check'" >&2
-  exit 1
-fi
-
+OUT="$(nix eval --impure --json --expr "$NIX_EXPR")"
 echo "$OUT" | jq -r '.configs[] | "OK config \(.)"'
 echo "$OUT" | jq -r '.packages[] | "OK package \(.)"'
 
