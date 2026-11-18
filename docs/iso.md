@@ -14,14 +14,14 @@ Live-система NixOS с Hyprland, собранная из этого же �
 |---|---|---|
 | `iso-lite` | Hyprland, Firefox, Thunar, mpv, zathura, CLI, portable runtime | точный — после сборки |
 | `iso` (work) | lite + LibreOffice, Telegram, KeePassXC, CopyQ, OpenCode, AmneziaVPN + Happ | точный — после сборки |
-| `iso-custom` | lite + LibreOffice, Telegram, KeePassXC, Pandoc, OpenCode, AmneziaVPN + Happ | **4.6 ГБ** (18.11.2026) |
+| `iso-custom` | lite + LibreOffice, Telegram, KeePassXC, Pandoc, OpenCode, AmneziaVPN + Happ | **4.8 ГБ** (18.11.2026, zstd 3) |
 | `iso-media` | work + GIMP, OBS, VLC, Dolphin/Okular/Ark | точный — после сборки |
 | `iso-full` | + Python/Node/GCC/Go/Rust/.NET, Obsidian, Bitwarden, Thunderbird | точный — после сборки |
 
 `lite` не получает агентский runtime (OpenCode, Node, Python, Chromium,
 SearXNG) и VPN-модуль. `work`/`custom`/`media`/`full` получают.
-Размер 4.6 ГБ — предыдущая сборка; после перехода на `apps/`, SearXNG master
-и текущую Noctalia ISO нужно пересобрать.
+Текущий `iso-custom` собран 18.11.2026 с Noctalia 5.5.0 и SearXNG master.
+Предыдущая сборка на zstd 15 весила 4.6 ГБ; zstd 3 прибавил ~0.2 ГБ.
 
 ## Сборка
 
