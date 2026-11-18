@@ -130,7 +130,7 @@ Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обнов�
 - `usque` удалён 18.11.2026: не использовался, SearXNG работает без прокси.
 - `opencode-update.timer` теперь в репозитории:
   `user/dotfiles/.config/opencode/systemd/user/`.
-- `Noctalia 5.4.1` патчится под fingerprint и собирается из исходников
+- `Noctalia 5.5.0` патчится под fingerprint и собирается из исходников
   (кэш невозможен из-за патча); после первой сборки локальный store
   переиспользуется.
 

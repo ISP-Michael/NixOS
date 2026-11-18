@@ -12,6 +12,9 @@ fmt:
 build-iso:
 	nix build .#iso-custom -o result-iso-custom --max-jobs 1 --cores 1
 
+build-noctalia-slow:
+	./scripts/build-slow.sh nix build --no-link .#nixosConfigurations.MagicBook.config.home-manager.users.Michael.programs.noctalia.package --max-jobs 1 --cores 1
+
 switch:
 	./scripts/deploy.sh switch
 

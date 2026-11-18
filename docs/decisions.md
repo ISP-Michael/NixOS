@@ -61,10 +61,9 @@
 - **`usque`** — 18.11.2026 остановлен и удалён из `/opt/usque` и
   `~/.config/systemd/user`; backup — `~/Backups/removed-usque-2026-11-18`.
   SearXNG работает без него, `extraInputRules 8088` удалено.
-- **Noctalia** — 5.4.1 + fingerprint-патч, уже собрана и лежит в store
-  (`xinyrzy...`/`j9c0...`). 5.5.0 отложена: upstream всё ещё требует патч,
-  а с патчем cache.nixos.org не отдаёт готовую сборку. Вернуться к 5.5.0
-  можно, когда патч будет upstream или появится свой бинарный кэш.
+- **Noctalia** — 5.5.0 + fingerprint-патч. Тесты отключены, сборка идёт
+  через `scripts/build-slow.sh` (один core, idle I/O, MemoryHigh 4G / Max 5G).
+  Fallback — 5.4.1 из store; 5.5.0 собирается медленно, без кэша.
 - **SearXNG на ISO** — upstream master pinned в `apps/searxng/package.nix`,
   не nixpkgs-снапшот. Host — Docker `searxng/searxng:latest`.
 - **Дубли пакетов** — 18.11.2026 из `host/packages` убраны `flatpak`,

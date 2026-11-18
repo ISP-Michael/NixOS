@@ -6,6 +6,7 @@
 make check       # eval всех конфигураций, без требования чистого дерева
 make status      # здоровье manual-частей: units, /opt, SearXNG, restic
 make build-iso   # iso-custom с ограничениями по памяти
+make build-noctalia-slow # Noctalia 5.5.0: один core, idle I/O, лимит памяти
 make build       # nixos-rebuild build
 make switch      # nixos-rebuild switch (спросит sudo)
 make push        # строгий ci + git push origin main

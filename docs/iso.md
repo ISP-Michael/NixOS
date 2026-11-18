@@ -81,7 +81,7 @@ MagicBook (`/dev/nvme0n1`). Для другой машины нужен свой
 
 ## Что на live
 
-- Пользователь `Michael` (`iso.user`), greetd-автологин в Hyprland, Noctalia 5.4.1 (патч fingerprint) + `user/theme`.
+- Пользователь `Michael` (`iso.user`), greetd-автологин в Hyprland, Noctalia 5.5.0 (патч fingerprint) + `user/theme`.
 - Имя live-системы — `iso.hostName` (по умолчанию `nixos-live`).
 - В меню только **Firefox**. Chromium — обёртка `chromium` для Playwright MCP
   OpenCode, без desktop-файла.
