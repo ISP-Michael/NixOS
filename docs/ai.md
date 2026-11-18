@@ -120,6 +120,10 @@ Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обнов�
   `profile.lua` (ISO перекрывает его через `package.path`). Новый общий
   файл добавлять в manifest, хостовые пути — только в `profile.lua`.
   Проверка: `make hypr-check` или `Hyprland --verify-config -c ...`.
+- На 6 ГБ `make check`/`make ci` — только при закрытых Firefox/Electron/
+  OpenClaw: полный `nix eval` уходит в swap и может задушить композитор.
+  Для правок Hyprland достаточно `make hypr-check`; `ci.sh` дополнительно
+  ограничивает `nix eval` cgroup-лимитом `MemoryMax=3G`.
 - `submaps.lua` удалён; ISO больше не делает `require('submaps')`. Print-
   сабмап со скриншотами сейчас не подключён. Вернуть можно из `dd6f314`.
 - `user/dotfiles/default.nix` — живые симлинки. После переименования каталога
