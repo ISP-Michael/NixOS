@@ -220,5 +220,5 @@ make ci
 make status
 ```
 
-Сборка ISO на 6 ГБ ОЗУ: `--max-jobs 1 --cores 1`, zstd 15 (уже в `iso/base.nix`).
+Сборка ISO на 6 ГБ ОЗУ: `--max-jobs 1 --cores 1`, zstd 3 (уже в `iso/base.nix`).
 Не запускать две тяжёлые сборки одновременно.

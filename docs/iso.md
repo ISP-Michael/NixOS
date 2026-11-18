@@ -32,8 +32,9 @@ nix build .#iso-custom -o result-iso-custom --max-jobs 1 --cores 1
 ```
 
 На 6 ГБ ОЗУ не запускать две тяжёлые сборки одновременно. В `iso/base.nix`
-уже стоит `zstd -Xcompression-level 15`; `zstd 19` на 4-гигабайтном squashfs
-упирается в память.
+стоит `zstd -Xcompression-level 3`: слабое сжатие, зато `mksquashfs` не
+занимает память и не молотит своп. zstd 15 давал образ меньше, но собирался
+в разы дольше и ронял отзывчивость.
 
 Результат:
 

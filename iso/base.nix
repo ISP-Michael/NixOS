@@ -77,7 +77,8 @@
   # хотим видеть в названии ISO, что именно собрано.
   isoImage = {
     edition = lib.mkForce "iso-${config.iso.profile}";
-    # 6 ГБ ОЗУ: zstd 19 на 4-гигабайтном squashfs упирается в память.
-    squashfsCompression = lib.mkForce "zstd -Xcompression-level 15";
+    # 6 ГБ ОЗУ: высокий уровень сжатия упирается в память и греет ноутбук.
+    # zstd -3 даёт быструю сборку ценой нескольких сотен мегабайт размера.
+    squashfsCompression = lib.mkForce "zstd -Xcompression-level 3";
   };
 }

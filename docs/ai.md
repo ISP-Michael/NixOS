@@ -122,8 +122,9 @@ Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обнов�
 - `/etc/nixos` — путь по умолчанию в `host/identity.nix`; HM получает
   `identity.repoPath`. Live-путь `/etc/nixos` жёстко зашит в
   `iso/config/hypr/hyprland.lua`, потому что ISO всегда копируется туда.
-- ISO на 6 ГБ: zstd 15, `--max-jobs 1 --cores 1`; две сборки одновременно
-  могут убить mksquashfs по памяти.
+- ISO на 6 ГБ: zstd 3, `--max-jobs 1 --cores 1`; две сборки одновременно
+  могут убить mksquashfs по памяти. zstd 15 собирался ~10 мин и уводил
+  систему в своп рядом с игрой.
 - `nix flake check` может быть тяжёлым; для быстрой проверки достаточно
   `make check`.
 - `~/Backups/opencode-restic/` — 700+ МБ, вне git; не копировать в ISO.
