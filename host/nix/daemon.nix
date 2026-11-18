@@ -3,6 +3,16 @@
   ...
 }:
 {
+  # Сборки не должны забирать машину целиком: на 6 ГБ mksquashfs и компиляция
+  # вытесняют композитор в своп, и Hyprland начинает пропускать кадры.
+  # CPUWeight/IOWeight важны только при конкуренции, MemoryHigh мягко
+  # останавливает рост памяти (без MemoryMax, чтобы не убивать компиляторы).
+  systemd.services.nix-daemon.serviceConfig = {
+    CPUWeight = 20;
+    IOWeight = 50;
+    MemoryHigh = "3G";
+  };
+
   nix = {
     package = pkgs.lixPackageSets.latest.lix;
     daemonCPUSchedPolicy = "idle";
