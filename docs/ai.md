@@ -147,6 +147,12 @@ Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обнов�
   через симлинк. `compinit` пишет в `~/.local/state/zsh/zcompdump`, static
   бандлы — в `~/.cache/antidote/static`; сгенерированное в git не держать.
   Проверка: `make zsh-check`. `starship.toml` генерирует Noctalia.
+- nvim: `init.lua` — bootstrap, `lua/pack.lua` — vim.pack, `lua/core/` —
+  примитивы редактора, `lua/plugins/` — жизненный цикл плагинов,
+  `lua/flat/theme/` — секции темы. Не двигать `colors/`,
+  `lua/lualine/themes/`, `after/`, `queries/`: это lookup-пути. Проверка:
+  `make nvim-check`. `core/completion.lua` намеренно не раздроблен без
+  отдельного теста: там state machine PUM.
 - `/etc/nixos` — путь по умолчанию в `host/identity.nix`; HM получает
   `identity.repoPath`. Live-путь `/etc/nixos` жёстко зашит в
   `iso/config/hypr/hyprland.lua`, потому что ISO всегда копируется туда.

@@ -3,9 +3,8 @@
 -- matching file, once per session.
 local P = require('pack')
 
--- Nix: nvim-treesitter injects bash/python/... into indented strings, and
--- queries/nix/injections.scm adds HM entryAfter/mkAfter.  A multi-line string
--- should stay a string, so drop all Nix injections.
+-- Nix: nvim-treesitter injects bash/python/... into indented strings. A
+-- multi-line string should stay a string, so drop all Nix injections.
 vim.treesitter.query.set('nix', 'injections', '')
 
 local langs = {
@@ -122,37 +121,9 @@ vim.api.nvim_create_autocmd(
       -- qml -> qmljs, ts -> typescript) and the :TS* commands.
       P.load('nvim-treesitter')
       pcall(vim.treesitter.start, args.buf)
-      local bad_maps = {
-        '[m',
-        ']m',
-        '[M',
-        ']M',
-        '[[',
-        ']]'
-      }
-      for _, map in ipairs(bad_maps) do
-        pcall(
-          vim.keymap.del,
-          'n',
-          map,
-          {
-            buffer = true
-          }
-        )
-      end
       setup_textobjects()
     end,
   }
 )
 
-P.register(
-  'nvim-treesitter',
-  function()
-    P.load('nvim-treesitter')
-  end
-)
 P.register('nvim-treesitter-textobjects', setup_textobjects)
-
-return {
-  setup_textobjects = setup_textobjects,
-}

@@ -11,7 +11,6 @@ return {
   base6 = '#f1ece4',
   base7 = '#f7f3ee',
 
-  accent = '#6a4cff',
 
   orange_text = '#5b5143',
   orange_text_sec = '#957f5f',
@@ -30,12 +29,10 @@ return {
   blue_bg = '#dde4f2',
 
   purple_text = '#614c61',
-  purple_text_sec = '#9c739c',
   purple_bg = '#f1ddf1',
 
   diff_add = '#2db448',
   diff_change = '#f2a60d',
-  diff_change_dark = '#795306',
   diff_delete = '#ff1414',
   diff_renamed = '#52aeff',
 

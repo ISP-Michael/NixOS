@@ -1,0 +1,9 @@
+return function(hi, p, colors)
+  require('flat.theme.plugins.gitsigns')(hi, p, colors)
+  require('flat.theme.plugins.fzf')(hi, p, colors)
+  require('flat.theme.plugins.neo-tree')(hi, p, colors)
+  require('flat.theme.plugins.trouble')(hi, p, colors)
+  require('flat.theme.plugins.dap')(hi, p, colors)
+  require('flat.theme.plugins.spectre')(hi, p, colors)
+  require('flat.theme.plugins.snacks')(hi, p, colors)
+end

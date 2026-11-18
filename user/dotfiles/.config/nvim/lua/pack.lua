@@ -1,9 +1,8 @@
 -- Native plugin manager for Neovim 0.13.
 --
--- vim.pack installs plugins once; during init it only puts them on 'runtimepath'
--- (like :packadd!), so nothing from plugin/ is sourced.  Each plugin is then
--- loaded on first use by M.load(), which is plain :packadd -- no shim that
--- imitates lazy.nvim.
+-- vim.pack installs plugins once. During init the no-op `load` keeps every
+-- plugin off 'runtimepath'; M.load() calls plain :packadd for the one plugin
+-- that is needed. There is no shim that imitates lazy.nvim.
 local M = {
   loaded = {},
   runtime_loaded = {},

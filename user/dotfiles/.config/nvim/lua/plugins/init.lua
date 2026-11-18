@@ -16,6 +16,8 @@ local modules = {
   'plugins.lazygit',
   'plugins.dap',
   'plugins.dbee',
+  'plugins.toggleterm',
+  'plugins.code-runner',
   'plugins.run',
   'plugins.conform',
   'plugins.align',
@@ -24,11 +26,14 @@ local modules = {
   'plugins.langmapper',
   'plugins.notify',
   'plugins.lualine',
-  'plugins.deps',
+  'plugins.dependencies',
+  'plugins.vim-nix',
 }
 
 for _, module in ipairs(modules) do
   require(module)
 end
+
+require('plugins.lualine').setup()
 
 return P

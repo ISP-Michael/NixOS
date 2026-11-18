@@ -52,5 +52,6 @@ echo "$OUT" | jq -r '.packages[] | "OK package \(.)"'
 
 ./scripts/hypr-check.sh
 ./scripts/zsh-check.sh
+./scripts/nvim-check.sh
 
 echo "all checks passed"

@@ -200,6 +200,14 @@ flake.nix
 Правило: если приложение управляется через `dotfiles`, не включай для него
 HM-модуль с `settings` — они будут писать в один и тот же каталог.
 
+### nvim
+
+`user/dotfiles/.config/nvim/init.lua` — bootstrap; `lua/pack.lua` — vim.pack;
+`lua/core/` — editor primitives, `lua/plugins/` — plugin lifecycle, `lua/flat/`
+— flatwhite/flatblack (sections in `lua/flat/theme/`). `colors/`,
+`lua/lualine/themes/`, `after/` и `queries/` — fixed runtime paths. Подробности
+и проверки — [`nvim.md`](nvim.md).
+
 ### Hyprland
 
 `user/dotfiles/.config/hypr/` — вход хоста и общие модули; `iso/config/hypr/`
