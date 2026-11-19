@@ -25,7 +25,7 @@
 | `config.lua`, `variables.lua`, `binds.lua`, `windowrules.lua` | 18.11.2026 | Плоский Hyprland-конфиг разложен по `settings/`, `binds/`, `rules/`, `profile.lua`; см. `docs/hyprland.md`. |
 | `tmux` plugins `catppuccin/tmux`, `tmux-yank`, TPM | 18.11.2026 | Ни один не загружался: тема была inline, копирование — native OSC52, TPM не использовался. |
 | zsh `.zcompdump`, `.zshrc.bak-*`, tracked `plugins*.zsh` | 18.11.2026 | Сгенерированное/устаревшее; compdump и история переехали в XDG state, static-бандлы antidote — в XDG cache. |
-| nvim `core/O_o.lua`, `queries/nix/injections.scm` | 18.11.2026 | `O_o.lua` нигде не требовался; Nix-injections отключены в `core/treesitter.lua`, файл был мёртвым. |
+| nvim `queries/nix/injections.scm` | 18.11.2026 | Nix-injections отключены в `core/treesitter.lua`, файл был мёртвым. |
 | nvim `plugins/deps.lua`, `plugins/run.lua`, `autocmds/*_template.lua` | 18.11.2026 | Разложены: `dependencies` + `vim-nix`, `toggleterm` + `code-runner` + `run`, один `autocmds/templates.lua`. |
 | input `hyprland` | 17.11.2026 | Не использовался: пакет берётся из nixpkgs (`pkgs.hyprland`). |
 
@@ -68,6 +68,10 @@
 - **zsh-бэкапы и старые кэши** — `.zcompdump`, `.zshrc.bak-2026-11-16`,
   `~/.local/share/fzf-marks`, старые `compdump`/`starship-init.zsh`
   перенесены в `~/.local/share/opencode/backups/zsh-2026-11-18`.
+- **nvim `o`/`O` с count** — старый lazy-конфиг требовал `core.O_o`; при
+  переходе на `vim.pack` require потерялся. Возвращён как
+  `core/repeat-o.lua`: `[count]o`/`[count]O` открывает count строк и
+  оставляет insert на последней.
 - **nvim-тема разложена** — `flat/theme/{ui,diagnostics,syntax,treesitter,
   lsp,plugins,terminal}.lua`; `flat/theme.lua` — совместимый вход. Удалены
   мёртвые Lazy/indent-guide группы и неиспользуемые ключи палитры.

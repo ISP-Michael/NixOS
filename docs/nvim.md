@@ -59,7 +59,9 @@ startup pass; it has no loader, so `PackLoadAll` does not include it.
   `RunCode` action.
 - `autocmds/{python_template,typescript_template}.lua` → one table-driven
   `autocmds/templates.lua`.
-- orphan `core/O_o.lua` and dead `queries/nix/injections.scm` removed.
+- count-aware `o`/`O` restored as `core/repeat-o.lua` (the old lazy config
+  required `core.O_o`; the vim.pack refactor dropped the require);
+- dead `queries/nix/injections.scm` removed.
 - dead tree-sitter `bad_maps` deletion and duplicate loader registration
   removed.
 - lualine setup moved from `init.lua` into the plugin manifest.

@@ -12,7 +12,7 @@ config="user/dotfiles/.config/nvim"
 
 nvim --headless -u NONE -i NONE -n \
   --cmd "set runtimepath^=$PWD/$config" \
-  +'lua for _, m in ipairs({"pack","core.options","core.syntax","core.indent","core.keymap","core.diagnostic","core.completion","core.python","core.project","core.neovide","core.lsp","core.treesitter","plugins","plugins.lualine","plugins.dependencies","plugins.vim-nix","plugins.toggleterm","plugins.code-runner","plugins.run","flat.theme","flat.cursor","flat.strings","flat.lualine","flat.black","flat.white","autocmds.templates"}) do local ok, err = pcall(require, m); if not ok then error(m .. ": " .. tostring(err)) end end' \
+  +'lua for _, m in ipairs({"pack","core.options","core.syntax","core.indent","core.keymap","core.repeat-o","core.diagnostic","core.completion","core.python","core.project","core.neovide","core.lsp","core.treesitter","plugins","plugins.lualine","plugins.dependencies","plugins.vim-nix","plugins.toggleterm","plugins.code-runner","plugins.run","flat.theme","flat.cursor","flat.strings","flat.lualine","flat.black","flat.white","autocmds.templates"}) do local ok, err = pcall(require, m); if not ok then error(m .. ": " .. tostring(err)) end end' \
   +qa
 
 for theme in flatblack flatwhite; do
