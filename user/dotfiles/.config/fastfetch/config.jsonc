@@ -25,8 +25,7 @@
       }
     },
     {
-      "type": "custom",
-      "format": ""
+      "type": "break"
     },
     {
       "type": "host",
@@ -50,7 +49,7 @@
     {
       "type": "packages",
       "key": "  Packages",
-      "format": "{nix-system} (nix-system)"
+      "format": "{nix-system}+{nix-user} (nix)"
     },
     {
       "type": "shell",
@@ -63,6 +62,10 @@
       "format": "{pretty-name}"
     },
     {
+      "type": "editor",
+      "key": "  Editor"
+    },
+    {
       "type": "wm",
       "key": "  WM",
       "format": "{pretty-name} {version}"
@@ -71,6 +74,14 @@
       "type": "display",
       "key": "  Display",
       "format": "{name} ({scaled-width}x{scaled-height} @ {refresh-rate} Hz)"
+    },
+    {
+      "type": "battery",
+      "key": "  Battery"
+    },
+    {
+      "type": "brightness",
+      "key": "  Brightness"
     },
     {
       "type": "cpu",
@@ -91,10 +102,26 @@
       "key": "  Swap"
     },
     {
+      "type": "localip",
+      "key": "  Local IP"
+    },
+    {
+      "type": "loadavg",
+      "key": "  Load"
+    },
+    {
+      "type": "processes",
+      "key": "  Processes"
+    },
+    {
       "type": "disk",
       "key": "  Disk",
       "folders": "/",
       "format": "{size-used} / {size-total} ({filesystem}, {size-percentage})"
+    },
+    {
+      "type": "sound",
+      "key": "  Sound"
     }
   ]
 }
