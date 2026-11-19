@@ -1,6 +1,15 @@
 [mgr]
 show_hidden = true
 
+[preview]
+max_width = 1200
+max_height = 1200
+
+[tasks]
+# Preloaders run as macro tasks; video-grid spawns ffmpeg, so keep this low.
+macro_workers = 3
+micro_workers = 10
+
 [plugin]
 
 prepend_preloaders = [
@@ -11,14 +20,33 @@ prepend_preloaders = [
 	{ mime = "application/vnd.openxmlformats-officedocument.*", run = "office" },
 	{ mime = "application/vnd.oasis.opendocument.*", run = "office" },
 	{ url = "*.{doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp}", run = "office" },
+
+	# Video contact sheets.
+	{ mime = "video/*", run = "video-grid" },
+
+	# Comic archives.
+	{ url = "*.{cbz,cbr}", run = "preview-cbz" },
 ]
 
 prepend_previewers = [
-	# Office documents (.doc/.xls/.ppt/.docx/.xlsx/.pptx/.odt/.ods/.odp)
+	# Office documents
 	{ mime = "application/msword", run = "office" },
 	{ mime = "application/vnd.ms-excel", run = "office" },
 	{ mime = "application/vnd.ms-powerpoint", run = "office" },
 	{ mime = "application/vnd.openxmlformats-officedocument.*", run = "office" },
 	{ mime = "application/vnd.oasis.opendocument.*", run = "office" },
 	{ url = "*.{doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp}", run = "office" },
+
+	# SQLite schema.
+	{ mime = "application/sqlite3", run = "preview-sqlite" },
+	{ url = "*.{sqlite,sqlite3,db}", run = "preview-sqlite" },
+
+	# Comic archives.
+	{ url = "*.{cbz,cbr}", run = "preview-cbz" },
+
+	# Video contact sheets.
+	{ mime = "video/*", run = "video-grid" },
+
+	# Markdown through piper + glow.
+	{ url = "*.{md,markdown}", run = 'piper -- CLICOLOR_FORCE=1 glow -w=$w -s=dark "$1"' },
 ]

@@ -1,3 +1,6 @@
+-- The header used this style without defining it; keep the accent explicit.
+local s_green = ui.Style():fg("#a6d189")
+
 Header = {
 	_id = "header",
 }

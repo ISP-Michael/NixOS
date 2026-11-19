@@ -1,5 +1,28 @@
-# Копирование файлов в системный клипборд как file:// URI.
+# Copy selected files as file:// URIs into the system clipboard.
 [[mgr.prepend_keymap]]
 on = [ "c", "s" ]
 run = "shell --orphan -- ~/.config/yazi/copy-uri.sh %S"
 desc = "Copy to clipboard"
+
+# chmod on the selected files.
+[[mgr.prepend_keymap]]
+on = [ "c", "m" ]
+run = "plugin chmod"
+desc = "Chmod selected files"
+
+# Continuous filter that enters a unique directory and opens a unique file.
+[[mgr.prepend_keymap]]
+on = "F"
+run = "plugin smart-filter"
+desc = "Smart filter"
+
+# Image preview zoom (needs ImageMagick).
+[[mgr.prepend_keymap]]
+on = "+"
+run = "plugin zoom 1"
+desc = "Zoom preview in"
+
+[[mgr.prepend_keymap]]
+on = "-"
+run = "plugin zoom -1"
+desc = "Zoom preview out"
