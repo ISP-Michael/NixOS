@@ -27,6 +27,7 @@
 | zsh `.zcompdump`, `.zshrc.bak-*`, tracked `plugins*.zsh` | 18.11.2026 | Сгенерированное/устаревшее; compdump и история переехали в XDG state, static-бандлы antidote — в XDG cache. |
 | nvim `queries/nix/injections.scm` | 18.11.2026 | Nix-injections отключены в `core/treesitter.lua`, файл был мёртвым. |
 | nvim `plugins/deps.lua`, `plugins/run.lua`, `autocmds/*_template.lua` | 18.11.2026 | Разложены: `dependencies` + `vim-nix`, `toggleterm` + `code-runner` + `run`, один `autocmds/templates.lua`. |
+| yazi `glow`, `hexyl`, `mediainfo`, `nbpreview`, `miller`, `rich-preview`, `wl-clipboard`, `full-border` | 19.11.2026 | Не подключены или не имеют бинарников; `piper`/`chmod`/SQLite/CBZ/video-grid/zoom/office оставлены и подключены. |
 | input `hyprland` | 17.11.2026 | Не использовался: пакет берётся из nixpkgs (`pkgs.hyprland`). |
 
 ## Выключено намеренно
@@ -77,6 +78,16 @@
   мёртвые Lazy/indent-guide группы и неиспользуемые ключи палитры.
   `core/completion.lua`, `core/lsp.lua`, `core/project.lua` пока не
   раздроблены: у них высокий риск, нужен отдельный headless-тест.
+- **kitty `shell_integration no` был невалиден** — в 0.49 kitty писал
+  `Invalid shell integration options: no, ignoring`. Заменено на
+  `disabled`; конфиг разложен на `conf.d/`. `notify_on_cmd_finish` и
+  полноценная интеграция оставлены как отдельный тест с zsh+tmux.
+- **fastfetch 2.70** — добавлены battery/brightness/editor/localip/loadavg/
+  processes/sound, `break` вместо пустого `custom`; presets/`--gen-config`/
+  JSON/logo-протоколы описаны в `docs/fastfetch.md`.
+- **yazi 26.9.1** — `ya pkg`/`package.toml` как managed-слой, vendored
+  `chmod`/`piper`; подключены SQLite/CBZ/video-grid/zoom/office/piper,
+  удалены нерабочие плагины. `theme.toml` остаётся одним файлом.
 - **`submaps.lua` удалён.** ISO больше не делает `require('submaps')`;
   Print-сабмап со скриншотами не подключён. Вернуть файл можно из `dd6f314`.
   Вместе с ним из Hyprland-профиля удалён неиспользуемый `shotDir`.

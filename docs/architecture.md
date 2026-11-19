@@ -233,6 +233,29 @@ HM-модуль с `settings` — они будут писать в один и 
 `vendor/zsh/`, `~/.config/zsh/vendor` — симлинк. Сгенерированные compdump,
 история и static-бандлы живут в XDG state/cache, не в репозитории.
 
+### yazi
+
+`yazi/yazi.toml` держит `[preview]`, `[tasks]` и `[plugin]`
+preloaders/previewers; `keymap.toml` — пользовательские клавиши;
+`init.lua` — кастомный header/separator; `package.toml` — managed-плагины
+через `ya pkg`, `plugins/` — vendored-дерево. `theme.toml` остаётся одним
+файлом (Yazi не умеет include); `flavors/noctalia.yazi` генерируется и
+игнорируется. Подробности — [`yazi.md`](yazi.md).
+
+### fastfetch
+
+Один `config.jsonc`: identity → hardware → runtime; `break` вместо пустого
+`custom`; добавлены battery/brightness/editor/localip/loadavg/processes/sound.
+Новые возможности 2.70 (presets, `--gen-config`, `--structure`, JSON,
+logo-протоколы) — в [`fastfetch.md`](fastfetch.md).
+
+### kitty
+
+`kitty.conf` — hub с `include conf.d/{colors,font,cursor,behavior,keys}.conf`.
+`shell_integration disabled` (в 0.49 старое `no` невалидно), добавлены
+scrollback, отключён audio bell, italic font features и `kitten hints`.
+Подробности и новые возможности — [`kitty.md`](kitty.md).
+
 ## Секреты и крупные файлы
 
 - `secrets/secrets.yaml` — зашифрован, можно коммитить.

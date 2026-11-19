@@ -153,6 +153,14 @@ Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обнов�
   `lua/lualine/themes/`, `after/`, `queries/`: это lookup-пути. Проверка:
   `make nvim-check`. `core/completion.lua` намеренно не раздроблен без
   отдельного теста: там state machine PUM.
+- yazi: `yazi.toml` + `keymap.toml` + `package.toml` (`ya pkg`); плагины
+  vendored, `chmod`/`piper` — manual. `theme.toml` один файл,
+  `flavors/noctalia.yazi` generated. Проверка: `ya pkg list` + pty-старт.
+- fastfetch: один `config.jsonc`; новые модули и `break`. Проверка:
+  `fastfetch -c ...`.
+- kitty: hub + `conf.d/`; `shell_integration disabled` (0.49 не понимает
+  `no`), `kitten hints` на `ctrl+shift+e`. Проверка:
+  `kitty +runpy 'load_config(...)'`.
 - `/etc/nixos` — путь по умолчанию в `host/identity.nix`; HM получает
   `identity.repoPath`. Live-путь `/etc/nixos` жёстко зашит в
   `iso/config/hypr/hyprland.lua`, потому что ISO всегда копируется туда.
