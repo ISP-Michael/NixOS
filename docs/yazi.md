@@ -74,3 +74,9 @@ grep -aiE 'error|invalid|panic|lua' /tmp/yazi-start.out
 The theme file is a single Yazi input; the 700-line `[icon]` table cannot be
 split into includes without a generator. Keep it tracked and generated
 flavors ignored.
+
+## ISO note
+
+`iso-lite` does not carry `ffmpeg`, `sqlite3`, `glow` or `libreoffice`; those
+previewers degrade to Yazi's native previews. `iso-media` has ffmpeg and
+ImageMagick, `work` has LibreOffice, and `agent` has SQLite.
