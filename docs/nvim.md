@@ -65,17 +65,18 @@ Empty lines keep the normal Visual single-cell background: ibl skips its
 guides on `^%s*$` rows while selecting, so nothing covers that cell and the
 selection is not extended to the end of the screen.
 
-This is an experiment with a runtime switch:
+This is an experiment with a runtime switch, but the default is the simple
+behaviour: **no guides during selection**.
 
 ```vim
+:IndentGuidesSelection hide     " default: no guides during selection
 :IndentGuidesSelection invert   " keep guides, soft contrast
-:IndentGuidesSelection hide     " no guides during selection
 :IndentGuidesSelection toggle
 ```
 
 `<leader>ti` toggles the same setting in normal and visual mode. The value is
-stored in `vim.g.indent_guides_selection`; set it in config to change the
-default.
+stored in `vim.g.indent_guides_selection`; set it to `'invert'` in config if
+you want the experiment by default.
 
 ## Plugin triggers
 

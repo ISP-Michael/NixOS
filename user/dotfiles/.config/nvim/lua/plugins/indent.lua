@@ -3,13 +3,11 @@
 -- visible in every buffer and cheap, so they load once after the UI appears.
 local P = require('pack')
 
--- Experiment (21.11.2026): keep both guide layers visible in visual/select
--- mode. ibl uses guide_selected on the selection background, so the indent
--- area stays light without black bars; mini.indentscope is hidden there
--- because its line would cover the selected ibl guide at the same column.
--- `:IndentGuidesSelection hide` returns to the previous behaviour: both
--- layers are removed for the duration of the selection.
-vim.g.indent_guides_selection = vim.g.indent_guides_selection or 'invert'
+-- Experiment (21.11.2026): default is `hide` — both guide layers are removed
+-- for the duration of the selection. Set `vim.g.indent_guides_selection =
+-- 'invert'` or run `:IndentGuidesSelection invert` to try the soft selected
+-- guides instead.
+vim.g.indent_guides_selection = vim.g.indent_guides_selection or 'hide'
 
 local function selection_mode()
   if vim.g.indent_guides_selection == 'hide' then
