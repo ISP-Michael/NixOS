@@ -81,11 +81,12 @@ Hyprland + Noctalia, конфиги — `user/dotfiles/.config` (симлинк�
 | Рабочий стол | kitty + tmux + fastfetch + zsh |
 |---|---|
 | ![Рабочий стол с Noctalia](docs/images/showcase-desktop.png) | ![kitty, tmux, fastfetch](docs/images/showcase-tmux.png) |
-| yazi | nvim (Python) |
+| yazi | nvim (Rust) |
 | ![yazi](docs/images/showcase-yazi.png) | ![nvim](docs/images/showcase-nvim.png) |
 
-Анимации: [yazi](docs/images/demo-yazi.gif) · [nvim](docs/images/demo-nvim.gif).
-Снято на рабочем столе с этой конфигурацией, личные окна не попадают в кадр.
+Анимации: [yazi GIF](docs/images/demo-yazi.gif) · [yazi MP4](docs/images/demo-yazi.mp4) ·
+[nvim GIF](docs/images/demo-nvim.gif) · [nvim MP4](docs/images/demo-nvim.mp4).
+MP4 лучше смотреть в mpv — GIF там теряет цвет. Личные окна в кадр не попадают.
 
 Слои клавиатуры настраиваются keyd:
 

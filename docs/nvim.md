@@ -3,9 +3,11 @@
 `~/.config/nvim` is a symlink to `user/dotfiles/.config/nvim`. Neovim is
 0.13 nightly, plugin management is native `vim.pack`.
 
-Демонстрация — прокрутка Python-скрипта `scripts/keyd-diagrams.py`:
+Демонстрация — прокрутка Rust-файла [`docs/demo/quicksort.rs`](demo/quicksort.rs):
 
 ![Прокрутка в nvim](images/demo-nvim.gif)
+
+[MP4 для mpv](images/demo-nvim.mp4) — качество лучше, чем у GIF.
 
 ![Полный экран nvim](images/showcase-nvim.png)
 

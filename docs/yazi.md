@@ -6,6 +6,8 @@ truth for managed plugins.
 
 ![Навигация в yazi](images/demo-yazi.gif)
 
+[MP4 для mpv](images/demo-yazi.mp4) — качество лучше, чем у GIF.
+
 ![Полный экран yazi](images/showcase-yazi.png)
 
 ## Composition

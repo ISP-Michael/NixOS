@@ -1,4 +1,4 @@
-.PHONY: check ci hypr-check zsh-check nvim-check fmt build-iso build-noctalia-slow switch build push status host-age sops-check backup-configs
+.PHONY: check ci hypr-check zsh-check nvim-check keybinds fmt build-iso build-noctalia-slow switch build push status host-age sops-check backup-configs
 
 check:
 	ALLOW_DIRTY=1 ./scripts/ci.sh
@@ -14,6 +14,9 @@ zsh-check:
 
 nvim-check:
 	./scripts/nvim-check.sh
+
+keybinds:
+	./scripts/keybinds.py
 
 fmt:
 	nix fmt

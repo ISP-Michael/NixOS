@@ -4,6 +4,7 @@
 
 ```bash
 make check       # только хост и проверки dotfiles, грязное дерево можно
+make keybinds    # пересобрать docs/keybinds.md из binds/*.lua
 make status      # здоровье manual-частей: units, /opt, SearXNG, restic
 make build-iso   # iso-custom с ограничениями по памяти
 make build-noctalia-slow # Noctalia 5.5.0: один core, idle I/O, лимит памяти

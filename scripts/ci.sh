@@ -64,5 +64,6 @@ done
 ./scripts/hypr-check.sh
 ./scripts/zsh-check.sh
 ./scripts/nvim-check.sh
+./scripts/keybinds.py --check
 
 echo "all checks passed"
