@@ -109,14 +109,26 @@ local function update()
     return
   end
   last = key
-  vim.api.nvim_set_hl(0, 'Cursor', { fg = cursor_fg, bg = cursor_bg })
-  vim.api.nvim_set_hl(0, 'TermCursor', { fg = cursor_fg, bg = cursor_bg })
+  vim.api.nvim_set_hl(0, 'Cursor', {
+    fg = cursor_fg,
+    bg = cursor_bg
+  })
+  vim.api.nvim_set_hl(0, 'TermCursor', {
+    fg = cursor_fg,
+    bg = cursor_bg
+  })
 end
 
 function M.attach()
   local group = vim.api.nvim_create_augroup(augroup_name, { clear = true })
   vim.api.nvim_create_autocmd(
-    { 'CursorMoved', 'CursorMovedI', 'BufEnter', 'WinEnter', 'ModeChanged' },
+    {
+      'CursorMoved',
+      'CursorMovedI',
+      'BufEnter',
+      'WinEnter',
+      'ModeChanged'
+    },
     {
       group = group,
       callback = update,

@@ -25,7 +25,12 @@ option.smoothscroll = true
 option.fillchars = { eob = ' ' }
 -- Documentation is shown only in the explicit <C-k> window, never in the
 -- side popup next to the completion menu.
-option.completeopt = { 'menu', 'menuone', 'noinsert', 'fuzzy' }
+option.completeopt = {
+  'menu',
+  'menuone',
+  'noinsert',
+  'fuzzy'
+}
 option.pumheight = 10
 option.pumwidth = 30
 option.pummaxwidth = 0

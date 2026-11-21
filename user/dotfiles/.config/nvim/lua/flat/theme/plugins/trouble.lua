@@ -7,11 +7,23 @@ return function(hi, p, colors)
 
   -- trouble.nvim
   hi({
-    TroubleNormal       = { fg = p.base1, bg = p.base7 },
-    TroubleNormalNC     = { fg = p.base1, bg = p.base7 },
+    TroubleNormal       = {
+      fg = p.base1,
+      bg = p.base7
+    },
+    TroubleNormalNC     = {
+      fg = p.base1,
+      bg = p.base7
+    },
     TroubleText         = { fg = p.base1 },
-    TroubleCount        = { fg = p.purple_text, bg = p.purple_bg },
-    TroubleFilename     = { fg = p.base1, bold = true },
+    TroubleCount        = {
+      fg = p.purple_text,
+      bg = p.purple_bg
+    },
+    TroubleFilename     = {
+      fg = p.base1,
+      bold = true
+    },
     TroubleDirectory    = { fg = p.teal_text },
     TroubleCode         = { fg = p.base2 },
     TroubleLocation     = { fg = p.base2 },
@@ -20,7 +32,14 @@ return function(hi, p, colors)
     TroubleIconDirectory = { fg = p.teal_text },
     TroublePos          = { fg = p.base3 },
     TroubleSource       = { fg = p.base3 },
-    TroublePreview      = { fg = p.base1, bg = p.base6 },
-    TroubleStatusline   = { fg = p.base7, bg = p.base1, bold = true },
+    TroublePreview      = {
+      fg = p.base1,
+      bg = p.base6
+    },
+    TroubleStatusline   = {
+      fg = p.base7,
+      bg = p.base1,
+      bold = true
+    },
   })
 end

@@ -7,15 +7,30 @@ return function(hi, p, colors)
 
   -- spectre
   hi({
-    SpectreBody       = { fg = p.base1, bg = p.base6 },
-    SpectreBorder     = { fg = p.base3, bg = p.base6 },
+    SpectreBody       = {
+      fg = p.base1,
+      bg = p.base6
+    },
+    SpectreBorder     = {
+      fg = p.base3,
+      bg = p.base6
+    },
     SpectreFile       = { fg = p.teal_text },
     SpectreDir        = { fg = p.base2 },
-    SpectreSearch     = { fg = p.base6, bg = p.base2 },
-    SpectreReplace    = { fg = p.purple_text, bg = p.purple_bg },
+    SpectreSearch     = {
+      fg = p.base6,
+      bg = p.base2
+    },
+    SpectreReplace    = {
+      fg = p.purple_text,
+      bg = p.purple_bg
+    },
     SpectrePath       = { fg = p.base2 },
     SpectreHeader     = { fg = p.base2 },
-    SpectreQuery      = { fg = p.base1, bold = true },
+    SpectreQuery      = {
+      fg = p.base1,
+      bold = true
+    },
     SpectreConfig     = { fg = p.base2 },
     SpectrePanelWrite = { fg = p.diff_change },
     SpectreState      = { fg = p.base3 },

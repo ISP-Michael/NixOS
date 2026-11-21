@@ -36,11 +36,26 @@ local M = {}
 ---@param p table     palette, see lua/flat/white.lua and lua/flat/black.lua
 function M.apply(name, p)
   local colors = {
-    blue = { fg = p.blue_text, bg = p.blue_bg },
-    green = { fg = p.green_text, bg = p.green_bg },
-    purple = { fg = p.purple_text, bg = p.purple_bg },
-    teal = { fg = p.teal_text, bg = p.teal_bg },
-    orange = { fg = p.orange_text, bg = p.orange_bg },
+    blue = {
+      fg = p.blue_text,
+      bg = p.blue_bg
+    },
+    green = {
+      fg = p.green_text,
+      bg = p.green_bg
+    },
+    purple = {
+      fg = p.purple_text,
+      bg = p.purple_bg
+    },
+    teal = {
+      fg = p.teal_text,
+      bg = p.teal_bg
+    },
+    orange = {
+      fg = p.orange_text,
+      bg = p.orange_bg
+    },
   }
 
   local function hi(groups)

@@ -13,7 +13,10 @@ return function(hi, p, colors)
     ['@variable']                 = { fg = p.base1 },
     -- bg = base7 because Neovim merges captures: without it the blue
     -- `variable.parameter` background of `self`/`cls` would leak through.
-    ['@variable.builtin']         = { fg = p.base1, bg = p.base7 },
+    ['@variable.builtin']         = {
+      fg = p.base1,
+      bg = p.base7
+    },
     ['@variable.parameter']       = blue,
     ['@variable.parameter.builtin'] = blue,
     ['@variable.member']          = { fg = p.base1 },
@@ -27,7 +30,10 @@ return function(hi, p, colors)
     ['@module.builtin']           = teal,
     ['@namespace']                = teal,
 
-    ['@label']                    = { fg = p.base1, bold = true },
+    ['@label']                    = {
+      fg = p.base1,
+      bold = true
+    },
 
     ['@string']                   = green,
     ['@string.documentation']     = green, -- docstrings are plain strings in helix
@@ -52,13 +58,34 @@ return function(hi, p, colors)
     ['@attribute.builtin']        = blue,
     ['@property']                 = { fg = p.base1 },
 
-    ['@function']                 = { fg = p.base1, bold = true },
-    ['@function.builtin']         = { fg = p.base1, bold = true },
-    ['@function.call']            = { fg = p.base1, bold = true },
-    ['@function.macro']           = { fg = p.base1, bold = true },
-    ['@function.method']          = { fg = p.base1, bold = true },
-    ['@function.method.call']     = { fg = p.base1, bold = true },
-    ['@function.special']         = { fg = p.base1, bold = true },
+    ['@function']                 = {
+      fg = p.base1,
+      bold = true
+    },
+    ['@function.builtin']         = {
+      fg = p.base1,
+      bold = true
+    },
+    ['@function.call']            = {
+      fg = p.base1,
+      bold = true
+    },
+    ['@function.macro']           = {
+      fg = p.base1,
+      bold = true
+    },
+    ['@function.method']          = {
+      fg = p.base1,
+      bold = true
+    },
+    ['@function.method.call']     = {
+      fg = p.base1,
+      bold = true
+    },
+    ['@function.special']         = {
+      fg = p.base1,
+      bold = true
+    },
     ['@constructor']              = { fg = p.base1 },
     ['@operator']                 = { fg = p.base1 },
     ['@operator.special']         = { fg = p.base1 },
@@ -82,31 +109,79 @@ return function(hi, p, colors)
 
     ['@punctuation']              = { fg = p.base1 },
     ['@punctuation.delimiter']    = { fg = p.base1 },
-    ['@punctuation.bracket']      = { fg = p.base1, bold = true },
+    ['@punctuation.bracket']      = {
+      fg = p.base1,
+      bold = true
+    },
     ['@punctuation.special']      = { fg = p.base1 },
 
-    ['@comment']                  = { fg = p.base3, italic = true },
+    ['@comment']                  = {
+      fg = p.base3,
+      italic = true
+    },
     ['@comment.documentation']    = { fg = p.base2 },
     ['@comment.error']            = { fg = p.diff_delete },
     ['@comment.warning']          = { fg = p.orange_text },
-    ['@comment.todo']             = { fg = p.purple_text, bg = p.purple_bg, bold = true },
-    ['@comment.note']             = { fg = p.blue_text, bg = p.blue_bg },
+    ['@comment.todo']             = {
+      fg = p.purple_text,
+      bg = p.purple_bg,
+      bold = true
+    },
+    ['@comment.note']             = {
+      fg = p.blue_text,
+      bg = p.blue_bg
+    },
 
     ['@tag']                      = { fg = p.base1 },
     ['@tag.builtin']              = { fg = p.base1 },
     ['@tag.attribute']            = blue, -- helix `attribute`
-    ['@tag.delimiter']            = { fg = p.base1, bold = true },
+    ['@tag.delimiter']            = {
+      fg = p.base1,
+      bold = true
+    },
 
     ['@special']                  = blue,
 
-    ['@markup.heading']           = { fg = p.purple_text, bg = p.purple_bg, bold = true },
-    ['@markup.heading.1']         = { fg = p.purple_text, bg = p.purple_bg, bold = true },
-    ['@markup.heading.2']         = { fg = p.purple_text, bg = p.purple_bg, bold = true },
-    ['@markup.heading.3']         = { fg = p.purple_text, bg = p.purple_bg, bold = true },
-    ['@markup.heading.4']         = { fg = p.purple_text, bg = p.purple_bg, bold = true },
-    ['@markup.heading.5']         = { fg = p.purple_text, bg = p.purple_bg, bold = true },
-    ['@markup.heading.6']         = { fg = p.purple_text, bg = p.purple_bg, bold = true },
-    ['@markup.heading.marker']    = { fg = p.purple_text, bg = p.purple_bg, bold = true },
+    ['@markup.heading']           = {
+      fg = p.purple_text,
+      bg = p.purple_bg,
+      bold = true
+    },
+    ['@markup.heading.1']         = {
+      fg = p.purple_text,
+      bg = p.purple_bg,
+      bold = true
+    },
+    ['@markup.heading.2']         = {
+      fg = p.purple_text,
+      bg = p.purple_bg,
+      bold = true
+    },
+    ['@markup.heading.3']         = {
+      fg = p.purple_text,
+      bg = p.purple_bg,
+      bold = true
+    },
+    ['@markup.heading.4']         = {
+      fg = p.purple_text,
+      bg = p.purple_bg,
+      bold = true
+    },
+    ['@markup.heading.5']         = {
+      fg = p.purple_text,
+      bg = p.purple_bg,
+      bold = true
+    },
+    ['@markup.heading.6']         = {
+      fg = p.purple_text,
+      bg = p.purple_bg,
+      bold = true
+    },
+    ['@markup.heading.marker']    = {
+      fg = p.purple_text,
+      bg = p.purple_bg,
+      bold = true
+    },
     ['@markup.raw']               = orange,
     ['@markup.raw.inline']        = orange,
     ['@markup.raw.block']         = orange,
@@ -117,7 +192,11 @@ return function(hi, p, colors)
     ['@markup.link']              = blue,
     ['@markup.link.label']        = blue,
     ['@markup.link.text']         = blue,
-    ['@markup.link.url']          = { fg = p.blue_text, bg = p.blue_bg, underline = true },
+    ['@markup.link.url']          = {
+      fg = p.blue_text,
+      bg = p.blue_bg,
+      underline = true
+    },
     ['@markup.quote']             = teal,
     ['@markup.list']              = purple,
     ['@markup.list.numbered']     = purple,
@@ -137,7 +216,10 @@ return function(hi, p, colors)
     -- Deprecated capture names still used by some queries/plugins
     ['@parameter']                = blue,
     ['@field']                    = { fg = p.base1 },
-    ['@method']                   = { fg = p.base1, bold = true },
+    ['@method']                   = {
+      fg = p.base1,
+      bold = true
+    },
     ['@conditional']              = purple,
     ['@repeat']                   = purple,
     ['@exception']                = purple,
@@ -153,12 +235,30 @@ return function(hi, p, colors)
     ['@text']                     = { fg = p.base1 },
     ['@text.literal']             = orange,
     ['@text.reference']           = blue,
-    ['@text.title']               = { fg = p.purple_text, bg = p.purple_bg, bold = true },
-    ['@text.uri']                 = { fg = p.blue_text, bg = p.blue_bg, underline = true },
+    ['@text.title']               = {
+      fg = p.purple_text,
+      bg = p.purple_bg,
+      bold = true
+    },
+    ['@text.uri']                 = {
+      fg = p.blue_text,
+      bg = p.blue_bg,
+      underline = true
+    },
     ['@text.underline']           = { underline = true },
-    ['@text.todo']                = { fg = p.purple_text, bg = p.purple_bg, bold = true },
-    ['@text.note']                = { fg = p.blue_text, bg = p.blue_bg },
-    ['@text.warning']             = { fg = p.orange_text, bg = p.orange_bg },
+    ['@text.todo']                = {
+      fg = p.purple_text,
+      bg = p.purple_bg,
+      bold = true
+    },
+    ['@text.note']                = {
+      fg = p.blue_text,
+      bg = p.blue_bg
+    },
+    ['@text.warning']             = {
+      fg = p.orange_text,
+      bg = p.orange_bg
+    },
     ['@text.danger']              = { fg = p.diff_delete },
     ['@text.diff.add']            = { fg = p.diff_add },
     ['@text.diff.delete']         = { fg = p.diff_delete },

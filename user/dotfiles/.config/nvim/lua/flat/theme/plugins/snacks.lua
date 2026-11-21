@@ -7,14 +7,32 @@ return function(hi, p, colors)
 
   -- snacks.nvim notifier
   hi({
-    SnacksNotifier            = { fg = p.base1, bg = p.base6 },
-    SnacksNotifierMinimal     = { fg = p.base1, bg = p.base6 },
-    SnacksNotifierBorder      = { fg = p.base3, bg = p.base6 },
-    SnacksNotifierTitle       = { fg = p.base1, bold = true },
+    SnacksNotifier            = {
+      fg = p.base1,
+      bg = p.base6
+    },
+    SnacksNotifierMinimal     = {
+      fg = p.base1,
+      bg = p.base6
+    },
+    SnacksNotifierBorder      = {
+      fg = p.base3,
+      bg = p.base6
+    },
+    SnacksNotifierTitle       = {
+      fg = p.base1,
+      bold = true
+    },
     SnacksNotifierIcon        = { fg = p.base2 },
     SnacksNotifierFooter      = { fg = p.base2 },
-    SnacksNotifierHistory     = { fg = p.base1, bg = p.base6 },
-    SnacksNotifierHistoryTitle = { fg = p.base1, bold = true },
+    SnacksNotifierHistory     = {
+      fg = p.base1,
+      bg = p.base6
+    },
+    SnacksNotifierHistoryTitle = {
+      fg = p.base1,
+      bold = true
+    },
     SnacksNotifierHistoryDateTime = { fg = p.base2 },
   })
 
@@ -27,9 +45,15 @@ return function(hi, p, colors)
   }) do
     hi({
       ['SnacksNotifier' .. level] = { fg = color },
-      ['SnacksNotifierTitle' .. level] = { fg = color, bold = true },
+      ['SnacksNotifierTitle' .. level] = {
+        fg = color,
+        bold = true
+      },
       ['SnacksNotifierIcon' .. level] = { fg = color },
-      ['SnacksNotifierBorder' .. level] = { fg = p.base3, bg = p.base6 },
+      ['SnacksNotifierBorder' .. level] = {
+        fg = p.base3,
+        bg = p.base6
+      },
       ['SnacksNotifierFooter' .. level] = { fg = color },
     })
   end

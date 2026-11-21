@@ -74,7 +74,10 @@ local function docs_visible()
 end
 
 local function selected_info()
-  local ci = vim.fn.complete_info({ 'items', 'selected' })
+  local ci = vim.fn.complete_info({
+    'items',
+    'selected'
+  })
   local selected = ci.selected
   if selected < 0 or not ci.items or not ci.items[selected + 1] then
     return nil
@@ -101,7 +104,10 @@ local function snapshot_pum()
   if vim.fn.pumvisible() ~= 1 then
     return nil
   end
-  local ci = vim.fn.complete_info({ 'items', 'selected' })
+  local ci = vim.fn.complete_info({
+    'items',
+    'selected'
+  })
   if not ci.items or #ci.items == 0 or ci.selected < 0 then
     return nil
   end
@@ -327,7 +333,10 @@ local function open_scrim()
 
   local normal = vim.api.nvim_get_hl(0, { name = 'Normal' })
   local bg = normal.bg or 0x000000
-  vim.api.nvim_set_hl(0, 'CompletionScrim', { fg = bg, bg = bg })
+  vim.api.nvim_set_hl(0, 'CompletionScrim', {
+    fg = bg,
+    bg = bg
+  })
 
   scrim_win = vim.api.nvim_open_win(
     scrim_buf,
@@ -388,7 +397,10 @@ local function set_overlay_keymaps()
         desc = 'Completion docs: close and continue'
       }
     )
-    overlay_keymaps[#overlay_keymaps + 1] = { lhs = lhs, bufnr = bufnr }
+    overlay_keymaps[#overlay_keymaps + 1] = {
+      lhs = lhs,
+      bufnr = bufnr
+    }
   end
   add('<CR>', '<CR>', true)
   add('<Tab>', '<Tab>', true)
@@ -592,7 +604,10 @@ vim.api.nvim_create_autocmd(
 )
 
 vim.api.nvim_create_autocmd(
-  { 'InsertLeave', 'BufLeave' },
+  {
+    'InsertLeave',
+    'BufLeave'
+  },
   {
     group = group,
     callback = function()

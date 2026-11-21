@@ -7,21 +7,50 @@ return function(hi, p, colors)
 
   -- neo-tree
   hi({
-    NeoTreeNormal          = { fg = p.base1, bg = p.base7 },
-    NeoTreeNormalNC        = { fg = p.base1, bg = p.base7 },
+    NeoTreeNormal          = {
+      fg = p.base1,
+      bg = p.base7
+    },
+    NeoTreeNormalNC        = {
+      fg = p.base1,
+      bg = p.base7
+    },
     NeoTreeEndOfBuffer     = { fg = p.base7 },
-    NeoTreeWinSeparator    = { fg = p.base4, bg = p.base7 },
-    NeoTreeFloatBorder     = { fg = p.base3, bg = p.base6 },
-    NeoTreeFloatTitle      = { fg = p.base1, bg = p.base6, bold = true },
-    NeoTreeTitleBar        = { fg = p.base7, bg = p.base1, bold = true },
-    NeoTreeRootName        = { fg = p.base1, bold = true },
+    NeoTreeWinSeparator    = {
+      fg = p.base4,
+      bg = p.base7
+    },
+    NeoTreeFloatBorder     = {
+      fg = p.base3,
+      bg = p.base6
+    },
+    NeoTreeFloatTitle      = {
+      fg = p.base1,
+      bg = p.base6,
+      bold = true
+    },
+    NeoTreeTitleBar        = {
+      fg = p.base7,
+      bg = p.base1,
+      bold = true
+    },
+    NeoTreeRootName        = {
+      fg = p.base1,
+      bold = true
+    },
     NeoTreeDirectoryName   = { fg = p.teal_text },
     NeoTreeDirectoryIcon   = { fg = p.teal_text },
     NeoTreeFileIcon        = { fg = p.base2 },
     NeoTreeFileName        = { fg = p.base1 },
-    NeoTreeFileNameOpened  = { fg = p.purple_text, bold = true },
+    NeoTreeFileNameOpened  = {
+      fg = p.purple_text,
+      bold = true
+    },
     NeoTreeFileStats       = { fg = p.base2 },
-    NeoTreeFileStatsHeader = { fg = p.base2, bold = true },
+    NeoTreeFileStatsHeader = {
+      fg = p.base2,
+      bold = true
+    },
     NeoTreeIndentMarker    = { fg = p.base4 },
     NeoTreeExpander        = { fg = p.base3 },
     NeoTreeCursorLine      = { bg = p.base6 },

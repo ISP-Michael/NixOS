@@ -22,6 +22,9 @@ return function(hi, p, colors)
     GitSignsAddLn      = { bg = p.green_bg },
     GitSignsChangeLn   = { bg = p.orange_bg },
     GitSignsDeleteLn   = { bg = p.base4 },
-    GitSignsCurrentLineBlame = { fg = p.base3, italic = true },
+    GitSignsCurrentLineBlame = {
+      fg = p.base3,
+      italic = true
+    },
   })
 end
