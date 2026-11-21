@@ -277,6 +277,11 @@ local function set_guides(enabled)
         }
       )
     else
+      ibl.update(
+        {
+          enabled = true
+        }
+      )
       ibl.refresh(vim.api.nvim_get_current_buf())
     end
   end
