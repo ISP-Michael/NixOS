@@ -51,8 +51,14 @@ local function visual_spans(bufnr)
   local visual_mode = vim.fn.visualmode()
 
   if visual_mode == 'V' then
-    local first = math.min(vpos[2], cpos[2]) - 1
-    local last = math.max(vpos[2], cpos[2]) - 1
+    local first = math.min(
+      vpos[2],
+      cpos[2]
+    ) - 1
+    local last = math.max(
+      vpos[2],
+      cpos[2]
+    ) - 1
     for row = first, last do
       rows[row] = {
         start_col = 0,
@@ -81,10 +87,23 @@ local function visual_spans(bufnr)
       local start_byte = start_pos[3]
       local end_byte = end_pos[3]
       if row >= 0 and start_byte > 0 and end_byte > 0 then
-        local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
+        local line = vim.api.nvim_buf_get_lines(
+          bufnr,
+          row,
+          row + 1,
+          false
+        )[1] or ''
         local function screen_col(col)
-          col = math.min(col, #line + 1)
-          return vim.fn.virtcol({ row + 1, col }) - 1
+          col = math.min(
+            col,
+            #line + 1
+          )
+          return vim.fn.virtcol(
+            {
+              row + 1,
+              col
+            }
+          ) - 1
         end
         local start_col = screen_col(start_byte)
         local end_col = screen_col(end_byte)
