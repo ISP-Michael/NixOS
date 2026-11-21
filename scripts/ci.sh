@@ -1,26 +1,21 @@
 #!/usr/bin/env bash
-# Read-only checks for local use and CI.
+# Read-only checks.
 #
-# Two modes:
-#   --quick  host + iso-custom, для повседневной работы;
-#   (none)   все конфигурации и ISO-пакеты, перед пушем.
-#
-# The eval runs in a transient systemd scope with a memory cap, so a heavy
-# flake evaluation cannot push the desktop into swap. On CI (no user systemd)
-# it falls back to a plain eval.
+# Default (make check): только хостовая конфигурация и проверки dotfiles.
+# --full (make ci, GitHub Actions): все конфигурации и ISO-пакеты.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 ./scripts/guard-gaming.sh
 
-MODE="full"
+MODE="quick"
 case "${1:-}" in
-  --quick)
-    MODE="quick"
+  --full)
+    MODE="full"
     ;;
   "")
     ;;
   *)
-    echo "usage: $0 [--quick]" >&2
+    echo "usage: $0 [--full]" >&2
     exit 2
     ;;
 esac
@@ -32,37 +27,39 @@ fi
 
 git diff --check
 
-if [ "$MODE" = "quick" ]; then
-  MEMORY_HIGH="2G"
-  MEMORY_MAX="3G"
-  MEMORY_SWAP_MAX="512M"
-else
-  MEMORY_HIGH="3G"
-  MEMORY_MAX="4G"
-  MEMORY_SWAP_MAX="1G"
+configs=(
+  "MagicBook"
+)
+packages=()
+
+if [ "$MODE" = "full" ]; then
+  configs=(
+    "MagicBook"
+    "MagicBookInstall"
+    "iso-lite"
+    "iso"
+    "iso-custom"
+    "iso-media"
+    "iso-full"
+  )
+  packages=(
+    "iso-lite"
+    "iso"
+    "iso-custom"
+    "iso-media"
+    "iso-full"
+  )
 fi
 
-run_eval() {
-  if command -v systemd-run >/dev/null 2>&1 && systemctl --user show-environment >/dev/null 2>&1; then
-    systemd-run --user --scope --quiet \
-      -p "MemoryHigh=${MEMORY_HIGH}" \
-      -p "MemoryMax=${MEMORY_MAX}" \
-      -p "MemorySwapMax=${MEMORY_SWAP_MAX}" \
-      -- nix eval --impure --json --file scripts/ci-eval.nix \
-      --apply "f: f { mode = \"${MODE}\"; }"
-  else
-    nix eval --impure --json --file scripts/ci-eval.nix \
-      --apply "f: f { mode = \"${MODE}\"; }"
-  fi
-}
+for name in "${configs[@]}"; do
+  nix eval --raw ".#nixosConfigurations.${name}.config.system.build.toplevel.drvPath" >/dev/null
+  echo "OK config ${name}"
+done
 
-if ! OUT="$(run_eval)"; then
-  echo "nix eval failed; if it hit the ${MEMORY_MAX} cgroup limit, close heavy apps or use 'make check'" >&2
-  exit 1
-fi
-
-echo "$OUT" | jq -r '.configs[] | "OK config \(.)"'
-echo "$OUT" | jq -r '.packages[] | "OK package \(.)"'
+for name in "${packages[@]}"; do
+  nix eval --raw ".#packages.x86_64-linux.${name}.outPath" >/dev/null
+  echo "OK package ${name}"
+done
 
 ./scripts/hypr-check.sh
 ./scripts/zsh-check.sh

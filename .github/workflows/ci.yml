@@ -15,4 +15,4 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
       - name: Evaluate all configurations
-        run: ./scripts/ci.sh
+        run: ./scripts/ci.sh --full

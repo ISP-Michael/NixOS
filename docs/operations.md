@@ -3,7 +3,7 @@
 ## Локально
 
 ```bash
-make check       # быстрый eval: MagicBook + iso-custom, грязное дерево можно
+make check       # только хост и проверки dotfiles, грязное дерево можно
 make status      # здоровье manual-частей: units, /opt, SearXNG, restic
 make build-iso   # iso-custom с ограничениями по памяти
 make build-noctalia-slow # Noctalia 5.5.0: один core, idle I/O, лимит памяти
@@ -15,23 +15,21 @@ make sops-check  # проверить расшифровку secrets.yaml (бе�
 make backup-configs # tar app-конфигов в ~/Backups (0600)
 ```
 
-`make check` — быстрый режим: `MagicBook` и `iso-custom`, грязное дерево
-разрешено (`ALLOW_DIRTY=1`). `make ci` — полный: все 7 конфигураций и
-5 ISO-пакетов, только на чистом дереве. Полный режим запускается в
+`make check` — быстрый: только `MagicBook` и проверки dotfiles, грязное
+дерево разрешено (`ALLOW_DIRTY=1`). `make ci` — полный: все 7 конфигураций
+и 5 ISO-пакетов, только на чистом дереве. Полный режим запускается в
 `make push` и в GitHub Actions.
 
-`nix eval` в обоих режимах идёт в отдельной cgroup:
-`MemoryHigh=2G`, `MemoryMax=3G`, `MemorySwapMax=512M` для `check` и
-`3G/4G/1G` для `ci`. Если eval упрётся в лимит, он умрёт сам, а не утянет
-за собой композитор. В CI без user-systemd — обычный eval без лимита.
+Каждый конфиг проверяется отдельным `nix eval`, без одного мега-eval через
+`builtins.getFlake`. Мега-eval копировал весь каталог в store и на 6 ГБ
+уходил в своп; отдельные проверки идут последовательно и с меньшим пиком.
 
-`make build`/`switch` делают только быстрый предполётный контроль (чистое
-дерево и `git diff --check`), потому что полный eval всех конфигов и ISO
-дублирует работу `nixos-rebuild` и на 6 ГБ уходит в своп.
+`make build`/`switch` делают только предполётный контроль (чистое дерево и
+`git diff --check`), потому что `nixos-rebuild` сам вычисляет конфиг.
 
-Сборки идут через `nix-daemon` с `CPUWeight=20`, `IOWeight=50` и
-`MemoryHigh=3G` (`host/nix/daemon.nix`): при конкуренции приоритет у
-десктопа, память сборки не вытесняет композитор в своп.
+Отдельных cgroup-лимитов на eval нет: на практике они только тормозили.
+У `nix-daemon` остались штатные `daemonCPUSchedPolicy`/`daemonIOSchedClass`
+idle — низкий приоритет при конкуренции, без ручных лимитов памяти.
 
 Пока запущена игра, `make check`/`ci`/`switch`/`build`/`build-iso`
 отказываются стартовать (`scripts/guard-gaming.sh`). Осознанный обход —

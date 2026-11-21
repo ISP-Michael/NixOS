@@ -1,10 +1,10 @@
 .PHONY: check ci hypr-check zsh-check nvim-check fmt build-iso build-noctalia-slow switch build push status host-age sops-check backup-configs
 
 check:
-	ALLOW_DIRTY=1 ./scripts/ci.sh --quick
+	ALLOW_DIRTY=1 ./scripts/ci.sh
 
 ci:
-	./scripts/ci.sh
+	./scripts/ci.sh --full
 
 hypr-check:
 	./scripts/hypr-check.sh

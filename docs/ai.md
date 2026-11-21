@@ -120,14 +120,15 @@ Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обнов�
   `profile.lua` (ISO перекрывает его через `package.path`). Новый общий
   файл добавлять в manifest, хостовые пути — только в `profile.lua`.
   Проверка: `make hypr-check` или `Hyprland --verify-config -c ...`.
-- `make check` — быстрый режим (`MagicBook` + `iso-custom`), `make ci` — все
-  7 конфигураций и 5 ISO. Оба `nix eval` идут в отдельной cgroup с лимитом
-  памяти, поэтому не топят композитор; для правок Hyprland достаточно
-  `make hypr-check`.
-- `nix-daemon` ограничен `CPUWeight=20`, `IOWeight=50`, `MemoryHigh=3G`
-  (`host/nix/daemon.nix`), чтобы сборки не вытесняли композитор в своп.
-  `make switch`/`build` больше не запускают полный `ci.sh` — только чистое
-  дерево и `git diff --check`; полный eval остаётся в `make ci`/`make push`.
+- `make check` — только `MagicBook` и проверки dotfiles, около минуты;
+  `make ci` — все 7 конфигураций и 5 ISO (для GitHub Actions и явного
+  полного прогона). Каждый конфиг проверяется отдельным `nix eval`, без
+  мега-eval через `builtins.getFlake`: тот копировал весь каталог в store
+  и на 6 ГБ уходил в своп. Для правок Hyprland достаточно `make hypr-check`.
+- Ручных cgroup-лимитов на eval и `nix-daemon` нет: на практике они только
+  тормозили. У демона остались штатные idle-политики CPU/IO.
+  `make switch`/`build` не запускают полный `ci.sh` — только чистое дерево
+  и `git diff --check`; полный eval остаётся в `make ci` и GitHub Actions.
 - `submaps.lua` удалён; ISO больше не делает `require('submaps')`. Print-
   сабмап со скриншотами сейчас не подключён. Вернуть можно из `dd6f314`.
 - `user/dotfiles/default.nix` — живые симлинки. После переименования каталога

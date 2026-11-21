@@ -3,5 +3,6 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# Локально — только быстрая проверка; полный прогон делает GitHub Actions.
 ./scripts/ci.sh
 git push origin main

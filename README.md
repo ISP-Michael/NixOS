@@ -24,18 +24,17 @@
 git clone https://github.com/ISP-Michael/NixOS.git
 cd NixOS
 
-make check       # быстрая проверка: MagicBook + iso-custom
-make ci          # полная: 7 конфигураций и 5 ISO
+make check       # быстрая проверка хоста и dotfiles
+make ci          # полная: 7 конфигураций и 5 ISO (для пуша)
 make switch      # собрать и активировать MagicBook (спросит sudo)
 make build-iso   # собрать iso-custom в result-iso-custom
 make status      # состояние manual-частей
 ```
 
-`make check` не требует чистого дерева, `make ci` требует. Проверки и сборки
-ограничены по памяти: `nix-daemon` — `CPUWeight=20`, `IOWeight=50`,
-`MemoryHigh=3G`, а `nix eval` идёт в отдельной cgroup. На 6 ГБ это не даёт
-им задушить композитор. Пока запущена игра, проверки и сборки отказываются
-стартовать; осознанный обход — `ALLOW_GAMING=1`.
+`make check` не требует чистого дерева, `make ci` требует. Полная проверка
+тяжёлая — её штатное место GitHub Actions, локально достаточно `make check`.
+Пока запущена игра, проверки и сборки не стартуют; осознанный обход —
+`ALLOW_GAMING=1`.
 
 ## Структура
 
