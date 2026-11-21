@@ -35,15 +35,21 @@ the registered loader. `:PackLoadAll` is for benchmarks and tests.
 |---|---|
 | `lua/core/` | editor primitives; no third-party plugin setup |
 | `lua/plugins/` | plugin lifecycle, keymaps, autocmds, triggers |
-| `lua/pack.lua` | vim.pack API and the 30 specs |
+| `lua/pack.lua` | vim.pack API and the 32 specs |
 | `lua/flat/theme/` | theme sections: ui, diagnostics, syntax, treesitter, lsp, plugins, terminal |
 | `lua/flat/{cursor,strings}.lua` | cursor colour and multi-line string fill |
 | `colors/`, `lua/lualine/themes/` | fixed lookup paths; do not move |
 | `after/`, `queries/` | fixed runtime lookup paths |
 
 The theme is split by section; `lua/flat/theme.lua` is only a compatibility
-entry. Dead Lazy/indent-guide groups were removed because those plugins are
-not in `pack.lua`.
+entry. Indent-guide groups live in `lua/flat/theme/plugins/indent.lua`; dead
+Lazy groups stay removed.
+
+Indent guides use two small plugins, as before the vim.pack refactor:
+`indent-blankline.nvim` draws the static `│` lines at every indent level, and
+`mini.indentscope` highlights the block the cursor is in. Both load after
+`UIEnter`; ibl's `setup()` refreshes every existing window, so the first buffer
+is covered too.
 
 ## Plugin triggers
 
@@ -51,7 +57,7 @@ not in `pack.lua`.
 - matching filetype → tree-sitter parsers/textobjects, autotag, dbee, vim-nix;
 - first buffer in `.git` → gitsigns;
 - `InsertEnter` → autopairs;
-- `UIEnter` + schedule → surround, neoscroll, langmapper;
+- `UIEnter` + schedule → surround, neoscroll, indent guides (ibl + mini.indentscope), langmapper;
 - first notification → snacks notifier;
 - keys → fzf-lua, neo-tree, DAP, Spectre, Trouble, LazyGit, transparent;
 - `BufWritePre` py/go → conform.
@@ -73,7 +79,8 @@ startup pass; it has no loader, so `PackLoadAll` does not include it.
 - dead tree-sitter `bad_maps` deletion and duplicate loader registration
   removed.
 - lualine setup moved from `init.lua` into the plugin manifest.
-- dead theme plugin/indent groups and unused palette keys removed.
+- dead theme plugin groups and unused palette keys removed; indent-guide groups
+  restored in `theme/plugins/indent.lua`.
 - `after/syntax/gitignore.vim` links are re-applied on `ColorScheme`.
 
 `core/completion.lua`, `core/lsp.lua` and `core/project.lua` are still large.

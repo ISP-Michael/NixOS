@@ -16,6 +16,10 @@
       "rev": "5be654f2232c10ddcad19c1607a67b6b4b78fc29",
       "src": "https://github.com/lewis6991/gitsigns.nvim.git"
     },
+    "indent-blankline.nvim": {
+      "rev": "f1e186e44d3b7f9ae918008e2c28ce37c6023d2d",
+      "src": "https://github.com/lukas-reineke/indent-blankline.nvim"
+    },
     "langmapper.nvim": {
       "rev": "49462fd9f4f33cf8cfbaa779ba07d3c0b255cc06",
       "src": "https://github.com/Wansmer/langmapper.nvim.git"
@@ -27,6 +31,10 @@
     "lualine.nvim": {
       "rev": "221ce6b2d999187044529f49da6554a92f740a96",
       "src": "https://github.com/nvim-lualine/lualine.nvim.git"
+    },
+    "mini.indentscope": {
+      "rev": "9cc15a46d5082ee75b921b6be8c1f7784da7eea9",
+      "src": "https://github.com/echasnovski/mini.indentscope"
     },
     "neo-tree.nvim": {
       "rev": "1a14083046d96e88e361d1da00761c40d45012f3",

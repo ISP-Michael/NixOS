@@ -23,6 +23,7 @@ local modules = {
   'plugins.align',
   'plugins.transparent',
   'plugins.neoscroll',
+  'plugins.indent',
   'plugins.langmapper',
   'plugins.notify',
   'plugins.lualine',

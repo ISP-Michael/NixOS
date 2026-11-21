@@ -12,8 +12,10 @@ local M = {
 local specs = {
   'https://github.com/CRAG666/code_runner.nvim',
   'https://github.com/stevearc/conform.nvim',
+  'https://github.com/echasnovski/mini.indentscope',
   'https://github.com/ibhagwan/fzf-lua',
   'https://github.com/lewis6991/gitsigns.nvim',
+  'https://github.com/lukas-reineke/indent-blankline.nvim',
   'https://github.com/kdheepak/lazygit.nvim',
   'https://github.com/nvim-lualine/lualine.nvim',
   'https://github.com/karb94/neoscroll.nvim',
