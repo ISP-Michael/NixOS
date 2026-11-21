@@ -1,7 +1,6 @@
 user/programs/openclaw-module.nix
 result
 result-*
-result-lib
 assets/videos/wallpapers/*.mp4
 host/services/mihomo.yaml
 
