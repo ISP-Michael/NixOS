@@ -52,6 +52,8 @@ sudo dd if=result-iso-custom/iso/*.iso of=/dev/sdX bs=4M status=progress oflag=s
 
 ## Установка
 
+![Загрузка и установка](images/boot-flow.png)
+
 Обычный путь — с live-системы, репозиторий уже в `/etc/nixos`:
 
 ```bash

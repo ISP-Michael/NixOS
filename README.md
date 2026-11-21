@@ -77,6 +77,12 @@ Live-система работает без установки, но с неё �
 ## Интерфейс и клавиатура
 
 Hyprland + Noctalia, конфиги — `user/dotfiles/.config` (симлинки в репозиторий).
+
+![Терминальные конфиги](docs/images/showcase-terminal.png)
+
+На снимке — kitty, tmux, yazi, nvim, fastfetch и zsh с конфигами из репозитория.
+Снято в отдельной headless-сессии, без личных окон.
+
 Слои клавиатуры настраиваются keyd:
 
 ![Модификаторы keyd](docs/images/keyd-main.png)
@@ -92,7 +98,12 @@ Alt; CapsLock по тапу даёт Ctrl. Полные схемы и табли
 - [`docs/decisions.md`](docs/decisions.md) — что выключено и почему.
 - [`docs/iso.md`](docs/iso.md) — профили, сборка, установка, live-поведение.
 - [`docs/keyd.md`](docs/keyd.md) — слои клавиатуры и схемы.
+- [`docs/keybinds.md`](docs/keybinds.md) — горячие клавиши Hyprland.
 - [`docs/hyprland.md`](docs/hyprland.md) — окна, диспетчеры, темы.
+- [`docs/hardware.md`](docs/hardware.md) — железо MagicBook и проверки.
+- [`docs/fastfetch.md`](docs/fastfetch.md), [`docs/kitty.md`](docs/kitty.md),
+  [`docs/nvim.md`](docs/nvim.md), [`docs/tmux.md`](docs/tmux.md),
+  [`docs/yazi.md`](docs/yazi.md), [`docs/zsh.md`](docs/zsh.md) — конфиги.
 - [`docs/secrets.md`](docs/secrets.md) — sops, ключи, новые машины.
 - [`docs/manual-apps.md`](docs/manual-apps.md) — `/opt`-приложения и проверка.
 - [`docs/transfer.md`](docs/transfer.md) — перенос OpenCode/OpenClaw.
