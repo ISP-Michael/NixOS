@@ -99,7 +99,7 @@ Alt; CapsLock по тапу даёт Ctrl. Полные схемы и табли
 
 - [`docs/architecture.md`](docs/architecture.md) — карта репозитория и границы слоёв.
 - [`docs/ai.md`](docs/ai.md) — компактный контекст для ИИ-агента.
-- [`docs/conventions.md`](docs/conventions.md) — стиль Nix и именование.
+- [`docs/conventions.md`](docs/conventions.md) — стиль конфигов (Nix, Lua, TOML, shell, `.conf`) и именование.
 - [`docs/decisions.md`](docs/decisions.md) — что выключено и почему.
 - [`docs/iso.md`](docs/iso.md) — профили, сборка, установка, live-поведение.
 - [`docs/keyd.md`](docs/keyd.md) — слои клавиатуры и схемы.
