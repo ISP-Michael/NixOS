@@ -120,9 +120,10 @@ Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обнов�
   `profile.lua` (ISO перекрывает его через `package.path`). Новый общий
   файл добавлять в manifest, хостовые пути — только в `profile.lua`.
   Проверка: `make hypr-check` или `Hyprland --verify-config -c ...`.
-- На 6 ГБ `make check`/`make ci` — только при закрытых Firefox/Electron/
-  OpenClaw: полный `nix eval` уходит в swap и может задушить композитор.
-  Для правок Hyprland достаточно `make hypr-check`.
+- `make check` — быстрый режим (`MagicBook` + `iso-custom`), `make ci` — все
+  7 конфигураций и 5 ISO. Оба `nix eval` идут в отдельной cgroup с лимитом
+  памяти, поэтому не топят композитор; для правок Hyprland достаточно
+  `make hypr-check`.
 - `nix-daemon` ограничен `CPUWeight=20`, `IOWeight=50`, `MemoryHigh=3G`
   (`host/nix/daemon.nix`), чтобы сборки не вытесняли композитор в своп.
   `make switch`/`build` больше не запускают полный `ci.sh` — только чистое

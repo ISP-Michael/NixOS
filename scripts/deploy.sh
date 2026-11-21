@@ -2,6 +2,7 @@
 # Build or switch the host after CI checks.
 set -euo pipefail
 cd "$(dirname "$0")/.."
+./scripts/guard-gaming.sh
 
 HOST="${HOST:-MagicBook}"
 MODE="${1:-switch}"

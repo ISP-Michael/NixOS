@@ -88,3 +88,29 @@ hl.window_rule(
     float = true,
   }
 )
+
+-- Gamepad input goes straight to the game (SDL/evdev) and never reaches the
+-- compositor's seat, so Hyprland/Noctalia see no activity and lock the screen
+-- mid-game. Inhibit idle while a game window exists.
+hl.window_rule(
+  {
+    name = 'games-idle-inhibit',
+    match = {
+      class = '^(steam_app_default|gamescope)$',
+    },
+    idle_inhibit = 'always',
+  }
+)
+
+-- Silksong: keep the game window floating so its own resolution setting
+-- (Screen.SetResolution) is honored instead of being tiled to the work area.
+hl.window_rule(
+  {
+    name = 'silksong-floating',
+    match = {
+      class = '^steam_app_default$',
+      title = '.*Silksong.*',
+    },
+    float = true,
+  }
+)
