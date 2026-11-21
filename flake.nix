@@ -142,26 +142,28 @@
     # Все iso-* конфигурации автоматически становятся пакетами:
     # nix build .#iso-custom, .#iso-lite, ...
     isoPackages =
-      lib.mapAttrs'
-        (
-          name: cfg:
-          lib.nameValuePair
-            name
-            cfg.config.system.build.isoImage
+      lib.mapAttrs' (
+        name: cfg:
+        lib.nameValuePair
+          name
+          cfg.config.system.build.isoImage
+      )
+      (
+        lib.filterAttrs (
+          name: _:
+          lib.hasPrefix "iso" name
         )
-        (
-          lib.filterAttrs
-            (
-              name: _:
-              lib.hasPrefix "iso" name
-            )
-            configs
-        );
+        configs
+      );
   in
   {
     nixosConfigurations = configs;
 
-    packages.${system} = isoPackages;
+    packages.${system} =
+      isoPackages
+      // {
+        happ = nixpkgs.legacyPackages.${system}.callPackage ./apps/happ/package.nix { };
+      };
 
     formatter.${system} =
       let

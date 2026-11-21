@@ -1,3 +1,4 @@
+# Happ module for the live ISO. Derived from MrShitFox/happ-nixos (GPL-3.0).
 { config, pkgs, lib, ... }:
 
 let
@@ -74,8 +75,12 @@ in
 
     # Firewall + TUN module for Happ's TUN mode.
     networking.firewall.checkReversePath = "loose";
-    networking.firewall.trustedInterfaces = [ cfg.tunInterface ];
-    boot.kernelModules = [ "tun" ];
+    networking.firewall.trustedInterfaces = [
+      cfg.tunInterface
+    ];
+    boot.kernelModules = [
+      "tun"
+    ];
 
     # Happ hard-codes /opt/happ for its binaries, so we materialise the immutable
     # Nix store tree there. The copy runs only when the package changes, keeping
@@ -99,12 +104,18 @@ in
     # Privileged daemon that runs the TUN cores (sing-box / tun2proxy) as root.
     systemd.services.happd = {
       description = "Happ Process Control Daemon";
-      after = [ "network.target" ];
-      wantedBy = [ "multi-user.target" ];
+      after = [
+        "network.target"
+      ];
+      wantedBy = [
+        "multi-user.target"
+      ];
       # ExecStart is a fixed /opt/happ path rather than a Nix store path, so
       # switch-to-configuration can't see a package bump from the unit alone;
       # without this, happd would keep running the old binary after an upgrade.
-      restartTriggers = [ cfg.package ];
+      restartTriggers = [
+        cfg.package
+      ];
 
       path = with pkgs; [ iproute2 iptables procps net-tools ];
 

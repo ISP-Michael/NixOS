@@ -4,7 +4,7 @@
 }:
 {
   # Host: Happ 4.7.2+ установлен вручную в /opt/happ (официальный .deb).
-  # ISO использует vendor/happ/module.nix с pinned-пакетом.
+  # ISO использует apps/happ/package.nix через iso-module.nix.
   # Обновление — apps/happ/update.sh (backup + restart happd).
   environment.systemPackages = [
     pkgs.net-tools

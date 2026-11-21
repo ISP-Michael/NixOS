@@ -163,7 +163,7 @@ flake.nix
       → iso/{base,nix,networking,users,profiles,desktop,runtime,home,repo}
       → iso/vpn.nix (если profile-data.vpn = true)
           → ../apps/amnezia/module.nix
-          → ../vendor/happ/module.nix
+          → ../apps/happ/iso-module.nix
 ```
 
 ## Границы
@@ -174,7 +174,7 @@ flake.nix
 - `host/` — можно всё, что относится к MagicBook. `home-manager.nix` — единственное место, где хост подключает `user/`.
 - `iso/` — можно использовать `common/`, `vendor/` и `apps/`. Нельзя тянуть `host/`.
 - `user/` — Home Manager. Не знает, хост это или ISO; отличия задаются точкой входа (`host/home-manager.nix` или `iso/home.nix`).
-- `vendor/` — не править без причины; локальные изменения фиксировать в `vendor/happ/README.md` или `docs/decisions.md`.
+- `vendor/` — чужой код и вендоренные конфиги; локальные изменения фиксировать в README рядом или `docs/decisions.md`.
 
 ## Куда добавлять
 

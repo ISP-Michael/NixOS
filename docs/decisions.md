@@ -44,7 +44,7 @@
 - **Flatpak** — модуль оставлен (`host/services/flatpak.nix`), пакетов нет.
   Новые Flatpak-приложения не добавлять без явной просьбы.
 - **Happ на хосте** — ручной `/opt/happ` (`apps/happ/module.nix`), не
-  `vendor/happ/module.nix`. На ISO — наоборот, Nix-модуль.
+  `apps/happ/iso-module.nix`. На ISO — наоборот, Nix-модуль.
 - **AmneziaVPN на хосте** — `/opt/AmneziaVPN` + `apps/amnezia/module.nix`;
   Nix-модуль `programs.amnezia-vpn` не используется.
 
@@ -118,7 +118,7 @@
   `user/dotfiles/.config/opencode/`; раньше жили только в `~/.local`.
 - **Идентичность** — `host/identity.nix`: user/home/repoPath/hostName/diskDevice;
   HM получает `identity` через `extraSpecialArgs`. ISO — `iso.user`/`iso.hostName`.
-- **`vendor/happ`** — сторонний код GPL-3.0; upstream и локальные патчи
-  описаны в `vendor/happ/README.md`.
+- **`apps/happ`** — GPL-3.0 (производная от upstream `MrShitFox/happ-nixos`);
+  версия/hash и локальные патчи описаны в `apps/happ/README.md`.
 - **`user/theme/kde.nix`** и Noctalia `post_hook` пишут `kdeglobals`:
   это два вызова одного скрипта, не два разных владельца.

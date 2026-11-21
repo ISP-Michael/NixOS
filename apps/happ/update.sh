@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Host-side updater for the manual /opt/happ installation.
-# ISO uses vendor/happ/module.nix with a pinned package instead.
+# ISO uses apps/happ/package.nix through iso-module.nix instead.
 set -euo pipefail
 
 [ "$(id -u)" -eq 0 ] || { echo "run as root: sudo $0" >&2; exit 1; }

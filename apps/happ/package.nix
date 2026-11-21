@@ -1,4 +1,6 @@
-{ pkgs ? import <nixpkgs> { }, forceXwayland ? false, forceSoftwareRendering ? false }:
+# Happ package for the live ISO. Derived from MrShitFox/happ-nixos (GPL-3.0);
+# local maintenance lives here: version, hash and Qt workarounds.
+{ pkgs, forceXwayland ? false, forceSoftwareRendering ? false }:
 
 let
   lib = pkgs.lib;
@@ -115,7 +117,9 @@ pkgs.stdenv.mkDerivation rec {
   meta = {
     description = "Happ proxy desktop client (VLESS/VMess/Trojan/Shadowsocks) with a TUN daemon";
     homepage = "https://github.com/Happ-proxy/happ-desktop";
-    platforms = [ "x86_64-linux" ];
+    platforms = [
+      "x86_64-linux"
+    ];
     mainProgram = "happ";
     # Happ is distributed as a closed-source, freely redistributable binary.
     # The license field is intentionally left unset so importing this package

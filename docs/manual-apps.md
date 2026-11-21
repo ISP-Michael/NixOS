@@ -15,7 +15,7 @@ Host ставит свежие версии официальными устан�
 ## Happ
 
 - Host: `/opt/happ`; обновление — `sudo apps/happ/update.sh`.
-- ISO: `vendor/happ/module.nix` (4.7.2).
+- ISO: `apps/happ/iso-module.nix` (4.7.2).
 - Host-интеграция: `apps/happ/module.nix`.
 - `~/.local/bin/happ` не должен перекрывать обёртку.
 - Проверка: `command -v happ`, `systemctl status happd`, `ip -br addr`.

@@ -9,7 +9,7 @@
 | Приложение | Host | ISO |
 |---|---|---|
 | `amnezia` | официальный `.run` в `/opt/AmneziaVPN`, `update.sh` | pinned `.run` из store, activation |
-| `happ` | официальный `.deb` в `/opt/happ`, `update.sh` | `vendor/happ` pinned-пакет |
+| `happ` | официальный `.deb` в `/opt/happ`, `update.sh` | `apps/happ/package.nix` + `iso-module.nix` |
 | `throne` | официальный zip в `/opt/Throne`, `update.sh` | не входит |
 | `opencode` | официальный установщик в `~/.opencode`, `update.sh` | pinned npm tarball |
 | `searxng` | Docker `searxng/searxng:latest` | upstream source pinned в store |

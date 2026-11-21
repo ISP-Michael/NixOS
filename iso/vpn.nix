@@ -8,7 +8,7 @@ in
 {
   imports = [
     ../apps/amnezia/module.nix
-    ../vendor/happ/module.nix
+    ../apps/happ/iso-module.nix
   ];
 
   services.amnezia-vpn = {

@@ -92,7 +92,7 @@ MagicBook (`/dev/nvme0n1`). Для другой машины нужен свой
   OpenCode, без desktop-файла.
 - В `work`/`custom`/`media`/`full`: OpenCode 2.3.0 (`apps/opencode/package.nix`),
   AmneziaVPN 5.1.0.6 (`apps/amnezia/package.nix`, `.run` распаковывается в `/opt`),
-  Happ 4.7.2 (`vendor/happ`), Node 26, Python 3, restic, sqlite,
+  Happ 4.7.2 (`apps/happ`), Node 26, Python 3, restic, sqlite,
   SearXNG из `apps/searxng/package.nix` (upstream master pinned) на `127.0.0.1:8888`.
 - Throne, Steam, Blender, Docker, виртуалки не включены.
 - SSH выключен: у live-пользователя пустой пароль, открытый порт не нужен.

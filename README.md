@@ -55,7 +55,7 @@ make status      # состояние manual-частей
 | `host/` | Только MagicBook: identity, железо, диск, сеть, безопасность, сервисы, пользователи, Home Manager. |
 | `iso/` | Live-система: профили, Hyprland, копия репозитория в `/etc/nixos`, установочные overrides. |
 | `user/` | Home Manager: база, XDG, пакеты, программы, тема, dotfiles. |
-| `vendor/` | Сторонний код со своей лицензией (`vendor/happ`, GPL-3.0). |
+| `vendor/` | Вендоренные конфиги (`vendor/tmux`, `vendor/zsh`). Happ теперь в `apps/happ`. |
 | `secrets/` | Зашифрованные sops-секреты и пример снимка. Приватные ключи сюда не кладутся. |
 | `scripts/` | Проверки, деплой, пуш, статус, обслуживание. |
 | `docs/` | Архитектура, решения, ISO, секреты, перенос, операции. |
@@ -127,4 +127,4 @@ Alt; CapsLock по тапу даёт Ctrl. Полные схемы и табли
 
 ## Лицензия
 
-[Unlicense](LICENSE). `vendor/happ` — GPL-3.0, см. `vendor/happ/LICENSE`.
+[Unlicense](LICENSE). `apps/happ` — GPL-3.0, см. `apps/happ/LICENSE`.

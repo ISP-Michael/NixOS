@@ -26,7 +26,7 @@
 | Пакеты ISO | `iso/profiles.nix` |
 | OpenCode 2.3.0 (ISO) | `apps/opencode/package.nix` |
 | AmneziaVPN `.run` | `apps/amnezia/package.nix` + `apps/amnezia/module.nix` |
-| Happ | `apps/happ/module.nix` (host), `vendor/happ/` (ISO) |
+| Happ | `apps/happ/module.nix` (host), `apps/happ/package.nix` + `iso-module.nix` (ISO) |
 | Прокси/ручные apps | `apps/*/update.sh` + `README.md` |
 | Живые dotfiles | `user/dotfiles/.config/` |
 | Секреты | `secrets/secrets.yaml` |
@@ -109,8 +109,8 @@ Host: `apps/opencode/update.sh` (он же `opencode-update.timer`), обнов�
 
 ### Обновить Happ
 
-`vendor/happ/package.nix`: версия, URL `.deb`, sha256. Локальные патчи —
-в `vendor/happ/README.md` или `docs/decisions.md`.
+`apps/happ/package.nix`: версия, URL `.deb`, sha256. Обновление —
+`apps/happ/update-package.sh`, локальные патчи — `apps/happ/README.md`.
 
 ## Грабли
 
