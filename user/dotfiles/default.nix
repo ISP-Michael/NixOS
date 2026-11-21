@@ -27,6 +27,17 @@ let
         ''
       )
       apps
+    ++ [
+      # OpenCode: каталог ~/.config/opencode остаётся реальным (opencode.jsonc,
+      # service.json, node_modules), но общие файлы — симлинки в dotfiles.
+      # Старый путь user/scripts/.config после рефактора 17.11 мёртв.
+      ''
+        mkdir -p "$HOME/.config/opencode"
+        ln -sfn "${configDir}/opencode/cli.json" "$HOME/.config/opencode/cli.json"
+        ln -sfn "${configDir}/opencode/package.json" "$HOME/.config/opencode/package.json"
+        ln -sfn "${configDir}/opencode/plugins" "$HOME/.config/opencode/plugins"
+      ''
+    ]
   );
 in
 {
