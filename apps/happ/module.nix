@@ -23,7 +23,9 @@
       icon = "/opt/happ/happ.png";
       comment = "Happ proxy client (VLESS/VMess/Trojan/Shadowsocks)";
       terminal = false;
-      categories = [ "Utility" ];
+      categories = [
+        "Utility"
+      ];
     })
   ];
 
@@ -33,13 +35,21 @@
   ];
 
   networking.firewall.checkReversePath = "loose";
-  networking.firewall.trustedInterfaces = [ "tun0" ];
-  boot.kernelModules = [ "tun" ];
+  networking.firewall.trustedInterfaces = [
+    "tun0"
+  ];
+  boot.kernelModules = [
+    "tun"
+  ];
 
   systemd.services.happd = {
     description = "Happ Process Control Daemon (manual /opt/happ)";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
+    after = [
+      "network.target"
+    ];
+    wantedBy = [
+      "multi-user.target"
+    ];
     # Конфиг может собираться на машине без /opt/happ.
     unitConfig = {
       ConditionPathExists = "/opt/happ/bin/happd";

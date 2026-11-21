@@ -23,6 +23,8 @@ pkgs.stdenvNoCC.mkDerivation {
   meta = {
     description = "AmneziaVPN 5.1.0.6 installer (run at activation)";
     homepage = "https://amnezia.org";
-    platforms = [ "x86_64-linux" ];
+    platforms = [
+      "x86_64-linux"
+    ];
   };
 }

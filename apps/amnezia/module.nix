@@ -39,8 +39,12 @@ in
     # ip/iptables/ip6tables, активация tun падает (ошибка 101 InternalError).
     systemd.services.AmneziaVPN = {
       description = "AmneziaVPN Service";
-      after = [ "network.target" ];
-      wantedBy = [ "multi-user.target" ];
+      after = [
+        "network.target"
+      ];
+      wantedBy = [
+        "multi-user.target"
+      ];
       unitConfig = {
         ConditionPathExists = "/opt/AmneziaVPN/bin/AmneziaVPN-service";
       };
@@ -73,7 +77,9 @@ in
         icon = "/opt/AmneziaVPN/AmneziaVPN.png";
         comment = "AmneziaVPN client";
         terminal = false;
-        categories = [ "Network" ];
+        categories = [
+          "Network"
+        ];
       })
     ];
 

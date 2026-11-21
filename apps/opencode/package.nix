@@ -33,6 +33,8 @@ pkgs.stdenv.mkDerivation {
     description = "OpenCode 2 coding agent";
     homepage = "https://opencode.ai";
     mainProgram = "opencode";
-    platforms = [ "x86_64-linux" ];
+    platforms = [
+      "x86_64-linux"
+    ];
   };
 }

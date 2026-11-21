@@ -102,12 +102,26 @@ in
   # нет пальца 8 секунд — сразу появляется приглашение ввести пароль
   # (по умолчанию это 30 секунд, и ввод пароля «висел»).
   security.pam.services = {
-    sudo.rules.auth.fprintd.args = [ "timeout=8" ];
-    "polkit-1".rules.auth.fprintd.args = [ "timeout=8" ];
-    su.rules.auth.fprintd.args = [ "timeout=8" ];
-    "su-l".rules.auth.fprintd.args = [ "timeout=8" ];
-    passwd.rules.auth.fprintd.args = [ "timeout=8" ];
-    chsh.rules.auth.fprintd.args = [ "timeout=8" ];
-    chfn.rules.auth.fprintd.args = [ "timeout=8" ];
+    sudo.rules.auth.fprintd.args = [
+      "timeout=8"
+    ];
+    "polkit-1".rules.auth.fprintd.args = [
+      "timeout=8"
+    ];
+    su.rules.auth.fprintd.args = [
+      "timeout=8"
+    ];
+    "su-l".rules.auth.fprintd.args = [
+      "timeout=8"
+    ];
+    passwd.rules.auth.fprintd.args = [
+      "timeout=8"
+    ];
+    chsh.rules.auth.fprintd.args = [
+      "timeout=8"
+    ];
+    chfn.rules.auth.fprintd.args = [
+      "timeout=8"
+    ];
   };
 }

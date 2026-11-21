@@ -49,10 +49,18 @@
   fonts.fontconfig = {
     enable = true;
     defaultFonts = {
-      sansSerif = [ "DejaVu Sans" ];
-      serif = [ "DejaVu Serif" ];
-      monospace = [ "FiraCode Nerd Font NDD" ];
-      emoji = [ "Noto Color Emoji" ];
+      sansSerif = [
+        "DejaVu Sans"
+      ];
+      serif = [
+        "DejaVu Serif"
+      ];
+      monospace = [
+        "FiraCode Nerd Font NDD"
+      ];
+      emoji = [
+        "Noto Color Emoji"
+      ];
     };
   };
 }

@@ -28,7 +28,9 @@ let
 
   # Telegram: KDE platform theme даёт и цвета, и нативный файловый диалог.
   telegram-portal = pkgs.runCommand "telegram-desktop-kde" {
-    nativeBuildInputs = [ pkgs.makeWrapper ];
+    nativeBuildInputs = [
+      pkgs.makeWrapper
+    ];
   } ''
     mkdir -p $out/bin $out/share
     makeWrapper ${pkgs.telegram-desktop}/bin/Telegram $out/bin/Telegram \

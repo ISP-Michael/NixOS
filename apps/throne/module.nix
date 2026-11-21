@@ -44,7 +44,9 @@ in
       icon = "/opt/Throne/Throne.png";
       comment = "Qt based cross-platform GUI proxy configuration manager";
       terminal = false;
-      categories = [ "Network" ];
+      categories = [
+        "Network"
+      ];
     })
   ];
 

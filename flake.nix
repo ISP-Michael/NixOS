@@ -150,6 +150,12 @@
 
     packages.${system} = isoPackages;
 
-    formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
+    formatter.${system} =
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+      pkgs.writeShellScriptBin "nixfmt" ''
+        exec ${pkgs.python3}/bin/python3 ${./scripts/nix-style.py} "$@"
+      '';
   };
 }

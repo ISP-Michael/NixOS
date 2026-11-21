@@ -19,10 +19,17 @@
   # Конфиг ляжет в /etc/xdg/xdg-desktop-portal/hyprland-portals.conf,
   # KDE-бэкенд — в системные пакеты (юнит в /etc/systemd/user, D-Bus-активация).
   xdg.portal = {
-    extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+    extraPortals = [
+      pkgs.kdePackages.xdg-desktop-portal-kde
+    ];
     config.hyprland = {
-      default = [ "hyprland" "gtk" ];
-      "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
+      default = [
+        "hyprland"
+        "gtk"
+      ];
+      "org.freedesktop.impl.portal.FileChooser" = [
+        "kde"
+      ];
     };
   };
 }
