@@ -4,6 +4,10 @@
 uses the native `ya pkg` package manager; `package.toml` is the lock/source of
 truth for managed plugins.
 
+![Навигация в yazi](images/demo-yazi.gif)
+
+![Полный экран yazi](images/showcase-yazi.png)
+
 ## Composition
 
 ```text

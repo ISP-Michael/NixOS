@@ -78,10 +78,14 @@ Live-система работает без установки, но с неё �
 
 Hyprland + Noctalia, конфиги — `user/dotfiles/.config` (симлинки в репозиторий).
 
-![Терминальные конфиги](docs/images/showcase-terminal.png)
+| Рабочий стол | kitty + tmux + fastfetch + zsh |
+|---|---|
+| ![Рабочий стол с Noctalia](docs/images/showcase-desktop.png) | ![kitty, tmux, fastfetch](docs/images/showcase-tmux.png) |
+| yazi | nvim (Python) |
+| ![yazi](docs/images/showcase-yazi.png) | ![nvim](docs/images/showcase-nvim.png) |
 
-На снимке — kitty, tmux, yazi, nvim, fastfetch и zsh с конфигами из репозитория.
-Снято в отдельной headless-сессии, без личных окон.
+Анимации: [yazi](docs/images/demo-yazi.gif) · [nvim](docs/images/demo-nvim.gif).
+Снято на рабочем столе с этой конфигурацией, личные окна не попадают в кадр.
 
 Слои клавиатуры настраиваются keyd:
 
@@ -109,6 +113,7 @@ Alt; CapsLock по тапу даёт Ctrl. Полные схемы и табли
 - [`docs/transfer.md`](docs/transfer.md) — перенос OpenCode/OpenClaw.
 - [`docs/operations.md`](docs/operations.md) — проверки, деплой, git.
 - [`docs/new-machine.md`](docs/new-machine.md) — новая машина.
+- [`docs/troubleshooting.md`](docs/troubleshooting.md) — симптом → причина → что делать.
 
 ## Ограничения
 

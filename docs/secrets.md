@@ -111,47 +111,11 @@ sudo SOPS_AGE_KEY_FILE=/run/secrets-for-users.d/age-keys.txt \
 `lastmodified` в `secrets.yaml` может остаться старым (2026-03-14) — это
 нормально; важны получатели, а не дата.
 
-## Новая машина: добавить её host-ключ (рекомендуется)
+## Новая машина
 
-1. На новой машине получить публичный age-ключ host:
-
-   ```bash
-   ssh-to-age -i /etc/ssh/ssh_host_ed25519_key.pub
-   ```
-
-2. Добавить его в `.sops.yaml`, например:
-
-   ```yaml
-   keys:
-     - &admin_user age1q7...
-     - &host_magicbook age1735...
-     - &host_new age1...
-   creation_rules:
-     - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
-       key_groups:
-         - pgp: []
-           age:
-             - *admin_user
-             - *host_magicbook
-             - *host_new
-   ```
-
-3. На машине, которая может расшифровать (MagicBook), перешифровать:
-
-   ```bash
-   sudo SOPS_AGE_KEY_FILE=/run/secrets-for-users.d/age-keys.txt \
-     SOPS_CONFIG=/etc/nixos/.sops.yaml \
-     sops updatekeys --yes /etc/nixos/secrets/secrets.yaml
-   ```
-
-   Для `secrets/apps.yaml`, если он есть, — то же самое.
-
-4. Закоммитить `.sops.yaml` и перешифрованные файлы. Новая машина сможет
-   расшифровать своим host-ключом, приватный ключ никуда не копируется.
-
-Если новая машина ещё не может загрузиться из-за sops (курица и яйцо):
-сначала поставь базу с временным паролем/`MagicBookInstall`, загрузи её,
-добавь host-ключ, `sops updatekeys`, потом переключайся на полный профиль.
+Пошаговая процедура — host-age, `.sops.yaml`, `sops updatekeys`, bootstrap
+без ключа — в [`new-machine.md`](new-machine.md#4-sops). Здесь остаются
+только механика sops, admin-ключ и восстановление.
 
 ## Admin age-ключ (для переноса между ОС)
 
