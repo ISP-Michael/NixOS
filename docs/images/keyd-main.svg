@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1168" height="360" viewBox="0 0 1168 360">
+<rect width="1168" height="360" fill="#1e1f22"/>
+<text x="48" y="48" font-family="DejaVu Sans" font-size="24" font-weight="bold" fill="#e6e6e6">keyd: модификаторы и timeouts</text>
+<rect x="48" y="90" width="330" height="150" rx="14" fill="#26282c" stroke="#7aa2f7" stroke-width="1.5"/>
+<text x="72" y="130" font-family="DejaVu Sans" font-size="20" font-weight="bold" fill="#e6e6e6">Left Alt</text>
+<text x="72" y="170" font-family="DejaVu Sans" font-size="15" fill="#9aa5b1">тап → lalt_layer</text>
+<text x="72" y="200" font-family="DejaVu Sans" font-size="15" fill="#9aa5b1">удержание → Alt</text>
+<rect x="410" y="90" width="330" height="150" rx="14" fill="#26282c" stroke="#7aa2f7" stroke-width="1.5"/>
+<text x="434" y="130" font-family="DejaVu Sans" font-size="20" font-weight="bold" fill="#e6e6e6">Right Alt</text>
+<text x="434" y="170" font-family="DejaVu Sans" font-size="15" fill="#9aa5b1">тап → ralt_layer</text>
+<text x="434" y="200" font-family="DejaVu Sans" font-size="15" fill="#9aa5b1">удержание → Alt</text>
+<rect x="772" y="90" width="330" height="150" rx="14" fill="#26282c" stroke="#7aa2f7" stroke-width="1.5"/>
+<text x="796" y="130" font-family="DejaVu Sans" font-size="20" font-weight="bold" fill="#e6e6e6">CapsLock</text>
+<text x="796" y="170" font-family="DejaVu Sans" font-size="15" fill="#9aa5b1">тап → Ctrl</text>
+<text x="796" y="200" font-family="DejaVu Sans" font-size="15" fill="#9aa5b1">удержание → CapsLock</text>
+<text x="48" y="326" font-family="DejaVu Sans" font-size="13" fill="#6b6f78">источник: host/hardware/keyd/default.conf · timeout 200 мс</text>
+</svg>

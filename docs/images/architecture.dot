@@ -1,0 +1,66 @@
+digraph nixos {
+  graph [
+    bgcolor="#1e1f22"
+    fontname="DejaVu Sans"
+    rankdir=LR
+    nodesep=0.35
+    ranksep=0.7
+    pad=0.3
+  ];
+  node [
+    shape=box
+    style="rounded,filled"
+    fillcolor="#26282c"
+    color="#7aa2f7"
+    fontcolor="#e6e6e6"
+    fontname="DejaVu Sans"
+    fontsize=13
+    margin="0.18,0.10"
+  ];
+  edge [
+    color="#7aa2f7"
+    arrowsize=0.7
+    fontcolor="#9aa5b1"
+    fontname="DejaVu Sans"
+    fontsize=11
+  ];
+
+  flake [
+    label="flake.nix"
+    fillcolor="#3b4a6b"
+    fontsize=15
+  ];
+
+  host [
+    label="host/\nidentity · hardware · network\nsecurity · services · users"
+  ];
+  iso [
+    label="iso/\nprofiles · hypr · install overrides"
+  ];
+  common [
+    label="common/\nlocale · time · pipewire · nix\nzsh · bluetooth · mtp"
+  ];
+  user [
+    label="user/\nHome Manager · dotfiles · theme"
+  ];
+  apps [
+    label="apps/\nAmnezia · Happ · Throne\nOpenCode · SearXNG"
+  ];
+  vendor [
+    label="vendor/\nHapp (GPL-3.0)"
+  ];
+  secrets [
+    label="secrets/\nsops (encrypted)"
+  ];
+
+  flake -> host [label="MagicBook"];
+  flake -> iso [label="iso-*"];
+  host -> common;
+  host -> user;
+  host -> apps;
+  host -> secrets;
+  iso -> common;
+  iso -> user;
+  iso -> apps;
+  apps -> vendor;
+}

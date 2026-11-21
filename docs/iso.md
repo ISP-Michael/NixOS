@@ -23,6 +23,8 @@ SearXNG) и VPN-модуль. `work`/`custom`/`media`/`full` получают.
 Текущий `iso-custom` собран 18.11.2026 с Noctalia 5.5.0 и SearXNG master.
 Предыдущая сборка на zstd 15 весила 4.6 ГБ; zstd 3 прибавил ~0.2 ГБ.
 
+![Профили ISO](images/iso-profiles.png)
+
 ## Сборка
 
 ```bash

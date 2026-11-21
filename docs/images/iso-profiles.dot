@@ -1,0 +1,48 @@
+digraph iso {
+  graph [
+    bgcolor="#1e1f22"
+    fontname="DejaVu Sans"
+    rankdir=LR
+    nodesep=0.35
+    ranksep=0.7
+    pad=0.3
+  ];
+  node [
+    shape=box
+    style="rounded,filled"
+    fillcolor="#26282c"
+    color="#7aa2f7"
+    fontcolor="#e6e6e6"
+    fontname="DejaVu Sans"
+    fontsize=12
+    margin="0.18,0.10"
+  ];
+  edge [
+    color="#7aa2f7"
+    arrowsize=0.7
+    fontcolor="#9aa5b1"
+    fontname="DejaVu Sans"
+  ];
+
+  lite [
+    label="iso-lite\ncommon + portable runtime"
+    fillcolor="#3b4a6b"
+  ];
+  work [
+    label="iso (work)\n+ LibreOffice, Telegram\nKeePassXC, CopyQ\nOpenCode, VPN, agent runtime"
+  ];
+  media [
+    label="iso-media\n+ GIMP, OBS, VLC\nDolphin/Okular/Ark"
+  ];
+  full [
+    label="iso-full\n+ GCC/Go/Rust/.NET\nObsidian, Bitwarden, Thunderbird"
+  ];
+  custom [
+    label="iso-custom\n+ LibreOffice, Telegram\nKeePassXC, Pandoc\nOpenCode, VPN, agent runtime"
+  ];
+
+  lite -> work;
+  work -> media;
+  media -> full;
+  lite -> custom;
+}
