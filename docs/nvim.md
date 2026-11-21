@@ -51,6 +51,12 @@ Indent guides use two small plugins, as before the vim.pack refactor:
 `UIEnter`; ibl's `setup()` refreshes every existing window, so the first buffer
 is covered too.
 
+Both guide layers are hidden while a visual/select mode is active and return
+on exit. `flatblack` uses `Visual = { reverse = true }`, which swaps fg/bg of
+each token separately; guide characters have their own foreground and
+`nocombine`, so they stayed dark and left vertical gaps inside the selection.
+Hiding them for the duration of the selection keeps the highlight continuous.
+
 ## Plugin triggers
 
 - first file → `nvim-lspconfig` runtime + `core.lsp` setup;
