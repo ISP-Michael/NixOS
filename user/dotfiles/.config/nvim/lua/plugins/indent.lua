@@ -3,6 +3,148 @@
 -- visible in every buffer and cheap, so they load once after the UI appears.
 local P = require('pack')
 
+-- Experiment (21.11.2026): keep both guide layers visible in visual/select
+-- mode. ibl keeps its normal glyph colour but takes the selection background,
+-- so the indent area stays light; mini.indentscope is hidden there because
+-- its line would cover the selected ibl guide at the same column. Set to
+-- 'hide' to return to the previous behaviour: both layers are removed for the
+-- duration of the selection.
+local selection_mode = 'invert'
+
+local function is_visual_mode()
+  return vim.fn.mode(1):match('^[vV\22sS\19]') ~= nil
+end
+
+local span_cache = {
+  key = nil,
+  rows = nil,
+}
+
+--- Screen-column spans of the current visual selection, keyed by row.
+---@param bufnr number
+---@return table<number, { start_col: number, end_col: number }>|nil
+local function visual_spans(bufnr)
+  if not is_visual_mode() or vim.api.nvim_get_current_buf() ~= bufnr then
+    return nil
+  end
+
+  local mode = vim.fn.mode(1)
+  local vpos = vim.fn.getpos('v')
+  local cpos = vim.fn.getpos('.')
+  local key = table.concat(
+    {
+      bufnr,
+      mode,
+      vpos[2],
+      vpos[3],
+      cpos[2],
+      cpos[3],
+      vim.api.nvim_buf_get_changedtick(bufnr)
+    },
+    ':'
+  )
+  if span_cache.key == key then
+    return span_cache.rows
+  end
+
+  local rows = {}
+  local visual_mode = vim.fn.visualmode()
+
+  if visual_mode == 'V' then
+    local first = math.min(vpos[2], cpos[2]) - 1
+    local last = math.max(vpos[2], cpos[2]) - 1
+    for row = first, last do
+      rows[row] = {
+        start_col = 0,
+        end_col = math.huge
+      }
+    end
+  else
+    local ok, region = pcall(
+      vim.fn.getregionpos,
+      vpos,
+      cpos,
+      {
+        type = visual_mode ~= '' and visual_mode or 'v',
+        exclusive = false,
+        eol = false
+      }
+    )
+    if not ok then
+      return nil
+    end
+
+    for _, segment in ipairs(region) do
+      local start_pos = segment[1]
+      local end_pos = segment[2]
+      local row = start_pos[2] - 1
+      local start_byte = start_pos[3]
+      local end_byte = end_pos[3]
+      if row >= 0 and start_byte > 0 and end_byte > 0 then
+        local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ''
+        local function screen_col(col)
+          col = math.min(col, #line + 1)
+          return vim.fn.virtcol({ row + 1, col }) - 1
+        end
+        local start_col = screen_col(start_byte)
+        local end_col = screen_col(end_byte)
+        if end_col > start_col then
+          rows[row] = {
+            start_col = start_col,
+            end_col = end_col
+          }
+        end
+      end
+    end
+  end
+
+  span_cache.key = key
+  span_cache.rows = rows
+  return rows
+end
+
+---@param bufnr number
+---@param row number
+---@param virt_text table
+---@return table
+local function invert_virtual_text(_, bufnr, row, virt_text)
+  local spans = visual_spans(bufnr)
+  local span = spans and spans[row]
+  if not span then
+    return virt_text
+  end
+
+  local vcol = 0
+  for _, chunk in ipairs(virt_text) do
+    local width = vim.fn.strdisplaywidth(chunk[1])
+    local next_vcol = vcol + width
+    if next_vcol > span.start_col and vcol < span.end_col then
+      local hl = chunk[2]
+      if type(hl) == 'string' then
+        hl = { hl }
+      end
+      local indent = false
+      local scope = false
+      for _, name in ipairs(hl) do
+        if type(name) == 'string' and name:match('^@ibl%.indent%.char') then
+          indent = true
+        elseif type(name) == 'string' and name:match('^@ibl%.scope%.char') then
+          scope = true
+        end
+      end
+      if indent then
+        chunk[2] = 'IblIndentSelected'
+      elseif scope then
+        chunk[2] = 'IblScopeSelected'
+      else
+        chunk[2] = 'IblWhitespaceSelected'
+      end
+    end
+    vcol = next_vcol
+  end
+  return virt_text
+end
+
 local function setup_ibl()
   P.load('indent-blankline.nvim')
   require('ibl').setup(
@@ -14,6 +156,11 @@ local function setup_ibl()
         enabled = false
       }
     }
+  )
+  local hooks = require('ibl.hooks')
+  hooks.register(
+    hooks.type.VIRTUAL_TEXT,
+    invert_virtual_text
   )
 end
 
@@ -52,20 +199,20 @@ P.register(
   setup_indentscope
 )
 
--- The theme selects with `Visual = { reverse = true }`, so every cell swaps
--- its own foreground and background. Indent guides have their own foreground
--- and cannot inherit that per-token background; with `nocombine` they ignore
--- Visual completely and leave dark gaps inside the selection. Hide both guide
--- layers while a visual/select mode is active, then redraw them on exit.
-local in_visual = false
-
 local function set_guides(enabled)
+  span_cache.key = nil
+
   if P.loaded['indent-blankline.nvim'] then
-    require('ibl').update(
-      {
-        enabled = enabled
-      }
-    )
+    local ibl = require('ibl')
+    if selection_mode == 'hide' then
+      ibl.update(
+        {
+          enabled = enabled
+        }
+      )
+    else
+      ibl.refresh(vim.api.nvim_get_current_buf())
+    end
   end
 
   if P.loaded['mini.indentscope'] then
@@ -79,9 +226,7 @@ local function set_guides(enabled)
   end
 end
 
-local function is_visual_mode()
-  return vim.fn.mode(1):match('^[vV\22sS\19]') ~= nil
-end
+local in_visual = false
 
 vim.api.nvim_create_autocmd(
   'ModeChanged',

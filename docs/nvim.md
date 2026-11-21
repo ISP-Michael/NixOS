@@ -51,11 +51,19 @@ Indent guides use two small plugins, as before the vim.pack refactor:
 `UIEnter`; ibl's `setup()` refreshes every existing window, so the first buffer
 is covered too.
 
-Both guide layers are hidden while a visual/select mode is active and return
-on exit. `flatblack` uses `Visual = { reverse = true }`, which swaps fg/bg of
-each token separately; guide characters have their own foreground and
-`nocombine`, so they stayed dark and left vertical gaps inside the selection.
-Hiding them for the duration of the selection keeps the highlight continuous.
+While a visual/select mode is active, ibl keeps the guide characters and
+rewrites their highlight groups per selected line: the glyph keeps its normal
+guide colour, while the cell background becomes the selection background
+(`IblIndentSelected`/`IblScopeSelected` with `bg = base1`); spaces between
+the lines use `IblWhitespaceSelected` (reversed Normal). The whole indent area
+stays light, with visible vertical lines instead of black blocks.
+`mini.indentscope` is hidden only inside the selection, because its line
+would cover the ibl guide at the same column; it returns on exit.
+
+`flatblack` uses `Visual = { reverse = true }`, which swaps fg/bg of each
+token separately; a literal fg/bg swap for guides produced a dark block, not
+a highlighted line. This is an experiment: set `selection_mode = 'hide'` at
+the top of `lua/plugins/indent.lua` to restore the old full-hide behaviour.
 
 ## Plugin triggers
 
