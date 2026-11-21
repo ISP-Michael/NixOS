@@ -79,6 +79,14 @@ def format_line(line: str) -> list[str]:
     match = re.match(r"^(\s*)(.*?=\s*)\[([^\[\]]*)\];\s*(#.*)?$", newline)
     if match and match.group(3).strip():
         items = split_items(match.group(3))
+        # Map tables (MIME types, portal names) keep a single short value
+        # inline: three lines per entry would only hurt reading and diffs.
+        if (
+            len(items) == 1
+            and re.match(r'^\s*"[^"]+"\s*=\s*$', match.group(2))
+            and items[0].startswith(('"', "'"))
+        ):
+            return [newline]
         if items:
             out = [f"{pad}{match.group(2)}["]
             out += [f"{pad}  {item}" for item in items]

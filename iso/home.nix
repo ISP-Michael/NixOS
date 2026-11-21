@@ -61,51 +61,21 @@
         xdg.mimeApps = {
           enable = true;
           defaultApplications = {
-            "application/pdf" = [
-              "org.pwmt.zathura-pdf-mupdf.desktop"
-            ];
-            "image/gif" = [
-              "imv.desktop"
-            ];
-            "image/jpeg" = [
-              "imv.desktop"
-            ];
-            "image/png" = [
-              "imv.desktop"
-            ];
-            "image/webp" = [
-              "imv.desktop"
-            ];
-            "inode/directory" = [
-              "thunar.desktop"
-            ];
-            "text/html" = [
-              "firefox.desktop"
-            ];
-            "text/plain" = [
-              "nvim.desktop"
-            ];
-            "video/mp4" = [
-              "mpv.desktop"
-            ];
-            "video/webm" = [
-              "mpv.desktop"
-            ];
-            "video/x-matroska" = [
-              "mpv.desktop"
-            ];
-            "x-scheme-handler/http" = [
-              "firefox.desktop"
-            ];
-            "x-scheme-handler/https" = [
-              "firefox.desktop"
-            ];
-            "x-scheme-handler/tg" = [
-              "org.telegram.desktop.desktop"
-            ];
-            "x-scheme-handler/tonsite" = [
-              "org.telegram.desktop.desktop"
-            ];
+            "application/pdf" = [ "org.pwmt.zathura-pdf-mupdf.desktop" ];
+            "image/gif" = [ "imv.desktop" ];
+            "image/jpeg" = [ "imv.desktop" ];
+            "image/png" = [ "imv.desktop" ];
+            "image/webp" = [ "imv.desktop" ];
+            "inode/directory" = [ "thunar.desktop" ];
+            "text/html" = [ "firefox.desktop" ];
+            "text/plain" = [ "nvim.desktop" ];
+            "video/mp4" = [ "mpv.desktop" ];
+            "video/webm" = [ "mpv.desktop" ];
+            "video/x-matroska" = [ "mpv.desktop" ];
+            "x-scheme-handler/http" = [ "firefox.desktop" ];
+            "x-scheme-handler/https" = [ "firefox.desktop" ];
+            "x-scheme-handler/tg" = [ "org.telegram.desktop.desktop" ];
+            "x-scheme-handler/tonsite" = [ "org.telegram.desktop.desktop" ];
           };
         };
       };
