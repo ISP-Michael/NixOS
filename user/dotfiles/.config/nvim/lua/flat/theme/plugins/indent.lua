@@ -5,11 +5,11 @@ return function(hi, p)
     IblScope = { fg = p.base4 },
 
     -- Visual selection: the guide cell keeps the selection background, so the
-    -- whole indent area stays light.  The glyph uses base2, not the much
-    -- darker normal guide colour: it stays visible without becoming a black
-    -- bar, keeping the same restrained contrast as the unselected guides.
+    -- whole indent area stays light.  guide_selected is a palette mix chosen
+    -- for the same contrast ratio as the normal guide, not the much darker
+    -- base2: the line stays visible without becoming a black bar.
     IblIndentSelected = {
-      fg = p.base2,
+      fg = p.guide_selected,
       bg = p.base1,
       nocombine = true
     },
@@ -19,16 +19,9 @@ return function(hi, p)
       nocombine = true
     },
     IblScopeSelected = {
-      fg = p.base2,
+      fg = p.guide_selected,
       bg = p.base1,
       nocombine = true
-    },
-
-    -- Empty lines have no text cells for Visual to paint, so the selection
-    -- looked interrupted.  The plugin puts this background behind such lines.
-    IndentGuideSelectedLine = {
-      fg = p.base1,
-      bg = p.base1
     },
 
     MiniIndentscopeSymbol = { fg = p.base4 },

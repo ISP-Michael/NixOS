@@ -4,12 +4,19 @@
 local P = require('pack')
 
 -- Experiment (21.11.2026): keep both guide layers visible in visual/select
--- mode. ibl uses a soft base2 glyph on the selection background, so the
--- indent area stays light without black bars; mini.indentscope is hidden
--- there because its line would cover the selected ibl guide at the same
--- column. Set to 'hide' to return to the previous behaviour: both layers are
--- removed for the duration of the selection.
-local selection_mode = 'invert'
+-- mode. ibl uses guide_selected on the selection background, so the indent
+-- area stays light without black bars; mini.indentscope is hidden there
+-- because its line would cover the selected ibl guide at the same column.
+-- `:IndentGuidesSelection hide` returns to the previous behaviour: both
+-- layers are removed for the duration of the selection.
+vim.g.indent_guides_selection = vim.g.indent_guides_selection or 'invert'
+
+local function selection_mode()
+  if vim.g.indent_guides_selection == 'hide' then
+    return 'hide'
+  end
+  return 'invert'
+end
 
 local function is_visual_mode()
   return vim.fn.mode(1):match('^[vV\22sS\19]') ~= nil
@@ -19,8 +26,6 @@ local span_cache = {
   key = nil,
   rows = nil,
 }
-
-local selection_ns = vim.api.nvim_create_namespace('indent_guide_selection')
 
 --- Screen-column spans of the current visual selection, keyed by row.
 ---@param bufnr number
@@ -152,51 +157,6 @@ local function visual_spans(bufnr)
   return rows
 end
 
---- Visual paints text cells, so an empty line inside a linewise selection has
---- no background at all.  Give those lines the same background as selected
---- spaces; non-empty lines already get it from Visual per token.
----@param bufnr number
-local function refresh_blank_lines(bufnr)
-  vim.api.nvim_buf_clear_namespace(
-    bufnr,
-    selection_ns,
-    0,
-    -1
-  )
-
-  local spans = visual_spans(bufnr)
-  if not spans then
-    return
-  end
-
-  for row, _ in pairs(spans) do
-    local line = vim.api.nvim_buf_get_lines(
-      bufnr,
-      row,
-      row + 1,
-      false
-    )[1]
-    if line and line:match('^%s*$') then
-      vim.api.nvim_buf_set_extmark(
-        bufnr,
-        selection_ns,
-        row,
-        0,
-        {
-          virt_text = {
-            {
-              string.rep('█', vim.o.columns),
-              'IndentGuideSelectedLine'
-            }
-          },
-          virt_text_pos = 'overlay',
-          priority = 0
-        }
-      )
-    end
-  end
-end
-
 ---@param bufnr number
 ---@param row number
 ---@param virt_text table
@@ -206,6 +166,18 @@ local function invert_virtual_text(_, bufnr, row, virt_text)
   local span = spans and spans[row]
   if not span then
     return virt_text
+  end
+
+  local line = vim.api.nvim_buf_get_lines(
+    bufnr,
+    row,
+    row + 1,
+    false
+  )[1]
+  if line and line:match('^%s*$') then
+    -- Let Visual draw its normal single selected cell on blank lines instead
+    -- of covering it with an indent guide.
+    return {}
   end
 
   local vcol = 0
@@ -295,22 +267,10 @@ P.register(
 
 local function set_guides(enabled)
   span_cache.key = nil
-  local bufnr = vim.api.nvim_get_current_buf()
-
-  if enabled then
-    vim.api.nvim_buf_clear_namespace(
-      bufnr,
-      selection_ns,
-      0,
-      -1
-    )
-  else
-    refresh_blank_lines(bufnr)
-  end
 
   if P.loaded['indent-blankline.nvim'] then
     local ibl = require('ibl')
-    if selection_mode == 'hide' then
+    if selection_mode() == 'hide' then
       ibl.update(
         {
           enabled = enabled
@@ -332,6 +292,59 @@ local function set_guides(enabled)
   end
 end
 
+local function set_selection_mode(mode)
+  if mode == 'toggle' then
+    mode = selection_mode() == 'hide' and 'invert' or 'hide'
+  end
+  if mode ~= 'invert' and mode ~= 'hide' then
+    vim.notify(
+      'IndentGuidesSelection: use invert, hide or toggle',
+      vim.log.levels.WARN
+    )
+    return
+  end
+
+  vim.g.indent_guides_selection = mode
+  set_guides(not is_visual_mode())
+  vim.notify(
+    'indent guides in visual selection: ' .. mode
+  )
+end
+
+vim.api.nvim_create_user_command(
+  'IndentGuidesSelection',
+  function(opts)
+    set_selection_mode(
+      opts.args ~= '' and opts.args or 'toggle'
+    )
+  end,
+  {
+    nargs = '?',
+    complete = function()
+      return {
+        'invert',
+        'hide',
+        'toggle'
+      }
+    end,
+    desc = 'Indent guides in visual selection: invert, hide or toggle'
+  }
+)
+
+vim.keymap.set(
+  {
+    'n',
+    'x'
+  },
+  '<leader>ti',
+  function()
+    set_selection_mode('toggle')
+  end,
+  {
+    desc = 'Toggle indent guides in visual selection'
+  }
+)
+
 local in_visual = false
 
 vim.api.nvim_create_autocmd(
@@ -344,21 +357,6 @@ vim.api.nvim_create_autocmd(
       end
       in_visual = visual
       set_guides(not visual)
-    end,
-  }
-)
-
-vim.api.nvim_create_autocmd(
-  {
-    'CursorMoved',
-    'CursorMovedI',
-    'WinScrolled'
-  },
-  {
-    callback = function()
-      if is_visual_mode() then
-        refresh_blank_lines(vim.api.nvim_get_current_buf())
-      end
     end,
   }
 )

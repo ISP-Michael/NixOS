@@ -52,22 +52,30 @@ Indent guides use two small plugins, as before the vim.pack refactor:
 is covered too.
 
 While a visual/select mode is active, ibl keeps the guide characters and
-rewrites their highlight groups per selected line: the glyph uses `base2`
-instead of the much darker normal guide colour, while the cell background
-becomes the selection background (`IblIndentSelected`/`IblScopeSelected` with
-`bg = base1`); spaces between the lines use `IblWhitespaceSelected` (reversed
-Normal). The indent area stays light, with restrained vertical lines instead
-of black bars. `mini.indentscope` is hidden only inside the selection, because
-its line would cover the ibl guide at the same column; it returns on exit.
+rewrites their highlight groups per selected line: the glyph uses
+`guide_selected`, a palette colour with the same contrast ratio as the normal
+guide on its background, while the cell background becomes the selection
+background (`IblIndentSelected`/`IblScopeSelected` with `bg = base1`); spaces
+between the lines use `IblWhitespaceSelected` (reversed Normal). The indent
+area stays light, with the same restrained lines as outside the selection.
+`mini.indentscope` is hidden only inside the selection, because its line
+would cover the ibl guide at the same column; it returns on exit.
 
-Empty lines have no text cells for Visual to paint, and `getregionpos` skips
-them. `refresh_blank_lines` fills those rows with a `base1` block behind the
-ibl guides, so a linewise selection has no dark gaps.
+Empty lines keep the normal Visual single-cell background: ibl skips its
+guides on `^%s*$` rows while selecting, so nothing covers that cell and the
+selection is not extended to the end of the screen.
 
-`flatblack` uses `Visual = { reverse = true }`, which swaps fg/bg of each
-token separately; a literal fg/bg swap for guides produced a dark block, not
-a highlighted line. This is an experiment: set `selection_mode = 'hide'` at
-the top of `lua/plugins/indent.lua` to restore the old full-hide behaviour.
+This is an experiment with a runtime switch:
+
+```vim
+:IndentGuidesSelection invert   " keep guides, soft contrast
+:IndentGuidesSelection hide     " no guides during selection
+:IndentGuidesSelection toggle
+```
+
+`<leader>ti` toggles the same setting in normal and visual mode. The value is
+stored in `vim.g.indent_guides_selection`; set it in config to change the
+default.
 
 ## Plugin triggers
 

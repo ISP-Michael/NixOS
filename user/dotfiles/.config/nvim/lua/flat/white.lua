@@ -11,6 +11,10 @@ return {
   base6 = '#f1ece4',
   base7 = '#f7f3ee',
 
+  -- Selected guide: same contrast against the selected background (base1)
+  -- as base5 has against the normal background (base7), about 1.22:1.
+  guide_selected = '#6f675d',
+
 
   orange_text = '#5b5143',
   orange_text_sec = '#957f5f',
