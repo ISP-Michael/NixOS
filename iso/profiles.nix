@@ -239,7 +239,11 @@ in
       description = ''
         Набор пакетов на ISO:
         ${lib.concatStringsSep "\n" (
-          lib.mapAttrsToList (name: value: "- ${name} — ${value.description};") profiles
+          lib.mapAttrsToList (
+            name: value:
+            "- ${name} — ${value.description};"
+          )
+          profiles
         )}
       '';
     };

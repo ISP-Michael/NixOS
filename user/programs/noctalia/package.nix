@@ -16,13 +16,21 @@ pkgs.noctalia.overrideAttrs (old: {
     hash = "sha256-JFT5v+NFN6j/5nDZ5oKizflUsGJNMvwCOdt+4zZ0IX8=";
   };
 
-  patches = (old.patches or [ ]) ++ [
-    ./claim-release.patch
-  ];
+  patches =
+    (old.patches or [ ])
+    ++ [
+      ./claim-release.patch
+    ];
 
   doCheck = false;
 
-  mesonFlags = (pkgs.lib.filter (flag: !(pkgs.lib.hasPrefix "-Dtests=" flag)) old.mesonFlags) ++ [
-    "-Dtests=disabled"
-  ];
+  mesonFlags =
+    pkgs.lib.filter (
+      flag:
+      !(pkgs.lib.hasPrefix "-Dtests=" flag)
+    )
+    old.mesonFlags
+    ++ [
+      "-Dtests=disabled"
+    ];
 })
