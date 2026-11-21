@@ -38,12 +38,18 @@
           # reuse получает sphinxHook не из self, а из spliced0 (топ-level prev),
           # поэтому overrideScope до него не доходит. Задаём обходной путь явно.
           reuse = super.reuse.overrideAttrs (_: {
-            sphinxBuilders = [ "html man" ];
+            sphinxBuilders = [
+              "html"
+              "man"
+            ];
           });
         });
         sphinxHook = fixSphinxHook prev.python3Packages.sphinxHook;
         reuse = prev.reuse.overrideAttrs (_: {
-          sphinxBuilders = [ "html man" ];
+          sphinxBuilders = [
+            "html"
+            "man"
+          ];
         });
       })
   ];
