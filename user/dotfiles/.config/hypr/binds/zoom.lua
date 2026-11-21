@@ -15,5 +15,15 @@ local function zoom(step)
   )
 end
 
-hl.bind(P.mainMod .. ' + equal', function() zoom(1) end)
-hl.bind(P.mainMod .. ' + minus', function() zoom(-1) end)
+hl.bind(
+  P.mainMod .. ' + equal',
+  function()
+    zoom(1)
+  end
+)
+hl.bind(
+  P.mainMod .. ' + minus',
+  function()
+    zoom(-1)
+  end
+)

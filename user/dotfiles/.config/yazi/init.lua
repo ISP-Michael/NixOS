@@ -36,13 +36,22 @@ function Header:chip()
 	local yanked = selected > 0 and 0 or #cx.yanked
 
 	if selected > 0 then
-		return { " " .. selected .. " ", th.mgr.count_selected }
+		return {
+			" " .. selected .. " ",
+			th.mgr.count_selected
+		}
 	elseif yanked <= 0 then
 		return nil
 	elseif cx.yanked.is_cut then
-		return { " " .. yanked .. " ", th.mgr.count_cut }
+		return {
+			" " .. yanked .. " ",
+			th.mgr.count_cut
+		}
 	else
-		return { " " .. yanked .. " ", th.mgr.count_copied }
+		return {
+			" " .. yanked .. " ",
+			th.mgr.count_copied
+		}
 	end
 end
 
@@ -60,7 +69,10 @@ function Header:redraw()
 	local avail = math.max(0, area.w - x - pad - (cw > 0 and (cw + 1) or 0))
 	local path = ui.truncate(
 		ya.readable_path(tostring(self._current.cwd)) .. self:flags(),
-		{ max = avail, rtl = true }
+		{
+			max = avail,
+			rtl = true
+		}
 	)
 	local pw = ui.width(path)
 
@@ -79,7 +91,14 @@ function Header:redraw()
 	end
 
 	return {
-		ui.Line(mid):style(s_chip):area(ui.Rect { x = x, y = area.y, w = chip_w, h = 1 }),
+		ui.Line(mid):style(s_chip):area(
+			ui.Rect {
+				x = x,
+				y = area.y,
+				w = chip_w,
+				h = 1
+			}
+		),
 	}
 end
 

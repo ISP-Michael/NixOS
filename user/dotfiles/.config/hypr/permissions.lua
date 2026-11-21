@@ -21,16 +21,36 @@ hl.config(
 )
 
 -- Screenshots and colour picker.
-hl.permission('/nix/store/[^/]*/bin/grim', 'screencopy', 'allow')
-hl.permission('/nix/store/[^/]*/bin/hyprpicker', 'screencopy', 'allow')
+hl.permission(
+  '/nix/store/[^/]*/bin/grim',
+  'screencopy',
+  'allow'
+)
+hl.permission(
+  '/nix/store/[^/]*/bin/hyprpicker',
+  'screencopy',
+  'allow'
+)
 
 -- Noctalia's lock screen captures the screen for its background.
-hl.permission('/nix/store/[^/]*/bin/\\.?noctalia(-wrapped)?', 'screencopy', 'allow')
+hl.permission(
+  '/nix/store/[^/]*/bin/\\.?noctalia(-wrapped)?',
+  'screencopy',
+  'allow'
+)
 
 -- xdg-desktop-portal-hyprland serves OBS, Discord, Telegram and browsers.
-hl.permission('/nix/store/[^/]*/libexec/\\.?xdg-desktop-portal-hyprland(-wrapped)?', 'screencopy', 'allow')
+hl.permission(
+  '/nix/store/[^/]*/libexec/\\.?xdg-desktop-portal-hyprland(-wrapped)?',
+  'screencopy',
+  'allow'
+)
 
 -- Plugin manager.
-hl.permission('/nix/store/[^/]*/bin/hyprpm', 'plugin', 'allow')
+hl.permission(
+  '/nix/store/[^/]*/bin/hyprpm',
+  'plugin',
+  'allow'
+)
 
 -- Rollback: set enforce_permissions = false and restart Hyprland.

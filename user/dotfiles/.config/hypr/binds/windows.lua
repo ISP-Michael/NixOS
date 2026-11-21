@@ -13,17 +13,57 @@ local function cycle(step)
   hl.dispatch(hl.dsp.layout(step > 0 and 'cyclenext' or 'cycleprev'))
 end
 
-hl.bind(P.mainMod .. ' + right', function() cycle(1) end)
-hl.bind(P.mainMod .. ' + left', function() cycle(-1) end)
-hl.bind(P.mainMod .. ' + down', function() cycle(1) end)
-hl.bind(P.mainMod .. ' + up', function() cycle(-1) end)
-hl.bind(P.mainMod .. ' + comma', function() cycle(1) end)
-hl.bind(P.mainMod .. ' + period', function() cycle(-1) end)
+hl.bind(
+  P.mainMod .. ' + right',
+  function()
+    cycle(1)
+  end
+)
+hl.bind(
+  P.mainMod .. ' + left',
+  function()
+    cycle(-1)
+  end
+)
+hl.bind(
+  P.mainMod .. ' + down',
+  function()
+    cycle(1)
+  end
+)
+hl.bind(
+  P.mainMod .. ' + up',
+  function()
+    cycle(-1)
+  end
+)
+hl.bind(
+  P.mainMod .. ' + comma',
+  function()
+    cycle(1)
+  end
+)
+hl.bind(
+  P.mainMod .. ' + period',
+  function()
+    cycle(-1)
+  end
+)
 
 -- Alt+Tab is a window switcher, not a z-order change (monocle shows one
 -- window anyway).
-hl.bind(P.alt .. ' + Tab', function() cycle(1) end)
-hl.bind(P.alt .. ' + SHIFT + Tab', function() cycle(-1) end)
+hl.bind(
+  P.alt .. ' + Tab',
+  function()
+    cycle(1)
+  end
+)
+hl.bind(
+  P.alt .. ' + SHIFT + Tab',
+  function()
+    cycle(-1)
+  end
+)
 
 hl.bind(
   P.mainMod .. ' + V',
