@@ -42,5 +42,4 @@ require('autocmds.templates')
 -- The manifest also configures lualine, so init.lua stays plugin-free.
 require('plugins')
 
-vim.o.background = 'dark'
-vim.cmd.colorscheme('flatblack')
+require('core.theme-sync').setup()

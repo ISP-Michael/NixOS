@@ -17,7 +17,7 @@
 init.lua
 ├── providers off, vim.loader.enable(), vim._core.ui2
 ├── pack.setup()          # specs registered, no rtp/plugin source
-├── core/{options,syntax,indent,keymap,diagnostic,completion,python}
+├── core/{options,syntax,indent,keymap,diagnostic,completion,python,theme-sync}
 ├── core.project.setup() + core.neovide.setup() (Neovide only)
 ├── autocmds.templates
 ├── plugins               # manifest: loaders/keymaps/autocmds only
@@ -87,7 +87,10 @@ you want the experiment by default.
 - `UIEnter` + schedule → surround, neoscroll, indent guides (ibl + mini.indentscope), langmapper;
 - first notification → snacks notifier;
 - keys → fzf-lua, neo-tree, DAP, Spectre, Trouble, LazyGit, transparent;
-- `BufWritePre` py/go → conform.
+- `BufWritePre` py/go → conform;
+- Noctalia settings watcher → `flatwhite` in light mode, `flatblack` in dark;
+  `SUPER+W` updates `~/.local/state/noctalia/settings.toml` without restarting
+  nvim.
 
 `vim-easy-align` is added to `runtimepath` during init and sourced by the normal
 startup pass; it has no loader, so `PackLoadAll` does not include it.
