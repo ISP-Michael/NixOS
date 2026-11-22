@@ -50,11 +50,11 @@
 
 ## Известные особенности
 
-- **tmux-тема разделена.** `themes/mocha.conf` — tracked fallback;
+- **tmux-тема разделена.** `themes/mocha.conf` — тёмный fallback;
   `themes/noctalia.conf` генерирует Noctalia, он в `.gitignore` и грузится
-  последним. Noctalia перекрывает фоны/popup/menu/borders, но не
-  `status-left/right` и форматы вкладок — это осознанная смесь, пока тема не
-  станет полной.
+  последним. `statusline.conf` использует `@noctalia_*` для сессии, часов и
+  вкладок, поэтому светлая палитра Noctalia даёт полностью светлый статусбар
+  без катпучиновых сегментов.
 - **tmux plugins** — `tmux-resurrect` и `tmux-continuum` лежат в
   `vendor/tmux/`, `~/.config/tmux/vendor` — симлинк. `tmux.service`
   генерирует continuum; его `ExecStop` обновлён на vendor-путь.

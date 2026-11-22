@@ -24,6 +24,7 @@
               "gtk4"
               "qt"
               "btop"
+              "kitty"
             ];
             community_ids = [
               "zen-browser"

@@ -16,6 +16,14 @@ separate.
   environment. In 0.49 the old value `no` is invalid and is silently
   ignored, so the previous config actually loaded with `invalid`.
 
+## Theme
+
+Noctalia's built-in `kitty` template renders `themes/noctalia.conf`; the hub
+includes it last so it overrides `conf.d/colors.conf`. On `SUPER+W` /
+`theme.sh light|dark`, Noctalia regenerates the file and sends `USR1` to
+running kitty instances. The hand-written `colors.conf` is the dark fallback
+when Noctalia is absent.
+
 ## New in kitty 0.49 worth knowing
 
 - `shell_integration enabled` (or a list of `no-*` flags): prompt marks,

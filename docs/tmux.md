@@ -31,11 +31,12 @@ catppuccin/tmux and tmux-yank were removed because nothing sourced them.
 
 ## Theme
 
-`themes/mocha.conf` defines the palette and fallback styles.
+`themes/mocha.conf` defines the dark fallback palette.
 `themes/noctalia.conf` is generated from the wallpaper palette, ignored by git,
-and sourced last. Noctalia currently overrides backgrounds, popups, menus,
-borders and the clock, but not `status-left/right` or the window-tab formats;
-that is intentional until Noctalia owns the whole status line.
+and sourced last. `statusline.conf` reads the `@noctalia_*` variables for the
+session, clock and window tabs, so Noctalia's light palette produces a fully
+light status line; `mocha.conf` defines the same variable names as a dark
+fallback when Noctalia is absent.
 
 `prefix r` re-sources the hub. `source-file` is additive, so removed style
 options survive on a running server until `tmux kill-server`.

@@ -11,6 +11,7 @@ host/services/mihomo.yaml
 # Noctalia theme outputs (render from wallpaper palette, not sources)
 user/dotfiles/.config/yazi/flavors/noctalia.yazi/
 user/dotfiles/.config/tmux/themes/noctalia.conf
+user/dotfiles/.config/kitty/themes/noctalia.conf
 
 # Generated and backup files
 .zcompdump
